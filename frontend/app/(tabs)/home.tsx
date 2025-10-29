@@ -173,7 +173,7 @@ export default function HomeScreen() {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <Text style={styles.headerTitle}>Şoför Forum</Text>
+        <Text style={styles.headerTitle}>Driver Forum</Text>
         <TouchableOpacity 
           style={styles.createButton}
           onPress={() => setCreateModalVisible(true)}
@@ -193,8 +193,8 @@ export default function HomeScreen() {
         ListEmptyComponent={
           <View style={styles.emptyContainer}>
             <Ionicons name="newspaper-outline" size={64} color="#ccc" />
-            <Text style={styles.emptyText}>Henüz paylaşım yok</Text>
-            <Text style={styles.emptySubtext}>Ilk paylaşımı siz yapın!</Text>
+            <Text style={styles.emptyText}>No posts yet</Text>
+            <Text style={styles.emptySubtext}>Be the first to post!</Text>
           </View>
         }
       />
@@ -210,15 +210,15 @@ export default function HomeScreen() {
         >
           <View style={styles.modalHeader}>
             <TouchableOpacity onPress={() => setCreateModalVisible(false)}>
-              <Text style={styles.cancelButton}>Iptal</Text>
+              <Text style={styles.cancelButton}>Cancel</Text>
             </TouchableOpacity>
-            <Text style={styles.modalTitle}>Yeni Paylaşım</Text>
+            <Text style={styles.modalTitle}>New Post</Text>
             <TouchableOpacity 
               onPress={createPost}
               disabled={posting}
             >
               <Text style={[styles.postButton, posting && styles.postButtonDisabled]}>
-                {posting ? 'Yayınlanıyor...' : 'Paylaş'}
+                {posting ? 'Publishing...' : 'Post'}
               </Text>
             </TouchableOpacity>
           </View>
@@ -226,7 +226,7 @@ export default function HomeScreen() {
           <ScrollView style={styles.modalContent}>
             <TextInput
               style={styles.textInput}
-              placeholder="Ne düşünüyorsun?"
+              placeholder="What's on your mind?"
               value={newPostContent}
               onChangeText={setNewPostContent}
               multiline
@@ -247,7 +247,7 @@ export default function HomeScreen() {
 
             <TouchableOpacity style={styles.addImageButton} onPress={pickImage}>
               <Ionicons name="image-outline" size={24} color="#007AFF" />
-              <Text style={styles.addImageText}>Fotoğraf Ekle</Text>
+              <Text style={styles.addImageText}>Add Photo</Text>
             </TouchableOpacity>
           </ScrollView>
         </KeyboardAvoidingView>
