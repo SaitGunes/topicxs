@@ -44,6 +44,16 @@ export default function ProfileScreen() {
         <Text style={styles.fullName}>{user.full_name}</Text>
         <Text style={styles.username}>@{user.username}</Text>
         {user.bio ? <Text style={styles.bio}>{user.bio}</Text> : null}
+        
+        {user.referral_code && (
+          <View style={styles.referralCard}>
+            <Text style={styles.referralLabel}>Your Referral Code</Text>
+            <Text style={styles.referralCode}>{user.referral_code}</Text>
+            <Text style={styles.referralCount}>
+              {user.referral_count || 0} people joined with your code
+            </Text>
+          </View>
+        )}
       </View>
 
       <View style={styles.section}>
