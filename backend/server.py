@@ -126,6 +126,77 @@ class Message(BaseModel):
     content: str
     created_at: datetime = Field(default_factory=datetime.utcnow)
 
+# ==================== NEW MODELS FOR PHASE 1-4 ====================
+
+class FriendRequest(BaseModel):
+    id: str
+    from_user_id: str
+    from_username: str
+    from_user_picture: Optional[str] = None
+    to_user_id: str
+    message: Optional[str] = None
+    status: str = "pending"  # pending, accepted, rejected
+    created_at: datetime = Field(default_factory=datetime.utcnow)
+
+class FriendRequestCreate(BaseModel):
+    to_user_id: str
+    message: Optional[str] = None
+
+class FriendRequestAction(BaseModel):
+    action: str  # accept or reject
+
+class PostPrivacy(BaseModel):
+    level: str  # public, friends, specific
+    specific_user_ids: Optional[List[str]] = []
+
+class PostCreateEnhanced(BaseModel):
+    content: str
+    image: Optional[str] = None
+    privacy: PostPrivacy = PostPrivacy(level="friends", specific_user_ids=[])
+
+class PostEnhanced(BaseModel):
+    id: str
+    user_id: str
+    username: str
+    user_profile_picture: Optional[str] = None
+    content: str
+    image: Optional[str] = None
+    likes: List[str] = []
+    dislikes: List[str] = []
+    comments_count: int = 0
+    privacy: PostPrivacy
+    created_at: datetime = Field(default_factory=datetime.utcnow)
+
+class VoteAction(BaseModel):
+    vote_type: str  # like or dislike
+
+class Group(BaseModel):
+    id: str
+    name: str
+    description: Optional[str] = None
+    creator_id: str
+    admin_ids: List[str] = []
+    moderator_ids: List[str] = []
+    member_ids: List[str] = []
+    requires_approval: bool = True
+    created_at: datetime = Field(default_factory=datetime.utcnow)
+
+class GroupCreate(BaseModel):
+    name: str
+    description: Optional[str] = None
+    requires_approval: bool = True
+
+class GroupJoinRequest(BaseModel):
+    id: str
+    group_id: str
+    user_id: str
+    username: str
+    status: str = "pending"  # pending, approved, rejected
+    created_at: datetime = Field(default_factory=datetime.utcnow)
+
+class GroupInvite(BaseModel):
+    user_ids: List[str]
+
 # ==================== AUTH HELPERS ====================
 
 def verify_password(plain_password, hashed_password):
