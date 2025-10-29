@@ -506,7 +506,7 @@ async def send_friend_request(request_data: FriendRequestCreate, current_user: U
         "from_user_picture": current_user.profile_picture,
         "to_user_id": request_data.to_user_id,
         "message": request_data.message,
-        "status": "pending",
+        "request_status": "pending",
         "created_at": datetime.utcnow()
     }
     
@@ -703,7 +703,7 @@ async def join_group(group_id: str, current_user: User = Depends(get_current_use
             "group_id": group_id,
             "user_id": current_user.id,
             "username": current_user.username,
-            "status": "pending",
+            "request_status": "pending",
             "created_at": datetime.utcnow()
         }
         await db.group_join_requests.insert_one(join_request_dict)
