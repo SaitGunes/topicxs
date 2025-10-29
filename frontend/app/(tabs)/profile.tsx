@@ -9,12 +9,12 @@ export default function ProfileScreen() {
 
   const handleLogout = () => {
     Alert.alert(
-      'Çıkış Yap',
-      'Hesabınızdan çıkmak istediğinize emin misiniz?',
+      'Sign Out',
+      'Are you sure you want to sign out?',
       [
-        { text: 'Iptal', style: 'cancel' },
+        { text: 'Cancel', style: 'cancel' },
         {
-          text: 'Çıkış Yap',
+          text: 'Sign Out',
           style: 'destructive',
           onPress: async () => {
             await logout();
