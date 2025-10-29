@@ -39,19 +39,25 @@ class BackendTester:
             
         try:
             if method.upper() == "GET":
-                response = requests.get(url, headers=headers, timeout=30)
+                response = requests.get(url, headers=headers, timeout=10)
             elif method.upper() == "POST":
-                response = requests.post(url, headers=headers, json=data, timeout=30)
+                response = requests.post(url, headers=headers, json=data, timeout=10)
             elif method.upper() == "PUT":
-                response = requests.put(url, headers=headers, json=data, timeout=30)
+                response = requests.put(url, headers=headers, json=data, timeout=10)
             elif method.upper() == "DELETE":
-                response = requests.delete(url, headers=headers, timeout=30)
+                response = requests.delete(url, headers=headers, timeout=10)
             else:
                 raise ValueError(f"Unsupported HTTP method: {method}")
                 
             return response
+        except requests.exceptions.Timeout:
+            self.log(f"Request timeout for {method} {url}", "ERROR")
+            return None
+        except requests.exceptions.ConnectionError:
+            self.log(f"Connection error for {method} {url}", "ERROR")
+            return None
         except requests.exceptions.RequestException as e:
-            self.log(f"Request failed: {e}", "ERROR")
+            self.log(f"Request failed for {method} {url}: {e}", "ERROR")
             return None
             
     def test_auth_register(self):
