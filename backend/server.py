@@ -191,7 +191,7 @@ class GroupJoinRequest(BaseModel):
     group_id: str
     user_id: str
     username: str
-    status: str = "pending"  # pending, approved, rejected
+    request_status: str = "pending"  # pending, approved, rejected
     created_at: datetime = Field(default_factory=datetime.utcnow)
 
 class GroupInvite(BaseModel):
