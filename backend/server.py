@@ -544,7 +544,7 @@ async def handle_friend_request(request_id: str, action_data: FriendRequestActio
         # Update request status
         await db.friend_requests.update_one(
             {"id": request_id},
-            {"$set": {"status": "accepted"}}
+            {"$set": {"request_status": "accepted"}}
         )
         return {"message": "Friend request accepted"}
     
