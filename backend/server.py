@@ -474,6 +474,280 @@ async def send_message(chat_id: str, message_data: MessageCreate, current_user: 
     
     return Message(**message_dict)
 
+# ==================== FRIEND ROUTES ====================
+
+@api_router.post("/friends/request", response_model=FriendRequest)
+async def send_friend_request(request_data: FriendRequestCreate, current_user: User = Depends(get_current_user)):
+    # Check if user exists
+    target_user = await db.users.find_one({"id": request_data.to_user_id})
+    if not target_user:
+        raise HTTPException(status_code=404, detail="User not found")
+    
+    # Check if already friends
+    user_data = await db.users.find_one({"id": current_user.id})
+    if request_data.to_user_id in user_data.get("friend_ids", []):
+        raise HTTPException(status_code=400, detail="Already friends")
+    
+    # Check if request already exists
+    existing_request = await db.friend_requests.find_one({
+        "from_user_id": current_user.id,
+        "to_user_id": request_data.to_user_id,
+        "status": "pending"
+    })
+    if existing_request:
+        raise HTTPException(status_code=400, detail="Friend request already sent")
+    
+    request_id = str(datetime.utcnow().timestamp()).replace(".", "")
+    
+    friend_request_dict = {
+        "id": request_id,
+        "from_user_id": current_user.id,
+        "from_username": current_user.username,
+        "from_user_picture": current_user.profile_picture,
+        "to_user_id": request_data.to_user_id,
+        "message": request_data.message,
+        "status": "pending",
+        "created_at": datetime.utcnow()
+    }
+    
+    await db.friend_requests.insert_one(friend_request_dict)
+    return FriendRequest(**friend_request_dict)
+
+@api_router.get("/friends/requests", response_model=List[FriendRequest])
+async def get_friend_requests(current_user: User = Depends(get_current_user)):
+    requests = await db.friend_requests.find({
+        "to_user_id": current_user.id,
+        "status": "pending"
+    }).sort("created_at", -1).to_list(100)
+    return [FriendRequest(**req) for req in requests]
+
+@api_router.post("/friends/requests/{request_id}/action")
+async def handle_friend_request(request_id: str, action_data: FriendRequestAction, current_user: User = Depends(get_current_user)):
+    friend_request = await db.friend_requests.find_one({"id": request_id})
+    if not friend_request:
+        raise HTTPException(status_code=404, detail="Friend request not found")
+    
+    if friend_request["to_user_id"] != current_user.id:
+        raise HTTPException(status_code=403, detail="Not authorized")
+    
+    if action_data.action == "accept":
+        # Add to friends list
+        await db.users.update_one(
+            {"id": current_user.id},
+            {"$push": {"friend_ids": friend_request["from_user_id"]}}
+        )
+        await db.users.update_one(
+            {"id": friend_request["from_user_id"]},
+            {"$push": {"friend_ids": current_user.id}}
+        )
+        
+        # Update request status
+        await db.friend_requests.update_one(
+            {"id": request_id},
+            {"$set": {"status": "accepted"}}
+        )
+        return {"message": "Friend request accepted"}
+    
+    elif action_data.action == "reject":
+        await db.friend_requests.update_one(
+            {"id": request_id},
+            {"$set": {"status": "rejected"}}
+        )
+        return {"message": "Friend request rejected"}
+    
+    else:
+        raise HTTPException(status_code=400, detail="Invalid action")
+
+@api_router.get("/friends", response_model=List[User])
+async def get_friends(current_user: User = Depends(get_current_user)):
+    user_data = await db.users.find_one({"id": current_user.id})
+    friend_ids = user_data.get("friend_ids", [])
+    
+    friends = await db.users.find({"id": {"$in": friend_ids}}).to_list(1000)
+    return [User(**{k: v for k, v in friend.items() if k != 'password'}) for friend in friends]
+
+# ==================== ENHANCED POST ROUTES ====================
+
+@api_router.post("/posts/enhanced", response_model=PostEnhanced)
+async def create_enhanced_post(post_data: PostCreateEnhanced, current_user: User = Depends(get_current_user)):
+    post_id = str(datetime.utcnow().timestamp()).replace(".", "")
+    
+    post_dict = {
+        "id": post_id,
+        "user_id": current_user.id,
+        "username": current_user.username,
+        "user_profile_picture": current_user.profile_picture,
+        "content": post_data.content,
+        "image": post_data.image,
+        "likes": [],
+        "dislikes": [],
+        "comments_count": 0,
+        "privacy": post_data.privacy.dict(),
+        "created_at": datetime.utcnow()
+    }
+    
+    await db.posts_enhanced.insert_one(post_dict)
+    return PostEnhanced(**post_dict)
+
+@api_router.get("/posts/enhanced", response_model=List[PostEnhanced])
+async def get_enhanced_posts(skip: int = 0, limit: int = 20, current_user: User = Depends(get_current_user)):
+    # Get user's friend list
+    user_data = await db.users.find_one({"id": current_user.id})
+    friend_ids = user_data.get("friend_ids", [])
+    
+    # Build query based on privacy settings
+    query = {
+        "$or": [
+            {"privacy.level": "public"},
+            {"user_id": current_user.id},
+            {"privacy.level": "friends", "user_id": {"$in": friend_ids}},
+            {"privacy.level": "specific", "privacy.specific_user_ids": current_user.id}
+        ]
+    }
+    
+    posts = await db.posts_enhanced.find(query).sort("created_at", -1).skip(skip).limit(limit).to_list(limit)
+    return [PostEnhanced(**post) for post in posts]
+
+@api_router.post("/posts/{post_id}/vote")
+async def vote_post(post_id: str, vote_data: VoteAction, current_user: User = Depends(get_current_user)):
+    post = await db.posts_enhanced.find_one({"id": post_id})
+    if not post:
+        raise HTTPException(status_code=404, detail="Post not found")
+    
+    likes = post.get("likes", [])
+    dislikes = post.get("dislikes", [])
+    
+    if vote_data.vote_type == "like":
+        if current_user.id in likes:
+            # Remove like
+            await db.posts_enhanced.update_one(
+                {"id": post_id},
+                {"$pull": {"likes": current_user.id}}
+            )
+            return {"voted": False, "vote_type": "like", "likes_count": len(likes) - 1, "dislikes_count": len(dislikes)}
+        else:
+            # Add like, remove dislike if exists
+            await db.posts_enhanced.update_one(
+                {"id": post_id},
+                {
+                    "$push": {"likes": current_user.id},
+                    "$pull": {"dislikes": current_user.id}
+                }
+            )
+            new_dislikes = len(dislikes) - 1 if current_user.id in dislikes else len(dislikes)
+            return {"voted": True, "vote_type": "like", "likes_count": len(likes) + 1, "dislikes_count": new_dislikes}
+    
+    elif vote_data.vote_type == "dislike":
+        if current_user.id in dislikes:
+            # Remove dislike
+            await db.posts_enhanced.update_one(
+                {"id": post_id},
+                {"$pull": {"dislikes": current_user.id}}
+            )
+            return {"voted": False, "vote_type": "dislike", "likes_count": len(likes), "dislikes_count": len(dislikes) - 1}
+        else:
+            # Add dislike, remove like if exists
+            await db.posts_enhanced.update_one(
+                {"id": post_id},
+                {
+                    "$push": {"dislikes": current_user.id},
+                    "$pull": {"likes": current_user.id}
+                }
+            )
+            new_likes = len(likes) - 1 if current_user.id in likes else len(likes)
+            return {"voted": True, "vote_type": "dislike", "likes_count": new_likes, "dislikes_count": len(dislikes) + 1}
+    
+    else:
+        raise HTTPException(status_code=400, detail="Invalid vote type")
+
+# ==================== GROUP ROUTES ====================
+
+@api_router.post("/groups", response_model=Group)
+async def create_group(group_data: GroupCreate, current_user: User = Depends(get_current_user)):
+    group_id = str(datetime.utcnow().timestamp()).replace(".", "")
+    
+    group_dict = {
+        "id": group_id,
+        "name": group_data.name,
+        "description": group_data.description,
+        "creator_id": current_user.id,
+        "admin_ids": [current_user.id],
+        "moderator_ids": [],
+        "member_ids": [current_user.id],
+        "requires_approval": group_data.requires_approval,
+        "created_at": datetime.utcnow()
+    }
+    
+    await db.groups.insert_one(group_dict)
+    return Group(**group_dict)
+
+@api_router.get("/groups", response_model=List[Group])
+async def get_groups(current_user: User = Depends(get_current_user)):
+    groups = await db.groups.find({"member_ids": current_user.id}).sort("created_at", -1).to_list(100)
+    return [Group(**group) for group in groups]
+
+@api_router.post("/groups/{group_id}/join")
+async def join_group(group_id: str, current_user: User = Depends(get_current_user)):
+    group = await db.groups.find_one({"id": group_id})
+    if not group:
+        raise HTTPException(status_code=404, detail="Group not found")
+    
+    if current_user.id in group["member_ids"]:
+        raise HTTPException(status_code=400, detail="Already a member")
+    
+    if group["requires_approval"]:
+        # Create join request
+        request_id = str(datetime.utcnow().timestamp()).replace(".", "")
+        join_request_dict = {
+            "id": request_id,
+            "group_id": group_id,
+            "user_id": current_user.id,
+            "username": current_user.username,
+            "status": "pending",
+            "created_at": datetime.utcnow()
+        }
+        await db.group_join_requests.insert_one(join_request_dict)
+        return {"message": "Join request sent"}
+    else:
+        # Join directly
+        await db.groups.update_one(
+            {"id": group_id},
+            {"$push": {"member_ids": current_user.id}}
+        )
+        return {"message": "Joined group successfully"}
+
+@api_router.get("/groups/{group_id}/join-requests", response_model=List[GroupJoinRequest])
+async def get_group_join_requests(group_id: str, current_user: User = Depends(get_current_user)):
+    group = await db.groups.find_one({"id": group_id})
+    if not group:
+        raise HTTPException(status_code=404, detail="Group not found")
+    
+    if current_user.id not in group["admin_ids"]:
+        raise HTTPException(status_code=403, detail="Not authorized")
+    
+    requests = await db.group_join_requests.find({
+        "group_id": group_id,
+        "status": "pending"
+    }).sort("created_at", -1).to_list(100)
+    return [GroupJoinRequest(**req) for req in requests]
+
+@api_router.post("/groups/{group_id}/invite")
+async def invite_to_group(group_id: str, invite_data: GroupInvite, current_user: User = Depends(get_current_user)):
+    group = await db.groups.find_one({"id": group_id})
+    if not group:
+        raise HTTPException(status_code=404, detail="Group not found")
+    
+    if current_user.id not in group["admin_ids"] and current_user.id not in group["moderator_ids"]:
+        raise HTTPException(status_code=403, detail="Not authorized")
+    
+    # Add users directly to group
+    await db.groups.update_one(
+        {"id": group_id},
+        {"$addToSet": {"member_ids": {"$each": invite_data.user_ids}}}
+    )
+    
+    return {"message": f"Invited {len(invite_data.user_ids)} users to group"}
+
 # ==================== SOCKET.IO ====================
 
 @sio.event
