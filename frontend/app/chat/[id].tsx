@@ -123,7 +123,7 @@ export default function ChatScreen() {
         <View style={styles.chatInfo}>
           <Text style={styles.chatName}>{chat.name}</Text>
           {chat.is_group && (
-            <Text style={styles.memberCount}>{chat.members.length} üye</Text>
+            <Text style={styles.memberCount}>{chat.members.length} members</Text>
           )}
         </View>
       </View>
@@ -136,8 +136,8 @@ export default function ChatScreen() {
         ListEmptyComponent={
           <View style={styles.emptyContainer}>
             <Ionicons name="chatbubbles-outline" size={64} color="#ccc" />
-            <Text style={styles.emptyText}>Henüz mesaj yok</Text>
-            <Text style={styles.emptySubtext}>Sohbeti başlatın!</Text>
+            <Text style={styles.emptyText}>No messages yet</Text>
+            <Text style={styles.emptySubtext}>Start the conversation!</Text>
           </View>
         }
       />
@@ -145,7 +145,7 @@ export default function ChatScreen() {
       <View style={styles.inputContainer}>
         <TextInput
           style={styles.input}
-          placeholder="Mesaj yaz..."
+          placeholder="Write a message..."
           value={newMessage}
           onChangeText={setNewMessage}
           placeholderTextColor="#999"

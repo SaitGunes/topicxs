@@ -146,19 +146,19 @@ export default function UserProfileScreen() {
               onPress={handleStartChat}
             >
               <Ionicons name="chatbubble-outline" size={20} color="#fff" />
-              <Text style={styles.messageButtonText}>Mesaj Gönder</Text>
+              <Text style={styles.messageButtonText}>Send Message</Text>
             </TouchableOpacity>
           )}
         </View>
 
         <View style={styles.postsSection}>
           <Text style={styles.postsTitle}>
-            Paylaşımlar ({posts.length})
+            Posts ({posts.length})
           </Text>
           {posts.length === 0 ? (
             <View style={styles.emptyContainer}>
               <Ionicons name="newspaper-outline" size={48} color="#ccc" />
-              <Text style={styles.emptyText}>Henüz paylaşım yok</Text>
+              <Text style={styles.emptyText}>No posts yet</Text>
             </View>
           ) : (
             <View style={styles.postsGrid}>

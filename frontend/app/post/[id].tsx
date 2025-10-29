@@ -126,7 +126,7 @@ export default function PostDetailScreen() {
           <TouchableOpacity onPress={() => router.back()}>
             <Ionicons name="arrow-back" size={24} color="#000" />
           </TouchableOpacity>
-          <Text style={styles.headerTitle}>Paylaşım</Text>
+          <Text style={styles.headerTitle}>Post</Text>
         </View>
         <View style={styles.loadingContainer}>
           <Text>Yüklen iyor...</Text>
@@ -147,7 +147,7 @@ export default function PostDetailScreen() {
         <TouchableOpacity onPress={() => router.back()}>
           <Ionicons name="arrow-back" size={24} color="#000" />
         </TouchableOpacity>
-        <Text style={styles.headerTitle}>Paylaşım</Text>
+        <Text style={styles.headerTitle}>Post</Text>
       </View>
 
       <ScrollView style={styles.content}>
@@ -199,9 +199,9 @@ export default function PostDetailScreen() {
         </View>
 
         <View style={styles.commentsSection}>
-          <Text style={styles.commentsTitle}>Yorumlar</Text>
+          <Text style={styles.commentsTitle}>Comments</Text>
           {comments.length === 0 ? (
-            <Text style={styles.noComments}>Henüz yorum yok. Ilk yorumu siz yapın!</Text>
+            <Text style={styles.noComments}>No comments yet. Be the first to comment!</Text>
           ) : (
             comments.map((comment) => (
               <View key={comment.id}>
@@ -215,7 +215,7 @@ export default function PostDetailScreen() {
       <View style={styles.commentInputContainer}>
         <TextInput
           style={styles.commentInput}
-          placeholder="Yorum yaz..."
+          placeholder="Write a comment..."
           value={newComment}
           onChangeText={setNewComment}
           placeholderTextColor="#999"
