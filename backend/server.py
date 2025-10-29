@@ -551,7 +551,7 @@ async def handle_friend_request(request_id: str, action_data: FriendRequestActio
     elif action_data.action == "reject":
         await db.friend_requests.update_one(
             {"id": request_id},
-            {"$set": {"status": "rejected"}}
+            {"$set": {"request_status": "rejected"}}
         )
         return {"message": "Friend request rejected"}
     
