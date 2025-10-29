@@ -199,6 +199,10 @@ class GroupInvite(BaseModel):
 
 # ==================== AUTH HELPERS ====================
 
+def generate_referral_code():
+    """Generate unique 8-character referral code"""
+    return ''.join(random.choices(string.ascii_uppercase + string.digits, k=8))
+
 def verify_password(plain_password, hashed_password):
     return pwd_context.verify(plain_password, hashed_password)
 
