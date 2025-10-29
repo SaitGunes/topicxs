@@ -69,7 +69,7 @@ export default function HomeScreen() {
 
   const createPost = async () => {
     if (!newPostContent.trim()) {
-      Alert.alert('Hata', 'Lütfen bir şeyler yazın');
+      Alert.alert('Error', 'Please write something');
       return;
     }
 
@@ -84,9 +84,9 @@ export default function HomeScreen() {
       setNewPostContent('');
       setNewPostImage(null);
       setCreateModalVisible(false);
-      Alert.alert('Başarılı', 'Paylaşımınız yayınlandı');
+      Alert.alert('Success', 'Your post has been published');
     } catch (error) {
-      Alert.alert('Hata', 'Paylaşım yapılamadı');
+      Alert.alert('Error', 'Failed to create post');
     } finally {
       setPosting(false);
     }
