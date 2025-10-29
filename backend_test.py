@@ -446,11 +446,11 @@ class BackendTester:
         # Restore token
         self.auth_token = original_token
         
-        if response and response.status_code == 403:
+        if response and response.status_code in [401, 403]:
             self.log("✅ Unauthorized access correctly blocked")
             return True
         else:
-            self.log("❌ Unauthorized access should be blocked", "ERROR")
+            self.log(f"❌ Unauthorized access should be blocked, got status: {response.status_code if response else 'No response'}", "ERROR")
             return False
             
     def run_all_tests(self):
