@@ -15,12 +15,12 @@ export default function RegisterScreen() {
 
   const handleRegister = async () => {
     if (!username || !email || !fullName || !password) {
-      Alert.alert('Hata', 'Lütfen tüm alanları doldurun');
+      Alert.alert('Error', 'Please fill in all fields');
       return;
     }
 
     if (password.length < 6) {
-      Alert.alert('Hata', 'Şifre en az 6 karakter olmalıdır');
+      Alert.alert('Error', 'Password must be at least 6 characters');
       return;
     }
 
@@ -29,7 +29,7 @@ export default function RegisterScreen() {
       await register(username, email, password, fullName);
       router.replace('/(tabs)/home');
     } catch (error: any) {
-      Alert.alert('Hata', error.message);
+      Alert.alert('Error', error.message);
     } finally {
       setLoading(false);
     }
@@ -48,8 +48,8 @@ export default function RegisterScreen() {
           >
             <Ionicons name="arrow-back" size={24} color="#007AFF" />
           </TouchableOpacity>
-          <Text style={styles.title}>Kayıt Ol</Text>
-          <Text style={styles.subtitle}>Şoför topluluğuna katılın</Text>
+          <Text style={styles.title}>Sign Up</Text>
+          <Text style={styles.subtitle}>Join the driver community</Text>
         </View>
 
         <View style={styles.form}>
@@ -57,7 +57,7 @@ export default function RegisterScreen() {
             <Ionicons name="person-outline" size={20} color="#666" style={styles.inputIcon} />
             <TextInput
               style={styles.input}
-              placeholder="Ad Soyad"
+              placeholder="Full Name"
               value={fullName}
               onChangeText={setFullName}
               placeholderTextColor="#999"
@@ -68,7 +68,7 @@ export default function RegisterScreen() {
             <Ionicons name="at-outline" size={20} color="#666" style={styles.inputIcon} />
             <TextInput
               style={styles.input}
-              placeholder="Kullanıcı adı"
+              placeholder="Username"
               value={username}
               onChangeText={setUsername}
               autoCapitalize="none"
@@ -80,7 +80,7 @@ export default function RegisterScreen() {
             <Ionicons name="mail-outline" size={20} color="#666" style={styles.inputIcon} />
             <TextInput
               style={styles.input}
-              placeholder="E-posta"
+              placeholder="Email"
               value={email}
               onChangeText={setEmail}
               autoCapitalize="none"
@@ -93,7 +93,7 @@ export default function RegisterScreen() {
             <Ionicons name="lock-closed-outline" size={20} color="#666" style={styles.inputIcon} />
             <TextInput
               style={styles.input}
-              placeholder="Şifre (min. 6 karakter)"
+              placeholder="Password (min. 6 characters)"
               value={password}
               onChangeText={setPassword}
               secureTextEntry
@@ -107,7 +107,7 @@ export default function RegisterScreen() {
             disabled={loading}
           >
             <Text style={styles.buttonText}>
-              {loading ? 'Kayıt yapılıyor...' : 'Kayıt Ol'}
+              {loading ? 'Creating account...' : 'Sign Up'}
             </Text>
           </TouchableOpacity>
 
@@ -115,7 +115,7 @@ export default function RegisterScreen() {
             style={styles.linkButton}
             onPress={() => router.back()}
           >
-            <Text style={styles.linkText}>Zaten hesabınız var mı? Giriş yapın</Text>
+            <Text style={styles.linkText}>Already have an account? Sign in</Text>
           </TouchableOpacity>
         </View>
       </ScrollView>
