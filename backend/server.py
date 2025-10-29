@@ -250,6 +250,11 @@ async def register(user_data: UserRegister):
     user_id = str(datetime.utcnow().timestamp()).replace(".", "")
     hashed_password = get_password_hash(user_data.password)
     
+    # Generate unique referral code
+    referral_code = generate_referral_code()
+    while await db.users.find_one({"referral_code": referral_code}):
+        referral_code = generate_referral_code()
+    
     user_dict = {
         "id": user_id,
         "username": user_data.username,
@@ -258,6 +263,10 @@ async def register(user_data: UserRegister):
         "full_name": user_data.full_name,
         "bio": user_data.bio,
         "profile_picture": user_data.profile_picture,
+        "referral_code": referral_code,
+        "invited_by": None,
+        "referral_count": 0,
+        "friend_ids": [],
         "created_at": datetime.utcnow()
     }
     
