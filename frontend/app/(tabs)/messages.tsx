@@ -68,7 +68,7 @@ export default function MessagesScreen() {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <Text style={styles.headerTitle}>Mesajlar</Text>
+        <Text style={styles.headerTitle}>Messages</Text>
         <TouchableOpacity onPress={() => router.push('/new-chat')}>
           <Ionicons name="create-outline" size={28} color="#007AFF" />
         </TouchableOpacity>
@@ -81,8 +81,8 @@ export default function MessagesScreen() {
         ListEmptyComponent={
           <View style={styles.emptyContainer}>
             <Ionicons name="chatbubbles-outline" size={64} color="#ccc" />
-            <Text style={styles.emptyText}>Henüz mesaj yok</Text>
-            <Text style={styles.emptySubtext}>Sohbete başlayın!</Text>
+            <Text style={styles.emptyText}>No messages yet</Text>
+            <Text style={styles.emptySubtext}>Start chatting!</Text>
           </View>
         }
       />
