@@ -135,7 +135,7 @@ class FriendRequest(BaseModel):
     from_user_picture: Optional[str] = None
     to_user_id: str
     message: Optional[str] = None
-    status: str = "pending"  # pending, accepted, rejected
+    request_status: str = "pending"  # pending, accepted, rejected
     created_at: datetime = Field(default_factory=datetime.utcnow)
 
 class FriendRequestCreate(BaseModel):
