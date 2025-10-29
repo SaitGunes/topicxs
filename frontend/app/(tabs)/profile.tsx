@@ -7,7 +7,7 @@ export default function ProfileScreen() {
   const router = useRouter();
   const { user, logout } = useAuthStore();
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
     Alert.alert(
       'Sign Out',
       'Are you sure you want to sign out?',
@@ -17,8 +17,16 @@ export default function ProfileScreen() {
           text: 'Sign Out',
           style: 'destructive',
           onPress: async () => {
-            await logout();
-            router.replace('/(auth)/login');
+            try {
+              await logout();
+              // Force full reload to clear all state
+              setTimeout(() => {
+                router.replace('/');
+              }, 100);
+            } catch (error) {
+              console.error('Logout error:', error);
+              Alert.alert('Error', 'Failed to sign out. Please try again.');
+            }
           },
         },
       ]
