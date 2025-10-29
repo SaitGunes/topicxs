@@ -66,6 +66,10 @@ class User(BaseModel):
     full_name: str
     bio: Optional[str] = ""
     profile_picture: Optional[str] = None
+    referral_code: Optional[str] = None
+    invited_by: Optional[str] = None
+    referral_count: int = 0
+    friend_ids: List[str] = []
     created_at: datetime = Field(default_factory=datetime.utcnow)
 
 class Token(BaseModel):
