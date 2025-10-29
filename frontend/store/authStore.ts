@@ -11,6 +11,10 @@ interface User {
   full_name: string;
   bio: string;
   profile_picture: string | null;
+  referral_code?: string;
+  invited_by?: string | null;
+  referral_count?: number;
+  friend_ids?: string[];
   created_at: string;
 }
 
