@@ -47,30 +47,27 @@ export default function ProfileScreen() {
       </View>
 
       <View style={styles.section}>
-        <TouchableOpacity 
-          style={styles.menuItem}
-          onPress={() => router.push(`/profile/${user.id}`)}
-        >
+        <TouchableOpacity style={styles.menuItem}>
           <Ionicons name="person-outline" size={24} color="#007AFF" />
-          <Text style={styles.menuText}>Profilimi Görüntüle</Text>
+          <Text style={styles.menuText}>View My Profile</Text>
           <Ionicons name="chevron-forward" size={24} color="#ccc" />
         </TouchableOpacity>
 
         <TouchableOpacity style={styles.menuItem}>
           <Ionicons name="settings-outline" size={24} color="#007AFF" />
-          <Text style={styles.menuText}>Ayarlar</Text>
+          <Text style={styles.menuText}>Settings</Text>
           <Ionicons name="chevron-forward" size={24} color="#ccc" />
         </TouchableOpacity>
 
         <TouchableOpacity style={styles.menuItem}>
           <Ionicons name="help-circle-outline" size={24} color="#007AFF" />
-          <Text style={styles.menuText}>Yardım</Text>
+          <Text style={styles.menuText}>Help</Text>
           <Ionicons name="chevron-forward" size={24} color="#ccc" />
         </TouchableOpacity>
 
         <TouchableOpacity style={styles.menuItem}>
           <Ionicons name="information-circle-outline" size={24} color="#007AFF" />
-          <Text style={styles.menuText}>Hakkında</Text>
+          <Text style={styles.menuText}>About</Text>
           <Ionicons name="chevron-forward" size={24} color="#ccc" />
         </TouchableOpacity>
       </View>
