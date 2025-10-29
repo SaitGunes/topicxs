@@ -36,8 +36,8 @@ export default function LoginScreen() {
       <ScrollView contentContainerStyle={styles.scrollContent}>
         <View style={styles.header}>
           <Ionicons name="car-sport" size={64} color="#007AFF" />
-          <Text style={styles.title}>Şoför Forum</Text>
-          <Text style={styles.subtitle}>Sürücülerin buluşma noktası</Text>
+          <Text style={styles.title}>Driver Forum</Text>
+          <Text style={styles.subtitle}>Where drivers connect</Text>
         </View>
 
         <View style={styles.form}>
@@ -45,7 +45,7 @@ export default function LoginScreen() {
             <Ionicons name="person-outline" size={20} color="#666" style={styles.inputIcon} />
             <TextInput
               style={styles.input}
-              placeholder="Kullanıcı adı"
+              placeholder="Username"
               value={username}
               onChangeText={setUsername}
               autoCapitalize="none"
@@ -57,7 +57,7 @@ export default function LoginScreen() {
             <Ionicons name="lock-closed-outline" size={20} color="#666" style={styles.inputIcon} />
             <TextInput
               style={styles.input}
-              placeholder="Şifre"
+              placeholder="Password"
               value={password}
               onChangeText={setPassword}
               secureTextEntry
@@ -71,7 +71,7 @@ export default function LoginScreen() {
             disabled={loading}
           >
             <Text style={styles.buttonText}>
-              {loading ? 'Giriş yapılıyor...' : 'Giriş Yap'}
+              {loading ? 'Signing in...' : 'Sign In'}
             </Text>
           </TouchableOpacity>
 
@@ -79,7 +79,7 @@ export default function LoginScreen() {
             style={styles.linkButton}
             onPress={() => router.push('/(auth)/register')}
           >
-            <Text style={styles.linkText}>Hesabınız yok mu? Kayıt olun</Text>
+            <Text style={styles.linkText}>Don't have an account? Sign up</Text>
           </TouchableOpacity>
         </View>
       </ScrollView>
