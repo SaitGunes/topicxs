@@ -492,7 +492,7 @@ async def send_friend_request(request_data: FriendRequestCreate, current_user: U
     existing_request = await db.friend_requests.find_one({
         "from_user_id": current_user.id,
         "to_user_id": request_data.to_user_id,
-        "status": "pending"
+        "request_status": "pending"
     })
     if existing_request:
         raise HTTPException(status_code=400, detail="Friend request already sent")
@@ -517,7 +517,7 @@ async def send_friend_request(request_data: FriendRequestCreate, current_user: U
 async def get_friend_requests(current_user: User = Depends(get_current_user)):
     requests = await db.friend_requests.find({
         "to_user_id": current_user.id,
-        "status": "pending"
+        "request_status": "pending"
     }).sort("created_at", -1).to_list(100)
     return [FriendRequest(**req) for req in requests]
 
@@ -727,7 +727,7 @@ async def get_group_join_requests(group_id: str, current_user: User = Depends(ge
     
     requests = await db.group_join_requests.find({
         "group_id": group_id,
-        "status": "pending"
+        "request_status": "pending"
     }).sort("created_at", -1).to_list(100)
     return [GroupJoinRequest(**req) for req in requests]
 
