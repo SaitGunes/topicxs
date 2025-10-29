@@ -187,4 +187,28 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     marginLeft: 8,
   },
+  referralCard: {
+    backgroundColor: '#007AFF',
+    borderRadius: 12,
+    padding: 16,
+    marginTop: 16,
+    width: '100%',
+    alignItems: 'center',
+  },
+  referralLabel: {
+    fontSize: 12,
+    color: 'rgba(255,255,255,0.8)',
+    marginBottom: 8,
+  },
+  referralCode: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: '#fff',
+    letterSpacing: 2,
+    marginBottom: 8,
+  },
+  referralCount: {
+    fontSize: 14,
+    color: 'rgba(255,255,255,0.9)',
+  },
 });
