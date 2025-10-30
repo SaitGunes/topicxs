@@ -66,14 +66,36 @@ export default function PostDetailScreen() {
   const handleLike = async () => {
     if (!post) return;
     try {
-      const response = await api.post(`/api/posts/${post.id}/like`);
-      const isLiked = response.data.liked;
-      const newLikes = isLiked 
-        ? [...post.likes, user!.id]
-        : post.likes.filter(likeId => likeId !== user!.id);
-      setPost({ ...post, likes: newLikes });
-    } catch (error) {
+      const response = await api.post(`/api/posts/${post.id}/vote`, {
+        vote_type: 'like',
+      });
+      setPost(response.data);
+    } catch (error: any) {
+      if (error.response?.status === 404) {
+        Alert.alert('Notice', 'This post was removed due to community feedback');
+        router.back();
+      } else if (error.response?.status === 400) {
+        Alert.alert('Notice', 'Cannot vote on your own post');
+      }
       console.error('Like error:', error);
+    }
+  };
+
+  const handleDislike = async () => {
+    if (!post) return;
+    try {
+      const response = await api.post(`/api/posts/${post.id}/vote`, {
+        vote_type: 'dislike',
+      });
+      setPost(response.data);
+    } catch (error: any) {
+      if (error.response?.status === 404) {
+        Alert.alert('Notice', 'This post was removed due to community feedback');
+        router.back();
+      } else if (error.response?.status === 400) {
+        Alert.alert('Notice', 'Cannot vote on your own post');
+      }
+      console.error('Dislike error:', error);
     }
   };
 
