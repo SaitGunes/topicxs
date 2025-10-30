@@ -2,6 +2,7 @@ import { View, Text, StyleSheet, TextInput, FlatList, TouchableOpacity, Image, A
 import { useState, useEffect } from 'react';
 import { Ionicons } from '@expo/vector-icons';
 import { useAuthStore } from '../../store/authStore';
+import { useNotificationStore } from '../../store/notificationStore';
 import api from '../../utils/api';
 import { useRouter } from 'expo-router';
 
