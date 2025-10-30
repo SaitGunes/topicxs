@@ -53,7 +53,7 @@ export default function UserProfileScreen() {
   const loadUserPosts = async () => {
     try {
       setLoading(true);
-      const response = await api.get(`/api/posts/user/${id}`);
+      const response = await api.get(`/api/posts/enhanced/user/${id}`);
       setPosts(response.data);
     } catch (error) {
       console.error('Load posts error:', error);
