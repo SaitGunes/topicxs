@@ -104,4 +104,13 @@ export const useAuthStore = create<AuthState>((set) => ({
       console.error('Logout error:', error);
     }
   },
+
+  setUser: async (user: User) => {
+    try {
+      await AsyncStorage.setItem('user', JSON.stringify(user));
+      set({ user });
+    } catch (error) {
+      console.error('Set user error:', error);
+    }
+  },
 }));
