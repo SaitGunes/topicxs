@@ -83,6 +83,10 @@ class UserUpdate(BaseModel):
     bio: Optional[str] = None
     profile_picture: Optional[str] = None
 
+class PasswordChange(BaseModel):
+    current_password: str
+    new_password: str
+
 class PostCreate(BaseModel):
     content: str
     image: Optional[str] = None
