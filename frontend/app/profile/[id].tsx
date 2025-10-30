@@ -72,7 +72,51 @@ export default function UserProfileScreen() {
       });
       router.push(`/chat/${response.data.id}`);
     } catch (error) {
-      Alert.alert('Hata', 'Sohbet başlatılamadı');
+      Alert.alert('Error', 'Failed to start chat');
+    }
+  };
+
+  const handleLike = async (postId: string) => {
+    try {
+      const response = await api.post(`/api/posts/${postId}/vote`, {
+        vote_type: 'like',
+      });
+      
+      setPosts(posts.map(post => {
+        if (post.id === postId) {
+          return response.data;
+        }
+        return post;
+      }));
+    } catch (error: any) {
+      if (error.response?.status === 404) {
+        Alert.alert('Notice', 'This post was removed due to community feedback');
+        setPosts(posts.filter(p => p.id !== postId));
+      } else if (error.response?.status === 400) {
+        Alert.alert('Notice', 'Cannot vote on your own post');
+      }
+    }
+  };
+
+  const handleDislike = async (postId: string) => {
+    try {
+      const response = await api.post(`/api/posts/${postId}/vote`, {
+        vote_type: 'dislike',
+      });
+      
+      setPosts(posts.map(post => {
+        if (post.id === postId) {
+          return response.data;
+        }
+        return post;
+      }));
+    } catch (error: any) {
+      if (error.response?.status === 404) {
+        Alert.alert('Notice', 'This post was removed due to community feedback');
+        setPosts(posts.filter(p => p.id !== postId));
+      } else if (error.response?.status === 400) {
+        Alert.alert('Notice', 'Cannot vote on your own post');
+      }
     }
   };
 
