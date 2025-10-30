@@ -145,6 +145,7 @@ export default function RegisterScreen() {
           </TouchableOpacity>
         </View>
       </ScrollView>
+      <TermsModal visible={showTerms} onAccept={handleTermsAccept} />
     </KeyboardAvoidingView>
   );
 }
