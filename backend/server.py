@@ -319,6 +319,45 @@ async def login(user_data: UserLogin):
 async def get_me(current_user: User = Depends(get_current_user)):
     return current_user
 
+@api_router.post("/auth/forgot-password")
+async def forgot_password(email: str, username: str):
+    user = await db.users.find_one({"email": email, "username": username})
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found with provided email and username")
+    
+    # Generate 6-character reset code
+    reset_code = ''.join(random.choices(string.ascii_uppercase + string.digits, k=6))
+    
+    # Store reset code in user document
+    await db.users.update_one(
+        {"id": user["id"]},
+        {"$set": {"reset_code": reset_code, "reset_code_expiry": datetime.utcnow() + timedelta(hours=1)}}
+    )
+    
+    return {"reset_code": reset_code}
+
+@api_router.post("/auth/reset-password")
+async def reset_password(email: str, reset_code: str, new_password: str):
+    user = await db.users.find_one({"email": email, "reset_code": reset_code.upper()})
+    if not user:
+        raise HTTPException(status_code=400, detail="Invalid reset code")
+    
+    # Check if code expired
+    if user.get("reset_code_expiry") and user["reset_code_expiry"] < datetime.utcnow():
+        raise HTTPException(status_code=400, detail="Reset code expired")
+    
+    # Update password
+    hashed_password = get_password_hash(new_password)
+    await db.users.update_one(
+        {"id": user["id"]},
+        {
+            "$set": {"password": hashed_password},
+            "$unset": {"reset_code": "", "reset_code_expiry": ""}
+        }
+    )
+    
+    return {"message": "Password reset successful"}
+
 # ==================== USER ROUTES ====================
 
 @api_router.get("/users/{user_id}", response_model=User)
