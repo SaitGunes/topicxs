@@ -321,6 +321,54 @@ backend:
           agent: "testing"
           comment: "✅ Unauthorized access protection working correctly. Protected endpoints return 403 Forbidden when no authentication token is provided. Invalid tokens return 401 Unauthorized."
 
+  - task: "Posts - Vote Endpoint (Like/Dislike)"
+    implemented: true
+    working: true
+    file: "backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        - working: true
+          agent: "testing"
+          comment: "✅ Post voting endpoint working perfectly. Tested POST /api/posts/{post_id}/vote with like/dislike functionality. Successfully handles like/dislike toggling, switching between vote types, and returns proper response format with both likes and dislikes arrays."
+
+  - task: "Posts - Self-Voting Prevention"
+    implemented: true
+    working: true
+    file: "backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        - working: true
+          agent: "testing"
+          comment: "✅ Self-voting prevention working correctly. Users cannot vote on their own posts - returns 400 error with appropriate message when attempted."
+
+  - task: "Posts - Auto-Delete Logic"
+    implemented: true
+    working: true
+    file: "backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        - working: true
+          agent: "testing"
+          comment: "✅ Auto-delete logic working correctly. Posts are automatically deleted when they receive 10+ dislikes and dislikes exceed likes. Tested with 11 dislikes - post was properly deleted and returns 404 on subsequent vote attempts."
+
+  - task: "Posts - Enhanced GET Endpoints with Vote Arrays"
+    implemented: true
+    working: true
+    file: "backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        - working: true
+          agent: "testing"
+          comment: "✅ Enhanced posts endpoints working correctly. GET /api/posts/enhanced returns posts with both 'likes' and 'dislikes' arrays as expected. Vote counts are accurate and arrays contain proper user IDs."
+
 frontend:
   - task: "Profile Page - Like/Dislike Posts"
     implemented: true
