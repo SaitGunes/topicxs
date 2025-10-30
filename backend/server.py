@@ -844,6 +844,25 @@ async def vote_post(post_id: str, vote_data: VoteAction, current_user: User = De
     updated_post = await db.posts_enhanced.find_one({"id": post_id})
     return PostEnhanced(**updated_post)
 
+@api_router.delete("/posts/{post_id}")
+async def delete_post(post_id: str, current_user: User = Depends(get_current_user)):
+    post = await db.posts_enhanced.find_one({"id": post_id})
+    if not post:
+        raise HTTPException(status_code=404, detail="Post not found")
+    
+    # Check if user is admin or post owner
+    if not current_user.is_admin and post["user_id"] != current_user.id:
+        raise HTTPException(status_code=403, detail="Not authorized to delete this post")
+    
+    # Delete post from both collections
+    await db.posts.delete_one({"id": post_id})
+    await db.posts_enhanced.delete_one({"id": post_id})
+    
+    # Delete all comments on this post
+    await db.comments.delete_many({"post_id": post_id})
+    
+    return {"message": "Post deleted successfully"}
+
 @api_router.get("/posts/enhanced/user/{user_id}", response_model=List[PostEnhanced])
 async def get_user_enhanced_posts(user_id: str, skip: int = 0, limit: int = 20, current_user: User = Depends(get_current_user)):
     posts = await db.posts_enhanced.find({"user_id": user_id}).sort("created_at", -1).skip(skip).limit(limit).to_list(limit)
