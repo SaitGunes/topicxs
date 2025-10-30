@@ -129,7 +129,7 @@ export default function ProfileScreen() {
 
         <TouchableOpacity 
           style={styles.menuItem}
-          onPress={() => Alert.alert('About', 'Drivers Chat v1.0\nWhere drivers connect')}
+          onPress={() => router.push('/about')}
         >
           <Ionicons name="information-circle-outline" size={24} color="#007AFF" />
           <Text style={styles.menuText}>About</Text>
