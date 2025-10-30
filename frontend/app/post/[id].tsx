@@ -152,13 +152,15 @@ export default function PostDetailScreen() {
           <Text style={styles.headerTitle}>Post</Text>
         </View>
         <View style={styles.loadingContainer}>
-          <Text>Yüklen iyor...</Text>
+          <Text>Loading...</Text>
         </View>
       </View>
     );
   }
 
-  const isLiked = post.likes.includes(user?.id || '');
+  const isLiked = post.likes?.includes(user?.id || '');
+  const isDisliked = post.dislikes?.includes(user?.id || '');
+  const isOwnPost = post.user_id === user?.id;
 
   return (
     <KeyboardAvoidingView 
