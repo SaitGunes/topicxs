@@ -164,6 +164,7 @@ export default function HomeScreen() {
     const isLiked = item.likes?.includes(user?.id || '');
     const isDisliked = item.dislikes?.includes(user?.id || '');
     const isOwnPost = item.user_id === user?.id;
+    const canDelete = user?.is_admin || isOwnPost;
     
     return (
       <View style={styles.postCard}>
@@ -186,6 +187,14 @@ export default function HomeScreen() {
               </Text>
             </View>
           </TouchableOpacity>
+          {canDelete && (
+            <TouchableOpacity
+              style={styles.deleteButton}
+              onPress={() => handleDeletePost(item.id)}
+            >
+              <Ionicons name="trash-outline" size={20} color="#FF3B30" />
+            </TouchableOpacity>
+          )}
         </View>
 
         <Text style={styles.postContent}>{item.content}</Text>
