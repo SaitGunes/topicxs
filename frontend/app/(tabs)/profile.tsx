@@ -62,13 +62,28 @@ export default function ProfileScreen() {
       </View>
 
       <View style={styles.profileSection}>
-        {user.profile_picture ? (
-          <Image source={{ uri: user.profile_picture }} style={styles.profileImage} />
-        ) : (
-          <View style={[styles.profileImage, styles.profilePlaceholder]}>
-            <Ionicons name="person" size={48} color="#999" />
-          </View>
-        )}
+        <TouchableOpacity 
+          style={styles.profileImageContainer}
+          onPress={handleChangeProfilePicture}
+          disabled={uploading}
+        >
+          {user.profile_picture ? (
+            <Image source={{ uri: user.profile_picture }} style={styles.profileImage} />
+          ) : (
+            <View style={[styles.profileImage, styles.profilePlaceholder]}>
+              <Ionicons name="person" size={48} color="#999" />
+            </View>
+          )}
+          {uploading ? (
+            <View style={styles.uploadingOverlay}>
+              <ActivityIndicator size="large" color="#fff" />
+            </View>
+          ) : (
+            <View style={styles.editIconContainer}>
+              <Ionicons name="camera" size={20} color="#fff" />
+            </View>
+          )}
+        </TouchableOpacity>
         <Text style={styles.fullName}>{user.full_name}</Text>
         <Text style={styles.username}>@{user.username}</Text>
         {user.bio ? <Text style={styles.bio}>{user.bio}</Text> : null}
