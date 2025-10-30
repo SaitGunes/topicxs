@@ -16,7 +16,7 @@ export default function RegisterScreen() {
 
   const handleRegister = async () => {
     if (!username || !email || !fullName || !password) {
-      Alert.alert('Error', 'Please fill in all fields');
+      Alert.alert('Error', 'Please fill in all required fields');
       return;
     }
 
@@ -27,7 +27,7 @@ export default function RegisterScreen() {
 
     setLoading(true);
     try {
-      await register(username, email, password, fullName);
+      await register(username, email, password, fullName, referralCode.trim() || undefined);
       router.replace('/(tabs)/home');
     } catch (error: any) {
       Alert.alert('Error', error.message);
