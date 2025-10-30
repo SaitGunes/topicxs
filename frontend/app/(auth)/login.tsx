@@ -36,7 +36,7 @@ export default function LoginScreen() {
       <ScrollView contentContainerStyle={styles.scrollContent}>
         <View style={styles.header}>
           <Ionicons name="car-sport" size={64} color="#007AFF" />
-          <Text style={styles.title}>Driver Forum</Text>
+          <Text style={styles.title}>Drivers Chat</Text>
           <Text style={styles.subtitle}>Where drivers connect</Text>
         </View>
 
