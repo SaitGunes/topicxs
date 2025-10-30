@@ -251,6 +251,14 @@ async def register(user_data: UserRegister):
     if existing_email:
         raise HTTPException(status_code=400, detail="Email already exists")
     
+    # Check referral code if provided
+    referrer_id = None
+    if user_data.referral_code:
+        referrer = await db.users.find_one({"referral_code": user_data.referral_code.upper()})
+        if referrer:
+            referrer_id = referrer["id"]
+        # If invalid code, just ignore it (don't fail registration)
+    
     # Create user
     user_id = str(datetime.utcnow().timestamp()).replace(".", "")
     hashed_password = get_password_hash(user_data.password)
@@ -269,7 +277,7 @@ async def register(user_data: UserRegister):
         "bio": user_data.bio,
         "profile_picture": user_data.profile_picture,
         "referral_code": referral_code,
-        "invited_by": None,
+        "invited_by": referrer_id,
         "referral_count": 0,
         "friend_ids": [],
         "created_at": datetime.utcnow()
@@ -277,8 +285,19 @@ async def register(user_data: UserRegister):
     
     await db.users.insert_one(user_dict)
     
+    # Update referrer's count if there was a valid referral
+    if referrer_id:
+        await db.users.update_one(
+            {"id": referrer_id},
+            {"$inc": {"referral_count": 1}}
+        )
+    
     # Create token
     access_token = create_access_token(data={"sub": user_id})
+    
+    user_response = User(**{k: v for k, v in user_dict.items() if k != 'password'})
+    
+    return Token(access_token=access_token, token_type="bearer", user=user_response)
     
     user_response = User(**{k: v for k, v in user_dict.items() if k != 'password'})
     
