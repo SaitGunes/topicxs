@@ -2,7 +2,7 @@
 import requests
 import json
 
-BASE_URL = "https://driver-forum.preview.emergentagent.com/api"
+BASE_URL = "https://rideshare-hub-61.preview.emergentagent.com/api"
 
 def test_simple_registration():
     print("Testing simple registration...")

@@ -410,7 +410,7 @@ index 9019ffc..e69de29 100644
 ------+import requests
 ------+import json
 ------+
-------+BASE_URL = "https://driver-forum.preview.emergentagent.com/api"
+------+BASE_URL = "https://rideshare-hub-61.preview.emergentagent.com/api"
 ------+HEADERS = {"Content-Type": "application/json"}
 ------+
 ------+def debug_duplicate_registration():
@@ -490,7 +490,7 @@ index 9019ffc..e69de29 100644
 ------+from datetime import datetime
 ------+
 ------+# Configuration
-------+BASE_URL = "https://driver-forum.preview.emergentagent.com/api"
+------+BASE_URL = "https://rideshare-hub-61.preview.emergentagent.com/api"
 ------+HEADERS = {"Content-Type": "application/json"}
 ------+
 ------+def log_test(message, status="INFO"):
@@ -1003,7 +1003,7 @@ index 9019ffc..e69de29 100644
 ------+import requests
 ------+import json
 ------+
-------+BASE_URL = "https://driver-forum.preview.emergentagent.com/api"
+------+BASE_URL = "https://rideshare-hub-61.preview.emergentagent.com/api"
 ------+
 ------+def test_simple_registration():
 ------+    print("Testing simple registration...")
@@ -1281,5 +1281,5 @@ index 9019ffc..e69de29 100644
 ------+
 ------+agent_communication:
 ------+    - agent: "testing"
-------+      message: "Comprehensive backend API testing completed successfully. All 18 backend endpoints tested and working correctly. Tested authentication (register, login, duplicate validation, get current user), posts (create, get all, get user posts, like toggle), comments (create, get), users (get by ID, search), chats (create, get, send message, get messages), and security (unauthorized access protection). All endpoints properly handle authentication, validation, and return appropriate responses. Like toggle functionality specifically verified as requested. API base URL https://driver-forum.preview.emergentagent.com/api is working correctly with all /api prefixed routes."
+------+      message: "Comprehensive backend API testing completed successfully. All 18 backend endpoints tested and working correctly. Tested authentication (register, login, duplicate validation, get current user), posts (create, get all, get user posts, like toggle), comments (create, get), users (get by ID, search), chats (create, get, send message, get messages), and security (unauthorized access protection). All endpoints properly handle authentication, validation, and return appropriate responses. Like toggle functionality specifically verified as requested. API base URL https://rideshare-hub-61.preview.emergentagent.com/api is working correctly with all /api prefixed routes."
 ------\ No newline at end of file

@@ -1,0 +1,98 @@
+<analysis>
+The AI engineer successfully built an initial social application for Uber/Lyft drivers, moving from a Turkish to an English interface based on user feedback. The development followed an iterative, feature-driven approach. Key challenges included: persistent frontend caching issues (both Expo and browser), requiring multiple hard reloads and cache clears; debugging authentication and logout flows, which were frequently reported as not working by the user due to incomplete logic or redirection issues; and handling large file modifications in the backend, leading to a shift towards smaller, targeted edits. A significant environment issue was identified with  in , hindering hot-reloads, though it couldn't be directly modified. The database interaction also faced a critical bug where data was being stored in a different MongoDB database () than expected, causing confusion about data persistence, which was eventually resolved by explicitly clearing the correct database. The development progressed through adding core social features like referral codes, a friends system, post privacy, forgot password, and like/dislike with an auto-delete mechanism, addressing user feedback and bugs systematically.
+</analysis>
+
+<product_requirements>
+The user requested a Facebook-like social sharing and chat application for Uber and Lyft drivers. The application's core purpose is to facilitate communication and sharing among drivers.
+Initial features included:
+-   **User Authentication:** Register and Login functionality.
+-   **Social Feed:** Ability to create and view posts.
+-   **Messaging:** Chat capabilities.
+-   **User Profiles:** Basic user profile pages.
+
+Subsequently, the user explicitly requested the application to be in English. Following this, a detailed list of new features was provided for future development:
+1.  **Referral System:** Unique referral codes for members to invite others, tracking the number of referred members (rewards planned for later).
+2.  **Friends System:**
+    -   Ability to send/accept/decline friend requests.
+    -   Option to add a message with friend requests.
+    -   Friend suggestions.
+    -   No maximum limit on friends.
+    -   Badges on Friends/Messages tabs for pending requests/unread messages.
+3.  **Advanced Post Sharing:**
+    -   Posts can be Public, visible only to Friends, or to Specific friends.
+    -   Ability to select specific friends for private posts.
+4.  **Like/Dislike System with Auto-Delete:**
+    -   👍 (Like) and 👎 (Dislike) buttons for posts and comments.
+    -   If a post/comment receives 10+ votes AND 50%+ are dislikes, it should be automatically deleted.
+    -   Users should not be able to like/dislike their own posts.
+5.  **Group System:**
+    -   Users can create groups.
+    -   Invite members or allow self-joining.
+    -   Groups can be approval-based or open.
+    -   Admin/moderator roles for groups, with abilities to remove members or delete group posts.
+    -   Group-specific sharing (only group members see posts).
+6.  **Forgot Password:** A feature to reset forgotten passwords.
+7.  **Sign Out Confirmation:** Removal of Are you sure? confirmation prompt during sign out.
+
+</product_requirements>
+
+<key_technical_concepts>
+
+-   **Frontend:** Expo (for mobile development), React Native (UI components), Expo Router (file-based navigation), Zustand (state management),  (advanced navigation),  (local storage).
+-   **Backend:** FastAPI (API framework), MongoDB (NoSQL database), Socket.IO (real-time communication), JWT (authentication).
+-   **Development Practices:** Mobile-first design, cross-platform compatibility, secure API key handling, explicit environment variable usage.
+
+</key_technical_concepts>
+
+<code_architecture>
+
+The application follows a full-stack architecture with an Expo React Native frontend and a FastAPI backend, using MongoDB for data persistence.
+
+**Directory Structure (Relevant parts):**
+
+
+-   **/app/backend/server.py**: This is the core FastAPI backend. It defines all API endpoints for user authentication, posts, comments, chats, referral logic, friend management, group operations, voting (like/dislike), and password reset. It interacts with MongoDB for data storage and includes Socket.IO for real-time features.
+    -   *Changes:* Significantly expanded to include models for  (with , , , ), , ,  (with , , ), , , . New endpoints for , , , and updated  and  with new logic.
+-   **/app/frontend/app/index.tsx**: The entry point for the Expo Router application. It manages initial navigation based on the user's authentication status, redirecting to login or the main tabs.
+    -   *Changes:* Minor adjustments for routing and auth state handling.
+-   **/app/frontend/app/(auth)/login.tsx**: The login screen.
+    -   *Changes:* Added a Forgot Password? link.
+-   **/app/frontend/app/(auth)/register.tsx**: The user registration screen.
+    -   *Changes:* Added an input field for  to be used during registration, and updated the  function to send this to the backend.
+-   **/app/frontend/app/(auth)/forgot-password.tsx**: A newly created screen for initiating password reset requests.
+-   **/app/frontend/app/(tabs)/_layout.tsx**: Defines the tab-based navigation for the main application. It sets up the bottom tabs (Home, Messages, Profile, Friends).
+    -   *Changes:* Added the Friends tab. Integrated  to display numerical badges for pending friend requests and unread messages on the respective tab icons.
+-   **/app/frontend/app/(tabs)/home.tsx**: The main feed where users see posts and can create new ones.
+    -   *Changes:* Implemented a modal for creating new posts, including options for privacy (Public, Friends, Specific Friends) with a multi-select for specific friends. Added 👍/👎 buttons for liking/disliking posts, displaying counts, and preventing self-voting.
+-   **/app/frontend/app/(tabs)/profile.tsx**: Displays the currently logged-in user's profile, including their , and navigation options (View My Profile, Settings, Help, About, Sign Out).
+    -   *Changes:* Added display for . Debugged and refined the  functionality for a direct, confirmation-free logout.
+-   **/app/frontend/app/(tabs)/friends.tsx**: A newly created screen to manage friend-related activities: finding users, viewing incoming friend requests (with accept/decline), and displaying the current friend list. It interacts with the  to update badge counts.
+-   **/app/frontend/app/(tabs)/messages.tsx**: The screen listing active chat conversations.
+    -   *Changes:* Minor updates for badge integration.
+-   **/app/frontend/app/post/[id].tsx**: Displays a single post in detail.
+-   **/app/frontend/app/profile/[id].tsx**: Displays another user's profile.
+    -   *Changes:* Currently being updated to include like/dislike functionality for posts displayed on this page, similar to . This is the immediate focus.
+-   **/app/frontend/app/chat/[id].tsx**: Displays an individual chat conversation.
+-   **/app/frontend/store/authStore.ts**: A Zustand store managing the user's authentication state (user object, JWT token).
+    -   *Changes:* Enhanced  function to reliably clear both state and , then perform a full page reload for a clean logout.
+-   **/app/frontend/store/notificationStore.ts**: A new Zustand store to manage unread message and pending friend request counts, used for displaying badges on tab icons.
+
+</code_architecture>
+
+<pending_tasks>
+-   **Group System:** Create, invite, join, roles, group-specific sharing.
+-   **Friend Recommendations:** Implement logic for suggesting friends.
+-   **Advanced Sharing:** Specific friend selection for posts (frontend UI refinement).
+-   **Auto-Delete Notifications:** Notify users when their post/comment is deleted due to dislike threshold.
+-   **Comment Like/Dislike:** Implement like/dislike on comments (currently only for posts).
+</pending_tasks>
+
+<current_work>
+
+The immediate task is to fix the like/dislike functionality on the  screen. The user reported that when viewing a post from a user's profile, the like/dislike buttons were not working as expected. The AI engineer is currently in the process of adapting the  function (which handles displaying posts and their interaction buttons) within  to properly include and handle the  and  actions, similar to how it works on the  feed. This involves ensuring the correct API calls are made and the UI updates reflect the new like/dislike counts and user's vote status.
+
+</current_work>
+
+<optional_next_step>
+Complete the implementation of like/dislike functionality for posts on the  screen.
+</optional_next_step>

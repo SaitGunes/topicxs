@@ -11,7 +11,7 @@ from datetime import datetime
 import base64
 
 # Configuration
-BASE_URL = "https://driver-forum.preview.emergentagent.com/api"
+BASE_URL = "https://rideshare-hub-61.preview.emergentagent.com/api"
 HEADERS = {"Content-Type": "application/json"}
 
 class BackendTester:
