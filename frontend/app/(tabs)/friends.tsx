@@ -97,6 +97,8 @@ export default function FriendsScreen() {
       Alert.alert('Success', action === 'accept' ? 'Friend added!' : 'Request rejected');
       loadFriendRequests();
       loadFriends();
+      // Update badge count
+      loadFriendRequestCount();
     } catch (error: any) {
       Alert.alert('Error', error.response?.data?.detail || 'Action failed');
     }
