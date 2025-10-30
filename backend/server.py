@@ -677,6 +677,10 @@ async def vote_post(post_id: str, vote_data: VoteAction, current_user: User = De
     if not post:
         raise HTTPException(status_code=404, detail="Post not found")
     
+    # Cannot vote on own post
+    if post["user_id"] == current_user.id:
+        raise HTTPException(status_code=400, detail="Cannot vote on your own post")
+    
     likes = post.get("likes", [])
     dislikes = post.get("dislikes", [])
     
@@ -687,9 +691,12 @@ async def vote_post(post_id: str, vote_data: VoteAction, current_user: User = De
                 {"id": post_id},
                 {"$pull": {"likes": current_user.id}}
             )
-            return {"voted": False, "vote_type": "like", "likes_count": len(likes) - 1, "dislikes_count": len(dislikes)}
+            likes = [l for l in likes if l != current_user.id]
         else:
             # Add like, remove dislike if exists
+            if current_user.id in dislikes:
+                dislikes = [d for d in dislikes if d != current_user.id]
+            likes.append(current_user.id)
             await db.posts_enhanced.update_one(
                 {"id": post_id},
                 {
@@ -697,8 +704,6 @@ async def vote_post(post_id: str, vote_data: VoteAction, current_user: User = De
                     "$pull": {"dislikes": current_user.id}
                 }
             )
-            new_dislikes = len(dislikes) - 1 if current_user.id in dislikes else len(dislikes)
-            return {"voted": True, "vote_type": "like", "likes_count": len(likes) + 1, "dislikes_count": new_dislikes}
     
     elif vote_data.vote_type == "dislike":
         if current_user.id in dislikes:
@@ -707,9 +712,12 @@ async def vote_post(post_id: str, vote_data: VoteAction, current_user: User = De
                 {"id": post_id},
                 {"$pull": {"dislikes": current_user.id}}
             )
-            return {"voted": False, "vote_type": "dislike", "likes_count": len(likes), "dislikes_count": len(dislikes) - 1}
+            dislikes = [d for d in dislikes if d != current_user.id]
         else:
             # Add dislike, remove like if exists
+            if current_user.id in likes:
+                likes = [l for l in likes if l != current_user.id]
+            dislikes.append(current_user.id)
             await db.posts_enhanced.update_one(
                 {"id": post_id},
                 {
@@ -717,11 +725,21 @@ async def vote_post(post_id: str, vote_data: VoteAction, current_user: User = De
                     "$pull": {"likes": current_user.id}
                 }
             )
-            new_likes = len(likes) - 1 if current_user.id in likes else len(likes)
-            return {"voted": True, "vote_type": "dislike", "likes_count": new_likes, "dislikes_count": len(dislikes) + 1}
-    
     else:
         raise HTTPException(status_code=400, detail="Invalid vote type")
+    
+    # Check auto-delete rule: dislike > 10 AND like < dislike
+    dislike_count = len(dislikes)
+    like_count = len(likes)
+    
+    if dislike_count > 10 and like_count < dislike_count:
+        # Delete the post
+        await db.posts_enhanced.delete_one({"id": post_id})
+        raise HTTPException(status_code=404, detail="Post removed due to community feedback")
+    
+    # Return updated post
+    updated_post = await db.posts_enhanced.find_one({"id": post_id})
+    return PostEnhanced(**updated_post)
 
 # ==================== GROUP ROUTES ====================
 
