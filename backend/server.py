@@ -78,6 +78,11 @@ class Token(BaseModel):
     token_type: str
     user: User
 
+class UserUpdate(BaseModel):
+    full_name: Optional[str] = None
+    bio: Optional[str] = None
+    profile_picture: Optional[str] = None
+
 class PostCreate(BaseModel):
     content: str
     image: Optional[str] = None
