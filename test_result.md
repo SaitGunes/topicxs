@@ -322,7 +322,29 @@ backend:
           comment: "✅ Unauthorized access protection working correctly. Protected endpoints return 403 Forbidden when no authentication token is provided. Invalid tokens return 401 Unauthorized."
 
 frontend:
-  # No frontend testing performed as per instructions
+  - task: "Profile Page - Like/Dislike Posts"
+    implemented: true
+    working: "NA"
+    file: "frontend/app/profile/[id].tsx"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+        - working: "NA"
+          agent: "main"
+          comment: "Added dislikes array to Post interface and verified like/dislike handlers are properly implemented. Need to test if functionality works correctly on profile pages."
+  
+  - task: "Home Feed - Like/Dislike Posts"
+    implemented: true
+    working: "NA"
+    file: "frontend/app/(tabs)/home.tsx"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+        - working: "NA"
+          agent: "main"
+          comment: "Added dislikes array to Post interface, completed missing style definitions (dislikedText, actionButtonDisabled, disabledText, privacySection styles). Need to verify like/dislike buttons work correctly."
 
 metadata:
   created_by: "testing_agent"
