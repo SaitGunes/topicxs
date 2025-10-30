@@ -1,7 +1,28 @@
 import { Tabs } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
+import { useEffect } from 'react';
+import { useNotificationStore } from '../../store/notificationStore';
 
 export default function TabsLayout() {
+  const friendRequestCount = useNotificationStore((state) => state.friendRequestCount);
+  const unreadMessageCount = useNotificationStore((state) => state.unreadMessageCount);
+  const loadFriendRequestCount = useNotificationStore((state) => state.loadFriendRequestCount);
+  const loadUnreadMessageCount = useNotificationStore((state) => state.loadUnreadMessageCount);
+
+  useEffect(() => {
+    // Load counts on mount
+    loadFriendRequestCount();
+    loadUnreadMessageCount();
+
+    // Refresh counts every 30 seconds
+    const interval = setInterval(() => {
+      loadFriendRequestCount();
+      loadUnreadMessageCount();
+    }, 30000);
+
+    return () => clearInterval(interval);
+  }, []);
+
   return (
     <Tabs
       screenOptions={{
@@ -34,6 +55,7 @@ export default function TabsLayout() {
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="people" size={size} color={color} />
           ),
+          tabBarBadge: friendRequestCount > 0 ? friendRequestCount : undefined,
         }}
       />
       <Tabs.Screen
@@ -43,6 +65,7 @@ export default function TabsLayout() {
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="chatbubbles" size={size} color={color} />
           ),
+          tabBarBadge: unreadMessageCount > 0 ? unreadMessageCount : undefined,
         }}
       />
       <Tabs.Screen
