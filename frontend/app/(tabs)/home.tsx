@@ -39,6 +39,21 @@ export default function HomeScreen() {
     loadPosts();
   }, []);
 
+  useEffect(() => {
+    if (createModalVisible) {
+      loadFriends();
+    }
+  }, [createModalVisible]);
+
+  const loadFriends = async () => {
+    try {
+      const response = await api.get('/api/friends');
+      setFriends(response.data);
+    } catch (error) {
+      console.error('Load friends error:', error);
+    }
+  };
+
   const loadPosts = async () => {
     try {
       setLoading(true);
