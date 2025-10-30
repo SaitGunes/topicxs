@@ -483,7 +483,16 @@ const styles = StyleSheet.create({
     fontWeight: '500',
   },
   likedText: {
+    color: '#34C759',
+  },
+  dislikedText: {
     color: '#FF3B30',
+  },
+  actionButtonDisabled: {
+    opacity: 0.5,
+  },
+  disabledText: {
+    color: '#ccc',
   },
   emptyContainer: {
     flex: 1,
