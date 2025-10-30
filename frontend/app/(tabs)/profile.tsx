@@ -24,6 +24,35 @@ export default function ProfileScreen() {
     }
   };
 
+  const handleChangeProfilePicture = async () => {
+    try {
+      const result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ['images'],
+        allowsEditing: true,
+        aspect: [1, 1],
+        quality: 0.5,
+        base64: true,
+      });
+
+      if (!result.canceled && result.assets[0].base64) {
+        setUploading(true);
+        const imageBase64 = `data:image/jpeg;base64,${result.assets[0].base64}`;
+        
+        const response = await api.put('/api/auth/me', {
+          profile_picture: imageBase64,
+        });
+        
+        setUser(response.data);
+        Alert.alert('Success', 'Profile picture updated successfully!');
+      }
+    } catch (error) {
+      console.error('Upload error:', error);
+      Alert.alert('Error', 'Failed to update profile picture');
+    } finally {
+      setUploading(false);
+    }
+  };
+
   if (!user) return null;
 
   return (
