@@ -30,6 +30,10 @@ export default function HomeScreen() {
   const [newPostContent, setNewPostContent] = useState('');
   const [newPostImage, setNewPostImage] = useState<string | null>(null);
   const [posting, setPosting] = useState(false);
+  const [privacyLevel, setPrivacyLevel] = useState<'public' | 'friends' | 'specific'>('friends');
+  const [friends, setFriends] = useState<any[]>([]);
+  const [selectedFriends, setSelectedFriends] = useState<string[]>([]);
+  const [showFriendSelector, setShowFriendSelector] = useState(false);
 
   useEffect(() => {
     loadPosts();
