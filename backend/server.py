@@ -54,6 +54,7 @@ class UserRegister(BaseModel):
     full_name: str
     bio: Optional[str] = ""
     profile_picture: Optional[str] = None
+    referral_code: Optional[str] = None
 
 class UserLogin(BaseModel):
     username: str
