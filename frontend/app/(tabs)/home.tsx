@@ -160,7 +160,9 @@ export default function HomeScreen() {
   };
 
   const renderPost = ({ item }: { item: Post }) => {
-    const isLiked = item.likes.includes(user?.id || '');
+    const isLiked = item.likes?.includes(user?.id || '');
+    const isDisliked = item.dislikes?.includes(user?.id || '');
+    const totalVotes = (item.likes?.length || 0) + (item.dislikes?.length || 0);
     
     return (
       <View style={styles.postCard}>
@@ -197,12 +199,26 @@ export default function HomeScreen() {
             onPress={() => handleLike(item.id)}
           >
             <Ionicons 
-              name={isLiked ? "heart" : "heart-outline"} 
+              name="thumbs-up" 
               size={24} 
-              color={isLiked ? "#FF3B30" : "#666"} 
+              color={isLiked ? "#34C759" : "#666"} 
             />
             <Text style={[styles.actionText, isLiked && styles.likedText]}>
-              {item.likes.length}
+              {item.likes?.length || 0}
+            </Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity 
+            style={styles.actionButton}
+            onPress={() => handleDislike(item.id)}
+          >
+            <Ionicons 
+              name="thumbs-down" 
+              size={24} 
+              color={isDisliked ? "#FF3B30" : "#666"} 
+            />
+            <Text style={[styles.actionText, isDisliked && styles.dislikedText]}>
+              {item.dislikes?.length || 0}
             </Text>
           </TouchableOpacity>
 
