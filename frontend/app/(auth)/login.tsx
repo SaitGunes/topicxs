@@ -3,6 +3,8 @@ import { useState } from 'react';
 import { useRouter } from 'expo-router';
 import { useAuthStore } from '../../store/authStore';
 import { Ionicons } from '@expo/vector-icons';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import TermsModal from '../../components/TermsModal';
 
 export default function LoginScreen() {
   const router = useRouter();
@@ -10,6 +12,7 @@ export default function LoginScreen() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
+  const [showTerms, setShowTerms] = useState(false);
 
   const handleLogin = async () => {
     if (!username || !password) {
@@ -20,11 +23,28 @@ export default function LoginScreen() {
     setLoading(true);
     try {
       await login(username, password);
-      router.replace('/(tabs)/home');
+      
+      // Check if terms accepted
+      const termsAccepted = await AsyncStorage.getItem('termsAccepted');
+      if (termsAccepted !== 'true') {
+        setShowTerms(true);
+      } else {
+        router.replace('/(tabs)/home');
+      }
     } catch (error: any) {
       Alert.alert('Hata', error.message);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleTermsAccept = async () => {
+    try {
+      await AsyncStorage.setItem('termsAccepted', 'true');
+      setShowTerms(false);
+      router.replace('/(tabs)/home');
+    } catch (error) {
+      console.error('Error saving terms acceptance:', error);
     }
   };
 
