@@ -581,4 +581,61 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(0,0,0,0.6)',
     borderRadius: 16,
   },
+  privacySection: {
+    marginTop: 24,
+  },
+  privacyTitle: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: '#000',
+    marginBottom: 12,
+  },
+  privacyOption: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: 12,
+    backgroundColor: '#f5f5f5',
+    borderRadius: 8,
+    marginBottom: 8,
+  },
+  privacyOptionSelected: {
+    backgroundColor: '#E3F2FF',
+    borderWidth: 1,
+    borderColor: '#007AFF',
+  },
+  privacyText: {
+    flex: 1,
+    fontSize: 14,
+    color: '#666',
+    marginLeft: 12,
+  },
+  privacyTextSelected: {
+    color: '#007AFF',
+    fontWeight: '600',
+  },
+  friendSelector: {
+    marginTop: 12,
+    padding: 12,
+    backgroundColor: '#f5f5f5',
+    borderRadius: 8,
+  },
+  noFriendsText: {
+    fontSize: 14,
+    color: '#999',
+    textAlign: 'center',
+    padding: 16,
+  },
+  friendItem: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    padding: 12,
+    backgroundColor: '#fff',
+    borderRadius: 8,
+    marginBottom: 8,
+  },
+  friendName: {
+    fontSize: 14,
+    color: '#000',
+  },
 });
