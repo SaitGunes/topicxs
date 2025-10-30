@@ -240,7 +240,7 @@ export default function HomeScreen() {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <Text style={styles.headerTitle}>Driver Forum</Text>
+        <Text style={styles.headerTitle}>Drivers Chat</Text>
         <TouchableOpacity 
           style={styles.createButton}
           onPress={() => setCreateModalVisible(true)}
