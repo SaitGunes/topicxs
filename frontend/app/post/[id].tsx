@@ -205,14 +205,33 @@ export default function PostDetailScreen() {
           )}
 
           <View style={styles.postActions}>
-            <TouchableOpacity style={styles.actionButton} onPress={handleLike}>
+            <TouchableOpacity 
+              style={[styles.actionButton, isOwnPost && styles.actionButtonDisabled]}
+              onPress={() => !isOwnPost && handleLike()}
+              disabled={isOwnPost}
+            >
               <Ionicons 
-                name={isLiked ? "heart" : "heart-outline"} 
+                name="thumbs-up" 
                 size={24} 
-                color={isLiked ? "#FF3B30" : "#666"} 
+                color={isOwnPost ? "#ccc" : isLiked ? "#34C759" : "#666"} 
               />
-              <Text style={[styles.actionText, isLiked && styles.likedText]}>
-                {post.likes.length}
+              <Text style={[styles.actionText, isLiked && styles.likedText, isOwnPost && styles.disabledText]}>
+                {post.likes?.length || 0}
+              </Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity 
+              style={[styles.actionButton, isOwnPost && styles.actionButtonDisabled]}
+              onPress={() => !isOwnPost && handleDislike()}
+              disabled={isOwnPost}
+            >
+              <Ionicons 
+                name="thumbs-down" 
+                size={24} 
+                color={isOwnPost ? "#ccc" : isDisliked ? "#FF3B30" : "#666"} 
+              />
+              <Text style={[styles.actionText, isDisliked && styles.dislikedText, isOwnPost && styles.disabledText]}>
+                {post.dislikes?.length || 0}
               </Text>
             </TouchableOpacity>
 
