@@ -71,6 +71,7 @@ class User(BaseModel):
     invited_by: Optional[str] = None
     referral_count: int = 0
     friend_ids: List[str] = []
+    is_admin: bool = False
     created_at: datetime = Field(default_factory=datetime.utcnow)
 
 class Token(BaseModel):
