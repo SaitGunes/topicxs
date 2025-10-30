@@ -3,6 +3,8 @@ import { useState } from 'react';
 import { useRouter } from 'expo-router';
 import { useAuthStore } from '../../store/authStore';
 import { Ionicons } from '@expo/vector-icons';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import TermsModal from '../../components/TermsModal';
 
 export default function RegisterScreen() {
   const router = useRouter();
@@ -13,6 +15,8 @@ export default function RegisterScreen() {
   const [password, setPassword] = useState('');
   const [referralCode, setReferralCode] = useState('');
   const [loading, setLoading] = useState(false);
+  const [showTerms, setShowTerms] = useState(false);
+  const [pendingRegistration, setPendingRegistration] = useState(false);
 
   const handleRegister = async () => {
     if (!username || !email || !fullName || !password) {
@@ -25,14 +29,23 @@ export default function RegisterScreen() {
       return;
     }
 
+    // Show terms modal before registration
+    setPendingRegistration(true);
+    setShowTerms(true);
+  };
+
+  const handleTermsAccept = async () => {
+    setShowTerms(false);
     setLoading(true);
     try {
       await register(username, email, password, fullName, referralCode.trim() || undefined);
+      await AsyncStorage.setItem('termsAccepted', 'true');
       router.replace('/(tabs)/home');
     } catch (error: any) {
       Alert.alert('Error', error.message);
     } finally {
       setLoading(false);
+      setPendingRegistration(false);
     }
   };
 
