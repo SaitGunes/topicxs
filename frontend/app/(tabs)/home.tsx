@@ -160,6 +160,32 @@ export default function HomeScreen() {
     }
   };
 
+  const handleDeletePost = async (postId: string) => {
+    Alert.alert(
+      'Delete Post',
+      user?.is_admin 
+        ? 'Are you sure you want to delete this post as an admin?' 
+        : 'Are you sure you want to delete your post?',
+      [
+        { text: 'Cancel', style: 'cancel' },
+        {
+          text: 'Delete',
+          style: 'destructive',
+          onPress: async () => {
+            try {
+              await api.delete(`/api/posts/${postId}`);
+              setPosts(posts.filter(p => p.id !== postId));
+              Alert.alert('Success', 'Post deleted successfully');
+            } catch (error) {
+              console.error('Delete error:', error);
+              Alert.alert('Error', 'Failed to delete post');
+            }
+          },
+        },
+      ]
+    );
+  };
+
   const renderPost = ({ item }: { item: Post }) => {
     const isLiked = item.likes?.includes(user?.id || '');
     const isDisliked = item.dislikes?.includes(user?.id || '');
