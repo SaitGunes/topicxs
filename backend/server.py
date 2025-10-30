@@ -324,6 +324,29 @@ async def login(user_data: UserLogin):
 async def get_me(current_user: User = Depends(get_current_user)):
     return current_user
 
+@api_router.put("/auth/me", response_model=User)
+async def update_profile(user_update: UserUpdate, current_user: User = Depends(get_current_user)):
+    update_data = {}
+    
+    if user_update.full_name is not None:
+        update_data["full_name"] = user_update.full_name
+    
+    if user_update.bio is not None:
+        update_data["bio"] = user_update.bio
+    
+    if user_update.profile_picture is not None:
+        update_data["profile_picture"] = user_update.profile_picture
+    
+    if update_data:
+        await db.users.update_one(
+            {"id": current_user.id},
+            {"$set": update_data}
+        )
+    
+    # Get updated user
+    updated_user = await db.users.find_one({"id": current_user.id})
+    return User(**{k: v for k, v in updated_user.items() if k != 'password'})
+
 @api_router.post("/auth/forgot-password")
 async def forgot_password(email: str, username: str):
     user = await db.users.find_one({"email": email, "username": username})
