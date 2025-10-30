@@ -532,7 +532,10 @@ async def like_post(post_id: str, current_user: User = Depends(get_current_user)
 
 @api_router.post("/posts/{post_id}/comments", response_model=Comment)
 async def create_comment(post_id: str, comment_data: CommentCreate, current_user: User = Depends(get_current_user)):
-    post = await db.posts.find_one({"id": post_id})
+    # Check in both collections
+    post = await db.posts_enhanced.find_one({"id": post_id})
+    if not post:
+        post = await db.posts.find_one({"id": post_id})
     if not post:
         raise HTTPException(status_code=404, detail="Post not found")
     
@@ -550,8 +553,12 @@ async def create_comment(post_id: str, comment_data: CommentCreate, current_user
     
     await db.comments.insert_one(comment_dict)
     
-    # Update comments count
+    # Update comments count in both collections
     await db.posts.update_one(
+        {"id": post_id},
+        {"$inc": {"comments_count": 1}}
+    )
+    await db.posts_enhanced.update_one(
         {"id": post_id},
         {"$inc": {"comments_count": 1}}
     )
