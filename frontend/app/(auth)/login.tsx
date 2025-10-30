@@ -165,4 +165,12 @@ const styles = StyleSheet.create({
     color: '#007AFF',
     fontSize: 16,
   },
+  forgotButton: {
+    marginTop: 16,
+    alignItems: 'center',
+  },
+  forgotText: {
+    color: '#666',
+    fontSize: 14,
+  },
 });
