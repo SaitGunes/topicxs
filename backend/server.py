@@ -351,6 +351,68 @@ async def update_profile(user_update: UserUpdate, current_user: User = Depends(g
     updated_user = await db.users.find_one({"id": current_user.id})
     return User(**{k: v for k, v in updated_user.items() if k != 'password'})
 
+@api_router.post("/auth/change-password")
+async def change_password(password_data: PasswordChange, current_user: User = Depends(get_current_user)):
+    # Get user with password
+    user = await db.users.find_one({"id": current_user.id})
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+    
+    # Verify current password
+    if not pwd_context.verify(password_data.current_password, user["password"]):
+        raise HTTPException(status_code=400, detail="Current password is incorrect")
+    
+    # Hash new password
+    hashed_password = pwd_context.hash(password_data.new_password)
+    
+    # Update password
+    await db.users.update_one(
+        {"id": current_user.id},
+        {"$set": {"password": hashed_password}}
+    )
+    
+    return {"message": "Password changed successfully"}
+
+@api_router.delete("/auth/me")
+async def delete_account(current_user: User = Depends(get_current_user)):
+    # Delete user's posts
+    await db.posts.delete_many({"user_id": current_user.id})
+    await db.posts_enhanced.delete_many({"user_id": current_user.id})
+    
+    # Delete user's comments
+    await db.comments.delete_many({"user_id": current_user.id})
+    
+    # Delete user's messages
+    await db.messages.delete_many({"user_id": current_user.id})
+    
+    # Remove user from chats
+    await db.chats.update_many(
+        {"members": current_user.id},
+        {"$pull": {"members": current_user.id}}
+    )
+    
+    # Delete chats with no members
+    await db.chats.delete_many({"members": {"$size": 0}})
+    
+    # Delete friend requests
+    await db.friend_requests.delete_many({
+        "$or": [
+            {"from_user_id": current_user.id},
+            {"to_user_id": current_user.id}
+        ]
+    })
+    
+    # Remove from friends lists
+    await db.users.update_many(
+        {"friend_ids": current_user.id},
+        {"$pull": {"friend_ids": current_user.id}}
+    )
+    
+    # Finally delete user
+    await db.users.delete_one({"id": current_user.id})
+    
+    return {"message": "Account deleted successfully"}
+
 @api_router.post("/auth/forgot-password")
 async def forgot_password(email: str, username: str):
     user = await db.users.find_one({"email": email, "username": username})
