@@ -162,7 +162,7 @@ export default function HomeScreen() {
   const renderPost = ({ item }: { item: Post }) => {
     const isLiked = item.likes?.includes(user?.id || '');
     const isDisliked = item.dislikes?.includes(user?.id || '');
-    const totalVotes = (item.likes?.length || 0) + (item.dislikes?.length || 0);
+    const isOwnPost = item.user_id === user?.id;
     
     return (
       <View style={styles.postCard}>
@@ -195,29 +195,31 @@ export default function HomeScreen() {
 
         <View style={styles.postActions}>
           <TouchableOpacity 
-            style={styles.actionButton}
-            onPress={() => handleLike(item.id)}
+            style={[styles.actionButton, isOwnPost && styles.actionButtonDisabled]}
+            onPress={() => !isOwnPost && handleLike(item.id)}
+            disabled={isOwnPost}
           >
             <Ionicons 
               name="thumbs-up" 
               size={24} 
-              color={isLiked ? "#34C759" : "#666"} 
+              color={isOwnPost ? "#ccc" : isLiked ? "#34C759" : "#666"} 
             />
-            <Text style={[styles.actionText, isLiked && styles.likedText]}>
+            <Text style={[styles.actionText, isLiked && styles.likedText, isOwnPost && styles.disabledText]}>
               {item.likes?.length || 0}
             </Text>
           </TouchableOpacity>
 
           <TouchableOpacity 
-            style={styles.actionButton}
-            onPress={() => handleDislike(item.id)}
+            style={[styles.actionButton, isOwnPost && styles.actionButtonDisabled]}
+            onPress={() => !isOwnPost && handleDislike(item.id)}
+            disabled={isOwnPost}
           >
             <Ionicons 
               name="thumbs-down" 
               size={24} 
-              color={isDisliked ? "#FF3B30" : "#666"} 
+              color={isOwnPost ? "#ccc" : isDisliked ? "#FF3B30" : "#666"} 
             />
-            <Text style={[styles.actionText, isDisliked && styles.dislikedText]}>
+            <Text style={[styles.actionText, isDisliked && styles.dislikedText, isOwnPost && styles.disabledText]}>
               {item.dislikes?.length || 0}
             </Text>
           </TouchableOpacity>
