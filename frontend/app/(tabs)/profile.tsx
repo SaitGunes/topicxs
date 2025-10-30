@@ -120,7 +120,7 @@ export default function ProfileScreen() {
 
         <TouchableOpacity 
           style={styles.menuItem}
-          onPress={() => Alert.alert('Help', 'Help center coming soon!')}
+          onPress={() => router.push('/help')}
         >
           <Ionicons name="help-circle-outline" size={24} color="#007AFF" />
           <Text style={styles.menuText}>Help</Text>
