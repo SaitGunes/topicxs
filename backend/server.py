@@ -741,6 +741,11 @@ async def vote_post(post_id: str, vote_data: VoteAction, current_user: User = De
     updated_post = await db.posts_enhanced.find_one({"id": post_id})
     return PostEnhanced(**updated_post)
 
+@api_router.get("/posts/enhanced/user/{user_id}", response_model=List[PostEnhanced])
+async def get_user_enhanced_posts(user_id: str, skip: int = 0, limit: int = 20, current_user: User = Depends(get_current_user)):
+    posts = await db.posts_enhanced.find({"user_id": user_id}).sort("created_at", -1).skip(skip).limit(limit).to_list(limit)
+    return [PostEnhanced(**post) for post in posts]
+
 # ==================== GROUP ROUTES ====================
 
 @api_router.post("/groups", response_model=Group)
