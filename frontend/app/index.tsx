@@ -1,21 +1,65 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { View, ActivityIndicator, StyleSheet } from 'react-native';
 import { useRouter } from 'expo-router';
 import { useAuthStore } from '../store/authStore';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import TermsModal from '../components/TermsModal';
 
 export default function Index() {
   const router = useRouter();
   const { user, isLoading } = useAuthStore();
+  const [showTerms, setShowTerms] = useState(false);
+  const [termsChecked, setTermsChecked] = useState(false);
 
   useEffect(() => {
-    if (!isLoading) {
+    checkTermsAcceptance();
+  }, []);
+
+  const checkTermsAcceptance = async () => {
+    try {
+      const accepted = await AsyncStorage.getItem('termsAccepted');
+      if (accepted === 'true') {
+        setTermsChecked(true);
+      } else if (!isLoading && user) {
+        // User logged in but hasn't accepted terms
+        setShowTerms(true);
+      }
+      setTermsChecked(true);
+    } catch (error) {
+      console.error('Error checking terms:', error);
+      setTermsChecked(true);
+    }
+  };
+
+  const handleTermsAccept = async () => {
+    try {
+      await AsyncStorage.setItem('termsAccepted', 'true');
+      setShowTerms(false);
+      setTermsChecked(true);
+    } catch (error) {
+      console.error('Error saving terms acceptance:', error);
+    }
+  };
+
+  useEffect(() => {
+    if (!isLoading && termsChecked) {
       if (user) {
         router.replace('/(tabs)/home');
       } else {
         router.replace('/(auth)/login');
       }
     }
-  }, [user, isLoading]);
+  }, [user, isLoading, termsChecked]);
+
+  return (
+    <>
+      <View style={styles.container}>
+        <ActivityIndicator size="large" color="#007AFF" />
+      </View>
+      <TermsModal visible={showTerms} onAccept={handleTermsAccept} />
+    </>
+  );
+}
 
   return (
     <View style={styles.container}>
