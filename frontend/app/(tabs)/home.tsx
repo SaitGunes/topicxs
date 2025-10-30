@@ -119,20 +119,43 @@ export default function HomeScreen() {
 
   const handleLike = async (postId: string) => {
     try {
-      const response = await api.post(`/api/posts/${postId}/like`);
+      const response = await api.post(`/api/posts/${postId}/vote`, {
+        vote_type: 'like',
+      });
       
       setPosts(posts.map(post => {
         if (post.id === postId) {
-          const isLiked = response.data.liked;
-          const newLikes = isLiked 
-            ? [...post.likes, user!.id]
-            : post.likes.filter(id => id !== user!.id);
-          return { ...post, likes: newLikes };
+          return response.data;
         }
         return post;
       }));
-    } catch (error) {
-      console.error('Like error:', error);
+    } catch (error: any) {
+      if (error.response?.status === 404) {
+        // Post was auto-deleted
+        Alert.alert('Notice', 'This post was removed due to community feedback');
+        setPosts(posts.filter(p => p.id !== postId));
+      }
+    }
+  };
+
+  const handleDislike = async (postId: string) => {
+    try {
+      const response = await api.post(`/api/posts/${postId}/vote`, {
+        vote_type: 'dislike',
+      });
+      
+      setPosts(posts.map(post => {
+        if (post.id === postId) {
+          return response.data;
+        }
+        return post;
+      }));
+    } catch (error: any) {
+      if (error.response?.status === 404) {
+        // Post was auto-deleted
+        Alert.alert('Notice', 'This post was removed due to community feedback');
+        setPosts(posts.filter(p => p.id !== postId));
+      }
     }
   };
 
