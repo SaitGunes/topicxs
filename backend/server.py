@@ -290,6 +290,7 @@ async def register(user_data: UserRegister):
         "invited_by": referrer_id,
         "referral_count": 0,
         "friend_ids": [],
+        "is_admin": False,
         "created_at": datetime.utcnow()
     }
     
