@@ -168,7 +168,7 @@ export default function HelpScreen() {
           <Ionicons name="help-circle" size={64} color="#007AFF" />
           <Text style={styles.introTitle}>How can we help you?</Text>
           <Text style={styles.introText}>
-            Find answers to common questions about Driver Forum
+            Find answers to common questions about Drivers Chat
           </Text>
         </View>
 
