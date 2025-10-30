@@ -120,30 +120,62 @@ export default function UserProfileScreen() {
     }
   };
 
-  const renderPost = ({ item }: { item: Post }) => (
-    <TouchableOpacity 
-      style={styles.postItem}
-      onPress={() => router.push(`/post/${item.id}`)}
-    >
-      {item.image ? (
-        <Image source={{ uri: item.image }} style={styles.postThumbnail} />
-      ) : (
-        <View style={[styles.postThumbnail, styles.postPlaceholder]}>
-          <Text style={styles.postText} numberOfLines={3}>{item.content}</Text>
+  const renderPost = ({ item }: { item: Post }) => {
+    const isLiked = item.likes?.includes(currentUser?.id || '');
+    const isDisliked = item.dislikes?.includes(currentUser?.id || '');
+    const isOwnPost = item.user_id === currentUser?.id;
+    
+    return (
+      <TouchableOpacity 
+        style={styles.postItem}
+        onPress={() => router.push(`/post/${item.id}`)}
+      >
+        {item.image ? (
+          <Image source={{ uri: item.image }} style={styles.postThumbnail} />
+        ) : (
+          <View style={[styles.postThumbnail, styles.postPlaceholder]}>
+            <Text style={styles.postText} numberOfLines={3}>{item.content}</Text>
+          </View>
+        )}
+        <View style={styles.postStats}>
+          <TouchableOpacity 
+            style={styles.postStat}
+            onPress={(e) => {
+              e.stopPropagation();
+              if (!isOwnPost) handleLike(item.id);
+            }}
+            disabled={isOwnPost}
+          >
+            <Ionicons 
+              name="thumbs-up" 
+              size={16} 
+              color={isOwnPost ? "#ccc" : isLiked ? "#34C759" : "#666"} 
+            />
+            <Text style={styles.postStatText}>{item.likes?.length || 0}</Text>
+          </TouchableOpacity>
+          <TouchableOpacity 
+            style={styles.postStat}
+            onPress={(e) => {
+              e.stopPropagation();
+              if (!isOwnPost) handleDislike(item.id);
+            }}
+            disabled={isOwnPost}
+          >
+            <Ionicons 
+              name="thumbs-down" 
+              size={16} 
+              color={isOwnPost ? "#ccc" : isDisliked ? "#FF3B30" : "#666"} 
+            />
+            <Text style={styles.postStatText}>{item.dislikes?.length || 0}</Text>
+          </TouchableOpacity>
+          <View style={styles.postStat}>
+            <Ionicons name="chatbubble" size={16} color="#666" />
+            <Text style={styles.postStatText}>{item.comments_count}</Text>
+          </View>
         </View>
-      )}
-      <View style={styles.postStats}>
-        <View style={styles.postStat}>
-          <Ionicons name="heart" size={16} color="#666" />
-          <Text style={styles.postStatText}>{item.likes.length}</Text>
-        </View>
-        <View style={styles.postStat}>
-          <Ionicons name="chatbubble" size={16} color="#666" />
-          <Text style={styles.postStatText}>{item.comments_count}</Text>
-        </View>
-      </View>
-    </TouchableOpacity>
-  );
+      </TouchableOpacity>
+    );
+  };
 
   if (!user) {
     return (
