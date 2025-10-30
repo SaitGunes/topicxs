@@ -94,14 +94,20 @@ export default function HomeScreen() {
 
     setPosting(true);
     try {
-      const response = await api.post('/api/posts', {
+      const response = await api.post('/api/posts/enhanced', {
         content: newPostContent,
         image: newPostImage,
+        privacy: {
+          level: privacyLevel,
+          specific_user_ids: privacyLevel === 'specific' ? selectedFriends : [],
+        },
       });
       
       setPosts([response.data, ...posts]);
       setNewPostContent('');
       setNewPostImage(null);
+      setPrivacyLevel('friends');
+      setSelectedFriends([]);
       setCreateModalVisible(false);
       Alert.alert('Success', 'Your post has been published');
     } catch (error) {
