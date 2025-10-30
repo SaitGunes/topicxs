@@ -26,6 +26,7 @@ interface AuthState {
   register: (username: string, email: string, password: string, full_name: string, referral_code?: string) => Promise<void>;
   logout: () => Promise<void>;
   loadToken: () => Promise<void>;
+  setUser: (user: User) => Promise<void>;
 }
 
 export const useAuthStore = create<AuthState>((set) => ({
