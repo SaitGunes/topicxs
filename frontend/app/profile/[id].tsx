@@ -23,6 +23,7 @@ interface Post {
   content: string;
   image: string | null;
   likes: string[];
+  dislikes: string[];
   comments_count: number;
   created_at: string;
 }
