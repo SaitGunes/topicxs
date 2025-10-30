@@ -25,6 +25,7 @@ interface Post {
   content: string;
   image: string | null;
   likes: string[];
+  dislikes: string[];
   comments_count: number;
   created_at: string;
 }
@@ -45,7 +46,7 @@ export default function PostDetailScreen() {
 
   const loadPost = async () => {
     try {
-      const response = await api.get('/api/posts');
+      const response = await api.get('/api/posts/enhanced');
       const foundPost = response.data.find((p: Post) => p.id === id);
       setPost(foundPost);
     } catch (error) {
