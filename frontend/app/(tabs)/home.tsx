@@ -466,6 +466,10 @@ const styles = StyleSheet.create({
   userInfo: {
     flexDirection: 'row',
     alignItems: 'center',
+    flex: 1,
+  },
+  deleteButton: {
+    padding: 8,
   },
   avatar: {
     width: 44,
