@@ -274,6 +274,71 @@ export default function HomeScreen() {
               <Ionicons name="image-outline" size={24} color="#007AFF" />
               <Text style={styles.addImageText}>Add Photo</Text>
             </TouchableOpacity>
+
+            {/* Privacy Options */}
+            <View style={styles.privacySection}>
+              <Text style={styles.privacyTitle}>Who can see this?</Text>
+              
+              <TouchableOpacity 
+                style={[styles.privacyOption, privacyLevel === 'public' && styles.privacyOptionSelected]}
+                onPress={() => setPrivacyLevel('public')}
+              >
+                <Ionicons name="globe-outline" size={20} color={privacyLevel === 'public' ? '#007AFF' : '#666'} />
+                <Text style={[styles.privacyText, privacyLevel === 'public' && styles.privacyTextSelected]}>Public - Everyone</Text>
+                {privacyLevel === 'public' && <Ionicons name="checkmark-circle" size={20} color="#007AFF" />}
+              </TouchableOpacity>
+
+              <TouchableOpacity 
+                style={[styles.privacyOption, privacyLevel === 'friends' && styles.privacyOptionSelected]}
+                onPress={() => setPrivacyLevel('friends')}
+              >
+                <Ionicons name="people-outline" size={20} color={privacyLevel === 'friends' ? '#007AFF' : '#666'} />
+                <Text style={[styles.privacyText, privacyLevel === 'friends' && styles.privacyTextSelected]}>Friends - Only friends</Text>
+                {privacyLevel === 'friends' && <Ionicons name="checkmark-circle" size={20} color="#007AFF" />}
+              </TouchableOpacity>
+
+              <TouchableOpacity 
+                style={[styles.privacyOption, privacyLevel === 'specific' && styles.privacyOptionSelected]}
+                onPress={() => {
+                  setPrivacyLevel('specific');
+                  setShowFriendSelector(!showFriendSelector);
+                }}
+              >
+                <Ionicons name="person-outline" size={20} color={privacyLevel === 'specific' ? '#007AFF' : '#666'} />
+                <Text style={[styles.privacyText, privacyLevel === 'specific' && styles.privacyTextSelected]}>
+                  Specific - Choose friends {selectedFriends.length > 0 && `(${selectedFriends.length})`}
+                </Text>
+                {privacyLevel === 'specific' && <Ionicons name="checkmark-circle" size={20} color="#007AFF" />}
+              </TouchableOpacity>
+
+              {/* Friend Selector */}
+              {showFriendSelector && privacyLevel === 'specific' && (
+                <View style={styles.friendSelector}>
+                  {friends.length === 0 ? (
+                    <Text style={styles.noFriendsText}>No friends yet. Add friends to share with specific people.</Text>
+                  ) : (
+                    friends.map((friend) => (
+                      <TouchableOpacity
+                        key={friend.id}
+                        style={styles.friendItem}
+                        onPress={() => {
+                          if (selectedFriends.includes(friend.id)) {
+                            setSelectedFriends(selectedFriends.filter(id => id !== friend.id));
+                          } else {
+                            setSelectedFriends([...selectedFriends, friend.id]);
+                          }
+                        }}
+                      >
+                        <Text style={styles.friendName}>{friend.full_name}</Text>
+                        {selectedFriends.includes(friend.id) && (
+                          <Ionicons name="checkmark-circle" size={20} color="#007AFF" />
+                        )}
+                      </TouchableOpacity>
+                    ))
+                  )}
+                </View>
+              )}
+            </View>
           </ScrollView>
         </KeyboardAvoidingView>
       </Modal>
