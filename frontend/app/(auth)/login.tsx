@@ -2,6 +2,7 @@ import { View, Text, TextInput, TouchableOpacity, StyleSheet, KeyboardAvoidingVi
 import { useState } from 'react';
 import { useRouter } from 'expo-router';
 import { useAuthStore } from '../../store/authStore';
+import { useTranslation } from '../../store/languageStore';
 import { Ionicons } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import TermsModal from '../../components/TermsModal';
@@ -9,6 +10,7 @@ import TermsModal from '../../components/TermsModal';
 export default function LoginScreen() {
   const router = useRouter();
   const login = useAuthStore((state) => state.login);
+  const { t } = useTranslation();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
