@@ -492,6 +492,27 @@ export default function HomeScreen() {
           </ScrollView>
         </KeyboardAvoidingView>
       </Modal>
+
+      {/* Full Screen Image Modal */}
+      <Modal
+        visible={fullScreenImage !== null}
+        animationType="fade"
+        onRequestClose={() => setFullScreenImage(null)}
+        transparent={true}
+      >
+        <View style={styles.fullScreenContainer}>
+          <TouchableOpacity style={styles.closeFullScreenButton} onPress={() => setFullScreenImage(null)}>
+            <Ionicons name="close" size={32} color="#fff" />
+          </TouchableOpacity>
+          {fullScreenImage && (
+            <Image
+              source={{ uri: fullScreenImage }}
+              style={styles.fullScreenImage}
+              resizeMode="contain"
+            />
+          )}
+        </View>
+      </Modal>
     </View>
   );
 }
