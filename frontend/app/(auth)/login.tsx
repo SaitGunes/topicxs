@@ -115,7 +115,7 @@ export default function LoginScreen() {
             style={[styles.linkButton, { marginTop: 8 }]}
             onPress={() => router.push('/about')}
           >
-            <Text style={[styles.linkText, { color: '#666' }]}>About Drivers Chat</Text>
+            <Text style={[styles.linkText, { color: '#666' }]}>{t('aboutApp')}</Text>
           </TouchableOpacity>
         </View>
       </ScrollView>
