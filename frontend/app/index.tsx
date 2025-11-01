@@ -2,16 +2,19 @@ import { useEffect, useState } from 'react';
 import { View, ActivityIndicator, StyleSheet } from 'react-native';
 import { useRouter } from 'expo-router';
 import { useAuthStore } from '../store/authStore';
+import { useLanguageStore } from '../store/languageStore';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import TermsModal from '../components/TermsModal';
 
 export default function Index() {
   const router = useRouter();
   const { user, isLoading } = useAuthStore();
+  const { loadLanguage } = useLanguageStore();
   const [showTerms, setShowTerms] = useState(false);
   const [termsChecked, setTermsChecked] = useState(false);
 
   useEffect(() => {
+    loadLanguage(); // Load saved language
     checkTermsAcceptance();
   }, []);
 
