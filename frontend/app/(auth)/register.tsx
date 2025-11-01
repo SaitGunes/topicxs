@@ -143,6 +143,13 @@ export default function RegisterScreen() {
           >
             <Text style={styles.linkText}>Already have an account? Sign in</Text>
           </TouchableOpacity>
+
+          <TouchableOpacity 
+            style={[styles.linkButton, { marginTop: 8 }]}
+            onPress={() => router.push('/about')}
+          >
+            <Text style={[styles.linkText, { color: '#666' }]}>About Drivers Chat</Text>
+          </TouchableOpacity>
         </View>
       </ScrollView>
       <TermsModal visible={showTerms} onAccept={handleTermsAccept} />
