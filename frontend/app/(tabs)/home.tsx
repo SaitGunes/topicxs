@@ -61,13 +61,11 @@ export default function HomeScreen() {
 
   const loadPosts = async () => {
     try {
-      setLoading(true);
       const response = await api.get('/api/posts/enhanced');
       setPosts(response.data);
     } catch (error) {
       console.error('Load posts error:', error);
     } finally {
-      setLoading(false);
       setRefreshing(false);
     }
   };
