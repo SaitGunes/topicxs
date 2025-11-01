@@ -258,7 +258,9 @@ export default function HomeScreen() {
         <Text style={styles.postContent}>{item.content}</Text>
 
         {item.image && (
-          <Image source={{ uri: item.image }} style={styles.postImage} />
+          <TouchableOpacity onPress={() => setFullScreenImage(item.image)}>
+            <Image source={{ uri: item.image }} style={styles.postImage} resizeMode="contain" />
+          </TouchableOpacity>
         )}
 
         <View style={styles.postActions}>
