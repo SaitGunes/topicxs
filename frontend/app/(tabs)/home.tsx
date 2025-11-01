@@ -243,14 +243,24 @@ export default function HomeScreen() {
               </Text>
             </View>
           </TouchableOpacity>
-          {canDelete && (
-            <TouchableOpacity
-              style={styles.deleteButton}
-              onPress={() => handleDeletePost(item.id)}
-            >
-              <Ionicons name="trash-outline" size={20} color="#FF3B30" />
-            </TouchableOpacity>
-          )}
+          <View style={styles.postActions}>
+            {isOwnPost && (
+              <TouchableOpacity
+                style={styles.editButton}
+                onPress={() => handleEditPost(item)}
+              >
+                <Ionicons name="create-outline" size={20} color="#007AFF" />
+              </TouchableOpacity>
+            )}
+            {canDelete && (
+              <TouchableOpacity
+                style={styles.deleteButton}
+                onPress={() => handleDeletePost(item.id)}
+              >
+                <Ionicons name="trash-outline" size={20} color="#FF3B30" />
+              </TouchableOpacity>
+            )}
+          </View>
         </View>
 
         <Text style={styles.postContent}>{item.content}</Text>
