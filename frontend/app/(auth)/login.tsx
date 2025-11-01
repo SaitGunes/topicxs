@@ -34,7 +34,7 @@ export default function LoginScreen() {
         router.replace('/(tabs)/home');
       }
     } catch (error: any) {
-      Alert.alert('Hata', error.message);
+      Alert.alert(t('error'), error.message);
     } finally {
       setLoading(false);
     }
