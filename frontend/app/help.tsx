@@ -223,7 +223,7 @@ export default function HelpScreen() {
         <View style={styles.footerSection}>
           <Text style={styles.footerTitle}>Still need help?</Text>
           <Text style={styles.footerText}>
-            Contact us at support@driverschat.com
+            Contact us at support@drvchat.com
           </Text>
           <Text style={styles.versionText}>Drivers Chat v1.0</Text>
         </View>
