@@ -124,6 +124,11 @@ export default function SettingsScreen() {
     { code: 'es', name: 'Español', flag: '🇪🇸' },
   ];
 
+  const getLanguageName = () => {
+    const lang = languages.find(l => l.code === language);
+    return lang ? lang.name : 'English';
+  };
+
   if (!user) return null;
 
   return (
