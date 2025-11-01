@@ -49,6 +49,7 @@ export const translations = {
     aboutApp: 'About Drivers Chat',
     error: 'Error',
     fillAllFields: 'Please fill in all fields',
+    selectLanguage: 'Select Language',
     
     // Tabs
     home: 'Home',
