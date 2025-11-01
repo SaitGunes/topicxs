@@ -863,6 +863,24 @@ async def delete_post(post_id: str, current_user: User = Depends(get_current_use
     
     return {"message": "Post deleted successfully"}
 
+@api_router.put("/posts/{post_id}")
+async def update_post(post_id: str, content: str, current_user: User = Depends(get_current_user)):
+    post = await db.posts_enhanced.find_one({"id": post_id})
+    if not post:
+        raise HTTPException(status_code=404, detail="Post not found")
+    
+    # Only post owner can edit
+    if post["user_id"] != current_user.id:
+        raise HTTPException(status_code=403, detail="Not authorized to edit this post")
+    
+    # Update post in both collections
+    await db.posts.update_one({"id": post_id}, {"$set": {"content": content}})
+    await db.posts_enhanced.update_one({"id": post_id}, {"$set": {"content": content}})
+    
+    # Return updated post
+    updated_post = await db.posts_enhanced.find_one({"id": post_id})
+    return PostEnhanced(**updated_post)
+
 @api_router.get("/posts/enhanced/user/{user_id}", response_model=List[PostEnhanced])
 async def get_user_enhanced_posts(user_id: str, skip: int = 0, limit: int = 20, current_user: User = Depends(get_current_user)):
     posts = await db.posts_enhanced.find({"user_id": user_id}).sort("created_at", -1).skip(skip).limit(limit).to_list(limit)
