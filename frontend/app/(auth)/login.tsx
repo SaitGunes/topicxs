@@ -79,7 +79,7 @@ export default function LoginScreen() {
             <Ionicons name="lock-closed-outline" size={20} color="#666" style={styles.inputIcon} />
             <TextInput
               style={styles.input}
-              placeholder="Password"
+              placeholder={t('password')}
               value={password}
               onChangeText={setPassword}
               secureTextEntry
