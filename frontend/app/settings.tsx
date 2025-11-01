@@ -394,15 +394,15 @@ export default function SettingsScreen() {
               <TouchableOpacity
                 key={lang.code}
                 style={styles.languageItem}
-                onPress={() => {
-                  setSelectedLanguage(lang.name);
+                onPress={async () => {
+                  await setLanguage(lang.code as 'en' | 'tr' | 'es');
                   setLanguageModal(false);
-                  Alert.alert('Language Changed', `Language set to ${lang.name}. Full translation coming soon!`);
+                  Alert.alert('Language Changed', `Language set to ${lang.name}`);
                 }}
               >
                 <Text style={styles.languageFlag}>{lang.flag}</Text>
                 <Text style={styles.languageName}>{lang.name}</Text>
-                {selectedLanguage === lang.name && (
+                {language === lang.code && (
                   <Ionicons name="checkmark-circle" size={24} color="#007AFF" />
                 )}
               </TouchableOpacity>
