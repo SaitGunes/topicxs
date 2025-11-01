@@ -59,7 +59,7 @@ export default function LoginScreen() {
         <View style={styles.header}>
           <Ionicons name="car-sport" size={64} color="#007AFF" />
           <Text style={styles.title}>Drivers Chat</Text>
-          <Text style={styles.subtitle}>Where drivers connect</Text>
+          <Text style={styles.subtitle}>{t('login')}</Text>
         </View>
 
         <View style={styles.form}>
