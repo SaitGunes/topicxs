@@ -97,7 +97,7 @@ export default function AboutScreen() {
           <Text style={styles.sectionTitle}>Contact & Support</Text>
           <Text style={styles.text}>
             Have questions, feedback, or need help?{'\n'}
-            Email us at: support@driverschat.com
+            Email us at: support@drvchat.com
           </Text>
           <TouchableOpacity 
             style={styles.linkButton}
