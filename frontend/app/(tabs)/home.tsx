@@ -780,4 +780,21 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: '#000',
   },
+  fullScreenContainer: {
+    flex: 1,
+    backgroundColor: 'rgba(0,0,0,0.95)',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  closeFullScreenButton: {
+    position: 'absolute',
+    top: 48,
+    right: 16,
+    zIndex: 10,
+    padding: 8,
+  },
+  fullScreenImage: {
+    width: '100%',
+    height: '100%',
+  },
 });
