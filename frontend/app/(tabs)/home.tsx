@@ -196,6 +196,26 @@ export default function HomeScreen() {
     );
   };
 
+  const handleEditPost = (post: Post) => {
+    setEditingPost(post);
+    setEditContent(post.content);
+    setEditModalVisible(true);
+  };
+
+  const handleSaveEdit = async (content: string) => {
+    if (!editingPost) return;
+    
+    try {
+      const response = await api.put(`/api/posts/${editingPost.id}?content=${encodeURIComponent(content)}`);
+      setPosts(posts.map(p => p.id === editingPost.id ? response.data : p));
+      setEditModalVisible(false);
+      Alert.alert('Success', 'Post updated successfully');
+    } catch (error) {
+      console.error('Edit error:', error);
+      Alert.alert('Error', 'Failed to update post');
+    }
+  };
+
   const renderPost = ({ item }: { item: Post }) => {
     const isLiked = item.likes?.includes(user?.id || '');
     const isDisliked = item.dislikes?.includes(user?.id || '');
