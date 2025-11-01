@@ -126,7 +126,7 @@ export default function TermsModal({ visible, onAccept }: TermsModalProps) {
                 <Text style={styles.subtitle}>8. Contact</Text>
                 <Text style={styles.text}>
                   For questions or concerns, contact us at:{'\n'}
-                  support@driverschat.com
+                  support@drvchat.com
                 </Text>
               </View>
             </View>
