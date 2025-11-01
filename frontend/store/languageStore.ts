@@ -91,6 +91,7 @@ export const translations = {
     aboutApp: 'Drivers Chat Hakkında',
     error: 'Hata',
     fillAllFields: 'Lütfen tüm alanları doldurun',
+    selectLanguage: 'Dil Seçin',
     
     // Tabs
     home: 'Ana Sayfa',
@@ -132,6 +133,7 @@ export const translations = {
     aboutApp: 'Acerca de Drivers Chat',
     error: 'Error',
     fillAllFields: 'Por favor completa todos los campos',
+    selectLanguage: 'Seleccionar Idioma',
     
     // Tabs
     home: 'Inicio',
