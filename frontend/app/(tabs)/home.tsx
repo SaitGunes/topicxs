@@ -549,6 +549,14 @@ const styles = StyleSheet.create({
   deleteButton: {
     padding: 8,
   },
+  editButton: {
+    padding: 8,
+    marginRight: 8,
+  },
+  headerActions: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
   avatar: {
     width: 44,
     height: 44,
