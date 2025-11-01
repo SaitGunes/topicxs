@@ -7,6 +7,8 @@ import * as ImagePicker from 'expo-image-picker';
 import { formatDistanceToNow } from 'date-fns';
 import { tr } from 'date-fns/locale';
 import { useRouter } from 'expo-router';
+import EditPostModal from '../../components/EditPostModal';
+import FullScreenImage from '../../components/FullScreenImage';
 
 interface Post {
   id: string;
