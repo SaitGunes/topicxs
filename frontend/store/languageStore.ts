@@ -129,6 +129,8 @@ export const translations = {
     dontHaveAccount: '¿No tienes cuenta? Regístrate',
     alreadyHaveAccount: '¿Ya tienes cuenta? Inicia sesión',
     aboutApp: 'Acerca de Drivers Chat',
+    error: 'Error',
+    fillAllFields: 'Por favor completa todos los campos',
     
     // Tabs
     home: 'Inicio',
