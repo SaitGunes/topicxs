@@ -231,7 +231,7 @@ export default function SettingsScreen() {
             <Ionicons name="language-outline" size={22} color="#007AFF" />
             <View style={styles.settingTextContainer}>
               <Text style={styles.settingText}>Language</Text>
-              <Text style={styles.settingSubtext}>{selectedLanguage}</Text>
+              <Text style={styles.settingSubtext}>{getLanguageName()}</Text>
             </View>
             <Ionicons name="chevron-forward" size={20} color="#ccc" />
           </TouchableOpacity>
