@@ -1,13 +1,15 @@
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity, TextInput, Alert, Modal, Switch, ActivityIndicator } from 'react-native';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import { useAuthStore } from '../store/authStore';
+import { useLanguageStore } from '../store/languageStore';
 import api from '../utils/api';
 
 export default function SettingsScreen() {
   const router = useRouter();
   const { user, logout, setUser } = useAuthStore();
+  const { language, setLanguage } = useLanguageStore();
   
   // Profile Edit Modal
   const [editProfileModal, setEditProfileModal] = useState(false);
