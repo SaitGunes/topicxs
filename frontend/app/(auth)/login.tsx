@@ -222,4 +222,25 @@ const styles = StyleSheet.create({
     color: '#666',
     fontSize: 14,
   },
+  languageButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    alignSelf: 'flex-end',
+    backgroundColor: '#f5f5f5',
+    paddingHorizontal: 12,
+    paddingVertical: 8,
+    borderRadius: 20,
+    marginBottom: 20,
+    borderWidth: 1,
+    borderColor: '#e0e0e0',
+  },
+  languageFlag: {
+    fontSize: 18,
+    marginRight: 6,
+  },
+  languageName: {
+    fontSize: 14,
+    color: '#333',
+    marginRight: 4,
+  },
 });
