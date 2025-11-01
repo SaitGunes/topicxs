@@ -88,6 +88,8 @@ export const translations = {
     dontHaveAccount: 'Hesabınız yok mu? Kayıt olun',
     alreadyHaveAccount: 'Zaten hesabınız var mı? Giriş yapın',
     aboutApp: 'Drivers Chat Hakkında',
+    error: 'Hata',
+    fillAllFields: 'Lütfen tüm alanları doldurun',
     
     // Tabs
     home: 'Ana Sayfa',
