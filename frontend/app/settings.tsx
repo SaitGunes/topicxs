@@ -27,7 +27,6 @@ export default function SettingsScreen() {
 
   // Language Modal
   const [languageModal, setLanguageModal] = useState(false);
-  const [selectedLanguage, setSelectedLanguage] = useState('English');
 
   // Notification Settings
   const [friendRequestNotif, setFriendRequestNotif] = useState(true);
