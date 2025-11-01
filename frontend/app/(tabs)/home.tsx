@@ -243,7 +243,7 @@ export default function HomeScreen() {
               </Text>
             </View>
           </TouchableOpacity>
-          <View style={styles.postActions}>
+          <View style={styles.headerActions}>
             {isOwnPost && (
               <TouchableOpacity
                 style={styles.editButton}
