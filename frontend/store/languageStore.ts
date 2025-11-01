@@ -47,6 +47,8 @@ export const translations = {
     dontHaveAccount: "Don't have an account? Sign up",
     alreadyHaveAccount: 'Already have an account? Sign in',
     aboutApp: 'About Drivers Chat',
+    error: 'Error',
+    fillAllFields: 'Please fill in all fields',
     
     // Tabs
     home: 'Home',
