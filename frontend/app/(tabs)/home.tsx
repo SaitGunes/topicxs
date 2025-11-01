@@ -35,6 +35,14 @@ export default function HomeScreen() {
   const [friends, setFriends] = useState<any[]>([]);
   const [selectedFriends, setSelectedFriends] = useState<string[]>([]);
   const [showFriendSelector, setShowFriendSelector] = useState(false);
+  
+  // Edit post state
+  const [editModalVisible, setEditModalVisible] = useState(false);
+  const [editingPost, setEditingPost] = useState<Post | null>(null);
+  const [editContent, setEditContent] = useState('');
+  
+  // Full screen image
+  const [fullScreenImage, setFullScreenImage] = useState<string | null>(null);
 
   useEffect(() => {
     loadPosts();
