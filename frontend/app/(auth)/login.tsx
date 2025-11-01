@@ -67,7 +67,7 @@ export default function LoginScreen() {
             <Ionicons name="person-outline" size={20} color="#666" style={styles.inputIcon} />
             <TextInput
               style={styles.input}
-              placeholder="Username"
+              placeholder={t('username')}
               value={username}
               onChangeText={setUsername}
               autoCapitalize="none"
