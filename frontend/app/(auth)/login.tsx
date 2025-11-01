@@ -66,6 +66,15 @@ export default function LoginScreen() {
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
     >
       <ScrollView contentContainerStyle={styles.scrollContent}>
+        <TouchableOpacity 
+          style={styles.languageButton}
+          onPress={() => setShowLanguageModal(true)}
+        >
+          <Text style={styles.languageFlag}>{currentLanguage.flag}</Text>
+          <Text style={styles.languageName}>{currentLanguage.name}</Text>
+          <Ionicons name="chevron-down" size={20} color="#666" />
+        </TouchableOpacity>
+
         <View style={styles.header}>
           <Ionicons name="car-sport" size={64} color="#007AFF" />
           <Text style={styles.title}>Drivers Chat</Text>
