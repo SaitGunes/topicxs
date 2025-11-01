@@ -459,6 +459,44 @@ export default function HomeScreen() {
           </ScrollView>
         </KeyboardAvoidingView>
       </Modal>
+
+      {/* Edit Post Modal */}
+      <Modal
+        visible={editModalVisible}
+        animationType="slide"
+        onRequestClose={() => setEditModalVisible(false)}
+      >
+        <KeyboardAvoidingView 
+          style={styles.modalContainer}
+          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        >
+          <View style={styles.modalHeader}>
+            <TouchableOpacity onPress={() => setEditModalVisible(false)}>
+              <Text style={styles.cancelButton}>Cancel</Text>
+            </TouchableOpacity>
+            <Text style={styles.modalTitle}>Edit Post</Text>
+            <TouchableOpacity 
+              onPress={() => handleSaveEdit(editContent)}
+              disabled={!editContent.trim()}
+            >
+              <Text style={[styles.postButton, !editContent.trim() && styles.postButtonDisabled]}>
+                Save
+              </Text>
+            </TouchableOpacity>
+          </View>
+          
+          <ScrollView style={styles.modalContent}>
+            <TextInput
+              style={styles.textInput}
+              placeholder="What's on your mind?"
+              value={editContent}
+              onChangeText={setEditContent}
+              multiline
+              textAlignVertical="top"
+            />
+          </ScrollView>
+        </KeyboardAvoidingView>
+      </Modal>
     </View>
   );
 }
