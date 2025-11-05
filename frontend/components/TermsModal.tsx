@@ -279,8 +279,8 @@ export default function TermsModal({ visible, onAccept }: TermsModalProps) {
             </View>
             <Text style={styles.checkboxText}>
               {currentStep === 1
-                ? 'I have read and agree to the Terms of Service'
-                : 'I have read and agree to follow the Community Guidelines'}
+                ? t('termsAgreeService')
+                : t('termsAgreeGuidelines')}
             </Text>
           </TouchableOpacity>
 
@@ -290,7 +290,7 @@ export default function TermsModal({ visible, onAccept }: TermsModalProps) {
             disabled={!canContinue}
           >
             <Text style={styles.continueButtonText}>
-              {currentStep === 1 ? 'Continue' : 'Accept & Start Using Drivers Chat'}
+              {currentStep === 1 ? t('termsContinue') : t('termsAcceptStart')}
             </Text>
           </TouchableOpacity>
         </View>
