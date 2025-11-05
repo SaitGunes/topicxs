@@ -994,7 +994,6 @@ export const translations = {
     // Full Screen Image
     fullScreenImageClose: 'Cerrar',
     
-    
     // About
     aboutTitle: 'Acerca de Drivers Chat',
     aboutDescription: 'Drivers Chat es una plataforma comunitaria construida por conductores, para conductores. Conéctate con otros conductores de Uber y Lyft, comparte tus experiencias y construye conexiones significativas.',
