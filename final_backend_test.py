@@ -9,7 +9,7 @@ import time
 from datetime import datetime
 
 # Configuration
-BASE_URL = "https://rideshare-hub-61.preview.emergentagent.com/api"
+BASE_URL = "https://driverschat-i18n.preview.emergentagent.com/api"
 HEADERS = {"Content-Type": "application/json"}
 
 def log_test(message, status="INFO"):
