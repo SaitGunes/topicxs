@@ -25,6 +25,7 @@ interface Post {
 export default function HomeScreen() {
   const router = useRouter();
   const user = useAuthStore((state) => state.user);
+  const { t, language } = useTranslation();
   const [posts, setPosts] = useState<Post[]>([]);
   const [refreshing, setRefreshing] = useState(false);
   const [createModalVisible, setCreateModalVisible] = useState(false);
@@ -41,6 +42,13 @@ export default function HomeScreen() {
   const [editingPost, setEditingPost] = useState<Post | null>(null);
   const [editContent, setEditContent] = useState('');
   const [fullScreenImage, setFullScreenImage] = useState<string | null>(null);
+  
+  // Get locale for date-fns
+  const getDateLocale = () => {
+    if (language === 'tr') return tr;
+    if (language === 'es') return es;
+    return undefined; // English default
+  };
 
   useEffect(() => {
     loadPosts();
