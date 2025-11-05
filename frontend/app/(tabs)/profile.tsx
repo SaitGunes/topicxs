@@ -2,6 +2,7 @@ import { View, Text, StyleSheet, TouchableOpacity, Image, ScrollView, Alert, Act
 import { useState } from 'react';
 import { Ionicons } from '@expo/vector-icons';
 import { useAuthStore } from '../../store/authStore';
+import { useTranslation } from '../../store/languageStore';
 import { useRouter } from 'expo-router';
 import * as ImagePicker from 'expo-image-picker';
 import api from '../../utils/api';
