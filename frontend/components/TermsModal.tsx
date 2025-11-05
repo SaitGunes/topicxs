@@ -1,6 +1,7 @@
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Modal } from 'react-native';
 import { useState } from 'react';
 import { Ionicons } from '@expo/vector-icons';
+import { useTranslation } from '../store/languageStore';
 
 interface TermsModalProps {
   visible: boolean;
@@ -8,6 +9,7 @@ interface TermsModalProps {
 }
 
 export default function TermsModal({ visible, onAccept }: TermsModalProps) {
+  const { t } = useTranslation();
   const [termsAccepted, setTermsAccepted] = useState(false);
   const [guidelinesAccepted, setGuidelinesAccepted] = useState(false);
   const [currentStep, setCurrentStep] = useState(1); // 1 = Terms, 2 = Guidelines
