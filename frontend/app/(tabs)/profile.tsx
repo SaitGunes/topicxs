@@ -10,6 +10,7 @@ import api from '../../utils/api';
 export default function ProfileScreen() {
   const router = useRouter();
   const { user, logout, setUser } = useAuthStore();
+  const { t } = useTranslation();
   const [uploading, setUploading] = useState(false);
 
   const handleLogout = async () => {
@@ -21,7 +22,7 @@ export default function ProfileScreen() {
       }, 100);
     } catch (error) {
       console.error('Logout error:', error);
-      Alert.alert('Error', 'Failed to sign out. Please try again.');
+      Alert.alert(t('error'), t('logoutError'));
     }
   };
 
@@ -44,11 +45,11 @@ export default function ProfileScreen() {
         });
         
         setUser(response.data);
-        Alert.alert('Success', 'Profile picture updated successfully!');
+        Alert.alert(t('success'), t('profilePictureUpdated'));
       }
     } catch (error) {
       console.error('Upload error:', error);
-      Alert.alert('Error', 'Failed to update profile picture');
+      Alert.alert(t('error'), t('failedUpdatePicture'));
     } finally {
       setUploading(false);
     }
@@ -59,7 +60,7 @@ export default function ProfileScreen() {
   return (
     <ScrollView style={styles.container}>
       <View style={styles.header}>
-        <Text style={styles.headerTitle}>Profile</Text>
+        <Text style={styles.headerTitle}>{t('profile')}</Text>
       </View>
 
       <View style={styles.profileSection}>
@@ -91,10 +92,10 @@ export default function ProfileScreen() {
         
         {user.referral_code && (
           <View style={styles.referralCard}>
-            <Text style={styles.referralLabel}>Your Referral Code</Text>
+            <Text style={styles.referralLabel}>{t('yourReferralCode')}</Text>
             <Text style={styles.referralCode}>{user.referral_code}</Text>
             <Text style={styles.referralCount}>
-              {user.referral_count || 0} people joined with your code
+              {user.referral_count || 0} {t('peopleJoined')}
             </Text>
           </View>
         )}
@@ -106,7 +107,7 @@ export default function ProfileScreen() {
           onPress={() => router.push(`/profile/${user.id}`)}
         >
           <Ionicons name="person-outline" size={24} color="#007AFF" />
-          <Text style={styles.menuText}>View My Profile</Text>
+          <Text style={styles.menuText}>{t('viewMyProfile')}</Text>
           <Ionicons name="chevron-forward" size={24} color="#ccc" />
         </TouchableOpacity>
 
@@ -115,7 +116,7 @@ export default function ProfileScreen() {
           onPress={() => router.push('/settings')}
         >
           <Ionicons name="settings-outline" size={24} color="#007AFF" />
-          <Text style={styles.menuText}>Settings</Text>
+          <Text style={styles.menuText}>{t('settings')}</Text>
           <Ionicons name="chevron-forward" size={24} color="#ccc" />
         </TouchableOpacity>
 
@@ -124,7 +125,7 @@ export default function ProfileScreen() {
           onPress={() => router.push('/help')}
         >
           <Ionicons name="help-circle-outline" size={24} color="#007AFF" />
-          <Text style={styles.menuText}>Help</Text>
+          <Text style={styles.menuText}>{t('help')}</Text>
           <Ionicons name="chevron-forward" size={24} color="#ccc" />
         </TouchableOpacity>
 
@@ -133,7 +134,7 @@ export default function ProfileScreen() {
           onPress={() => router.push('/about')}
         >
           <Ionicons name="information-circle-outline" size={24} color="#007AFF" />
-          <Text style={styles.menuText}>About</Text>
+          <Text style={styles.menuText}>{t('about')}</Text>
           <Ionicons name="chevron-forward" size={24} color="#ccc" />
         </TouchableOpacity>
       </View>
@@ -143,7 +144,7 @@ export default function ProfileScreen() {
         onPress={handleLogout}
       >
         <Ionicons name="log-out-outline" size={24} color="#FF3B30" />
-        <Text style={styles.logoutText}>Sign Out</Text>
+        <Text style={styles.logoutText}>{t('signOut')}</Text>
       </TouchableOpacity>
     </ScrollView>
   );
