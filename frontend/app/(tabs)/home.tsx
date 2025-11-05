@@ -226,10 +226,10 @@ export default function HomeScreen() {
       const response = await api.put(`/api/posts/${editingPost.id}?content=${encodeURIComponent(content)}`);
       setPosts(posts.map(p => p.id === editingPost.id ? response.data : p));
       setEditModalVisible(false);
-      Alert.alert('Success', 'Post updated successfully');
+      Alert.alert(t('success'), t('postUpdated'));
     } catch (error) {
       console.error('Edit error:', error);
-      Alert.alert('Error', 'Failed to update post');
+      Alert.alert(t('error'), t('failedUpdatePost'));
     }
   };
 
