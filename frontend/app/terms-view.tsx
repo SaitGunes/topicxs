@@ -15,7 +15,7 @@ export default function TermsViewScreen() {
         <TouchableOpacity onPress={() => router.back()}>
           <Ionicons name="arrow-back" size={24} color="#000" />
         </TouchableOpacity>
-        <Text style={styles.headerTitle}>Legal & Guidelines</Text>
+        <Text style={styles.headerTitle}>{t('aboutLegalGuidelines')}</Text>
         <View style={{ width: 24 }} />
       </View>
 
@@ -26,7 +26,7 @@ export default function TermsViewScreen() {
           onPress={() => setActiveTab('terms')}
         >
           <Text style={[styles.tabText, activeTab === 'terms' && styles.activeTabText]}>
-            Terms of Service
+            {t('termsOfService')}
           </Text>
         </TouchableOpacity>
         <TouchableOpacity
@@ -34,7 +34,7 @@ export default function TermsViewScreen() {
           onPress={() => setActiveTab('guidelines')}
         >
           <Text style={[styles.tabText, activeTab === 'guidelines' && styles.activeTabText]}>
-            Community Guidelines
+            {t('communityGuidelines')}
           </Text>
         </TouchableOpacity>
       </View>
