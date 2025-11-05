@@ -146,6 +146,73 @@ export const translations = {
     helpAnswer6: 'Go to Profile tab and tap on your profile picture to upload a new photo.',
     helpQuestion7: 'How do I contact support?',
     helpAnswer7: 'For support, email us at support@drvchat.com',
+    helpHowCanWeHelp: 'How can we help you?',
+    helpFindAnswers: 'Find answers to common questions about Drivers Chat',
+    helpStillNeed: 'Still need help?',
+    helpContactUs: 'Contact us at',
+    
+    // Help Categories
+    helpCategoryAccount: 'Account & Profile',
+    helpCategoryFriends: 'Friends System',
+    helpCategoryPosts: 'Posts & Sharing',
+    helpCategoryMessages: 'Messaging',
+    helpCategoryOther: 'Other',
+    
+    // Help Q&A - Account
+    helpQ1: 'How do I register?',
+    helpA1: 'On the registration screen, enter your username, email, password, and full name. You can also enter a referral code if you have one. Click "Register" to create your account.',
+    helpQ2: 'How do I change my profile picture?',
+    helpA2: 'Go to the Profile tab, tap on your profile picture, and select a new photo from your gallery. The photo will be cropped to a square and uploaded automatically.',
+    helpQ3: 'What is a referral code?',
+    helpA3: 'A referral code is your unique code shown on your profile page. Share it with friends so they can enter it when registering. You\'ll see how many people joined using your code.',
+    helpQ4: 'How do I reset my password?',
+    helpA4: 'On the login screen, click "Forgot Password?", enter your email and username, and follow the instructions to reset your password.',
+    
+    // Help Q&A - Friends
+    helpQ5: 'How do I add friends?',
+    helpA5: 'Go to the Friends tab, use the search bar to find users by username or name, then tap "Add Friend" to send a friend request. You can also add a personal message.',
+    helpQ6: 'How do I accept friend requests?',
+    helpA6: 'Go to the Friends tab and check the "Friend Requests" section. You\'ll see a badge on the Friends tab icon if you have pending requests. Tap "Accept" or "Decline" for each request.',
+    helpQ7: 'Can I remove friends?',
+    helpA7: 'Currently, the friend removal feature is not available. This feature will be added in future updates.',
+    helpQ8: 'Where can I see my friends list?',
+    helpA8: 'Go to the Friends tab and scroll down to see your complete friends list with their profile pictures and names.',
+    
+    // Help Q&A - Posts
+    helpQ9: 'How do I create a post?',
+    helpA9: 'On the Home tab, tap the "+" icon in the top right. Write your content, optionally add a photo, choose privacy settings, and tap "Post".',
+    helpQ10: 'What are privacy settings?',
+    helpA10: 'When creating a post, you can choose:\n• Public: Everyone can see\n• Friends: Only your friends can see\n• Specific: Choose specific friends who can see the post',
+    helpQ11: 'How does Like/Dislike work?',
+    helpA11: 'You can like 👍 or dislike 👎 any post except your own. Tap the thumbs up to like, or thumbs down to dislike. You can change your vote anytime.',
+    helpQ12: 'What happens if a post gets too many dislikes?',
+    helpA12: 'If a post receives more than 10 total votes and more than 50% are dislikes, it will be automatically deleted to maintain content quality.',
+    helpQ13: 'Can I vote on my own posts?',
+    helpA13: 'No, you cannot like or dislike your own posts. The vote buttons will be disabled (grayed out) on your posts.',
+    helpQ14: 'How do I view someone\'s profile?',
+    helpA14: 'Tap on any username or profile picture in posts or the friends list to view their profile and see all their posts.',
+    
+    // Help Q&A - Messages
+    helpQ15: 'How do I start a chat?',
+    helpA15: 'Visit a user\'s profile and tap "Send Message", or go to the Messages tab and select an existing conversation.',
+    helpQ16: 'How do I know if I have new messages?',
+    helpA16: 'You\'ll see a red badge with the number of unread messages on the Messages tab icon at the bottom.',
+    helpQ17: 'Can I send images in chat?',
+    helpA17: 'Currently, chat only supports text messages. Image sharing in messages will be added in future updates.',
+    helpQ18: 'Are messages real-time?',
+    helpA18: 'Yes! Messages use Socket.IO technology for real-time delivery. Messages appear instantly when sent.',
+    
+    // Help Q&A - Other
+    helpQ19: 'How do I sign out?',
+    helpA19: 'Go to the Profile tab, scroll down, and tap "Sign Out". Your session will end immediately and you\'ll be redirected to the login screen.',
+    helpQ20: 'Can I edit my posts?',
+    helpA20: 'Yes! Tap the edit icon (pencil) on your post to edit the content.',
+    helpQ21: 'Is my data secure?',
+    helpA21: 'Yes! Your password is encrypted, and all API communications are secured. We never share your personal information with third parties.',
+    helpQ22: 'Can I use the app offline?',
+    helpA22: 'No, this app requires an internet connection to load posts, send messages, and perform all actions.',
+    helpQ23: 'Who can see my profile?',
+    helpA23: 'All registered users can view your basic profile (name, username, profile picture, posts). Only friends can see posts marked as "Friends only".',
     
     // About
     aboutTitle: 'About Drivers Chat',
