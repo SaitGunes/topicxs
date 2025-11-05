@@ -256,7 +256,7 @@ export default function HomeScreen() {
             <View>
               <Text style={styles.username}>{item.username}</Text>
               <Text style={styles.timestamp}>
-                {formatDistanceToNow(new Date(item.created_at), { addSuffix: true, locale: tr })}
+                {formatDistanceToNow(new Date(item.created_at), { addSuffix: true, locale: getDateLocale() })}
               </Text>
             </View>
           </TouchableOpacity>
