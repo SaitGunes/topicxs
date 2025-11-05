@@ -2,10 +2,11 @@ import { View, Text, StyleSheet, FlatList, TouchableOpacity, Image, TextInput, R
 import { useState, useEffect } from 'react';
 import { Ionicons } from '@expo/vector-icons';
 import { useAuthStore } from '../../store/authStore';
+import { useTranslation } from '../../store/languageStore';
 import api from '../../utils/api';
 import * as ImagePicker from 'expo-image-picker';
 import { formatDistanceToNow } from 'date-fns';
-import { tr } from 'date-fns/locale';
+import { tr, es } from 'date-fns/locale';
 import { useRouter } from 'expo-router';
 
 interface Post {
