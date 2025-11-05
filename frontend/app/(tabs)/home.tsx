@@ -334,7 +334,7 @@ export default function HomeScreen() {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <Text style={styles.headerTitle}>Drivers Chat</Text>
+        <Text style={styles.headerTitle}>{t('home')}</Text>
         <TouchableOpacity 
           style={styles.createButton}
           onPress={() => setCreateModalVisible(true)}
@@ -354,8 +354,8 @@ export default function HomeScreen() {
         ListEmptyComponent={
           <View style={styles.emptyContainer}>
             <Ionicons name="newspaper-outline" size={64} color="#ccc" />
-            <Text style={styles.emptyText}>No posts yet</Text>
-            <Text style={styles.emptySubtext}>Be the first to post!</Text>
+            <Text style={styles.emptyText}>{t('noPostsYet')}</Text>
+            <Text style={styles.emptySubtext}>{t('beFirstToPost')}</Text>
           </View>
         }
       />
