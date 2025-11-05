@@ -638,6 +638,73 @@ export const translations = {
     helpAnswer6: 'Ve a la pestaña Perfil y toca tu foto de perfil para subir una nueva foto.',
     helpQuestion7: '¿Cómo contacto con soporte?',
     helpAnswer7: 'Para soporte, envíanos un correo a support@drvchat.com',
+    helpHowCanWeHelp: '¿Cómo podemos ayudarte?',
+    helpFindAnswers: 'Encuentra respuestas a preguntas comunes sobre Drivers Chat',
+    helpStillNeed: '¿Aún necesitas ayuda?',
+    helpContactUs: 'Contáctanos en',
+    
+    // Help Categories
+    helpCategoryAccount: 'Cuenta & Perfil',
+    helpCategoryFriends: 'Sistema de Amigos',
+    helpCategoryPosts: 'Publicaciones & Compartir',
+    helpCategoryMessages: 'Mensajería',
+    helpCategoryOther: 'Otro',
+    
+    // Help Q&A - Account
+    helpQ1: '¿Cómo me registro?',
+    helpA1: 'En la pantalla de registro, ingresa tu nombre de usuario, correo electrónico, contraseña y nombre completo. También puedes ingresar un código de referencia si tienes uno. Haz clic en "Registrarse" para crear tu cuenta.',
+    helpQ2: '¿Cómo cambio mi foto de perfil?',
+    helpA2: 'Ve a la pestaña Perfil, toca tu foto de perfil y selecciona una nueva foto de tu galería. La foto se recortará en un cuadrado y se subirá automáticamente.',
+    helpQ3: '¿Qué es un código de referencia?',
+    helpA3: 'Un código de referencia es tu código único que se muestra en tu página de perfil. Compártelo con amigos para que puedan ingresarlo al registrarse. Verás cuántas personas se unieron usando tu código.',
+    helpQ4: '¿Cómo restablezco mi contraseña?',
+    helpA4: 'En la pantalla de inicio de sesión, haz clic en "¿Olvidaste tu contraseña?", ingresa tu correo electrónico y nombre de usuario, y sigue las instrucciones para restablecer tu contraseña.',
+    
+    // Help Q&A - Friends
+    helpQ5: '¿Cómo agrego amigos?',
+    helpA5: 'Ve a la pestaña Amigos, usa la barra de búsqueda para encontrar usuarios por nombre de usuario o nombre, luego toca "Agregar Amigo" para enviar una solicitud de amistad. También puedes agregar un mensaje personal.',
+    helpQ6: '¿Cómo acepto solicitudes de amistad?',
+    helpA6: 'Ve a la pestaña Amigos y verifica la sección "Solicitudes de Amistad". Verás una insignia en el ícono de la pestaña Amigos si tienes solicitudes pendientes. Toca "Aceptar" o "Rechazar" para cada solicitud.',
+    helpQ7: '¿Puedo eliminar amigos?',
+    helpA7: 'Actualmente, la función de eliminación de amigos no está disponible. Esta función se agregará en futuras actualizaciones.',
+    helpQ8: '¿Dónde puedo ver mi lista de amigos?',
+    helpA8: 'Ve a la pestaña Amigos y desplázate hacia abajo para ver tu lista completa de amigos con sus fotos de perfil y nombres.',
+    
+    // Help Q&A - Posts
+    helpQ9: '¿Cómo creo una publicación?',
+    helpA9: 'En la pestaña Inicio, toca el ícono "+" en la parte superior derecha. Escribe tu contenido, opcionalmente agrega una foto, elige la configuración de privacidad y toca "Publicar".',
+    helpQ10: '¿Qué son las configuraciones de privacidad?',
+    helpA10: 'Al crear una publicación, puedes elegir:\n• Público: Todos pueden ver\n• Amigos: Solo tus amigos pueden ver\n• Específico: Elige amigos específicos que puedan ver la publicación',
+    helpQ11: '¿Cómo funciona Me gusta/No me gusta?',
+    helpA11: 'Puedes dar me gusta 👍 o no me gusta 👎 a cualquier publicación excepto la tuya. Toca el pulgar hacia arriba para dar me gusta o el pulgar hacia abajo para no me gusta. Puedes cambiar tu voto en cualquier momento.',
+    helpQ12: '¿Qué pasa si una publicación recibe demasiados no me gusta?',
+    helpA12: 'Si una publicación recibe más de 10 votos totales y más del 50% son no me gusta, se eliminará automáticamente para mantener la calidad del contenido.',
+    helpQ13: '¿Puedo votar en mis propias publicaciones?',
+    helpA13: 'No, no puedes dar me gusta o no me gusta a tus propias publicaciones. Los botones de votación estarán deshabilitados (en gris) en tus publicaciones.',
+    helpQ14: '¿Cómo veo el perfil de alguien?',
+    helpA14: 'Toca cualquier nombre de usuario o foto de perfil en publicaciones o la lista de amigos para ver su perfil y ver todas sus publicaciones.',
+    
+    // Help Q&A - Messages
+    helpQ15: '¿Cómo inicio un chat?',
+    helpA15: 'Visita el perfil de un usuario y toca "Enviar Mensaje", o ve a la pestaña Mensajes y selecciona una conversación existente.',
+    helpQ16: '¿Cómo sé si tengo mensajes nuevos?',
+    helpA16: 'Verás una insignia roja con el número de mensajes no leídos en el ícono de la pestaña Mensajes en la parte inferior.',
+    helpQ17: '¿Puedo enviar imágenes en el chat?',
+    helpA17: 'Actualmente, el chat solo admite mensajes de texto. El compartir imágenes en mensajes se agregará en futuras actualizaciones.',
+    helpQ18: '¿Los mensajes son en tiempo real?',
+    helpA18: '¡Sí! Los mensajes usan tecnología Socket.IO para entrega en tiempo real. Los mensajes aparecen instantáneamente cuando se envían.',
+    
+    // Help Q&A - Other
+    helpQ19: '¿Cómo cierro sesión?',
+    helpA19: 'Ve a la pestaña Perfil, desplázate hacia abajo y toca "Cerrar Sesión". Tu sesión terminará inmediatamente y serás redirigido a la pantalla de inicio de sesión.',
+    helpQ20: '¿Puedo editar mis publicaciones?',
+    helpA20: '¡Sí! Toca el ícono de editar (lápiz) en tu publicación para editar el contenido.',
+    helpQ21: '¿Mis datos están seguros?',
+    helpA21: '¡Sí! Tu contraseña está encriptada y todas las comunicaciones API están seguras. Nunca compartimos tu información personal con terceros.',
+    helpQ22: '¿Puedo usar la aplicación sin conexión?',
+    helpA22: 'No, esta aplicación requiere una conexión a internet para cargar publicaciones, enviar mensajes y realizar todas las acciones.',
+    helpQ23: '¿Quién puede ver mi perfil?',
+    helpA23: 'Todos los usuarios registrados pueden ver tu perfil básico (nombre, nombre de usuario, foto de perfil, publicaciones). Solo los amigos pueden ver publicaciones marcadas como "Solo amigos".',
     
     // About
     aboutTitle: 'Acerca de Drivers Chat',
