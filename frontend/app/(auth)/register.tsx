@@ -44,7 +44,7 @@ export default function RegisterScreen() {
       await AsyncStorage.setItem('termsAccepted', 'true');
       router.replace('/(tabs)/home');
     } catch (error: any) {
-      Alert.alert('Error', error.message);
+      Alert.alert(t('error'), error.message);
     } finally {
       setLoading(false);
       setPendingRegistration(false);
@@ -64,8 +64,8 @@ export default function RegisterScreen() {
           >
             <Ionicons name="arrow-back" size={24} color="#007AFF" />
           </TouchableOpacity>
-          <Text style={styles.title}>Sign Up</Text>
-          <Text style={styles.subtitle}>Join the driver community</Text>
+          <Text style={styles.title}>{t('register')}</Text>
+          <Text style={styles.subtitle}>{t('joinDriverCommunity')}</Text>
         </View>
 
         <View style={styles.form}>
@@ -73,7 +73,7 @@ export default function RegisterScreen() {
             <Ionicons name="person-outline" size={20} color="#666" style={styles.inputIcon} />
             <TextInput
               style={styles.input}
-              placeholder="Full Name"
+              placeholder={t('fullName')}
               value={fullName}
               onChangeText={setFullName}
               placeholderTextColor="#999"
@@ -84,7 +84,7 @@ export default function RegisterScreen() {
             <Ionicons name="at-outline" size={20} color="#666" style={styles.inputIcon} />
             <TextInput
               style={styles.input}
-              placeholder="Username"
+              placeholder={t('username')}
               value={username}
               onChangeText={setUsername}
               autoCapitalize="none"
@@ -96,7 +96,7 @@ export default function RegisterScreen() {
             <Ionicons name="mail-outline" size={20} color="#666" style={styles.inputIcon} />
             <TextInput
               style={styles.input}
-              placeholder="Email"
+              placeholder={t('email')}
               value={email}
               onChangeText={setEmail}
               autoCapitalize="none"
@@ -109,7 +109,7 @@ export default function RegisterScreen() {
             <Ionicons name="lock-closed-outline" size={20} color="#666" style={styles.inputIcon} />
             <TextInput
               style={styles.input}
-              placeholder="Password (min. 6 characters)"
+              placeholder={t('passwordMinLengthPlaceholder')}
               value={password}
               onChangeText={setPassword}
               secureTextEntry
@@ -121,7 +121,7 @@ export default function RegisterScreen() {
             <Ionicons name="gift-outline" size={20} color="#666" style={styles.inputIcon} />
             <TextInput
               style={styles.input}
-              placeholder="Referral Code (optional)"
+              placeholder={t('referralCodeOptional')}
               value={referralCode}
               onChangeText={setReferralCode}
               autoCapitalize="characters"
@@ -135,7 +135,7 @@ export default function RegisterScreen() {
             disabled={loading}
           >
             <Text style={styles.buttonText}>
-              {loading ? 'Creating account...' : 'Sign Up'}
+              {loading ? t('creatingAccount') : t('register')}
             </Text>
           </TouchableOpacity>
 
@@ -143,14 +143,14 @@ export default function RegisterScreen() {
             style={styles.linkButton}
             onPress={() => router.back()}
           >
-            <Text style={styles.linkText}>Already have an account? Sign in</Text>
+            <Text style={styles.linkText}>{t('alreadyHaveAccount')}</Text>
           </TouchableOpacity>
 
           <TouchableOpacity 
             style={[styles.linkButton, { marginTop: 8 }]}
             onPress={() => router.push('/about')}
           >
-            <Text style={[styles.linkText, { color: '#666' }]}>About Drivers Chat</Text>
+            <Text style={[styles.linkText, { color: '#666' }]}>{t('aboutApp')}</Text>
           </TouchableOpacity>
         </View>
       </ScrollView>
