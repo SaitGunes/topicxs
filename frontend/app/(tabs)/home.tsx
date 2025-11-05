@@ -145,7 +145,7 @@ export default function HomeScreen() {
     } catch (error: any) {
       if (error.response?.status === 404) {
         // Post was auto-deleted
-        Alert.alert('Notice', 'This post was removed due to community feedback');
+        Alert.alert(t('success'), t('postRemoved'));
         setPosts(posts.filter(p => p.id !== postId));
       }
     }
@@ -166,7 +166,7 @@ export default function HomeScreen() {
     } catch (error: any) {
       if (error.response?.status === 404) {
         // Post was auto-deleted
-        Alert.alert('Notice', 'This post was removed due to community feedback');
+        Alert.alert(t('success'), t('postRemoved'));
         setPosts(posts.filter(p => p.id !== postId));
       }
     }
