@@ -491,15 +491,15 @@ export default function HomeScreen() {
         >
           <View style={styles.modalHeader}>
             <TouchableOpacity onPress={() => setEditModalVisible(false)}>
-              <Text style={styles.cancelButton}>Cancel</Text>
+              <Text style={styles.cancelButton}>{t('cancel')}</Text>
             </TouchableOpacity>
-            <Text style={styles.modalTitle}>Edit Post</Text>
+            <Text style={styles.modalTitle}>{t('editPost')}</Text>
             <TouchableOpacity 
               onPress={() => handleSaveEdit(editContent)}
               disabled={!editContent.trim()}
             >
               <Text style={[styles.postButton, !editContent.trim() && styles.postButtonDisabled]}>
-                Save
+                {t('save')}
               </Text>
             </TouchableOpacity>
           </View>
@@ -507,7 +507,7 @@ export default function HomeScreen() {
           <ScrollView style={styles.modalContent}>
             <TextInput
               style={styles.textInput}
-              placeholder="What's on your mind?"
+              placeholder={t('whatsOnYourMind')}
               value={editContent}
               onChangeText={setEditContent}
               multiline
