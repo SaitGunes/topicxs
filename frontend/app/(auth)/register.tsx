@@ -22,12 +22,12 @@ export default function RegisterScreen() {
 
   const handleRegister = async () => {
     if (!username || !email || !fullName || !password) {
-      Alert.alert('Error', 'Please fill in all required fields');
+      Alert.alert(t('error'), t('fillAllRequiredFields'));
       return;
     }
 
     if (password.length < 6) {
-      Alert.alert('Error', 'Password must be at least 6 characters');
+      Alert.alert(t('error'), t('passwordMinLength'));
       return;
     }
 
