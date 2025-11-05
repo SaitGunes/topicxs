@@ -34,9 +34,9 @@ export default function TermsModal({ visible, onAccept }: TermsModalProps) {
         {/* Header */}
         <View style={styles.header}>
           <Text style={styles.headerTitle}>
-            {currentStep === 1 ? 'Terms of Service' : 'Community Guidelines'}
+            {currentStep === 1 ? t('termsOfService') : t('communityGuidelines')}
           </Text>
-          <Text style={styles.stepIndicator}>Step {currentStep} of 2</Text>
+          <Text style={styles.stepIndicator}>{t('termsStep')} {currentStep} {t('termsOf')} 2</Text>
         </View>
 
         {/* Content */}
