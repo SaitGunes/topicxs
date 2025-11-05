@@ -2,151 +2,73 @@ import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-nati
 import { useState } from 'react';
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
-
-interface FAQItem {
-  question: string;
-  answer: string;
-}
-
-interface FAQCategory {
-  title: string;
-  icon: string;
-  items: FAQItem[];
-}
+import { useTranslation } from '../store/languageStore';
 
 export default function HelpScreen() {
   const router = useRouter();
+  const { t } = useTranslation();
   const [expandedCategory, setExpandedCategory] = useState<number | null>(null);
   const [expandedQuestion, setExpandedQuestion] = useState<string | null>(null);
 
-  const faqData: FAQCategory[] = [
+  const faqData = [
     {
-      title: 'Account & Profile',
+      title: t('helpCategoryAccount'),
       icon: 'person-circle',
       items: [
-        {
-          question: 'How do I register?',
-          answer: 'On the registration screen, enter your username, email, password, and full name. You can also enter a referral code if you have one. Click "Register" to create your account.',
-        },
-        {
-          question: 'How do I change my profile picture?',
-          answer: 'Go to the Profile tab, tap on your profile picture, and select a new photo from your gallery. The photo will be cropped to a square and uploaded automatically.',
-        },
-        {
-          question: 'What is a referral code?',
-          answer: 'A referral code is your unique code shown on your profile page. Share it with friends so they can enter it when registering. You\'ll see how many people joined using your code.',
-        },
-        {
-          question: 'How do I reset my password?',
-          answer: 'On the login screen, click "Forgot Password?", enter your email and username, and follow the instructions to reset your password.',
-        },
+        { question: t('helpQ1'), answer: t('helpA1') },
+        { question: t('helpQ2'), answer: t('helpA2') },
+        { question: t('helpQ3'), answer: t('helpA3') },
+        { question: t('helpQ4'), answer: t('helpA4') },
       ],
     },
     {
-      title: 'Friends System',
+      title: t('helpCategoryFriends'),
       icon: 'people',
       items: [
-        {
-          question: 'How do I add friends?',
-          answer: 'Go to the Friends tab, use the search bar to find users by username or name, then tap "Add Friend" to send a friend request. You can also add a personal message.',
-        },
-        {
-          question: 'How do I accept friend requests?',
-          answer: 'Go to the Friends tab and check the "Friend Requests" section. You\'ll see a badge on the Friends tab icon if you have pending requests. Tap "Accept" or "Decline" for each request.',
-        },
-        {
-          question: 'Can I remove friends?',
-          answer: 'Currently, the friend removal feature is not available. This feature will be added in future updates.',
-        },
-        {
-          question: 'Where can I see my friends list?',
-          answer: 'Go to the Friends tab and scroll down to see your complete friends list with their profile pictures and names.',
-        },
+        { question: t('helpQ5'), answer: t('helpA5') },
+        { question: t('helpQ6'), answer: t('helpA6') },
+        { question: t('helpQ7'), answer: t('helpA7') },
+        { question: t('helpQ8'), answer: t('helpA8') },
       ],
     },
     {
-      title: 'Posts & Sharing',
+      title: t('helpCategoryPosts'),
       icon: 'newspaper',
       items: [
-        {
-          question: 'How do I create a post?',
-          answer: 'On the Home tab, tap the "+" icon in the top right. Write your content, optionally add a photo, choose privacy settings, and tap "Post".',
-        },
-        {
-          question: 'What are privacy settings?',
-          answer: 'When creating a post, you can choose:\n• Public: Everyone can see\n• Friends: Only your friends can see\n• Specific: Choose specific friends who can see the post',
-        },
-        {
-          question: 'How does Like/Dislike work?',
-          answer: 'You can like 👍 or dislike 👎 any post except your own. Tap the thumbs up to like, or thumbs down to dislike. You can change your vote anytime.',
-        },
-        {
-          question: 'What happens if a post gets too many dislikes?',
-          answer: 'If a post receives more than 10 total votes and more than 50% are dislikes, it will be automatically deleted to maintain content quality.',
-        },
-        {
-          question: 'Can I vote on my own posts?',
-          answer: 'No, you cannot like or dislike your own posts. The vote buttons will be disabled (grayed out) on your posts.',
-        },
-        {
-          question: 'How do I view someone\'s profile?',
-          answer: 'Tap on any username or profile picture in posts or the friends list to view their profile and see all their posts.',
-        },
+        { question: t('helpQ9'), answer: t('helpA9') },
+        { question: t('helpQ10'), answer: t('helpA10') },
+        { question: t('helpQ11'), answer: t('helpA11') },
+        { question: t('helpQ12'), answer: t('helpA12') },
+        { question: t('helpQ13'), answer: t('helpA13') },
+        { question: t('helpQ14'), answer: t('helpA14') },
       ],
     },
     {
-      title: 'Messaging',
+      title: t('helpCategoryMessages'),
       icon: 'chatbubbles',
       items: [
-        {
-          question: 'How do I start a chat?',
-          answer: 'Visit a user\'s profile and tap "Send Message", or go to the Messages tab and select an existing conversation.',
-        },
-        {
-          question: 'How do I know if I have new messages?',
-          answer: 'You\'ll see a red badge with the number of unread messages on the Messages tab icon at the bottom.',
-        },
-        {
-          question: 'Can I send images in chat?',
-          answer: 'Currently, chat only supports text messages. Image sharing in messages will be added in future updates.',
-        },
-        {
-          question: 'Are messages real-time?',
-          answer: 'Yes! Messages use Socket.IO technology for real-time delivery. Messages appear instantly when sent.',
-        },
+        { question: t('helpQ15'), answer: t('helpA15') },
+        { question: t('helpQ16'), answer: t('helpA16') },
+        { question: t('helpQ17'), answer: t('helpA17') },
+        { question: t('helpQ18'), answer: t('helpA18') },
       ],
     },
     {
-      title: 'Other',
+      title: t('helpCategoryOther'),
       icon: 'settings',
       items: [
-        {
-          question: 'How do I sign out?',
-          answer: 'Go to the Profile tab, scroll down, and tap "Sign Out". Your session will end immediately and you\'ll be redirected to the login screen.',
-        },
-        {
-          question: 'Can I edit my posts?',
-          answer: 'Post editing is not currently available. You can delete and create a new post if needed (delete feature coming soon).',
-        },
-        {
-          question: 'Is my data secure?',
-          answer: 'Yes! Your password is encrypted, and all API communications are secured. We never share your personal information with third parties.',
-        },
-        {
-          question: 'Can I use the app offline?',
-          answer: 'No, this app requires an internet connection to load posts, send messages, and perform all actions.',
-        },
-        {
-          question: 'Who can see my profile?',
-          answer: 'All registered users can view your basic profile (name, username, profile picture, posts). Only friends can see posts marked as "Friends only".',
-        },
+        { question: t('helpQ19'), answer: t('helpA19') },
+        { question: t('helpQ20'), answer: t('helpA20') },
+        { question: t('helpQ21'), answer: t('helpA21') },
+        { question: t('helpQ22'), answer: t('helpA22') },
+        { question: t('helpQ23'), answer: t('helpA23') },
       ],
     },
   ];
 
   const toggleCategory = (index: number) => {
     setExpandedCategory(expandedCategory === index ? null : index);
-    setExpandedQuestion(null); // Close all questions when switching categories
+    setExpandedQuestion(null);
   };
 
   const toggleQuestion = (questionId: string) => {
@@ -159,17 +81,15 @@ export default function HelpScreen() {
         <TouchableOpacity onPress={() => router.back()}>
           <Ionicons name="arrow-back" size={24} color="#000" />
         </TouchableOpacity>
-        <Text style={styles.headerTitle}>Help & FAQ</Text>
+        <Text style={styles.headerTitle}>{t('helpTitle')}</Text>
         <View style={{ width: 24 }} />
       </View>
 
       <ScrollView style={styles.content}>
         <View style={styles.introSection}>
           <Ionicons name="help-circle" size={64} color="#007AFF" />
-          <Text style={styles.introTitle}>How can we help you?</Text>
-          <Text style={styles.introText}>
-            Find answers to common questions about Drivers Chat
-          </Text>
+          <Text style={styles.introTitle}>{t('helpHowCanWeHelp')}</Text>
+          <Text style={styles.introText}>{t('helpFindAnswers')}</Text>
         </View>
 
         {faqData.map((category, categoryIndex) => (
@@ -221,9 +141,9 @@ export default function HelpScreen() {
         ))}
 
         <View style={styles.footerSection}>
-          <Text style={styles.footerTitle}>Still need help?</Text>
+          <Text style={styles.footerTitle}>{t('helpStillNeed')}</Text>
           <Text style={styles.footerText}>
-            Contact us at support@drvchat.com
+            {t('helpContactUs')} {t('termsSupportEmail')}
           </Text>
           <Text style={styles.versionText}>Drivers Chat v1.0</Text>
         </View>
