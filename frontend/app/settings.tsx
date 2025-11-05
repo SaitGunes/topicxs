@@ -4,12 +4,14 @@ import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import { useAuthStore } from '../store/authStore';
 import { useLanguageStore } from '../store/languageStore';
+import { useTranslation } from '../store/languageStore';
 import api from '../utils/api';
 
 export default function SettingsScreen() {
   const router = useRouter();
   const { user, logout, setUser } = useAuthStore();
   const { language, setLanguage } = useLanguageStore();
+  const { t } = useTranslation();
   
   // Profile Edit Modal
   const [editProfileModal, setEditProfileModal] = useState(false);
