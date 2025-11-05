@@ -174,37 +174,37 @@ export default function HomeScreen() {
 
   const handleDeletePost = async (postId: string) => {
     const message = user?.is_admin 
-      ? 'Are you sure you want to delete this post as an admin?' 
-      : 'Are you sure you want to delete your post?';
+      ? t('deletePostAdminMessage')
+      : t('deletePostMessage');
     
     if (Platform.OS === 'web') {
       if (window.confirm(message)) {
         try {
           await api.delete(`/api/posts/${postId}`);
           setPosts(posts.filter(p => p.id !== postId));
-          alert('Post deleted successfully');
+          alert(t('postDeleted'));
         } catch (error) {
           console.error('Delete error:', error);
-          alert('Failed to delete post');
+          alert(t('failedDeletePost'));
         }
       }
     } else {
       Alert.alert(
-        'Delete Post',
+        t('deletePostTitle'),
         message,
         [
-          { text: 'Cancel', style: 'cancel' },
+          { text: t('cancel'), style: 'cancel' },
           {
-            text: 'Delete',
+            text: t('delete'),
             style: 'destructive',
             onPress: async () => {
               try {
                 await api.delete(`/api/posts/${postId}`);
                 setPosts(posts.filter(p => p.id !== postId));
-                Alert.alert('Success', 'Post deleted successfully');
+                Alert.alert(t('success'), t('postDeleted'));
               } catch (error) {
                 console.error('Delete error:', error);
-                Alert.alert('Error', 'Failed to delete post');
+                Alert.alert(t('error'), t('failedDeletePost'));
               }
             },
           },
