@@ -101,7 +101,7 @@ export default function HomeScreen() {
 
   const createPost = async () => {
     if (!newPostContent.trim()) {
-      Alert.alert('Error', 'Please write something');
+      Alert.alert(t('error'), t('writeError'));
       return;
     }
 
@@ -122,9 +122,9 @@ export default function HomeScreen() {
       setPrivacyLevel('friends');
       setSelectedFriends([]);
       setCreateModalVisible(false);
-      Alert.alert('Success', 'Your post has been published');
+      Alert.alert(t('success'), t('postPublished'));
     } catch (error) {
-      Alert.alert('Error', 'Failed to create post');
+      Alert.alert(t('error'), t('failedCreatePost'));
     } finally {
       setPosting(false);
     }
