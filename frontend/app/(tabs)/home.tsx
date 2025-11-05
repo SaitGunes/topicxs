@@ -371,15 +371,15 @@ export default function HomeScreen() {
         >
           <View style={styles.modalHeader}>
             <TouchableOpacity onPress={() => setCreateModalVisible(false)}>
-              <Text style={styles.cancelButton}>Cancel</Text>
+              <Text style={styles.cancelButton}>{t('cancel')}</Text>
             </TouchableOpacity>
-            <Text style={styles.modalTitle}>New Post</Text>
+            <Text style={styles.modalTitle}>{t('newPost')}</Text>
             <TouchableOpacity 
               onPress={createPost}
               disabled={posting}
             >
               <Text style={[styles.postButton, posting && styles.postButtonDisabled]}>
-                {posting ? 'Publishing...' : 'Post'}
+                {posting ? t('publishing') : t('post')}
               </Text>
             </TouchableOpacity>
           </View>
@@ -387,7 +387,7 @@ export default function HomeScreen() {
           <ScrollView style={styles.modalContent}>
             <TextInput
               style={styles.textInput}
-              placeholder="What's on your mind?"
+              placeholder={t('whatsOnYourMind')}
               value={newPostContent}
               onChangeText={setNewPostContent}
               multiline
@@ -408,19 +408,19 @@ export default function HomeScreen() {
 
             <TouchableOpacity style={styles.addImageButton} onPress={pickImage}>
               <Ionicons name="image-outline" size={24} color="#007AFF" />
-              <Text style={styles.addImageText}>Add Photo</Text>
+              <Text style={styles.addImageText}>{t('addPhoto')}</Text>
             </TouchableOpacity>
 
             {/* Privacy Options */}
             <View style={styles.privacySection}>
-              <Text style={styles.privacyTitle}>Who can see this?</Text>
+              <Text style={styles.privacyTitle}>{t('whoCanSee')}</Text>
               
               <TouchableOpacity 
                 style={[styles.privacyOption, privacyLevel === 'public' && styles.privacyOptionSelected]}
                 onPress={() => setPrivacyLevel('public')}
               >
                 <Ionicons name="globe-outline" size={20} color={privacyLevel === 'public' ? '#007AFF' : '#666'} />
-                <Text style={[styles.privacyText, privacyLevel === 'public' && styles.privacyTextSelected]}>Public - Everyone</Text>
+                <Text style={[styles.privacyText, privacyLevel === 'public' && styles.privacyTextSelected]}>{t('publicEveryone')}</Text>
                 {privacyLevel === 'public' && <Ionicons name="checkmark-circle" size={20} color="#007AFF" />}
               </TouchableOpacity>
 
@@ -429,7 +429,7 @@ export default function HomeScreen() {
                 onPress={() => setPrivacyLevel('friends')}
               >
                 <Ionicons name="people-outline" size={20} color={privacyLevel === 'friends' ? '#007AFF' : '#666'} />
-                <Text style={[styles.privacyText, privacyLevel === 'friends' && styles.privacyTextSelected]}>Friends - Only friends</Text>
+                <Text style={[styles.privacyText, privacyLevel === 'friends' && styles.privacyTextSelected]}>{t('friendsOnly')}</Text>
                 {privacyLevel === 'friends' && <Ionicons name="checkmark-circle" size={20} color="#007AFF" />}
               </TouchableOpacity>
 
@@ -442,7 +442,7 @@ export default function HomeScreen() {
               >
                 <Ionicons name="person-outline" size={20} color={privacyLevel === 'specific' ? '#007AFF' : '#666'} />
                 <Text style={[styles.privacyText, privacyLevel === 'specific' && styles.privacyTextSelected]}>
-                  Specific - Choose friends {selectedFriends.length > 0 && `(${selectedFriends.length})`}
+                  {t('specificFriends')} {selectedFriends.length > 0 && `(${selectedFriends.length})`}
                 </Text>
                 {privacyLevel === 'specific' && <Ionicons name="checkmark-circle" size={20} color="#007AFF" />}
               </TouchableOpacity>
@@ -451,7 +451,7 @@ export default function HomeScreen() {
               {showFriendSelector && privacyLevel === 'specific' && (
                 <View style={styles.friendSelector}>
                   {friends.length === 0 ? (
-                    <Text style={styles.noFriendsText}>No friends yet. Add friends to share with specific people.</Text>
+                    <Text style={styles.noFriendsText}>{t('noFriendsYet')}</Text>
                   ) : (
                     friends.map((friend) => (
                       <TouchableOpacity
