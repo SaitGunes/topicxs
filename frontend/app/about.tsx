@@ -13,7 +13,7 @@ export default function AboutScreen() {
         <TouchableOpacity onPress={() => router.back()}>
           <Ionicons name="arrow-back" size={24} color="#000" />
         </TouchableOpacity>
-        <Text style={styles.headerTitle}>About</Text>
+        <Text style={styles.headerTitle}>{t('about')}</Text>
         <View style={{ width: 24 }} />
       </View>
 
@@ -24,122 +24,116 @@ export default function AboutScreen() {
           </View>
           <Text style={styles.appName}>Drivers Chat</Text>
           <Text style={styles.version}>Version 1.0.0</Text>
-          <Text style={styles.tagline}>Where Drivers Connect</Text>
+          <Text style={styles.tagline}>{t('aboutWherDriversConnect')}</Text>
         </View>
 
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>About the App</Text>
+          <Text style={styles.sectionTitle}>{t('aboutTheApp')}</Text>
           <Text style={styles.text}>
-            Drivers Chat is a FREE social platform built exclusively for Uber and Lyft drivers. 
-            Connect with fellow drivers, share experiences, get tips, and stay informed about 
-            everything related to rideshare driving.
+            {t('aboutAppDescription')}
           </Text>
         </View>
 
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Our Mission</Text>
+          <Text style={styles.sectionTitle}>{t('aboutOurMission')}</Text>
           <Text style={styles.text}>
-            To create a supportive community where rideshare drivers can connect, share knowledge, 
-            and help each other navigate the challenges and opportunities of driving for Uber and Lyft.
+            {t('aboutMissionDescription')}
           </Text>
         </View>
 
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Key Features</Text>
+          <Text style={styles.sectionTitle}>{t('aboutKeyFeatures')}</Text>
           <View style={styles.featureItem}>
             <Ionicons name="people" size={20} color="#007AFF" />
-            <Text style={styles.featureText}>Connect with drivers nationwide</Text>
+            <Text style={styles.featureText}>{t('aboutFeature1')}</Text>
           </View>
           <View style={styles.featureItem}>
             <Ionicons name="chatbubbles" size={20} color="#007AFF" />
-            <Text style={styles.featureText}>Real-time messaging</Text>
+            <Text style={styles.featureText}>{t('aboutFeature2')}</Text>
           </View>
           <View style={styles.featureItem}>
             <Ionicons name="newspaper" size={20} color="#007AFF" />
-            <Text style={styles.featureText}>Share tips and experiences</Text>
+            <Text style={styles.featureText}>{t('aboutFeature3')}</Text>
           </View>
           <View style={styles.featureItem}>
             <Ionicons name="heart" size={20} color="#007AFF" />
-            <Text style={styles.featureText}>Community-driven content moderation</Text>
+            <Text style={styles.featureText}>{t('aboutFeature4')}</Text>
           </View>
           <View style={styles.featureItem}>
             <Ionicons name="gift" size={20} color="#007AFF" />
-            <Text style={styles.featureText}>Referral rewards system</Text>
+            <Text style={styles.featureText}>{t('aboutFeature5')}</Text>
           </View>
           <View style={styles.featureItem}>
             <Ionicons name="shield-checkmark" size={20} color="#007AFF" />
-            <Text style={styles.featureText}>Safe and respectful community</Text>
+            <Text style={styles.featureText}>{t('aboutFeature6')}</Text>
           </View>
         </View>
 
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>100% Free</Text>
+          <Text style={styles.sectionTitle}>{t('aboutFree')}</Text>
           <Text style={styles.text}>
-            Drivers Chat is completely free with no paid memberships, premium features, or hidden costs. 
-            This is a non-commercial platform built by drivers, for drivers.
+            {t('aboutFreeDescription')}
           </Text>
         </View>
 
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Community Guidelines</Text>
+          <Text style={styles.sectionTitle}>{t('aboutCommunityGuidelines')}</Text>
           <Text style={styles.text}>
-            We maintain a safe and respectful environment by prohibiting commercial activities, 
-            political content, gambling, adult content, hate speech, and illegal activities. 
-            Users who violate our guidelines face account suspension or permanent bans.
+            {t('aboutGuidelinesDescription')}
           </Text>
           <TouchableOpacity 
             style={styles.linkButton}
             onPress={() => router.push('/terms-view')}
           >
-            <Text style={styles.linkText}>Read Full Terms & Guidelines →</Text>
+            <Text style={styles.linkText}>{t('aboutReadFullTerms')}</Text>
           </TouchableOpacity>
         </View>
 
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Contact & Support</Text>
+          <Text style={styles.sectionTitle}>{t('aboutContactSupport')}</Text>
           <Text style={styles.text}>
-            Have questions, feedback, or need help?{'\n'}
-            Email us at: support@drvchat.com
+            {t('aboutContactDescription')}{'\n'}
+            {t('aboutEmailUs')} {t('termsSupportEmail')}
           </Text>
           <TouchableOpacity 
             style={styles.linkButton}
             onPress={() => router.push('/help')}
           >
-            <Text style={styles.linkText}>Visit Help Center →</Text>
+            <Text style={styles.linkText}>{t('aboutVisitHelp')}</Text>
           </TouchableOpacity>
         </View>
 
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Legal</Text>
+          <Text style={styles.sectionTitle}>{t('aboutLegal')}</Text>
           <TouchableOpacity 
             style={styles.legalItem}
             onPress={() => router.push('/terms-view')}
           >
-            <Text style={styles.legalText}>Terms of Service</Text>
+            <Text style={styles.legalText}>{t('aboutTermsService')}</Text>
             <Ionicons name="chevron-forward" size={20} color="#666" />
           </TouchableOpacity>
           <TouchableOpacity 
             style={styles.legalItem}
             onPress={() => router.push('/terms-view')}
           >
-            <Text style={styles.legalText}>Community Guidelines</Text>
+            <Text style={styles.legalText}>{t('aboutCommunityGuidelines')}</Text>
             <Ionicons name="chevron-forward" size={20} color="#666" />
           </TouchableOpacity>
           <TouchableOpacity 
             style={styles.legalItem}
             onPress={() => router.push('/terms-view')}
           >
-            <Text style={styles.legalText}>Privacy Policy</Text>
+            <Text style={styles.legalText}>{t('aboutPrivacyPolicy')}</Text>
             <Ionicons name="chevron-forward" size={20} color="#666" />
           </TouchableOpacity>
         </View>
 
         <View style={styles.footer}>
           <Text style={styles.footerText}>
-            Made with ❤️ for rideshare drivers
+            {t('aboutMadeWith')}
           </Text>
           <Text style={styles.footerText}>
-            © 2025 Drivers Chat. All rights reserved.
+            {t('aboutCopyright')}
           </Text>
         </View>
       </ScrollView>
