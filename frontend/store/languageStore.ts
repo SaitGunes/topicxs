@@ -392,6 +392,73 @@ export const translations = {
     helpAnswer6: 'Profil sekmesine gidin ve yeni bir fotoğraf yüklemek için profil resminize dokunun.',
     helpQuestion7: 'Desteğe nasıl ulaşabilirim?',
     helpAnswer7: 'Destek için bize support@drvchat.com adresinden e-posta gönderin',
+    helpHowCanWeHelp: 'Nasıl yardımcı olabiliriz?',
+    helpFindAnswers: 'Drivers Chat hakkında sık sorulan sorulara cevaplar bulun',
+    helpStillNeed: 'Hala yardıma mı ihtiyacınız var?',
+    helpContactUs: 'Bize ulaşın:',
+    
+    // Help Categories
+    helpCategoryAccount: 'Hesap & Profil',
+    helpCategoryFriends: 'Arkadaş Sistemi',
+    helpCategoryPosts: 'Gönderiler & Paylaşım',
+    helpCategoryMessages: 'Mesajlaşma',
+    helpCategoryOther: 'Diğer',
+    
+    // Help Q&A - Account
+    helpQ1: 'Nasıl kayıt olurum?',
+    helpA1: 'Kayıt ekranında kullanıcı adınızı, e-postanızı, şifrenizi ve tam adınızı girin. Varsa bir referans kodu da girebilirsiniz. Hesabınızı oluşturmak için "Kayıt Ol"a tıklayın.',
+    helpQ2: 'Profil resmimi nasıl değiştiririm?',
+    helpA2: 'Profil sekmesine gidin, profil resminize dokunun ve galerinizden yeni bir fotoğraf seçin. Fotoğraf kareye kırpılacak ve otomatik olarak yüklenecektir.',
+    helpQ3: 'Referans kodu nedir?',
+    helpA3: 'Referans kodu, profil sayfanızda gösterilen benzersiz kodunuzdur. Arkadaşlarınızla paylaşın, böylece kayıt olurken girebilirler. Kodunuzla kaç kişinin katıldığını göreceksiniz.',
+    helpQ4: 'Şifremi nasıl sıfırlarım?',
+    helpA4: 'Giriş ekranında "Şifremi Unuttum?"a tıklayın, e-postanızı ve kullanıcı adınızı girin ve şifrenizi sıfırlamak için talimatları izleyin.',
+    
+    // Help Q&A - Friends
+    helpQ5: 'Nasıl arkadaş eklerim?',
+    helpA5: 'Arkadaşlar sekmesine gidin, kullanıcı adı veya ada göre kullanıcıları bulmak için arama çubuğunu kullanın, ardından arkadaşlık isteği göndermek için "Arkadaş Ekle"ye dokunun. Kişisel bir mesaj da ekleyebilirsiniz.',
+    helpQ6: 'Arkadaşlık isteklerini nasıl kabul ederim?',
+    helpA6: 'Arkadaşlar sekmesine gidin ve "Arkadaşlık İstekleri" bölümünü kontrol edin. Bekleyen istekleriniz varsa Arkadaşlar sekmesi simgesinde bir rozet göreceksiniz. Her istek için "Kabul Et" veya "Reddet"e dokunun.',
+    helpQ7: 'Arkadaşları kaldırabilir miyim?',
+    helpA7: 'Şu anda arkadaş kaldırma özelliği mevcut değil. Bu özellik gelecek güncellemelerde eklenecektir.',
+    helpQ8: 'Arkadaş listemi nerede görebilirim?',
+    helpA8: 'Arkadaşlar sekmesine gidin ve profil resimleri ve isimleri ile tüm arkadaş listenizi görmek için aşağı kaydırın.',
+    
+    // Help Q&A - Posts
+    helpQ9: 'Nasıl gönderi oluştururum?',
+    helpA9: 'Ana Sayfa sekmesinde sağ üstteki "+" simgesine dokunun. İçeriğinizi yazın, isteğe bağlı olarak bir fotoğraf ekleyin, gizlilik ayarlarını seçin ve "Paylaş"a dokunun.',
+    helpQ10: 'Gizlilik ayarları nedir?',
+    helpA10: 'Gönderi oluştururken şunları seçebilirsiniz:\n• Herkese Açık: Herkes görebilir\n• Arkadaşlar: Sadece arkadaşlarınız görebilir\n• Belirli: Gönderiyi görebilecek belirli arkadaşları seçin',
+    helpQ11: 'Beğeni/Beğenmeme nasıl çalışır?',
+    helpA11: 'Kendinizinkiler hariç herhangi bir gönderiyi beğenebilir 👍 veya beğenmeyebilirsiniz 👎. Beğenmek için başparmak yukarı, beğenmemek için başparmak aşağıya dokunun. Oyunuzu istediğiniz zaman değiştirebilirsiniz.',
+    helpQ12: 'Bir gönderi çok fazla beğenmeme alırsa ne olur?',
+    helpA12: '10\'dan fazla toplam oy alan ve %50\'den fazlası beğenmeme olan bir gönderi, içerik kalitesini korumak için otomatik olarak silinir.',
+    helpQ13: 'Kendi gönderilerime oy verebilir miyim?',
+    helpA13: 'Hayır, kendi gönderilerinizi beğenemez veya beğenmeyemezsiniz. Oy butonları gönderilerinizde devre dışı (gri) olacaktır.',
+    helpQ14: 'Birinin profilini nasıl görüntülerim?',
+    helpA14: 'Gönderilerdeki veya arkadaş listesindeki herhangi bir kullanıcı adına veya profil resmine dokunarak profillerini görüntüleyin ve tüm gönderilerini görün.',
+    
+    // Help Q&A - Messages
+    helpQ15: 'Nasıl sohbet başlatırım?',
+    helpA15: 'Bir kullanıcının profilini ziyaret edin ve "Mesaj Gönder"e dokunun veya Mesajlar sekmesine gidin ve mevcut bir konuşmayı seçin.',
+    helpQ16: 'Yeni mesajlarım olduğunu nasıl anlarım?',
+    helpA16: 'Alttaki Mesajlar sekmesi simgesinde okunmamış mesaj sayısını gösteren kırmızı bir rozet göreceksiniz.',
+    helpQ17: 'Sohbette resim gönderebilir miyim?',
+    helpA17: 'Şu anda sohbet yalnızca metin mesajlarını destekliyor. Mesajlarda resim paylaşımı gelecek güncellemelerde eklenecektir.',
+    helpQ18: 'Mesajlar gerçek zamanlı mı?',
+    helpA18: 'Evet! Mesajlar gerçek zamanlı teslimat için Socket.IO teknolojisini kullanır. Mesajlar gönderildiğinde anında görünür.',
+    
+    // Help Q&A - Other
+    helpQ19: 'Nasıl çıkış yaparım?',
+    helpA19: 'Profil sekmesine gidin, aşağı kaydırın ve "Çıkış Yap"a dokunun. Oturumunuz hemen sona erecek ve giriş ekranına yönlendirileceksiniz.',
+    helpQ20: 'Gönderilerimi düzenleyebilir miyim?',
+    helpA20: 'Evet! İçeriği düzenlemek için gönderinizdeki düzenle simgesine (kalem) dokunun.',
+    helpQ21: 'Verilerim güvende mi?',
+    helpA21: 'Evet! Şifreniz şifrelenir ve tüm API iletişimleri güvenlidir. Kişisel bilgilerinizi asla üçüncü taraflarla paylaşmayız.',
+    helpQ22: 'Uygulamayı çevrimdışı kullanabilir miyim?',
+    helpA22: 'Hayır, bu uygulama gönderileri yüklemek, mesaj göndermek ve tüm işlemleri gerçekleştirmek için internet bağlantısı gerektirir.',
+    helpQ23: 'Profilimi kimler görebilir?',
+    helpA23: 'Tüm kayıtlı kullanıcılar temel profilinizi (ad, kullanıcı adı, profil resmi, gönderiler) görüntüleyebilir. Sadece arkadaşlar "Sadece arkadaşlar" olarak işaretlenmiş gönderileri görebilir.',
     
     // About
     aboutTitle: 'Drivers Chat Hakkında',
