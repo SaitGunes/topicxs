@@ -1479,11 +1479,17 @@ async def get_admin_stats(admin: User = Depends(require_admin)):
 
 @api_router.get("/chatroom/messages")
 async def get_chatroom_messages(
-    limit: int = 50,
     current_user: User = Depends(get_current_user)
 ):
-    """Get latest public chat messages"""
-    messages = await db.chatroom_messages.find({}, {"_id": 0}).sort("created_at", -1).limit(limit).to_list(limit)
+    """Get latest public chat messages - max 200 OR last 24 hours"""
+    twenty_four_hours_ago = datetime.utcnow() - timedelta(hours=24)
+    
+    # Get messages from last 24 hours OR max 200 messages
+    messages = await db.chatroom_messages.find(
+        {"created_at": {"$gte": twenty_four_hours_ago}},
+        {"_id": 0}
+    ).sort("created_at", -1).limit(200).to_list(200)
+    
     messages.reverse()  # Oldest first
     
     # Convert datetime to ISO string
@@ -1492,6 +1498,16 @@ async def get_chatroom_messages(
             msg["created_at"] = msg["created_at"].isoformat()
     
     return messages
+
+@api_router.get("/chatroom/status")
+async def get_chatroom_status(current_user: User = Depends(get_current_user)):
+    """Check if chatroom is enabled or disabled"""
+    status = await db.chatroom_status.find_one({"id": "chatroom"})
+    if not status:
+        # Create default status
+        await db.chatroom_status.insert_one({"id": "chatroom", "enabled": True})
+        return {"enabled": True}
+    return {"enabled": status.get("enabled", True)}
 
 @api_router.post("/chatroom/messages")
 async def send_chatroom_message(
