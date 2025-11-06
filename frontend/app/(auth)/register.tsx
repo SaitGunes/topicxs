@@ -9,6 +9,7 @@ import TermsModal from '../../components/TermsModal';
 
 export default function RegisterScreen() {
   const router = useRouter();
+  const params = useLocalSearchParams();
   const register = useAuthStore((state) => state.register);
   const { t } = useTranslation();
   const [username, setUsername] = useState('');
