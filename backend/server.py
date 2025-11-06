@@ -75,6 +75,12 @@ class User(BaseModel):
     blocked_user_ids: List[str] = []
     is_admin: bool = False
     push_token: Optional[str] = None
+    notification_preferences: dict = {
+        "friend_requests": True,
+        "messages": True,
+        "likes": True,
+        "comments": True
+    }
     created_at: datetime = Field(default_factory=datetime.utcnow)
 
 class Token(BaseModel):
