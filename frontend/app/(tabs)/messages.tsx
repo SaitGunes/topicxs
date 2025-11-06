@@ -19,8 +19,16 @@ interface Chat {
 
 export default function MessagesScreen() {
   const router = useRouter();
+  const { t, language } = useTranslation();
   const [chats, setChats] = useState<Chat[]>([]);
   const [loading, setLoading] = useState(false);
+  
+  // Get locale for date-fns
+  const getDateLocale = () => {
+    if (language === 'tr') return tr;
+    if (language === 'es') return es;
+    return undefined;
+  };
 
   useEffect(() => {
     loadChats();
