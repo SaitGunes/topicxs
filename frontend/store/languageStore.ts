@@ -817,7 +817,7 @@ export const translations = {
     // Help
     helpTitle: 'Ayuda & Preguntas Frecuentes',
     helpQuestion1: '¿Qué es Drivers Chat?',
-    helpAnswer1: 'Drivers Chat es una plataforma social diseñada específicamente para conductores de Uber y Lyft para conectarse, compartir experiencias y comunicarse entre sí.',
+    helpAnswer1: 'Drivers Chat es una plataforma social diseñada específicamente para conductores profesionales para conectarse, compartir experiencias y comunicarse entre sí.',
     helpQuestion2: '¿Cómo creo una publicación?',
     helpAnswer2: 'Toca el botón + en la pantalla de inicio. Puedes escribir texto, agregar fotos y elegir quién puede ver tu publicación (Público, Amigos o Amigos específicos).',
     helpQuestion3: '¿Qué son los me gusta y no me gusta?',
