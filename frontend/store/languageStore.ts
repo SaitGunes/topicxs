@@ -654,7 +654,7 @@ export const translations = {
     
     // About
     aboutTitle: 'Drivers Chat Hakkında',
-    aboutDescription: 'Drivers Chat, sürücüler tarafından sürücüler için oluşturulmuş bir topluluk platformudur. Diğer Uber ve Lyft sürücüleriyle bağlantı kurun, deneyimlerinizi paylaşın ve anlamlı bağlantılar oluşturun.',
+    aboutDescription: 'Drivers Chat, sürücüler tarafından sürücüler için oluşturulmuş bir topluluk platformudur. Diğer profesyonel sürücülerle bağlantı kurun, deneyimlerinizi paylaşın ve anlamlı bağlantılar oluşturun.',
     aboutVersion: 'Versiyon',
     aboutSupport: 'Destek',
     aboutTerms: 'Şartlar & Koşullar',
