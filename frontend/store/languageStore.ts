@@ -133,7 +133,7 @@ export const translations = {
     // Help
     helpTitle: 'Help & FAQ',
     helpQuestion1: 'What is Drivers Chat?',
-    helpAnswer1: 'Drivers Chat is a social platform designed specifically for Uber and Lyft drivers to connect, share experiences, and communicate with each other.',
+    helpAnswer1: 'Drivers Chat is a social platform designed specifically for professional drivers to connect, share experiences, and communicate with each other.',
     helpQuestion2: 'How do I create a post?',
     helpAnswer2: 'Tap the + button on the home screen. You can write text, add photos, and choose who can see your post (Public, Friends, or Specific friends).',
     helpQuestion3: 'What are likes and dislikes?',
