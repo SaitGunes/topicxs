@@ -731,6 +731,8 @@ export const translations = {
     settingsGetNotifiedMessages: 'Yeni mesajlar için bildirim al',
     settingsLikes: 'Beğeniler',
     settingsGetNotifiedLikes: 'Birisi gönderinizi beğendiğinde bildirim al',
+    settingsGetNotifiedComments: 'Gönderilerinize yeni yorumlar geldiğinde bildirim al',
+    notificationsDisabledWarning: 'Push bildirimleri kapalı. Uyarılar almak için cihaz ayarlarınızdan etkinleştirin.',
     settingsGeneral: 'Genel',
     settingsDarkMode: 'Karanlık Mod',
     settingsComingSoon: 'Yakında',
