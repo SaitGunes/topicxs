@@ -239,6 +239,24 @@ export default function HomeScreen() {
     }
   };
 
+  const handleSearch = async (query: string) => {
+    if (!query || query.length < 2) {
+      setSearchResults([]);
+      return;
+    }
+
+    setSearching(true);
+    try {
+      const response = await api.get(`/api/posts/search?q=${encodeURIComponent(query)}`);
+      setSearchResults(response.data);
+    } catch (error) {
+      console.error('Search error:', error);
+      setSearchResults([]);
+    } finally {
+      setSearching(false);
+    }
+  };
+
   const renderPost = ({ item }: { item: Post }) => {
     const isLiked = item.likes?.includes(user?.id || '');
     const isDisliked = item.dislikes?.includes(user?.id || '');
