@@ -199,17 +199,36 @@ export default function SettingsScreen() {
 
         {/* Notifications Section */}
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Notifications</Text>
+          <View style={styles.sectionHeader}>
+            <Text style={styles.sectionTitle}>{t('settingsNotifications')}</Text>
+            {expoPushToken && (
+              <Ionicons name="checkmark-circle" size={18} color="#34C759" />
+            )}
+          </View>
+          
+          {!expoPushToken && (
+            <View style={styles.warningBox}>
+              <Ionicons name="alert-circle" size={20} color="#FF9500" />
+              <Text style={styles.warningText}>
+                {t('notificationsDisabledWarning')}
+              </Text>
+            </View>
+          )}
           
           <View style={styles.settingItem}>
             <Ionicons name="people-outline" size={22} color="#007AFF" />
             <View style={styles.settingTextContainer}>
-              <Text style={styles.settingText}>Friend Requests</Text>
-              <Text style={styles.settingSubtext}>Get notified of new requests</Text>
+              <Text style={styles.settingText}>{t('settingsFriendRequests')}</Text>
+              <Text style={styles.settingSubtext}>{t('settingsGetNotifiedRequests')}</Text>
             </View>
             <Switch
               value={friendRequestNotif}
-              onValueChange={setFriendRequestNotif}
+              onValueChange={async (value) => {
+                setFriendRequestNotif(value);
+                const newPrefs = { ...preferences, friend_requests: value };
+                setPreferences(newPrefs);
+                await updateNotificationPreferences(newPrefs);
+              }}
               trackColor={{ false: '#ccc', true: '#007AFF' }}
             />
           </View>
@@ -217,12 +236,17 @@ export default function SettingsScreen() {
           <View style={styles.settingItem}>
             <Ionicons name="chatbubble-outline" size={22} color="#007AFF" />
             <View style={styles.settingTextContainer}>
-              <Text style={styles.settingText}>Messages</Text>
-              <Text style={styles.settingSubtext}>Get notified of new messages</Text>
+              <Text style={styles.settingText}>{t('messages')}</Text>
+              <Text style={styles.settingSubtext}>{t('settingsGetNotifiedMessages')}</Text>
             </View>
             <Switch
               value={messageNotif}
-              onValueChange={setMessageNotif}
+              onValueChange={async (value) => {
+                setMessageNotif(value);
+                const newPrefs = { ...preferences, messages: value };
+                setPreferences(newPrefs);
+                await updateNotificationPreferences(newPrefs);
+              }}
               trackColor={{ false: '#ccc', true: '#007AFF' }}
             />
           </View>
@@ -230,12 +254,35 @@ export default function SettingsScreen() {
           <View style={styles.settingItem}>
             <Ionicons name="thumbs-up-outline" size={22} color="#007AFF" />
             <View style={styles.settingTextContainer}>
-              <Text style={styles.settingText}>Likes</Text>
-              <Text style={styles.settingSubtext}>Get notified when someone likes your post</Text>
+              <Text style={styles.settingText}>{t('settingsLikes')}</Text>
+              <Text style={styles.settingSubtext}>{t('settingsGetNotifiedLikes')}</Text>
             </View>
             <Switch
               value={likeNotif}
-              onValueChange={setLikeNotif}
+              onValueChange={async (value) => {
+                setLikeNotif(value);
+                const newPrefs = { ...preferences, likes: value };
+                setPreferences(newPrefs);
+                await updateNotificationPreferences(newPrefs);
+              }}
+              trackColor={{ false: '#ccc', true: '#007AFF' }}
+            />
+          </View>
+
+          <View style={styles.settingItem}>
+            <Ionicons name="chatbubbles-outline" size={22} color="#007AFF" />
+            <View style={styles.settingTextContainer}>
+              <Text style={styles.settingText}>{t('comments')}</Text>
+              <Text style={styles.settingSubtext}>{t('settingsGetNotifiedComments')}</Text>
+            </View>
+            <Switch
+              value={commentNotif}
+              onValueChange={async (value) => {
+                setCommentNotif(value);
+                const newPrefs = { ...preferences, comments: value };
+                setPreferences(newPrefs);
+                await updateNotificationPreferences(newPrefs);
+              }}
               trackColor={{ false: '#ccc', true: '#007AFF' }}
             />
           </View>
