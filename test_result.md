@@ -538,8 +538,14 @@ metadata:
 
 test_plan:
   current_focus:
-    - "Profile Page - Like/Dislike Posts"
-    - "Home Feed - Like/Dislike Posts"
+    - "Admin Panel - Get Statistics"
+    - "Admin Panel - Get All Reports"
+    - "Admin Panel - Resolve Report"
+    - "Admin Panel - Get All Users"
+    - "Admin Panel - Toggle User Admin Status"
+    - "Admin Panel - Ban/Unban User"
+    - "Admin Panel - Get All Posts"
+    - "Admin Panel - Delete Post"
   stuck_tasks: []
   test_all: false
   test_priority: "high_first"
