@@ -187,7 +187,7 @@ export default function GroupsScreen() {
           onPress={() => setCreateModalVisible(true)}
         >
           <Ionicons name="add-circle" size={28} color="#007AFF" />
-        </Text>
+        </TouchableOpacity>
       </View>
 
       <View style={styles.tabs}>
