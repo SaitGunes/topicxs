@@ -224,7 +224,7 @@ export default function TermsViewScreen() {
               <Text style={styles.text}>
                 • Driving tips and experiences{'\n'}
                 • Safety advice and road conditions{'\n'}
-                • Questions about rideshare platforms{'\n'}
+                • Questions about transportation platforms{'\n'}
                 • Friendly conversations and support{'\n'}
                 • Memes and humor (appropriate only){'\n'}
                 • Personal stories (within guidelines)
