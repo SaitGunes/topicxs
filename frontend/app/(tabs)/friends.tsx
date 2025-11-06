@@ -179,7 +179,7 @@ export default function FriendsScreen() {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <Text style={styles.headerTitle}>Friends</Text>
+        <Text style={styles.headerTitle}>{t('friendsTitle')}</Text>
       </View>
 
       {/* Search Section */}
@@ -188,7 +188,7 @@ export default function FriendsScreen() {
           <Ionicons name="search" size={20} color="#999" style={styles.searchIcon} />
           <TextInput
             style={styles.searchInput}
-            placeholder="Search drivers..."
+            placeholder={t('friendsSearchDrivers')}
             value={searchQuery}
             onChangeText={setSearchQuery}
             onSubmitEditing={searchUsers}
@@ -214,7 +214,7 @@ export default function FriendsScreen() {
       {friendRequests.length > 0 && (
         <View style={styles.section}>
           <View style={styles.sectionHeader}>
-            <Text style={styles.sectionTitle}>Friend Requests</Text>
+            <Text style={styles.sectionTitle}>{t('friendsFriendRequests')}</Text>
             <View style={styles.badge}>
               <Text style={styles.badgeText}>{friendRequests.length}</Text>
             </View>
@@ -230,12 +230,12 @@ export default function FriendsScreen() {
 
       {/* Friends List */}
       <View style={styles.section}>
-        <Text style={styles.sectionTitle}>My Friends ({friends.length})</Text>
+        <Text style={styles.sectionTitle}>{t('friendsMyFriends')} ({friends.length})</Text>
         {friends.length === 0 ? (
           <View style={styles.emptyContainer}>
             <Ionicons name="people-outline" size={48} color="#ccc" />
-            <Text style={styles.emptyText}>No friends yet</Text>
-            <Text style={styles.emptySubtext}>Search and add friends above!</Text>
+            <Text style={styles.emptyText}>{t('friendsNoFriendsYet')}</Text>
+            <Text style={styles.emptySubtext}>{t('friendsSearchAddFriends')}</Text>
           </View>
         ) : (
           <FlatList
