@@ -1213,6 +1213,156 @@ async def invite_to_group(group_id: str, invite_data: GroupInvite, current_user:
     
     return {"message": f"Invited {len(invite_data.user_ids)} users to group"}
 
+# ==================== ADMIN ENDPOINTS ====================
+
+# Admin middleware to check if user is admin
+async def require_admin(current_user: User = Depends(get_current_user)):
+    if not current_user.is_admin:
+        raise HTTPException(status_code=403, detail="Admin access required")
+    return current_user
+
+# Get all reports (admin only)
+@api_router.get("/admin/reports", response_model=List[Report])
+async def get_all_reports_admin(
+    status: Optional[str] = None,
+    admin: User = Depends(require_admin)
+):
+    query = {}
+    if status:
+        query["status"] = status
+    
+    reports = await db.reports.find(query).sort("created_at", -1).to_list(length=1000)
+    return reports
+
+# Resolve or update report status (admin only)
+@api_router.put("/admin/reports/{report_id}/resolve")
+async def resolve_report_admin(
+    report_id: str,
+    status: str,  # reviewed, resolved, dismissed
+    admin: User = Depends(require_admin)
+):
+    if status not in ["reviewed", "resolved", "dismissed"]:
+        raise HTTPException(status_code=400, detail="Invalid status")
+    
+    result = await db.reports.update_one(
+        {"id": report_id},
+        {"$set": {"status": status}}
+    )
+    
+    if result.modified_count == 0:
+        raise HTTPException(status_code=404, detail="Report not found")
+    
+    return {"message": f"Report status updated to {status}"}
+
+# Get all users (admin only)
+@api_router.get("/admin/users", response_model=List[User])
+async def get_all_users_admin(
+    skip: int = 0,
+    limit: int = 100,
+    admin: User = Depends(require_admin)
+):
+    users = await db.users.find().skip(skip).limit(limit).sort("created_at", -1).to_list(length=limit)
+    return [User(**{**user, "id": user["id"]}) for user in users]
+
+# Toggle user admin status (admin only)
+@api_router.put("/admin/users/{user_id}/toggle-admin")
+async def toggle_user_admin(
+    user_id: str,
+    admin: User = Depends(require_admin)
+):
+    user = await db.users.find_one({"id": user_id})
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+    
+    new_admin_status = not user.get("is_admin", False)
+    
+    await db.users.update_one(
+        {"id": user_id},
+        {"$set": {"is_admin": new_admin_status}}
+    )
+    
+    return {"message": f"User admin status set to {new_admin_status}", "is_admin": new_admin_status}
+
+# Ban/Unban user (admin only)
+@api_router.put("/admin/users/{user_id}/ban")
+async def ban_user_admin(
+    user_id: str,
+    ban: bool,  # true to ban, false to unban
+    admin: User = Depends(require_admin)
+):
+    user = await db.users.find_one({"id": user_id})
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+    
+    # Prevent banning yourself
+    if user_id == admin.id:
+        raise HTTPException(status_code=400, detail="Cannot ban yourself")
+    
+    await db.users.update_one(
+        {"id": user_id},
+        {"$set": {"is_banned": ban}}
+    )
+    
+    return {"message": f"User {'banned' if ban else 'unbanned'} successfully", "is_banned": ban}
+
+# Get all posts (admin only)
+@api_router.get("/admin/posts")
+async def get_all_posts_admin(
+    skip: int = 0,
+    limit: int = 100,
+    admin: User = Depends(require_admin)
+):
+    posts = await db.posts.find().skip(skip).limit(limit).sort("created_at", -1).to_list(length=limit)
+    
+    # Enhance posts with user info
+    for post in posts:
+        user = await db.users.find_one({"id": post["user_id"]})
+        if user:
+            post["username"] = user["username"]
+            post["user_profile_picture"] = user.get("profile_picture")
+    
+    return posts
+
+# Delete any post (admin only)
+@api_router.delete("/admin/posts/{post_id}")
+async def delete_post_admin(
+    post_id: str,
+    admin: User = Depends(require_admin)
+):
+    result = await db.posts.delete_one({"id": post_id})
+    
+    if result.deleted_count == 0:
+        raise HTTPException(status_code=404, detail="Post not found")
+    
+    # Also delete all comments on this post
+    await db.comments.delete_many({"post_id": post_id})
+    
+    return {"message": "Post deleted successfully"}
+
+# Get admin statistics (admin only)
+@api_router.get("/admin/stats")
+async def get_admin_stats(admin: User = Depends(require_admin)):
+    total_users = await db.users.count_documents({})
+    total_posts = await db.posts.count_documents({})
+    total_comments = await db.comments.count_documents({})
+    total_reports = await db.reports.count_documents({})
+    pending_reports = await db.reports.count_documents({"status": "pending"})
+    
+    # Get recent activity (last 7 days)
+    seven_days_ago = datetime.utcnow() - timedelta(days=7)
+    recent_users = await db.users.count_documents({"created_at": {"$gte": seven_days_ago}})
+    recent_posts = await db.posts.count_documents({"created_at": {"$gte": seven_days_ago}})
+    
+    return {
+        "total_users": total_users,
+        "total_posts": total_posts,
+        "total_comments": total_comments,
+        "total_reports": total_reports,
+        "pending_reports": pending_reports,
+        "recent_users_7d": recent_users,
+        "recent_posts_7d": recent_posts
+    }
+
 # ==================== SOCKET.IO ====================
 
 @sio.event
