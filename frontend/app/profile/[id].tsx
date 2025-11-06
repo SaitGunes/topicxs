@@ -2,6 +2,7 @@ import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Image, FlatList, 
 import { useState, useEffect } from 'react';
 import { Ionicons } from '@expo/vector-icons';
 import { useAuthStore } from '../../store/authStore';
+import { useTranslation } from '../../store/languageStore';
 import api from '../../utils/api';
 import { useRouter, useLocalSearchParams } from 'expo-router';
 
