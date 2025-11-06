@@ -92,6 +92,14 @@ export const useAuthStore = create<AuthState>((set) => ({
 
   logout: async () => {
     try {
+      // Remove push token from backend
+      try {
+        const { removePushTokenFromBackend } = await import('../utils/notifications');
+        await removePushTokenFromBackend();
+      } catch (error) {
+        console.error('Error removing push token:', error);
+      }
+      
       // Clear AsyncStorage
       await AsyncStorage.removeItem('token');
       await AsyncStorage.removeItem('user');
