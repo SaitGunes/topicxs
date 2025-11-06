@@ -1199,14 +1199,14 @@ export const translations = {
     helpA14: 'Toca cualquier nombre de usuario o foto de perfil en publicaciones o la lista de amigos para ver su perfil y ver todas sus publicaciones.',
     
     // Help Q&A - Messages
-    helpQ15: '¿Cómo inicio un chat?',
-    helpA15: 'Visita el perfil de un usuario y toca "Enviar Mensaje", o ve a la pestaña Mensajes y selecciona una conversación existente.',
-    helpQ16: '¿Cómo sé si tengo mensajes nuevos?',
-    helpA16: 'Verás una insignia roja con el número de mensajes no leídos en el ícono de la pestaña Mensajes en la parte inferior.',
-    helpQ17: '¿Puedo enviar imágenes en el chat?',
-    helpA17: 'Actualmente, el chat solo admite mensajes de texto. El compartir imágenes en mensajes se agregará en futuras actualizaciones.',
-    helpQ18: '¿Los mensajes son en tiempo real?',
-    helpA18: '¡Sí! Los mensajes usan tecnología Socket.IO para entrega en tiempo real. Los mensajes aparecen instantáneamente cuando se envían.',
+    helpQ15: '¿Cómo funciona la Sala de Chat?',
+    helpA15: 'La Sala de Chat es un espacio público donde todos los usuarios pueden chatear en tiempo real. Ve a la pestaña Sala de Chat y comienza a enviar mensajes. ¡Todos pueden ver y participar!',
+    helpQ16: '¿Puedo eliminar mis mensajes de chat?',
+    helpA16: '¡Sí! Puedes eliminar tus propios mensajes tocando el ícono de basura en tu mensaje. Los administradores también pueden eliminar cualquier mensaje o limpiar todo el chat.',
+    helpQ17: '¿Cómo creo o me uno a grupos?',
+    helpA17: 'Ve a la pestaña Grupos, toca el botón + para crear un grupo. Puedes unirte a grupos públicos directamente o solicitar unirte a grupos privados que requieren aprobación.',
+    helpQ18: '¿Puedo compartir publicaciones en grupos?',
+    helpA18: '¡Sí! Los miembros del grupo pueden compartir publicaciones con imágenes y emojis al grupo. Todas las publicaciones del grupo admiten me gusta, no me gusta, reacciones con emoji y comentarios.',
     
     // Help Q&A - Other
     helpQ19: '¿Cómo cierro sesión?',
