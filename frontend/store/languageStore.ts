@@ -715,7 +715,7 @@ export const translations = {
     aboutLegal: 'Yasal',
     aboutTermsService: 'Hizmet Şartları',
     aboutPrivacyPolicy: 'Gizlilik Politikası',
-    aboutMadeWith: 'Rideshare sürücüleri için ❤️ ile yapıldı',
+    aboutMadeWith: 'Profesyonel sürücüler için ❤️ ile yapıldı',
     aboutCopyright: '© 2025 Drivers Chat. Tüm hakları saklıdır.',
     aboutLegalGuidelines: 'Yasal & Kurallar',
   },
