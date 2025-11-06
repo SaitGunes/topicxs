@@ -355,6 +355,48 @@ export default function HomeScreen() {
             <Text style={styles.actionText}>{item.comments_count}</Text>
           </TouchableOpacity>
         </View>
+
+        {/* Emoji Reactions */}
+        {item.reactions && Object.keys(item.reactions).length > 0 && (
+          <View style={styles.reactionsBar}>
+            {Object.entries(item.reactions).map(([emoji, userIds]) => (
+              <TouchableOpacity
+                key={emoji}
+                style={[
+                  styles.reactionBubble,
+                  userIds.includes(user?.id || '') && styles.reactionBubbleActive
+                ]}
+                onPress={() => !isOwnPost && handleReaction(item.id, emoji)}
+              >
+                <Text style={styles.reactionEmoji}>{emoji}</Text>
+                <Text style={styles.reactionCount}>{userIds.length}</Text>
+              </TouchableOpacity>
+            ))}
+            {!isOwnPost && (
+              <TouchableOpacity 
+                style={styles.addReactionButton}
+                onPress={() => {
+                  setEditingPost(item);
+                  setShowEmojiPicker(true);
+                }}
+              >
+                <Ionicons name="add-circle-outline" size={20} color="#007AFF" />
+              </TouchableOpacity>
+            )}
+          </View>
+        )}
+        {!isOwnPost && (!item.reactions || Object.keys(item.reactions).length === 0) && (
+          <TouchableOpacity 
+            style={styles.firstReactionButton}
+            onPress={() => {
+              setEditingPost(item);
+              setShowEmojiPicker(true);
+            }}
+          >
+            <Ionicons name="happy-outline" size={18} color="#007AFF" />
+            <Text style={styles.firstReactionText}>Add Reaction</Text>
+          </TouchableOpacity>
+        )}
       </View>
     );
   };
