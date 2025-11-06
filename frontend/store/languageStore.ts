@@ -312,6 +312,8 @@ export const translations = {
     
     // Referral Share
     shareReferralCode: 'Share Referral Code',
+    nextStarIn: 'Next star in',
+    referrals: 'referrals',
     
     // Edit Post Modal
     editPostSaveChanges: 'Save Changes',
