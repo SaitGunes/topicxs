@@ -46,6 +46,11 @@ export default function RegisterScreen() {
       return;
     }
 
+    if (!confirm18Plus) {
+      Alert.alert(t('error'), t('mustConfirm18Plus'));
+      return;
+    }
+
     // Show terms modal before registration
     setPendingRegistration(true);
     setShowTerms(true);
