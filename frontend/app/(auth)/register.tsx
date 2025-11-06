@@ -40,6 +40,11 @@ export default function RegisterScreen() {
       return;
     }
 
+    if (!confirmDriver) {
+      Alert.alert(t('error'), t('mustConfirmDriver'));
+      return;
+    }
+
     // Show terms modal before registration
     setPendingRegistration(true);
     setShowTerms(true);
