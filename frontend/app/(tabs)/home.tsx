@@ -43,6 +43,12 @@ export default function HomeScreen() {
   const [editContent, setEditContent] = useState('');
   const [fullScreenImage, setFullScreenImage] = useState<string | null>(null);
   
+  // Search state
+  const [searchModalVisible, setSearchModalVisible] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [searchResults, setSearchResults] = useState<Post[]>([]);
+  const [searching, setSearching] = useState(false);
+  
   // Get locale for date-fns
   const getDateLocale = () => {
     if (language === 'tr') return tr;
