@@ -107,7 +107,7 @@ export default function ChatRoomScreen() {
 
     setSending(true);
     try {
-      await axios.post(
+      const response = await axios.post(
         `${API_URL}/api/chatroom/messages`,
         null,
         {
@@ -115,7 +115,15 @@ export default function ChatRoomScreen() {
           headers: { Authorization: `Bearer ${token}` },
         }
       );
+      
+      // Add message to state immediately (optimistic update)
+      setMessages((prev) => [...prev, response.data]);
       setNewMessage('');
+      
+      // Scroll to bottom
+      setTimeout(() => {
+        flatListRef.current?.scrollToEnd({ animated: true });
+      }, 100);
     } catch (error: any) {
       console.error('Send message error:', error);
     } finally {
