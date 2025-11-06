@@ -1030,6 +1030,14 @@ export const translations = {
     noChatMessages: 'Henüz mesaj yok. Konuşmayı başlat!',
     justNow: 'Az önce',
     online: 'çevrimiçi',
+    deleteMessage: 'Mesajı Sil',
+    confirmDeleteMessage: 'Bu mesajı silmek istediğinizden emin misiniz?',
+    clearChat: 'Tüm Sohbeti Temizle',
+    confirmClearChat: 'Tüm mesajları silmek istediğinizden emin misiniz? Bu işlem geri alınamaz.',
+    disableChat: 'Sohbeti Kapat',
+    enableChat: 'Sohbeti Aç',
+    chatDisabled: 'Sohbet kapalı',
+    chatDisabledMessage: 'Sohbet odası admin tarafından kapatılmıştır',
   },
   es: {
     // Auth
