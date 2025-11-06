@@ -1012,6 +1012,16 @@ export const translations = {
     groupPosts: 'Grup Gönderileri',
     noPostsInGroup: 'Bu grupta henüz gönderi yok',
     shareToGroup: 'Bu gruba paylaş',
+    
+    // Chat Room
+    chatRoom: 'Sohbet Odası',
+    publicChat: 'Genel Sohbet',
+    everyoneCanSee: 'Herkes mesajları görebilir ve gönderebilir',
+    typeMessage: 'Bir mesaj yazın...',
+    send: 'Gönder',
+    noChatMessages: 'Henüz mesaj yok. Konuşmayı başlat!',
+    justNow: 'Az önce',
+    online: 'çevrimiçi',
   },
   es: {
     // Auth
