@@ -270,6 +270,34 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginTop: 8,
   },
+  starBadge: {
+    backgroundColor: '#FFF9E6',
+    padding: 16,
+    borderRadius: 16,
+    marginTop: 16,
+    marginBottom: 8,
+    alignItems: 'center',
+    borderWidth: 2,
+    borderColor: '#FFD700',
+  },
+  starRow: {
+    flexDirection: 'row',
+    marginBottom: 8,
+    gap: 4,
+  },
+  starIcon: {
+    fontSize: 28,
+  },
+  levelName: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: '#D4AF37',
+    marginBottom: 4,
+  },
+  progressText: {
+    fontSize: 12,
+    color: '#666',
+  },
   section: {
     backgroundColor: '#fff',
     marginBottom: 16,
