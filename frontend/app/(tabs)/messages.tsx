@@ -2,10 +2,11 @@ import { View, Text, StyleSheet, FlatList, TouchableOpacity, Image } from 'react
 import { useState, useEffect } from 'react';
 import { Ionicons } from '@expo/vector-icons';
 import { useAuthStore } from '../../store/authStore';
+import { useTranslation } from '../../store/languageStore';
 import api from '../../utils/api';
 import { useRouter } from 'expo-router';
 import { formatDistanceToNow } from 'date-fns';
-import { tr } from 'date-fns/locale';
+import { tr, es } from 'date-fns/locale';
 
 interface Chat {
   id: string;
