@@ -1515,6 +1515,11 @@ async def send_chatroom_message(
     current_user: User = Depends(get_current_user)
 ):
     """Send a message to public chat room"""
+    # Check if chat is enabled
+    status = await db.chatroom_status.find_one({"id": "chatroom"})
+    if status and not status.get("enabled", True):
+        raise HTTPException(status_code=403, detail="Chat is currently disabled by admin")
+    
     message_id = str(int(datetime.utcnow().timestamp() * 1000))
     now = datetime.utcnow()
     
@@ -1543,6 +1548,55 @@ async def send_chatroom_message(
     await sio.emit('new_chatroom_message', message_emit, room='chatroom')
     
     return message_emit
+
+@api_router.delete("/chatroom/messages/{message_id}")
+async def delete_chatroom_message(
+    message_id: str,
+    current_user: User = Depends(get_current_user)
+):
+    """Delete own message from chatroom"""
+    message = await db.chatroom_messages.find_one({"id": message_id})
+    
+    if not message:
+        raise HTTPException(status_code=404, detail="Message not found")
+    
+    # Only owner or admin can delete
+    if message["user_id"] != current_user.id and not current_user.is_admin:
+        raise HTTPException(status_code=403, detail="Not authorized to delete this message")
+    
+    await db.chatroom_messages.delete_one({"id": message_id})
+    
+    # Notify all clients
+    await sio.emit('chatroom_message_deleted', {"message_id": message_id}, room='chatroom')
+    
+    return {"message": "Message deleted"}
+
+@api_router.delete("/admin/chatroom/clear")
+async def clear_chatroom(admin: User = Depends(require_admin)):
+    """Clear all chatroom messages (admin only)"""
+    result = await db.chatroom_messages.delete_many({})
+    
+    # Notify all clients
+    await sio.emit('chatroom_cleared', {}, room='chatroom')
+    
+    return {"message": f"Cleared {result.deleted_count} messages"}
+
+@api_router.post("/admin/chatroom/toggle")
+async def toggle_chatroom(
+    enabled: bool,
+    admin: User = Depends(require_admin)
+):
+    """Enable or disable chatroom (admin only)"""
+    await db.chatroom_status.update_one(
+        {"id": "chatroom"},
+        {"$set": {"enabled": enabled}},
+        upsert=True
+    )
+    
+    # Notify all clients
+    await sio.emit('chatroom_status_changed', {"enabled": enabled}, room='chatroom')
+    
+    return {"message": f"Chatroom {'enabled' if enabled else 'disabled'}", "enabled": enabled}
 
 # ==================== SOCKET.IO ====================
 
