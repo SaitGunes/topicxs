@@ -1151,6 +1151,19 @@ async def get_groups(current_user: User = Depends(get_current_user)):
     groups = await db.groups.find({"member_ids": current_user.id}).sort("created_at", -1).to_list(100)
     return [Group(**group) for group in groups]
 
+@api_router.get("/groups/discover", response_model=List[Group])
+async def discover_groups(current_user: User = Depends(get_current_user)):
+    # Get all groups where user is not a member
+    groups = await db.groups.find({"member_ids": {"$ne": current_user.id}}).sort("created_at", -1).to_list(100)
+    return [Group(**group) for group in groups]
+
+@api_router.get("/groups/{group_id}", response_model=Group)
+async def get_group_detail(group_id: str, current_user: User = Depends(get_current_user)):
+    group = await db.groups.find_one({"id": group_id})
+    if not group:
+        raise HTTPException(status_code=404, detail="Group not found")
+    return Group(**group)
+
 @api_router.post("/groups/{group_id}/join")
 async def join_group(group_id: str, current_user: User = Depends(get_current_user)):
     group = await db.groups.find_one({"id": group_id})
