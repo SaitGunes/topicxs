@@ -46,17 +46,25 @@ export default function ChatRoomScreen() {
     };
   }, []);
 
-  const loadMessages = async () => {
+  const loadMessages = async (showLoading = true) => {
+    if (showLoading) setLoading(true);
     try {
       const response = await axios.get(`${API_URL}/api/chatroom/messages`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setMessages(response.data);
-      setLoading(false);
+      if (showLoading) setLoading(false);
     } catch (error: any) {
       console.error('Load messages error:', error);
-      setLoading(false);
+      if (showLoading) setLoading(false);
     }
+  };
+
+  const onRefresh = async () => {
+    setRefreshing(true);
+    await loadMessages(false);
+    await checkChatStatus();
+    setRefreshing(false);
   };
 
   const checkChatStatus = async () => {
