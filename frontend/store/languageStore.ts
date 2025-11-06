@@ -696,6 +696,16 @@ export const translations = {
     writeComment: 'Yorum yaz...',
     noComments: 'Henüz yorum yok',
     
+    // Block User
+    blockUser: 'Kullanıcıyı Engelle',
+    unblockUser: 'Engeli Kaldır',
+    blockedUsers: 'Engellenen Kullanıcılar',
+    blockUserConfirm: 'Bu kullanıcıyı engellemek istediğinizden emin misiniz? Gönderilerini ve mesajlarını göremeyeceksiniz.',
+    unblockUserConfirm: 'Bu kullanıcının engelini kaldırmak istediğinizden emin misiniz?',
+    userBlocked: 'Kullanıcı başarıyla engellendi',
+    userUnblocked: 'Kullanıcının engeli başarıyla kaldırıldı',
+    noBlockedUsers: 'Engellenen kullanıcı yok',
+    
     // About
     aboutTitle: 'Drivers Chat Hakkında',
     aboutDescription: 'Drivers Chat, sürücüler tarafından sürücüler için oluşturulmuş bir topluluk platformudur. Diğer profesyonel sürücülerle bağlantı kurun, deneyimlerinizi paylaşın ve anlamlı bağlantılar oluşturun.',
