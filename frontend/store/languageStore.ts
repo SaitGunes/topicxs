@@ -227,6 +227,8 @@ export const translations = {
     settingsGetNotifiedMessages: 'Get notified of new messages',
     settingsLikes: 'Likes',
     settingsGetNotifiedLikes: 'Get notified when someone likes your post',
+    settingsGetNotifiedComments: 'Get notified of new comments on your posts',
+    notificationsDisabledWarning: 'Push notifications are disabled. Enable them in device settings to receive alerts.',
     settingsGeneral: 'General',
     settingsDarkMode: 'Dark Mode',
     settingsComingSoon: 'Coming soon',
