@@ -261,6 +261,18 @@ export default function HomeScreen() {
     }
   };
 
+  const handleReaction = async (postId: string, emoji: string) => {
+    try {
+      const response = await api.post(`/api/posts/${postId}/react`, { emoji });
+      setPosts(posts.map(post => post.id === postId ? response.data : post));
+    } catch (error: any) {
+      if (error.response?.status === 404) {
+        Alert.alert(t('success'), t('postRemoved'));
+        setPosts(posts.filter(p => p.id !== postId));
+      }
+    }
+  };
+
   const renderPost = ({ item }: { item: Post }) => {
     const isLiked = item.likes?.includes(user?.id || '');
     const isDisliked = item.dislikes?.includes(user?.id || '');
