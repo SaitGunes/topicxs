@@ -50,6 +50,9 @@ export default function HomeScreen() {
   const [searchResults, setSearchResults] = useState<Post[]>([]);
   const [searching, setSearching] = useState(false);
   
+  // Emoji picker state
+  const [showEmojiPicker, setShowEmojiPicker] = useState(false);
+  
   // Get locale for date-fns
   const getDateLocale = () => {
     if (language === 'tr') return tr;
