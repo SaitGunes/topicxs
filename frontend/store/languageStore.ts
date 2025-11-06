@@ -727,6 +727,27 @@ export const translations = {
     userUnblocked: 'Kullanıcının engeli başarıyla kaldırıldı',
     noBlockedUsers: 'Engellenen kullanıcı yok',
     
+    // Report System
+    reportPost: 'Gönderiyi Bildir',
+    reportUser: 'Kullanıcıyı Bildir',
+    reportComment: 'Yorumu Bildir',
+    selectReason: 'Bir sebep seçin',
+    spam: 'Spam',
+    harassment: 'Taciz',
+    inappropriate: 'Uygunsuz İçerik',
+    hateSpeech: 'Nefret Söylemi',
+    violence: 'Şiddet',
+    other: 'Diğer',
+    additionalDetails: 'Ek detaylar (isteğe bağlı)',
+    submitReport: 'Bildirimi Gönder',
+    reportSubmitted: 'Bildirim başarıyla gönderildi',
+    reportFailed: 'Bildirim gönderilemedi',
+    reports: 'Bildirimler',
+    pending: 'Beklemede',
+    reviewed: 'İncelendi',
+    resolved: 'Çözüldü',
+    dismissed: 'Reddedildi',
+    
     // About
     aboutTitle: 'Drivers Chat Hakkında',
     aboutDescription: 'Drivers Chat, sürücüler tarafından sürücüler için oluşturulmuş bir topluluk platformudur. Diğer profesyonel sürücülerle bağlantı kurun, deneyimlerinizi paylaşın ve anlamlı bağlantılar oluşturun.',
