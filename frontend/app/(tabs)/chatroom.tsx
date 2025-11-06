@@ -127,21 +127,38 @@ export default function ChatRoomScreen() {
     if (!newMessage.trim() || sending || !chatEnabled) return;
 
     setSending(true);
+    const messageContent = newMessage.trim();
+    setNewMessage(''); // Clear input immediately
+    
     try {
+      console.log('Sending message:', messageContent);
       const response = await axios.post(
         `${API_URL}/api/chatroom/messages`,
         null,
         {
-          params: { content: newMessage.trim() },
+          params: { content: messageContent },
           headers: { Authorization: `Bearer ${token}` },
         }
       );
       
-      setMessages((prev) => [...prev, response.data]);
-      setNewMessage('');
+      console.log('Message sent successfully:', response.data);
+      
+      // Optimistic update: add message immediately
+      setMessages((prev) => {
+        const exists = prev.some(m => m.id === response.data.id);
+        if (exists) {
+          console.log('Message already in list (from Socket.IO?)');
+          return prev;
+        }
+        console.log('Adding message to list (optimistic)');
+        return [...prev, response.data];
+      });
+      
       setTimeout(() => flatListRef.current?.scrollToEnd({ animated: true }), 100);
     } catch (error: any) {
+      console.error('Send message error:', error);
       Alert.alert(t('error'), error.response?.data?.detail || error.message);
+      setNewMessage(messageContent); // Restore message on error
     } finally {
       setSending(false);
     }
