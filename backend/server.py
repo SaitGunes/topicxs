@@ -1032,6 +1032,26 @@ async def vote_post(post_id: str, vote_data: VoteAction, current_user: User = De
                     "$pull": {"dislikes": current_user.id}
                 }
             )
+            
+            # Send push notification to post owner
+            try:
+                post_owner = await db.users.find_one({"id": post["user_id"]})
+                if post_owner and post_owner.get("push_token"):
+                    prefs = post_owner.get("notification_preferences", {})
+                    if prefs.get("likes", True):
+                        await send_push_notification(
+                            post_owner["push_token"],
+                            "New Like",
+                            f"{current_user.username} liked your post!",
+                            {
+                                "type": "like",
+                                "post_id": post_id,
+                                "user_id": current_user.id,
+                                "username": current_user.username
+                            }
+                        )
+            except Exception as e:
+                logging.error(f"Error sending like notification: {e}")
     
     elif vote_data.vote_type == "dislike":
         if current_user.id in dislikes:
