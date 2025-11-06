@@ -28,6 +28,7 @@ export default function FriendsScreen() {
   const router = useRouter();
   const user = useAuthStore((state) => state.user);
   const loadFriendRequestCount = useNotificationStore((state) => state.loadFriendRequestCount);
+  const { t } = useTranslation();
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState<User[]>([]);
   const [friendRequests, setFriendRequests] = useState<FriendRequest[]>([]);
