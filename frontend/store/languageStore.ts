@@ -337,6 +337,27 @@ export const translations = {
     userUnblocked: 'User unblocked successfully',
     noBlockedUsers: 'No blocked users',
     
+    // Report System
+    reportPost: 'Report Post',
+    reportUser: 'Report User',
+    reportComment: 'Report Comment',
+    selectReason: 'Select a reason',
+    spam: 'Spam',
+    harassment: 'Harassment',
+    inappropriate: 'Inappropriate Content',
+    hateSpeech: 'Hate Speech',
+    violence: 'Violence',
+    other: 'Other',
+    additionalDetails: 'Additional details (optional)',
+    submitReport: 'Submit Report',
+    reportSubmitted: 'Report submitted successfully',
+    reportFailed: 'Failed to submit report',
+    reports: 'Reports',
+    pending: 'Pending',
+    reviewed: 'Reviewed',
+    resolved: 'Resolved',
+    dismissed: 'Dismissed',
+    
     // About
     aboutTitle: 'About Drivers Chat',
     aboutDescription: 'Drivers Chat is a community platform built by drivers, for drivers. Connect with fellow drivers, share your experiences, and build meaningful connections.',
