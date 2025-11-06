@@ -79,6 +79,17 @@ export default function TabsLayout() {
           ),
         }}
       />
+      {user?.is_admin && (
+        <Tabs.Screen
+          name="admin"
+          options={{
+            title: 'Admin',
+            tabBarIcon: ({ color, size }) => (
+              <Ionicons name="shield-checkmark" size={size} color={color} />
+            ),
+          }}
+        />
+      )}
     </Tabs>
   );
 }
