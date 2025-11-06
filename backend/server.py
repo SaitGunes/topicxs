@@ -214,6 +214,35 @@ class GroupJoinRequest(BaseModel):
 class GroupInvite(BaseModel):
     user_ids: List[str]
 
+class PushTokenRegister(BaseModel):
+    push_token: str
+
+# ==================== PUSH NOTIFICATIONS ====================
+
+async def send_push_notification(push_token: str, title: str, body: str, data: dict = None):
+    """Send push notification using Expo Push Notification API"""
+    try:
+        async with httpx.AsyncClient() as client:
+            response = await client.post(
+                'https://exp.host/--/api/v2/push/send',
+                json={
+                    'to': push_token,
+                    'title': title,
+                    'body': body,
+                    'data': data or {},
+                    'sound': 'default',
+                    'priority': 'high',
+                },
+                headers={
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                }
+            )
+            return response.json()
+    except Exception as e:
+        logging.error(f"Push notification error: {e}")
+        return None
+
 # ==================== AUTH HELPERS ====================
 
 def generate_referral_code():
