@@ -26,6 +26,7 @@ export default function ChatRoomScreen() {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [newMessage, setNewMessage] = useState('');
   const [loading, setLoading] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
   const [sending, setSending] = useState(false);
   const [chatEnabled, setChatEnabled] = useState(true);
   
