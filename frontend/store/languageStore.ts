@@ -475,7 +475,7 @@ export const translations = {
     // Help
     helpTitle: 'Yardım & SSS',
     helpQuestion1: 'Drivers Chat nedir?',
-    helpAnswer1: 'Drivers Chat, Uber ve Lyft sürücüleri için özel olarak tasarlanmış bir sosyal platformdur. Sürücüler birbirleriyle bağlantı kurabilir, deneyimlerini paylaşabilir ve iletişim kurabilir.',
+    helpAnswer1: 'Drivers Chat, profesyonel sürücüler için özel olarak tasarlanmış bir sosyal platformdur. Sürücüler birbirleriyle bağlantı kurabilir, deneyimlerini paylaşabilir ve iletişim kurabilir.',
     helpQuestion2: 'Nasıl gönderi oluştururum?',
     helpAnswer2: 'Ana ekrandaki + butonuna dokunun. Metin yazabilir, fotoğraf ekleyebilir ve gönderinizi kimin görebileceğini seçebilirsiniz (Herkese Açık, Arkadaşlar veya Belirli arkadaşlar).',
     helpQuestion3: 'Beğeni ve beğenmeme nedir?',
