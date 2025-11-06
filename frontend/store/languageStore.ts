@@ -697,14 +697,14 @@ export const translations = {
     helpA14: 'Gönderilerdeki veya arkadaş listesindeki herhangi bir kullanıcı adına veya profil resmine dokunarak profillerini görüntüleyin ve tüm gönderilerini görün.',
     
     // Help Q&A - Messages
-    helpQ15: 'Nasıl sohbet başlatırım?',
-    helpA15: 'Bir kullanıcının profilini ziyaret edin ve "Mesaj Gönder"e dokunun veya Mesajlar sekmesine gidin ve mevcut bir konuşmayı seçin.',
-    helpQ16: 'Yeni mesajlarım olduğunu nasıl anlarım?',
-    helpA16: 'Alttaki Mesajlar sekmesi simgesinde okunmamış mesaj sayısını gösteren kırmızı bir rozet göreceksiniz.',
-    helpQ17: 'Sohbette resim gönderebilir miyim?',
-    helpA17: 'Şu anda sohbet yalnızca metin mesajlarını destekliyor. Mesajlarda resim paylaşımı gelecek güncellemelerde eklenecektir.',
-    helpQ18: 'Mesajlar gerçek zamanlı mı?',
-    helpA18: 'Evet! Mesajlar gerçek zamanlı teslimat için Socket.IO teknolojisini kullanır. Mesajlar gönderildiğinde anında görünür.',
+    helpQ15: 'Sohbet Odası nasıl çalışır?',
+    helpA15: 'Sohbet Odası, tüm kullanıcıların gerçek zamanlı sohbet edebileceği herkese açık bir alandır. Sohbet Odası sekmesine gidin ve mesajlaşmaya başlayın. Herkes görebilir ve katılabilir!',
+    helpQ16: 'Sohbet mesajlarımı silebilir miyim?',
+    helpA16: 'Evet! Mesajınızdaki çöp kutusu simgesine dokunarak kendi mesajlarınızı silebilirsiniz. Adminler de herhangi bir mesajı silebilir veya tüm sohbeti temizleyebilir.',
+    helpQ17: 'Nasıl grup oluştururum veya katılırım?',
+    helpA17: 'Gruplar sekmesine gidin, grup oluşturmak için + butonuna dokunun. Herkese açık gruplara doğrudan katılabilir veya onay gerektiren özel gruplara katılma isteği gönderebilirsiniz.',
+    helpQ18: 'Gruplara gönderi paylaşabilir miyim?',
+    helpA18: 'Evet! Grup üyeleri gruba resim ve emoji içeren gönderiler paylaşabilir. Tüm grup gönderileri beğeni, beğenmeme, emoji tepkileri ve yorumları destekler.',
     
     // Help Q&A - Other
     helpQ19: 'Nasıl çıkış yaparım?',
