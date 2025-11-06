@@ -1057,7 +1057,7 @@ export const translations = {
     aboutLegal: 'Legal',
     aboutTermsService: 'Términos de Servicio',
     aboutPrivacyPolicy: 'Política de Privacidad',
-    aboutMadeWith: 'Hecho con ❤️ para conductores profesionales',
+    aboutMadeWith: 'Hecho con ❤️ para conductores',
     aboutCopyright: '© 2025 Drivers Chat. Todos los derechos reservados.',
     aboutLegalGuidelines: 'Legal & Directrices',
   },
