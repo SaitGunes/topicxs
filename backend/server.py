@@ -192,6 +192,26 @@ class VoteAction(BaseModel):
 class ReactionAction(BaseModel):
     emoji: str  # Any emoji like 😀, ❤️, 😂, 😮, 😢, 😡
 
+class Report(BaseModel):
+    id: str
+    reporter_user_id: str
+    reporter_username: str
+    reported_content_type: str  # post, comment, user
+    reported_content_id: str
+    reported_user_id: str
+    reported_username: str
+    reason: str  # spam, harassment, inappropriate, hate_speech, violence, other
+    description: Optional[str] = None
+    status: str = "pending"  # pending, reviewed, resolved, dismissed
+    created_at: datetime = Field(default_factory=datetime.utcnow)
+
+class ReportCreate(BaseModel):
+    reported_content_type: str
+    reported_content_id: str
+    reported_user_id: str
+    reason: str
+    description: Optional[str] = None
+
 class Group(BaseModel):
     id: str
     name: str
