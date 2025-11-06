@@ -751,6 +751,8 @@ export const translations = {
     referralCodeOptional: 'Código de Referencia (opcional)',
     creatingAccount: 'Creando cuenta...',
     joinDriverCommunity: 'Únete a la comunidad de conductores',
+    confirmDriver: 'Trabajo como conductor profesional',
+    mustConfirmDriver: 'Por favor confirme que trabaja como conductor profesional',
     
     // Tabs
     home: 'Inicio',
