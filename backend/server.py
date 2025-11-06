@@ -1209,6 +1209,79 @@ async def get_group_join_requests(group_id: str, current_user: User = Depends(ge
     }).sort("created_at", -1).to_list(100)
     return [GroupJoinRequest(**req) for req in requests]
 
+@api_router.put("/groups/{group_id}/join-requests/{request_id}")
+async def handle_join_request(
+    group_id: str,
+    request_id: str,
+    action: str,  # approve or reject
+    current_user: User = Depends(get_current_user)
+):
+    if action not in ["approve", "reject"]:
+        raise HTTPException(status_code=400, detail="Invalid action")
+    
+    group = await db.groups.find_one({"id": group_id})
+    if not group:
+        raise HTTPException(status_code=404, detail="Group not found")
+    
+    if current_user.id not in group["admin_ids"]:
+        raise HTTPException(status_code=403, detail="Not authorized")
+    
+    request = await db.group_join_requests.find_one({"id": request_id})
+    if not request:
+        raise HTTPException(status_code=404, detail="Request not found")
+    
+    if action == "approve":
+        # Add user to group
+        await db.groups.update_one(
+            {"id": group_id},
+            {"$push": {"member_ids": request["user_id"]}}
+        )
+        await db.group_join_requests.update_one(
+            {"id": request_id},
+            {"$set": {"request_status": "approved"}}
+        )
+        return {"message": "Request approved"}
+    else:
+        await db.group_join_requests.update_one(
+            {"id": request_id},
+            {"$set": {"request_status": "rejected"}}
+        )
+        return {"message": "Request rejected"}
+
+@api_router.delete("/groups/{group_id}/leave")
+async def leave_group(group_id: str, current_user: User = Depends(get_current_user)):
+    group = await db.groups.find_one({"id": group_id})
+    if not group:
+        raise HTTPException(status_code=404, detail="Group not found")
+    
+    if current_user.id == group["creator_id"]:
+        raise HTTPException(status_code=400, detail="Creator cannot leave group. Delete the group instead.")
+    
+    if current_user.id not in group["member_ids"]:
+        raise HTTPException(status_code=400, detail="Not a member")
+    
+    await db.groups.update_one(
+        {"id": group_id},
+        {"$pull": {"member_ids": current_user.id, "admin_ids": current_user.id, "moderator_ids": current_user.id}}
+    )
+    return {"message": "Left group successfully"}
+
+@api_router.delete("/groups/{group_id}")
+async def delete_group(group_id: str, current_user: User = Depends(get_current_user)):
+    group = await db.groups.find_one({"id": group_id})
+    if not group:
+        raise HTTPException(status_code=404, detail="Group not found")
+    
+    if current_user.id != group["creator_id"]:
+        raise HTTPException(status_code=403, detail="Only creator can delete group")
+    
+    # Delete group and all related data
+    await db.groups.delete_one({"id": group_id})
+    await db.group_join_requests.delete_many({"group_id": group_id})
+    # Note: We could also delete group posts here if needed
+    
+    return {"message": "Group deleted successfully"}
+
 @api_router.post("/groups/{group_id}/invite")
 async def invite_to_group(group_id: str, invite_data: GroupInvite, current_user: User = Depends(get_current_user)):
     group = await db.groups.find_one({"id": group_id})
