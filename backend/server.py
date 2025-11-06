@@ -1475,6 +1475,42 @@ async def get_admin_stats(admin: User = Depends(require_admin)):
         "recent_posts_7d": recent_posts
     }
 
+# ==================== PUBLIC CHAT ROOM ====================
+
+@api_router.get("/chatroom/messages")
+async def get_chatroom_messages(
+    limit: int = 50,
+    current_user: User = Depends(get_current_user)
+):
+    """Get latest public chat messages"""
+    messages = await db.chatroom_messages.find().sort("created_at", -1).limit(limit).to_list(limit)
+    messages.reverse()  # Oldest first
+    return messages
+
+@api_router.post("/chatroom/messages")
+async def send_chatroom_message(
+    content: str,
+    current_user: User = Depends(get_current_user)
+):
+    """Send a message to public chat room"""
+    message_id = str(int(datetime.utcnow().timestamp() * 1000))
+    
+    message = {
+        "id": message_id,
+        "user_id": current_user.id,
+        "username": current_user.username,
+        "user_profile_picture": current_user.profile_picture,
+        "content": content,
+        "created_at": datetime.utcnow()
+    }
+    
+    await db.chatroom_messages.insert_one(message)
+    
+    # Emit to all connected clients via Socket.IO
+    await sio.emit('new_chatroom_message', message, room='chatroom')
+    
+    return message
+
 # ==================== SOCKET.IO ====================
 
 @sio.event
@@ -1484,6 +1520,23 @@ async def connect(sid, environ):
 @sio.event
 async def disconnect(sid):
     print(f"Client disconnected: {sid}")
+
+@sio.event
+async def join_chatroom(sid, data):
+    """Join the public chat room"""
+    sio.enter_room(sid, 'chatroom')
+    user_id = data.get('user_id')
+    username = data.get('username')
+    print(f"User {username} ({sid}) joined chatroom")
+    
+    # Notify others
+    await sio.emit('user_joined', {'username': username, 'user_id': user_id}, room='chatroom', skip_sid=sid)
+
+@sio.event
+async def leave_chatroom(sid):
+    """Leave the public chat room"""
+    sio.leave_room(sid, 'chatroom')
+    print(f"Client {sid} left chatroom")
 
 @sio.event
 async def join_chat(sid, data):
