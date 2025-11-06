@@ -1065,6 +1065,16 @@ export const translations = {
     writeComment: 'Escribe un comentario...',
     noComments: 'Aún no hay comentarios',
     
+    // Block User
+    blockUser: 'Bloquear Usuario',
+    unblockUser: 'Desbloquear Usuario',
+    blockedUsers: 'Usuarios Bloqueados',
+    blockUserConfirm: '¿Estás seguro de que quieres bloquear a este usuario? No verás sus publicaciones ni mensajes.',
+    unblockUserConfirm: '¿Estás seguro de que quieres desbloquear a este usuario?',
+    userBlocked: 'Usuario bloqueado exitosamente',
+    userUnblocked: 'Usuario desbloqueado exitosamente',
+    noBlockedUsers: 'No hay usuarios bloqueados',
+    
     // About
     aboutTitle: 'Acerca de Drivers Chat',
     aboutDescription: 'Drivers Chat es una plataforma comunitaria construida por conductores, para conductores. Conéctate con otros conductores profesionales, comparte tus experiencias y construye conexiones significativas.',
