@@ -994,6 +994,9 @@ export const translations = {
     profileDetailPosts: 'Publicaciones',
     profileDetailNoPosts: 'Aún no hay publicaciones',
     
+    // Referral Share
+    shareReferralCode: 'Compartir Código de Referencia',
+    
     // Edit Post Modal
     editPostSaveChanges: 'Guardar Cambios',
     
