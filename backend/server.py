@@ -171,6 +171,7 @@ class PostCreateEnhanced(BaseModel):
     content: str
     image: Optional[str] = None
     privacy: PostPrivacy = PostPrivacy(level="friends", specific_user_ids=[])
+    group_id: Optional[str] = None  # If post is shared to a group
 
 class PostEnhanced(BaseModel):
     id: str
@@ -184,6 +185,7 @@ class PostEnhanced(BaseModel):
     reactions: dict = {}  # {"😀": ["user1", "user2"], "❤️": ["user3"]}
     comments_count: int = 0
     privacy: PostPrivacy
+    group_id: Optional[str] = None  # If post is shared to a group
     created_at: datetime = Field(default_factory=datetime.utcnow)
 
 class VoteAction(BaseModel):
