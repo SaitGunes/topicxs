@@ -654,6 +654,17 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: '#000',
   },
+  headerButtons: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  searchButton: {
+    width: 40,
+    height: 40,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: 8,
+  },
   createButton: {
     width: 40,
     height: 40,
