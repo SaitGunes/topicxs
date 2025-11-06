@@ -1311,6 +1311,20 @@ async def invite_to_group(group_id: str, invite_data: GroupInvite, current_user:
     
     return {"message": f"Invited {len(invite_data.user_ids)} users to group"}
 
+@api_router.get("/groups/{group_id}/posts", response_model=List[PostEnhanced])
+async def get_group_posts(group_id: str, skip: int = 0, limit: int = 20, current_user: User = Depends(get_current_user)):
+    group = await db.groups.find_one({"id": group_id})
+    if not group:
+        raise HTTPException(status_code=404, detail="Group not found")
+    
+    # Check if user is a member
+    if current_user.id not in group["member_ids"]:
+        raise HTTPException(status_code=403, detail="Not a member of this group")
+    
+    # Get posts for this group
+    posts = await db.posts_enhanced.find({"group_id": group_id}).sort("created_at", -1).skip(skip).limit(limit).to_list(limit)
+    return [PostEnhanced(**post) for post in posts]
+
 # ==================== ADMIN ENDPOINTS ====================
 
 # Admin middleware to check if user is admin
