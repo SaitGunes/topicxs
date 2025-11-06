@@ -1440,7 +1440,8 @@ async def delete_post_admin(
     post_id: str,
     admin: User = Depends(require_admin)
 ):
-    result = await db.posts.delete_one({"id": post_id})
+    # Delete from posts_enhanced collection
+    result = await db.posts_enhanced.delete_one({"id": post_id})
     
     if result.deleted_count == 0:
         raise HTTPException(status_code=404, detail="Post not found")
