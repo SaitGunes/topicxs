@@ -97,11 +97,13 @@ export default function TermsViewScreen() {
               </Text>
             </View>
 
-            <View style={styles.subsection}>
-              <Text style={styles.subtitle}>5. Age Requirement</Text>
-              <Text style={styles.text}>
-                • You must be at least 18 years old to use Drivers Chat{'\n'}
-                • By using the app, you confirm you meet this age requirement
+            <View style={[styles.subsection, styles.highlightedSection]}>
+              <Text style={styles.subtitle}>⚠️ 5. Age Requirement (18+)</Text>
+              <Text style={[styles.text, styles.importantText]}>
+                • You MUST be at least 18 years old to create an account and use Drivers Chat{'\n'}
+                • By registering, you confirm that you are 18 years or older{'\n'}
+                • We reserve the right to request age verification{'\n'}
+                • Accounts found to belong to users under 18 will be immediately terminated
               </Text>
             </View>
 
