@@ -312,7 +312,7 @@ export const translations = {
     
     // About
     aboutTitle: 'About Drivers Chat',
-    aboutDescription: 'Drivers Chat is a community platform built by drivers, for drivers. Connect with fellow Uber and Lyft drivers, share your experiences, and build meaningful connections.',
+    aboutDescription: 'Drivers Chat is a community platform built by drivers, for drivers. Connect with fellow drivers, share your experiences, and build meaningful connections.',
     aboutVersion: 'Version',
     aboutSupport: 'Support',
     aboutTerms: 'Terms & Conditions',
