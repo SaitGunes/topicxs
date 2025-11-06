@@ -668,6 +668,12 @@ export const translations = {
     // Full Screen Image
     fullScreenImageClose: 'Kapat',
     
+    // Search
+    searchPosts: 'Gönderi ara...',
+    searchResults: 'Arama Sonuçları',
+    noResultsFound: 'Sonuç bulunamadı',
+    searching: 'Aranıyor...',
+    
     // About
     aboutTitle: 'Drivers Chat Hakkında',
     aboutDescription: 'Drivers Chat, sürücüler tarafından sürücüler için oluşturulmuş bir topluluk platformudur. Diğer profesyonel sürücülerle bağlantı kurun, deneyimlerinizi paylaşın ve anlamlı bağlantılar oluşturun.',
