@@ -907,6 +907,26 @@ async def handle_friend_request(request_id: str, action_data: FriendRequestActio
             {"id": request_id},
             {"$set": {"request_status": "accepted"}}
         )
+        
+        # Send push notification to requester
+        try:
+            requester = await db.users.find_one({"id": friend_request["from_user_id"]})
+            if requester and requester.get("push_token"):
+                prefs = requester.get("notification_preferences", {})
+                if prefs.get("friend_requests", True):
+                    await send_push_notification(
+                        requester["push_token"],
+                        "Friend Request Accepted",
+                        f"{current_user.username} accepted your friend request!",
+                        {
+                            "type": "friend_request",
+                            "user_id": current_user.id,
+                            "username": current_user.username
+                        }
+                    )
+        except Exception as e:
+            logging.error(f"Error sending friend request notification: {e}")
+        
         return {"message": "Friend request accepted"}
     
     elif action_data.action == "reject":
