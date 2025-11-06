@@ -1235,6 +1235,8 @@ export const translations = {
     settingsGetNotifiedMessages: 'Recibir notificaciones de nuevos mensajes',
     settingsLikes: 'Me Gusta',
     settingsGetNotifiedLikes: 'Recibir notificaciones cuando alguien le guste tu publicación',
+    settingsGetNotifiedComments: 'Recibir notificaciones de nuevos comentarios en tus publicaciones',
+    notificationsDisabledWarning: 'Las notificaciones push están deshabilitadas. Habilítalas en la configuración del dispositivo para recibir alertas.',
     settingsGeneral: 'General',
     settingsDarkMode: 'Modo Oscuro',
     settingsComingSoon: 'Próximamente',
