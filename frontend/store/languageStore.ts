@@ -693,9 +693,9 @@ export const translations = {
     // About page
     aboutWherDriversConnect: 'Sürücülerin Buluştuğu Yer',
     aboutTheApp: 'Uygulama Hakkında',
-    aboutAppDescription: 'Drivers Chat, Uber ve Lyft sürücüleri için özel olarak oluşturulmuş ÜCRETSİZ bir sosyal platformdur. Diğer sürücülerle bağlantı kurun, deneyimleri paylaşın, ipuçları alın ve rideshare sürücülüğüyle ilgili her şeyden haberdar olun.',
+    aboutAppDescription: 'Drivers Chat, profesyonel sürücüler için özel olarak oluşturulmuş ÜCRETSİZ bir sosyal platformdur. Diğer sürücülerle bağlantı kurun, deneyimleri paylaşın, ipuçları alın ve sürücülükle ilgili her şeyden haberdar olun.',
     aboutOurMission: 'Misyonumuz',
-    aboutMissionDescription: 'Rideshare sürücülerinin bağlantı kurabilecekleri, bilgi paylaşabilecekleri ve Uber ve Lyft için sürücülük yapmanın zorlukları ve fırsatlarında birbirlerine yardımcı olabilecekleri destekleyici bir topluluk oluşturmak.',
+    aboutMissionDescription: 'Sürücülerin bağlantı kurabilecekleri, bilgi paylaşabilecekleri ve profesyonel sürücülüğün zorlukları ve fırsatlarında birbirlerine yardımcı olabilecekleri destekleyici bir topluluk oluşturmak.',
     aboutKeyFeatures: 'Temel Özellikler',
     aboutFeature1: 'Ülke çapında sürücülerle bağlantı kurun',
     aboutFeature2: 'Gerçek zamanlı mesajlaşma',
