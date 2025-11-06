@@ -649,6 +649,9 @@ export const translations = {
     profileDetailPosts: 'Gönderiler',
     profileDetailNoPosts: 'Henüz gönderi yok',
     
+    // Referral Share
+    shareReferralCode: 'Referans Kodunu Paylaş',
+    
     // Edit Post Modal
     editPostSaveChanges: 'Değişiklikleri Kaydet',
     
