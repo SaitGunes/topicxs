@@ -351,9 +351,9 @@ export const translations = {
     // About page
     aboutWherDriversConnect: 'Where Drivers Connect',
     aboutTheApp: 'About the App',
-    aboutAppDescription: 'Drivers Chat is a FREE social platform built exclusively for Uber and Lyft drivers. Connect with fellow drivers, share experiences, get tips, and stay informed about everything related to rideshare driving.',
+    aboutAppDescription: 'Drivers Chat is a FREE social platform built exclusively for professional drivers. Connect with fellow drivers, share experiences, get tips, and stay informed about everything related to driving.',
     aboutOurMission: 'Our Mission',
-    aboutMissionDescription: 'To create a supportive community where rideshare drivers can connect, share knowledge, and help each other navigate the challenges and opportunities of driving for Uber and Lyft.',
+    aboutMissionDescription: 'To create a supportive community where drivers can connect, share knowledge, and help each other navigate the challenges and opportunities of professional driving.',
     aboutKeyFeatures: 'Key Features',
     aboutFeature1: 'Connect with drivers nationwide',
     aboutFeature2: 'Real-time messaging',
