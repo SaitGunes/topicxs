@@ -2,8 +2,10 @@ import { Tabs } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import { useEffect } from 'react';
 import { useNotificationStore } from '../../store/notificationStore';
+import { useAuthStore } from '../../store/authStore';
 
 export default function TabsLayout() {
+  const user = useAuthStore((state) => state.user);
   const friendRequestCount = useNotificationStore((state) => state.friendRequestCount);
   const unreadMessageCount = useNotificationStore((state) => state.unreadMessageCount);
   const loadFriendRequestCount = useNotificationStore((state) => state.loadFriendRequestCount);
