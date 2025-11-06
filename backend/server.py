@@ -949,6 +949,47 @@ async def vote_post(post_id: str, vote_data: VoteAction, current_user: User = De
     updated_post = await db.posts_enhanced.find_one({"id": post_id})
     return PostEnhanced(**updated_post)
 
+@api_router.post("/posts/{post_id}/react")
+async def react_to_post(post_id: str, reaction_data: ReactionAction, current_user: User = Depends(get_current_user)):
+    """Add emoji reaction to post"""
+    post = await db.posts_enhanced.find_one({"id": post_id})
+    if not post:
+        raise HTTPException(status_code=404, detail="Post not found")
+    
+    # Cannot react to own post
+    if post["user_id"] == current_user.id:
+        raise HTTPException(status_code=400, detail="Cannot react to your own post")
+    
+    emoji = reaction_data.emoji
+    reactions = post.get("reactions", {})
+    
+    # Remove user from all other reactions first
+    for existing_emoji in reactions:
+        if current_user.id in reactions[existing_emoji]:
+            reactions[existing_emoji] = [uid for uid in reactions[existing_emoji] if uid != current_user.id]
+    
+    # Toggle: if same emoji, remove it; otherwise add it
+    if emoji in reactions and current_user.id in reactions[emoji]:
+        # Remove reaction
+        reactions[emoji] = [uid for uid in reactions[emoji] if uid != current_user.id]
+        if not reactions[emoji]:  # Remove emoji key if empty
+            del reactions[emoji]
+    else:
+        # Add reaction
+        if emoji not in reactions:
+            reactions[emoji] = []
+        reactions[emoji].append(current_user.id)
+    
+    # Update post
+    await db.posts_enhanced.update_one(
+        {"id": post_id},
+        {"$set": {"reactions": reactions}}
+    )
+    
+    # Return updated post
+    updated_post = await db.posts_enhanced.find_one({"id": post_id})
+    return PostEnhanced(**updated_post)
+
 @api_router.delete("/posts/{post_id}")
 async def delete_post(post_id: str, current_user: User = Depends(get_current_user)):
     post = await db.posts_enhanced.find_one({"id": post_id})
