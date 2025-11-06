@@ -181,12 +181,16 @@ class PostEnhanced(BaseModel):
     image: Optional[str] = None
     likes: List[str] = []
     dislikes: List[str] = []
+    reactions: dict = {}  # {"😀": ["user1", "user2"], "❤️": ["user3"]}
     comments_count: int = 0
     privacy: PostPrivacy
     created_at: datetime = Field(default_factory=datetime.utcnow)
 
 class VoteAction(BaseModel):
     vote_type: str  # like or dislike
+
+class ReactionAction(BaseModel):
+    emoji: str  # Any emoji like 😀, ❤️, 😂, 😮, 😢, 😡
 
 class Group(BaseModel):
     id: str
