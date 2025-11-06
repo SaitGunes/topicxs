@@ -12,9 +12,9 @@ from datetime import datetime
 # Configuration
 BASE_URL = "https://drivercommunity.preview.emergentagent.com/api"
 
-# Test credentials - Sait is admin user
+# Test credentials - testadmin123 is admin user
 ADMIN_USER = {
-    "username": "Sait",
+    "username": "testadmin123",
     "password": "password123"
 }
 
