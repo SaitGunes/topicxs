@@ -485,6 +485,29 @@ async def reset_password(email: str, reset_code: str, new_password: str):
     
     return {"message": "Password reset successful"}
 
+# ==================== PUSH NOTIFICATIONS ROUTES ====================
+
+@api_router.post("/notifications/register-token")
+async def register_push_token(
+    token_data: PushTokenRegister,
+    current_user: User = Depends(get_current_user)
+):
+    """Register or update user's push notification token"""
+    await db.users.update_one(
+        {"id": current_user.id},
+        {"$set": {"push_token": token_data.push_token}}
+    )
+    return {"message": "Push token registered successfully"}
+
+@api_router.delete("/notifications/unregister-token")
+async def unregister_push_token(current_user: User = Depends(get_current_user)):
+    """Remove user's push notification token"""
+    await db.users.update_one(
+        {"id": current_user.id},
+        {"$unset": {"push_token": ""}}
+    )
+    return {"message": "Push token unregistered successfully"}
+
 # ==================== USER ROUTES ====================
 
 @api_router.get("/users/{user_id}", response_model=User)
