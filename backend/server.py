@@ -1424,14 +1424,13 @@ async def get_all_posts_admin(
     limit: int = 100,
     admin: User = Depends(require_admin)
 ):
-    posts = await db.posts.find().skip(skip).limit(limit).sort("created_at", -1).to_list(length=limit)
+    # Use posts_enhanced collection
+    posts = await db.posts_enhanced.find({}, {"_id": 0}).skip(skip).limit(limit).sort("created_at", -1).to_list(length=limit)
     
-    # Enhance posts with user info
+    # Convert datetime to ISO string
     for post in posts:
-        user = await db.users.find_one({"id": post["user_id"]})
-        if user:
-            post["username"] = user["username"]
-            post["user_profile_picture"] = user.get("profile_picture")
+        if isinstance(post.get("created_at"), datetime):
+            post["created_at"] = post["created_at"].isoformat()
     
     return posts
 
