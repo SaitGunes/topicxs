@@ -321,6 +321,12 @@ export const translations = {
     noResultsFound: 'No results found',
     searching: 'Searching...',
     
+    // Comments
+    comments: 'Comments',
+    viewAllComments: 'View all comments',
+    writeComment: 'Write a comment...',
+    noComments: 'No comments yet',
+    
     // About
     aboutTitle: 'About Drivers Chat',
     aboutDescription: 'Drivers Chat is a community platform built by drivers, for drivers. Connect with fellow drivers, share your experiences, and build meaningful connections.',
