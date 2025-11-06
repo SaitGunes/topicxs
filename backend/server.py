@@ -424,9 +424,22 @@ async def login(user_data: UserLogin):
     
     return Token(access_token=access_token, token_type="bearer", user=user_response)
 
-@api_router.get("/auth/me", response_model=User)
+@api_router.get("/auth/me")
 async def get_me(current_user: User = Depends(get_current_user)):
-    return current_user
+    # Get fresh user data from DB to include star info
+    user = await db.users.find_one({"id": current_user.id})
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+    
+    # Calculate star level
+    referral_count = user.get("referral_count", 0)
+    star_info = calculate_star_level(referral_count)
+    
+    # Add star info to user response
+    user_data = {k: v for k, v in user.items() if k != 'password'}
+    user_data['star_level'] = star_info
+    
+    return user_data
 
 @api_router.put("/auth/me", response_model=User)
 async def update_profile(user_update: UserUpdate, current_user: User = Depends(get_current_user)):
