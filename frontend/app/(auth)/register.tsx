@@ -143,6 +143,17 @@ export default function RegisterScreen() {
             />
           </View>
 
+          {/* Driver Confirmation Checkbox */}
+          <TouchableOpacity 
+            style={styles.checkboxContainer}
+            onPress={() => setConfirmDriver(!confirmDriver)}
+          >
+            <View style={[styles.checkbox, confirmDriver && styles.checkboxChecked]}>
+              {confirmDriver && <Ionicons name="checkmark" size={18} color="#fff" />}
+            </View>
+            <Text style={styles.checkboxLabel}>{t('confirmDriver')}</Text>
+          </TouchableOpacity>
+
           <TouchableOpacity 
             style={[styles.button, loading && styles.buttonDisabled]}
             onPress={handleRegister}
