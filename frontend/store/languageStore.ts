@@ -373,7 +373,7 @@ export const translations = {
     aboutLegal: 'Legal',
     aboutTermsService: 'Terms of Service',
     aboutPrivacyPolicy: 'Privacy Policy',
-    aboutMadeWith: 'Made with ❤️ for professional drivers',
+    aboutMadeWith: 'Made with ❤️ for drivers',
     aboutCopyright: '© 2025 Drivers Chat. All rights reserved.',
     aboutLegalGuidelines: 'Legal & Guidelines',
   },
