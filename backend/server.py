@@ -577,12 +577,21 @@ async def unregister_push_token(current_user: User = Depends(get_current_user)):
 
 # ==================== USER ROUTES ====================
 
-@api_router.get("/users/{user_id}", response_model=User)
+@api_router.get("/users/{user_id}")
 async def get_user(user_id: str, current_user: User = Depends(get_current_user)):
     user = await db.users.find_one({"id": user_id})
     if not user:
         raise HTTPException(status_code=404, detail="User not found")
-    return User(**{k: v for k, v in user.items() if k != 'password'})
+    
+    # Calculate star level
+    referral_count = user.get("referral_count", 0)
+    star_info = calculate_star_level(referral_count)
+    
+    # Add star info to user response
+    user_data = {k: v for k, v in user.items() if k != 'password'}
+    user_data['star_level'] = star_info
+    
+    return user_data
 
 @api_router.get("/users", response_model=List[User])
 async def search_users(q: str = "", current_user: User = Depends(get_current_user)):
