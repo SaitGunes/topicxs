@@ -461,42 +461,62 @@ export default function AdminPanel() {
 
     return (
       <View style={styles.listContainer}>
-        {posts.map((post) => (
-          <View key={post.id} style={styles.postCard}>
-            <View style={styles.postHeader}>
-              <Text style={styles.postUsername}>@{post.username}</Text>
-              <Text style={styles.postDate}>
-                {new Date(post.created_at).toLocaleDateString()}
-              </Text>
+        <View style={styles.statsHeader}>
+          <Text style={styles.statsHeaderText}>Total Posts: {posts.length}</Text>
+        </View>
+        {posts.map((post) => {
+          const likesCount = post.likes?.length || 0;
+          const dislikesCount = post.dislikes?.length || 0;
+          const commentsCount = post.comments_count || 0;
+          
+          return (
+            <View key={post.id} style={styles.postCard}>
+              <View style={styles.postHeader}>
+                <View>
+                  <Text style={styles.postUsername}>@{post.username}</Text>
+                  <Text style={styles.postDate}>
+                    {new Date(post.created_at).toLocaleDateString()} {new Date(post.created_at).toLocaleTimeString()}
+                  </Text>
+                </View>
+                <Text style={styles.postId}>ID: {post.id.slice(-6)}</Text>
+              </View>
+
+              <Text style={styles.postContent} numberOfLines={3}>{post.content}</Text>
+
+              {post.image && (
+                <Image source={{ uri: post.image }} style={styles.postImage} />
+              )}
+
+              <View style={styles.postStats}>
+                <View style={styles.statItem}>
+                  <Ionicons name="thumbs-up" size={16} color="#4CAF50" />
+                  <Text style={styles.postStatValue}>{likesCount}</Text>
+                </View>
+                <View style={styles.statItem}>
+                  <Ionicons name="thumbs-down" size={16} color="#F44336" />
+                  <Text style={styles.postStatValue}>{dislikesCount}</Text>
+                </View>
+                <View style={styles.statItem}>
+                  <Ionicons name="chatbox" size={16} color="#007AFF" />
+                  <Text style={styles.postStatValue}>{commentsCount}</Text>
+                </View>
+                <View style={styles.statItem}>
+                  <Text style={styles.postStatLabel}>
+                    Total: {likesCount + dislikesCount + commentsCount}
+                  </Text>
+                </View>
+              </View>
+
+              <TouchableOpacity
+                style={[styles.actionButton, styles.deleteButton]}
+                onPress={() => handleDeletePost(post.id)}
+              >
+                <Ionicons name="trash" size={16} color="#fff" />
+                <Text style={styles.actionButtonText}>{t('adminDeletePost')}</Text>
+              </TouchableOpacity>
             </View>
-
-            <Text style={styles.postContent}>{post.content}</Text>
-
-            {post.image && (
-              <Image source={{ uri: post.image }} style={styles.postImage} />
-            )}
-
-            <View style={styles.postStats}>
-              <Text style={styles.postStat}>
-                <Ionicons name="thumbs-up" size={14} color="#007AFF" /> {post.likes.length}
-              </Text>
-              <Text style={styles.postStat}>
-                <Ionicons name="thumbs-down" size={14} color="#F44336" /> {post.dislikes.length}
-              </Text>
-              <Text style={styles.postStat}>
-                <Ionicons name="chatbox" size={14} color="#666" /> {post.comments_count}
-              </Text>
-            </View>
-
-            <TouchableOpacity
-              style={[styles.actionButton, styles.deleteButton]}
-              onPress={() => handleDeletePost(post.id)}
-            >
-              <Ionicons name="trash" size={16} color="#fff" />
-              <Text style={styles.actionButtonText}>{t('adminDeletePost')}</Text>
-            </TouchableOpacity>
-          </View>
-        ))}
+          );
+        })}
       </View>
     );
   };
