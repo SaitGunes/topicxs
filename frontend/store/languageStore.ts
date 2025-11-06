@@ -518,6 +518,16 @@ export const translations = {
     groupPosts: 'Group Posts',
     noPostsInGroup: 'No posts in this group yet',
     shareToGroup: 'Share to this group',
+    
+    // Chat Room
+    chatRoom: 'Chat Room',
+    publicChat: 'Public Chat',
+    everyoneCanSee: 'Everyone can see and send messages',
+    typeMessage: 'Type a message...',
+    send: 'Send',
+    noChatMessages: 'No messages yet. Start the conversation!',
+    justNow: 'Just now',
+    online: 'online',
   },
   tr: {
     // Auth
