@@ -1506,6 +1506,16 @@ export const translations = {
     groupPosts: 'Publicaciones del Grupo',
     noPostsInGroup: 'Aún no hay publicaciones en este grupo',
     shareToGroup: 'Compartir en este grupo',
+    
+    // Chat Room
+    chatRoom: 'Sala de Chat',
+    publicChat: 'Chat Público',
+    everyoneCanSee: 'Todos pueden ver y enviar mensajes',
+    typeMessage: 'Escribe un mensaje...',
+    send: 'Enviar',
+    noChatMessages: 'Aún no hay mensajes. ¡Inicia la conversación!',
+    justNow: 'Ahora mismo',
+    online: 'en línea',
   },
 };
 
