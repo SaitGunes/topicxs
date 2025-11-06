@@ -528,6 +528,14 @@ export const translations = {
     noChatMessages: 'No messages yet. Start the conversation!',
     justNow: 'Just now',
     online: 'online',
+    deleteMessage: 'Delete Message',
+    confirmDeleteMessage: 'Are you sure you want to delete this message?',
+    clearChat: 'Clear Chat',
+    confirmClearChat: 'Are you sure you want to delete all messages? This cannot be undone.',
+    disableChat: 'Disable Chat',
+    enableChat: 'Enable Chat',
+    chatDisabled: 'Chat is disabled',
+    chatDisabledMessage: 'The chat room has been disabled by admin',
   },
   tr: {
     // Auth
