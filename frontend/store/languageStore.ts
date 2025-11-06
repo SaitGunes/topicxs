@@ -1328,6 +1328,8 @@ export const translations = {
     
     // Referral Share
     shareReferralCode: 'Compartir Código de Referencia',
+    nextStarIn: 'Próxima estrella en',
+    referrals: 'referencias',
     
     // Edit Post Modal
     editPostSaveChanges: 'Guardar Cambios',
