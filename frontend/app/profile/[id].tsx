@@ -14,6 +14,13 @@ interface User {
   bio: string;
   profile_picture: string | null;
   created_at: string;
+  star_level?: {
+    stars: number;
+    level_name: string;
+    total_referrals: number;
+    next_star_at: number | null;
+    remaining_referrals: number;
+  };
 }
 
 interface Post {
