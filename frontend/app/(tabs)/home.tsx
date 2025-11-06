@@ -569,6 +569,67 @@ export default function HomeScreen() {
           )}
         </View>
       </Modal>
+
+      {/* Search Modal */}
+      <Modal
+        visible={searchModalVisible}
+        animationType="slide"
+        onRequestClose={() => setSearchModalVisible(false)}
+      >
+        <KeyboardAvoidingView 
+          style={styles.modalContainer}
+          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        >
+          <View style={styles.modalHeader}>
+            <TouchableOpacity onPress={() => setSearchModalVisible(false)}>
+              <Text style={styles.cancelButton}>{t('cancel')}</Text>
+            </TouchableOpacity>
+            <Text style={styles.modalTitle}>{t('search')}</Text>
+            <View style={{ width: 60 }} />
+          </View>
+          
+          <View style={styles.searchContainer}>
+            <TextInput
+              style={styles.searchInput}
+              placeholder={t('searchPosts')}
+              value={searchQuery}
+              onChangeText={(text) => {
+                setSearchQuery(text);
+                handleSearch(text);
+              }}
+              autoFocus
+              placeholderTextColor="#999"
+            />
+          </View>
+
+          <FlatList
+            data={searchResults}
+            renderItem={renderPost}
+            keyExtractor={(item) => item.id}
+            contentContainerStyle={styles.searchResults}
+            ListEmptyComponent={
+              searchQuery.length >= 2 && !searching ? (
+                <View style={styles.emptyContainer}>
+                  <Ionicons name="search-outline" size={64} color="#ccc" />
+                  <Text style={styles.emptyText}>{t('noResultsFound')}</Text>
+                </View>
+              ) : searchQuery.length < 2 ? (
+                <View style={styles.emptyContainer}>
+                  <Ionicons name="search-outline" size={64} color="#ccc" />
+                  <Text style={styles.emptyText}>{t('typeToSearch')}</Text>
+                </View>
+              ) : null
+            }
+            ListHeaderComponent={
+              searching ? (
+                <View style={styles.loadingContainer}>
+                  <Text style={styles.loadingText}>{t('searching')}</Text>
+                </View>
+              ) : null
+            }
+          />
+        </KeyboardAvoidingView>
+      </Modal>
     </View>
   );
 }
