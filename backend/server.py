@@ -750,6 +750,28 @@ async def create_comment(post_id: str, comment_data: CommentCreate, current_user
         {"$inc": {"comments_count": 1}}
     )
     
+    # Send push notification to post owner
+    try:
+        if post["user_id"] != current_user.id:  # Don't notify if commenting on own post
+            post_owner = await db.users.find_one({"id": post["user_id"]})
+            if post_owner and post_owner.get("push_token"):
+                prefs = post_owner.get("notification_preferences", {})
+                if prefs.get("comments", True):
+                    await send_push_notification(
+                        post_owner["push_token"],
+                        "New Comment",
+                        f"{current_user.username} commented on your post!",
+                        {
+                            "type": "comment",
+                            "post_id": post_id,
+                            "comment_id": comment_id,
+                            "user_id": current_user.id,
+                            "username": current_user.username
+                        }
+                    )
+    except Exception as e:
+        logging.error(f"Error sending comment notification: {e}")
+    
     return Comment(**comment_dict)
 
 @api_router.get("/posts/{post_id}/comments", response_model=List[Comment])
