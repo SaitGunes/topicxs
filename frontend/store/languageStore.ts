@@ -1117,6 +1117,27 @@ export const translations = {
     userUnblocked: 'Usuario desbloqueado exitosamente',
     noBlockedUsers: 'No hay usuarios bloqueados',
     
+    // Report System
+    reportPost: 'Reportar Publicación',
+    reportUser: 'Reportar Usuario',
+    reportComment: 'Reportar Comentario',
+    selectReason: 'Selecciona una razón',
+    spam: 'Spam',
+    harassment: 'Acoso',
+    inappropriate: 'Contenido Inapropiado',
+    hateSpeech: 'Discurso de Odio',
+    violence: 'Violencia',
+    other: 'Otro',
+    additionalDetails: 'Detalles adicionales (opcional)',
+    submitReport: 'Enviar Reporte',
+    reportSubmitted: 'Reporte enviado exitosamente',
+    reportFailed: 'Error al enviar reporte',
+    reports: 'Reportes',
+    pending: 'Pendiente',
+    reviewed: 'Revisado',
+    resolved: 'Resuelto',
+    dismissed: 'Desestimado',
+    
     // About
     aboutTitle: 'Acerca de Drivers Chat',
     aboutDescription: 'Drivers Chat es una plataforma comunitaria construida por conductores, para conductores. Conéctate con otros conductores profesionales, comparte tus experiencias y construye conexiones significativas.',
