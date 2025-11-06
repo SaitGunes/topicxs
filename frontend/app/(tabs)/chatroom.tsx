@@ -71,6 +71,7 @@ export default function ChatRoomScreen() {
 
   const connectSocket = () => {
     const socketUrl = API_URL?.replace('/api', '') || 'http://localhost:8001';
+    console.log('Connecting to Socket.IO:', socketUrl);
     
     socketRef.current = io(socketUrl, {
       transports: ['websocket', 'polling'],
@@ -78,18 +79,29 @@ export default function ChatRoomScreen() {
     });
 
     socketRef.current.on('connect', () => {
+      console.log('Socket.IO connected!');
       if (user) {
         socketRef.current?.emit('join_chatroom', {
           user_id: user.id,
           username: user.username,
         });
+        console.log('Joined chatroom');
       }
     });
 
+    socketRef.current.on('connect_error', (error) => {
+      console.error('Socket connection error:', error);
+    });
+
     socketRef.current.on('new_chatroom_message', (message: ChatMessage) => {
+      console.log('New message received via Socket.IO:', message);
       setMessages((prev) => {
         const exists = prev.some(m => m.id === message.id);
-        if (exists) return prev;
+        if (exists) {
+          console.log('Message already exists, skipping');
+          return prev;
+        }
+        console.log('Adding new message to state');
         return [...prev, message];
       });
       setTimeout(() => flatListRef.current?.scrollToEnd({ animated: true }), 100);
