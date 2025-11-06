@@ -15,6 +15,7 @@ interface User {
   invited_by?: string | null;
   referral_count?: number;
   friend_ids?: string[];
+  is_admin?: boolean;
   created_at: string;
 }
 
