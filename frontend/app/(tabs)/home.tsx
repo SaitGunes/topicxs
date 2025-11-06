@@ -8,6 +8,7 @@ import * as ImagePicker from 'expo-image-picker';
 import { formatDistanceToNow } from 'date-fns';
 import { tr, es } from 'date-fns/locale';
 import { useRouter } from 'expo-router';
+import EmojiSelector from 'react-native-emoji-selector';
 
 interface Post {
   id: string;
