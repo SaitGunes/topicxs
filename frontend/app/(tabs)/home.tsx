@@ -442,10 +442,35 @@ export default function HomeScreen() {
               </View>
             )}
 
-            <TouchableOpacity style={styles.addImageButton} onPress={pickImage}>
-              <Ionicons name="image-outline" size={24} color="#007AFF" />
-              <Text style={styles.addImageText}>{t('addPhoto')}</Text>
-            </TouchableOpacity>
+            <View style={styles.actionButtons}>
+              <TouchableOpacity style={styles.addImageButton} onPress={pickImage}>
+                <Ionicons name="image-outline" size={24} color="#007AFF" />
+                <Text style={styles.addImageText}>{t('addPhoto')}</Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity 
+                style={styles.emojiButton} 
+                onPress={() => setShowEmojiPicker(!showEmojiPicker)}
+              >
+                <Ionicons name="happy-outline" size={24} color="#007AFF" />
+                <Text style={styles.emojiButtonText}>Emoji</Text>
+              </TouchableOpacity>
+            </View>
+
+            {showEmojiPicker && (
+              <View style={styles.emojiPickerContainer}>
+                <EmojiSelector
+                  onEmojiSelected={(emoji) => {
+                    setNewPostContent(newPostContent + emoji);
+                    setShowEmojiPicker(false);
+                  }}
+                  showSearchBar={false}
+                  showTabs={true}
+                  showHistory={false}
+                  category={undefined}
+                />
+              </View>
+            )}
 
             {/* Privacy Options */}
             <View style={styles.privacySection}>
