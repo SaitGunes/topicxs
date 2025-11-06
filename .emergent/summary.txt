@@ -1,131 +1,111 @@
 <analysis>
-The AI engineer successfully progressed the Drivers Chat application, evolving it from a basic social platform into a more feature-rich product. The development was iterative, addressing user feedback and new feature requests sequentially. Key areas of work included: implementing a robust like/dislike system with auto-deletion (requiring significant backend and frontend synchronization, including the introduction of enhanced post endpoints); developing user profile enhancements like profile picture uploads; creating essential static pages such as Help, About, Terms & Conditions (with pre-login/register consent); implementing admin post deletion; and undertaking a comprehensive internationalization effort, starting with English, Turkish, and Spanish, and moving the language selector to the login screen. Throughout this process, the engineer demonstrated strong debugging skills, particularly in identifying and resolving frontend caching issues, API endpoint mismatches, and JavaScript syntax errors. The current task involves completing the full application translation to ensure all parts of the app respect the selected language.
+The AI engineer continued developing the Drivers Chat application, focusing on extensive internationalization for English, Turkish, and Spanish. Key features implemented include a referral system with deep linking, a mandatory professional driver checkbox for registration, backend support for Push Notifications and a Search feature, basic Comment UI, Profile Edit in Settings, Block User functionality, and an Emoji Picker for posts. A significant addition was the Emoji Reaction system for posts, complete with backend and frontend integration. The engineer also addressed legal concerns by replacing branded terms with generic ones. The work consistently involved updating  and relevant frontend  files, managing edits efficiently to handle token limits, and restarting Expo. The immediate work before this summary was the backend implementation of a Report System, and the trajectory concludes with a discussion on admin access.
 </analysis>
 
 <product_requirements>
-The application is a Facebook-like social sharing and chat platform for Uber and Lyft drivers, initially focused on communication. Core features requested were user authentication, a social feed, messaging, and user profiles. The application was to be in English.
+The application is a social sharing and chat platform for professional drivers, aiming to be a Facebook-like experience. Initial requirements included user authentication, social feed, messaging, profiles, and English language support.
 
-Subsequent feature requests included:
-1.  **Referral System:** Unique codes for inviting others, tracking referrals.
-2.  **Friends System:** Send/accept/decline requests, optional messages, no friend limit, badges for requests/unread messages.
-3.  **Advanced Post Sharing:** Public, Friends-only, or Specific friends privacy options.
-4.  **Like/Dislike with Auto-Delete:** Thumbs up/down for posts/comments; auto-delete if 10+ votes and 50%+ are dislikes. Users cannot vote on own posts.
-5.  **Group System:** Create groups, invite/join, approval-based/open, admin roles, group-specific posts.
-6.  **Forgot Password:** Password reset functionality.
-7.  **Sign Out Confirmation Removal:** Direct sign-out without confirmation.
-8.  **Profile Picture:** Add/edit profile pictures.
-9.  **Help Section:** FAQ-style page detailing app features.
-10. **Settings Page:** Manage password, delete account, language selection.
-11. **App Name Change:** Driver Forum to Drivers Chat.
-12. **Data Reset:** Ability to clear all user and post data.
-13. **Terms & Conditions:** Two mandatory agreements before login/register, covering non-commercial use, data, and content policies.
-14. **Admin Post Deletion:** Admin users can delete inappropriate posts.
-15. **About Page & Persistent Terms:** Dedicated About page and a viewable Terms & Conditions page.
-16. **Post Edit & Image Enhancements:** Users can edit their posts, and images should be viewable full-screen (not cropped).
-17. **Full App Translation:** Ensure entire app reflects selected language (Turkish, Spanish added).
-18. **Support Email Update:**  to .
+Key features added or requested:
+- Referral system with unique codes and deep linking to pre-fill registration.
+- Friends system with requests and notification badges.
+- Advanced post sharing (privacy options).
+- Like/dislike with auto-deletion for posts/comments (if 10+ votes and >50% dislikes).
+- Group system, Forgot Password, Sign Out without confirmation.
+- Profile picture uploads, Help, About, and Settings pages (password change, account deletion, language selection).
+- App name changed to Drivers Chat.
+- Mandatory Terms & Conditions agreement before login/register.
+- Admin post deletion, post editing, and full-screen image viewing.
+- Full application translation to English, Turkish, and Spanish, including all static pages and dynamic content.
+- Replacement of branded terms (Uber, Lyft) with generic ones like professional drivers.
+- Mandatory Professional driver checkbox for new registrations.
+- Push Notifications, Search functionality, Comment UI, Profile Edit, Block User, Emoji Picker for posts, and Emoji Reactions for posts.
+- Report System for posts/users.
 </product_requirements>
 
 <key_technical_concepts>
--   **Frontend:** Expo (React Native), Expo Router (file-based routing), Zustand (state management for auth, notifications, language), ,  (local storage).
--   **Backend:** FastAPI (Python API), MongoDB (NoSQL DB), Socket.IO (real-time features), JWT (authentication).
--   **Development Practices:** Mobile-first design, cross-platform compatibility, environment variable management, internationalization (i18n).
+-   **Frontend:** Expo (React Native), Expo Router, Zustand (state management), , ,  (new).
+-   **Backend:** FastAPI (Python API), MongoDB, Socket.IO, JWT,  (new).
+-   **Practices:** Mobile-first, cross-platform, i18n, Deep Linking, Push Notifications, Real-time features.
 </key_technical_concepts>
 
 <code_architecture>
-The application follows a full-stack architecture with an Expo React Native frontend and a FastAPI backend, using MongoDB for data persistence.
+The application follows a full-stack architecture with an Expo React Native frontend, a FastAPI backend, and MongoDB for data persistence.
 
 **Directory Structure (Relevant parts):**
 
 
--   **/app/backend/server.py**: The FastAPI backend, managing all API endpoints.
-    -   *Importance:* Defines data models (User, Post, Comment, etc.) and handles authentication, social interactions, and data persistence.
+-   **/app/backend/server.py**: The FastAPI backend.
+    -   *Importance:* Manages data models, authentication, social interactions, and API endpoints.
     -   *Changes:*
-        -   Added  to  model.
-        -   Introduced  model for richer post data.
-        -   Added , , , ,  to  model.
-        -   Created ,  models.
-        -   Implemented ,  (profile update),  (password change),  (account deletion).
-        -   Enhanced  and  endpoints.
-        -   Added  for user-specific enhanced posts.
-        -   Modified comment posting to interact with  collection.
-        -   Added  for admin post deletion.
-        -   Added  for post editing.
--   **/app/frontend/app/index.tsx**: Main entry point, handles initial routing and terms agreement.
-    -   *Importance:* Critical for initial app load logic and user experience.
-    -   *Changes:* Integrated  and  from . Fixed syntax error ( outside function).
--   **/app/frontend/app/(auth)/login.tsx**: Login screen.
-    -   *Importance:* User authentication entry point.
-    -   *Changes:* Added Forgot Password? link, integrated  and . Translated texts.
--   **/app/frontend/app/(auth)/register.tsx**: Registration screen.
-    -   *Importance:* User registration entry point.
-    -   *Changes:* Added  input. Integrated . Started translating texts.
--   **/app/frontend/app/(auth)/forgot-password.tsx**: New screen for password reset.
--   **/app/frontend/app/(tabs)/_layout.tsx**: Tab navigation layout.
-    -   *Importance:* Defines the primary navigation structure.
+        -   Enhanced  model with , , , , , , and . Added .
+        -   Introduced  model, , , , , and  models.
+        -   Implemented endpoints for password reset, profile/password updates, account deletion, enhanced post viewing/voting, admin post deletion, post editing, user-specific enhanced posts.
+        -   **NEW:**  endpoint and  function.
+        -   **NEW:** Notification triggers added to friend request and message sending endpoints.
+        -   **NEW:**  endpoint for posts and users.
+        -   **NEW:**  and  endpoints.
+        -   **NEW:**  endpoint for emoji reactions.
+        -   **NEW:**  endpoint for creating reports.
+        -   Added  dependency.
+-   **/app/frontend/app/index.tsx**: Main entry point.
+    -   *Changes:* Integrated  and  for initial language setup.
+-   **/app/frontend/app/(auth)/login.tsx, register.tsx, forgot-password.tsx**: Auth screens.
+    -   *Changes:* Full translation, Forgot Password? link, , .  now supports deep linking for referral codes and includes a mandatory Professional driver checkbox.
+-   **/app/frontend/app/(tabs)/_layout.tsx**: Tab navigation.
     -   *Changes:* Added Friends tab, integrated  for badges.
 -   **/app/frontend/app/(tabs)/home.tsx**: Main feed.
-    -   *Importance:* Central social feed for viewing and creating posts.
-    -   *Changes:* Implemented post creation modal (privacy options), 👍/👎 buttons, auto-delete logic, admin delete button, post edit button, full-screen image viewer.
--   **/app/frontend/app/(tabs)/profile.tsx**: User's profile.
-    -   *Importance:* Displays user-specific information and actions.
-    -   *Changes:* Displays ,  functionality refined. Added profile picture upload/display. Linked to new , ,  pages.
--   **/app/frontend/app/(tabs)/friends.tsx**: Friend management screen.
-    -   *Importance:* Handles friend requests and lists.
-    -   *Changes:* Integrated with  for badge updates.
+    -   *Changes:* Implemented post creation modal (privacy), like/dislike, auto-delete, admin delete, post edit, full-screen image viewer. **NEW:** Full translation. **NEW:** Search bar and modal UI. **NEW:** Emoji picker for post creation. **NEW:** Emoji reaction UI for posts.
+-   **/app/frontend/app/(tabs)/profile.tsx**: User profile.
+    -   *Changes:* Displays , , profile picture. Links to Settings, Help, About. **NEW:** Full translation. **NEW:** Added Share button for referral link.
+-   **/app/frontend/app/(tabs)/friends.tsx, messages.tsx**: Friend management and messaging.
+    -   *Changes:* Integrated with . **NEW:** Full translation for both.
 -   **/app/frontend/app/post/[id].tsx**: Single post detail view.
-    -   *Importance:* Displays individual posts and comments.
-    -   *Changes:* Updated to use  endpoint. Fixed comment posting. Implemented like/dislike buttons and logic mirroring .
--   **/app/frontend/app/profile/[id].tsx**: Another user's profile view.
-    -   *Importance:* Displays other user's profiles and posts.
-    -   *Changes:* Adapted to include like/dislike functionality for posts, using the enhanced user posts endpoint.
--   **/app/frontend/app/help.tsx**: New help/FAQ page.
--   **/app/frontend/app/settings.tsx**: New settings page.
-    -   *Importance:* Allows users to manage account details.
-    -   *Changes:* Implemented password change, account deletion, and language selection. Renamed Driver Forum to Drivers Chat.
--   **/app/frontend/app/about.tsx**: New about page.
--   **/app/frontend/app/terms-view.tsx**: New page to view terms & conditions.
--   **/app/frontend/components/TermsModal.tsx**: New component for terms and conditions pop-up.
--   **/app/frontend/components/EditPostModal.tsx**: New component for editing posts.
--   **/app/frontend/components/FullScreenImage.tsx**: New component for viewing images in full screen.
--   **/app/frontend/store/authStore.ts**: Zustand store for authentication.
-    -   *Importance:* Manages user session and authentication tokens.
-    -   *Changes:* Enhanced  for reliable state/storage clear. Added  function.
--   **/app/frontend/store/notificationStore.ts**: Zustand store for notifications.
-    -   *Importance:* Tracks unread messages and pending friend requests.
--   **/app/frontend/store/languageStore.ts**: New Zustand store for language management.
-    -   *Importance:* Stores current language and provides translations.
-    -   *Changes:* Added  state and  action. Implemented initial English, Turkish, Spanish translations for key texts.
--   **/app/frontend/.env**: Environment variables for frontend.
-    -   *Importance:* Configures API URLs.
-    -   *Changes:* App name in  changed from  to .
--   **/app/backend/.env**: Environment variables for backend.
-    -   *Importance:* Configures database connection and secret keys.
-    -   *Changes:* Added  and corrected  to .
+    -   *Changes:* Uses  endpoint, comment posting, like/dislike. **NEW:** Full translation.
+-   **/app/frontend/app/profile/[id].tsx**: Other user's profile view.
+    -   *Changes:* Like/dislike for posts. **NEW:** Full translation. **NEW:** Block/unblock button.
+-   **/app/frontend/app/help.tsx, settings.tsx, about.tsx, terms-view.tsx**: Static/utility pages.
+    -   *Changes:* Fully translated.  includes password change, account deletion, language selection, and profile edit.
+-   **/app/frontend/components/TermsModal.tsx, EditPostModal.tsx, FullScreenImage.tsx**: Reusable components.
+    -   *Changes:* Fully translated.
+-   **/app/frontend/store/authStore.ts**: Authentication store.
+    -   *Changes:* Enhanced , added .
+-   **/app/frontend/store/languageStore.ts**: Language management store.
+    -   *Changes:* Stores , provides  (EN, TR, ES). Expanded significantly to include all app texts and updated to use generic terms instead of branded ones.
+-   **/app/frontend/.env**: Environment variables.
+    -   *Changes:* App name in  changed to Drivers Chat.
+-   **/app/backend/.env**: Environment variables.
+    -   *Changes:*  added,  corrected to .
+-   **New Frontend Dependency**:  for emoji picking.
 </code_architecture>
 
 <pending_tasks>
--   **Full App Translation:** Complete translation of all user-facing texts across the entire application to support English, Turkish, and Spanish.
+-   **Push Notifications:** Complete frontend integration (token registration, handling, settings toggle).
+-   **Comment UI:** Display comments directly in the feed (currently only redirects to post detail).
+-   **Media Gallery:** Implement multiple image sharing.
+-   **Hashtags:** Implement backend parsing, frontend clickable links, and a hashtag search page.
+-   **Link Preview:** Implement URL metadata fetching (backend) and rich preview display (frontend).
 -   **Group System:** Implement creation, invitation, joining, roles, and group-specific sharing.
 -   **Friend Recommendations:** Implement logic for suggesting friends.
--   **Advanced Sharing:** Frontend UI refinement for specific friend selection for posts (the backend part is likely implemented).
+-   **Advanced Sharing:** Frontend UI refinement for specific friend selection for posts.
 -   **Auto-Delete Notifications:** Notify users when their post/comment is deleted due to the dislike threshold.
--   **Comment Like/Dislike:** Implement like/dislike on comments (currently only for posts).
--   **Image Cropping:** User explicitly requested not to crop images and instead show full screen; the cropping functionality was not explicitly discussed or implemented, but the current full-screen view addresses part of this request.
+-   **Comment Like/Dislike:** Implement like/dislike functionality specifically for comments.
+-   **Report System Frontend:** Add report button and modal to Home.tsx and implement report listing for admins.
+-   **Admin Panel:** Develop a full admin panel for user management, statistics, moderation tools beyond just post deletion and report viewing.
 </pending_tasks>
 
 <current_work>
-Immediately before this summary request, the AI engineer was working on completing the full application translation (internationalization). After moving the language selection to the login screen, the user pointed out that only the login screen was translated, and other pages remained in English.
+Immediately before this summary request, the AI engineer had successfully implemented the backend for the **Report System**. This included defining a  model and creating the  endpoint to allow users to report posts or other users. Frontend translation keys for reporting features were also added.
 
-The AI engineer initiated the process of translating the entire application, starting with the  file to ensure that users experience the selected language consistently across the app. The last action in the trajectory involved making edits to  to translate its content, but the task was interrupted mid-way due to hitting a token limit. This means the translation of the  file is incomplete, and further translation efforts for other pages are yet to begin.
+The next planned step was to integrate the frontend UI for the Report System by adding a report button and modal to . However, this was interrupted when the user asked, ben admin bölümünü nasıl kullanabilirim (how can I use the admin section?).
 
-The current state is that a basic language selection mechanism is in place, and some core translations exist in . However, the integration of these translations across all  screens is ongoing, with  being the latest file modified for this purpose.
+The AI engineer then paused the Report System frontend work to explain the existing admin features:
+1.  Admin users can delete any post.
+2.  Admins can view and review/resolve reports.
+The explanation also covered how to make an account an admin (currently only by direct database modification).
 
-Relevant files and functions currently being worked on:
--   : Currently being modified to translate its texts.
--   : Contains the  and  object that needs to be expanded for full app coverage.
+Therefore, the work on the Report System frontend is pending, and the current discussion revolves around admin capabilities and how to access them.
 </current_work>
 
 <optional_next_step>
-Continue the full application translation, starting with completing the  file and then moving to other pages.
+Ask the user if they want to proceed with making their account an admin or if they have more questions about admin features.
 </optional_next_step>

@@ -10,7 +10,7 @@ import time
 from datetime import datetime
 
 # Backend URL from environment
-BACKEND_URL = "https://driverschat-i18n.preview.emergentagent.com/api"
+BACKEND_URL = "https://drivercommunity.preview.emergentagent.com/api"
 
 class ChatMessagingTester:
     def __init__(self):
