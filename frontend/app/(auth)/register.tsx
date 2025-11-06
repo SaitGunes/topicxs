@@ -160,6 +160,17 @@ export default function RegisterScreen() {
             <Text style={styles.checkboxLabel}>{t('confirmDriver')}</Text>
           </TouchableOpacity>
 
+          {/* 18+ Age Confirmation Checkbox */}
+          <TouchableOpacity 
+            style={styles.checkboxContainer}
+            onPress={() => setConfirm18Plus(!confirm18Plus)}
+          >
+            <View style={[styles.checkbox, confirm18Plus && styles.checkboxChecked]}>
+              {confirm18Plus && <Ionicons name="checkmark" size={18} color="#fff" />}
+            </View>
+            <Text style={styles.checkboxLabel}>{t('confirm18Plus')}</Text>
+          </TouchableOpacity>
+
           <TouchableOpacity 
             style={[styles.button, loading && styles.buttonDisabled]}
             onPress={handleRegister}
