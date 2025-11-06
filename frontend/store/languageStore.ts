@@ -820,6 +820,8 @@ export const translations = {
     
     // Referral Share
     shareReferralCode: 'Referans Kodunu Paylaş',
+    nextStarIn: 'Sonraki yıldız',
+    referrals: 'referanslar',
     
     // Edit Post Modal
     editPostSaveChanges: 'Değişiklikleri Kaydet',
