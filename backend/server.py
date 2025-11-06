@@ -72,6 +72,7 @@ class User(BaseModel):
     referral_count: int = 0
     friend_ids: List[str] = []
     is_admin: bool = False
+    push_token: Optional[str] = None
     created_at: datetime = Field(default_factory=datetime.utcnow)
 
 class Token(BaseModel):
