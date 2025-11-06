@@ -1485,6 +1485,12 @@ async def get_chatroom_messages(
     """Get latest public chat messages"""
     messages = await db.chatroom_messages.find({}, {"_id": 0}).sort("created_at", -1).limit(limit).to_list(limit)
     messages.reverse()  # Oldest first
+    
+    # Convert datetime to ISO string
+    for msg in messages:
+        if isinstance(msg.get("created_at"), datetime):
+            msg["created_at"] = msg["created_at"].isoformat()
+    
     return messages
 
 @api_router.post("/chatroom/messages")
@@ -1494,22 +1500,33 @@ async def send_chatroom_message(
 ):
     """Send a message to public chat room"""
     message_id = str(int(datetime.utcnow().timestamp() * 1000))
+    now = datetime.utcnow()
     
-    message = {
+    message_db = {
         "id": message_id,
         "user_id": current_user.id,
         "username": current_user.username,
         "user_profile_picture": current_user.profile_picture,
         "content": content,
-        "created_at": datetime.utcnow()
+        "created_at": now
     }
     
-    await db.chatroom_messages.insert_one(message)
+    await db.chatroom_messages.insert_one(message_db)
+    
+    # Prepare message for Socket.IO (with ISO string datetime)
+    message_emit = {
+        "id": message_id,
+        "user_id": current_user.id,
+        "username": current_user.username,
+        "user_profile_picture": current_user.profile_picture,
+        "content": content,
+        "created_at": now.isoformat()
+    }
     
     # Emit to all connected clients via Socket.IO
-    await sio.emit('new_chatroom_message', message, room='chatroom')
+    await sio.emit('new_chatroom_message', message_emit, room='chatroom')
     
-    return message
+    return message_emit
 
 # ==================== SOCKET.IO ====================
 
