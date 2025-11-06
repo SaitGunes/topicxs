@@ -256,4 +256,28 @@ const styles = StyleSheet.create({
     color: '#007AFF',
     fontSize: 16,
   },
+  checkboxContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 20,
+    paddingHorizontal: 4,
+  },
+  checkbox: {
+    width: 24,
+    height: 24,
+    borderRadius: 6,
+    borderWidth: 2,
+    borderColor: '#007AFF',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginRight: 12,
+  },
+  checkboxChecked: {
+    backgroundColor: '#007AFF',
+  },
+  checkboxLabel: {
+    fontSize: 14,
+    color: '#333',
+    flex: 1,
+  },
 });
