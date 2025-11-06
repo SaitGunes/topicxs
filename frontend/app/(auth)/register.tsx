@@ -21,6 +21,13 @@ export default function RegisterScreen() {
   const [showTerms, setShowTerms] = useState(false);
   const [pendingRegistration, setPendingRegistration] = useState(false);
 
+  // Auto-fill referral code from deep link
+  useEffect(() => {
+    if (params.ref && typeof params.ref === 'string') {
+      setReferralCode(params.ref.toUpperCase());
+    }
+  }, [params.ref]);
+
   const handleRegister = async () => {
     if (!username || !email || !fullName || !password) {
       Alert.alert(t('error'), t('fillAllRequiredFields'));
