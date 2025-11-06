@@ -226,6 +226,20 @@ export default function UserProfileScreen() {
           <Text style={styles.fullName}>{user.full_name}</Text>
           <Text style={styles.username}>@{user.username}</Text>
           {user.bio ? <Text style={styles.bio}>{user.bio}</Text> : null}
+          
+          {/* Star Rating Badge */}
+          {user.star_level && user.star_level.stars > 0 && (
+            <View style={styles.starBadgeSmall}>
+              <View style={styles.starRow}>
+                {[...Array(5)].map((_, index) => (
+                  <Text key={index} style={styles.starIconSmall}>
+                    {index < user.star_level!.stars ? '⭐' : '☆'}
+                  </Text>
+                ))}
+              </View>
+              <Text style={styles.levelNameSmall}>{user.star_level.level_name}</Text>
+            </View>
+          )}
 
           {!isOwnProfile && (
             <TouchableOpacity 
