@@ -592,6 +592,62 @@ async def get_blocked_users(current_user: User = Depends(get_current_user)):
     blocked_users = await db.users.find({"id": {"$in": blocked_ids}}).to_list(100)
     return [User(**{k: v for k, v in user.items() if k != 'password'}) for user in blocked_users]
 
+# ==================== REPORT ROUTES ====================
+
+@api_router.post("/reports", response_model=Report)
+async def create_report(report_data: ReportCreate, current_user: User = Depends(get_current_user)):
+    """Create a new report"""
+    # Get reported username
+    reported_user = await db.users.find_one({"id": report_data.reported_user_id})
+    if not reported_user:
+        raise HTTPException(status_code=404, detail="Reported user not found")
+    
+    report_dict = {
+        "id": str(int(datetime.utcnow().timestamp() * 1000000)),
+        "reporter_user_id": current_user.id,
+        "reporter_username": current_user.username,
+        "reported_content_type": report_data.reported_content_type,
+        "reported_content_id": report_data.reported_content_id,
+        "reported_user_id": report_data.reported_user_id,
+        "reported_username": reported_user["username"],
+        "reason": report_data.reason,
+        "description": report_data.description,
+        "status": "pending",
+        "created_at": datetime.utcnow()
+    }
+    
+    await db.reports.insert_one(report_dict)
+    return Report(**report_dict)
+
+@api_router.get("/reports", response_model=List[Report])
+async def get_reports(status: str = "pending", current_user: User = Depends(get_current_user)):
+    """Get all reports (admin only)"""
+    if not current_user.is_admin:
+        raise HTTPException(status_code=403, detail="Admin access required")
+    
+    query = {"status": status} if status != "all" else {}
+    reports = await db.reports.find(query).sort("created_at", -1).limit(100).to_list(100)
+    return [Report(**report) for report in reports]
+
+@api_router.put("/reports/{report_id}/status")
+async def update_report_status(report_id: str, status: str, current_user: User = Depends(get_current_user)):
+    """Update report status (admin only)"""
+    if not current_user.is_admin:
+        raise HTTPException(status_code=403, detail="Admin access required")
+    
+    if status not in ["reviewed", "resolved", "dismissed"]:
+        raise HTTPException(status_code=400, detail="Invalid status")
+    
+    result = await db.reports.update_one(
+        {"id": report_id},
+        {"$set": {"status": status}}
+    )
+    
+    if result.modified_count == 0:
+        raise HTTPException(status_code=404, detail="Report not found")
+    
+    return {"message": "Report status updated"}
+
 # ==================== POST ROUTES ====================
 
 @api_router.post("/posts", response_model=Post)
