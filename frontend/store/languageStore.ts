@@ -327,6 +327,16 @@ export const translations = {
     writeComment: 'Write a comment...',
     noComments: 'No comments yet',
     
+    // Block User
+    blockUser: 'Block User',
+    unblockUser: 'Unblock User',
+    blockedUsers: 'Blocked Users',
+    blockUserConfirm: 'Are you sure you want to block this user? You won\'t see their posts or messages.',
+    unblockUserConfirm: 'Are you sure you want to unblock this user?',
+    userBlocked: 'User blocked successfully',
+    userUnblocked: 'User unblocked successfully',
+    noBlockedUsers: 'No blocked users',
+    
     // About
     aboutTitle: 'About Drivers Chat',
     aboutDescription: 'Drivers Chat is a community platform built by drivers, for drivers. Connect with fellow drivers, share your experiences, and build meaningful connections.',
