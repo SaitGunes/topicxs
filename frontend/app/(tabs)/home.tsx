@@ -359,12 +359,20 @@ export default function HomeScreen() {
     <View style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.headerTitle}>{t('home')}</Text>
-        <TouchableOpacity 
-          style={styles.createButton}
-          onPress={() => setCreateModalVisible(true)}
-        >
-          <Ionicons name="add" size={28} color="#007AFF" />
-        </TouchableOpacity>
+        <View style={styles.headerButtons}>
+          <TouchableOpacity 
+            style={styles.searchButton}
+            onPress={() => setSearchModalVisible(true)}
+          >
+            <Ionicons name="search" size={24} color="#007AFF" />
+          </TouchableOpacity>
+          <TouchableOpacity 
+            style={styles.createButton}
+            onPress={() => setCreateModalVisible(true)}
+          >
+            <Ionicons name="add" size={28} color="#007AFF" />
+          </TouchableOpacity>
+        </View>
       </View>
 
       <FlatList
