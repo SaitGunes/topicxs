@@ -1,18 +1,33 @@
 #!/usr/bin/env python3
 """
-Comprehensive Backend API Testing for Chat/Messaging System
-Testing all chat and messaging endpoints as requested by user
+Backend API Testing for Driver Forum Application - Admin Panel Endpoints
+Testing all admin endpoints with proper authentication and authorization
 """
 
 import requests
 import json
-import time
+import sys
 from datetime import datetime
 
-# Backend URL from environment
-BACKEND_URL = "https://drivercommunity.preview.emergentagent.com/api"
+# Configuration
+BASE_URL = "https://drivercommunity.preview.emergentagent.com/api"
 
-class ChatMessagingTester:
+# Test credentials - Sait is admin user
+ADMIN_USER = {
+    "username": "Sait",
+    "password": "password123"
+}
+
+# Regular user for authorization testing
+REGULAR_USER = {
+    "username": "testuser",
+    "email": "testuser@example.com", 
+    "password": "password123",
+    "full_name": "Test User",
+    "bio": "Regular user for testing"
+}
+
+class AdminEndpointTester:
     def __init__(self):
         self.session = requests.Session()
         self.user1_token = None
