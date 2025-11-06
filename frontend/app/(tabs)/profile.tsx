@@ -113,6 +113,13 @@ export default function ProfileScreen() {
             <Text style={styles.referralCount}>
               {user.referral_count || 0} {t('peopleJoined')}
             </Text>
+            <TouchableOpacity 
+              style={styles.shareButton}
+              onPress={handleShareReferral}
+            >
+              <Ionicons name="share-social-outline" size={20} color="#fff" />
+              <Text style={styles.shareButtonText}>{t('shareReferralCode')}</Text>
+            </TouchableOpacity>
           </View>
         )}
       </View>
