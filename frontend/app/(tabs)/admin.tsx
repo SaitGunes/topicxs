@@ -207,6 +207,7 @@ export default function AdminPanel() {
   };
 
   const handleDeletePost = async (postId: string) => {
+    console.log('Deleting post with ID:', postId);
     Alert.alert(t('adminSuccess'), t('adminConfirmDelete'), [
       { text: t('cancel'), style: 'cancel' },
       {
@@ -214,12 +215,15 @@ export default function AdminPanel() {
         style: 'destructive',
         onPress: async () => {
           try {
-            await axios.delete(`${API_URL}/api/admin/posts/${postId}`, {
+            console.log('DELETE request to:', `${API_URL}/api/admin/posts/${postId}`);
+            const response = await axios.delete(`${API_URL}/api/admin/posts/${postId}`, {
               headers: { Authorization: `Bearer ${token}` },
             });
+            console.log('Delete response:', response.data);
             Alert.alert(t('adminSuccess'), 'Post deleted');
             loadPosts();
           } catch (error: any) {
+            console.error('Delete error:', error.response?.data || error.message);
             Alert.alert(t('adminError'), error.response?.data?.detail || error.message);
           }
         },
