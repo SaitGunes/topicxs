@@ -404,6 +404,8 @@ export const translations = {
     referralCodeOptional: 'Referans Kodu (isteğe bağlı)',
     creatingAccount: 'Hesap oluşturuluyor...',
     joinDriverCommunity: 'Sürücü topluluğuna katılın',
+    confirmDriver: 'Profesyonel şoför olarak çalışıyorum',
+    mustConfirmDriver: 'Lütfen profesyonel şoför olarak çalıştığınızı onaylayın',
     
     // Tabs
     home: 'Ana Sayfa',
