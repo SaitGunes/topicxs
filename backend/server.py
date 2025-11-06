@@ -731,6 +731,16 @@ async def send_friend_request(request_data: FriendRequestCreate, current_user: U
     }
     
     await db.friend_requests.insert_one(friend_request_dict)
+    
+    # Send push notification
+    if target_user.get("push_token"):
+        await send_push_notification(
+            target_user["push_token"],
+            "New Friend Request",
+            f"{current_user.username} sent you a friend request",
+            {"type": "friend_request", "from_user_id": current_user.id}
+        )
+    
     return FriendRequest(**friend_request_dict)
 
 @api_router.get("/friends/requests", response_model=List[FriendRequest])
