@@ -921,6 +921,14 @@ async def get_friends(current_user: User = Depends(get_current_user)):
 async def create_enhanced_post(post_data: PostCreateEnhanced, current_user: User = Depends(get_current_user)):
     post_id = str(datetime.utcnow().timestamp()).replace(".", "")
     
+    # If posting to a group, verify membership
+    if post_data.group_id:
+        group = await db.groups.find_one({"id": post_data.group_id})
+        if not group:
+            raise HTTPException(status_code=404, detail="Group not found")
+        if current_user.id not in group["member_ids"]:
+            raise HTTPException(status_code=403, detail="Not a member of this group")
+    
     post_dict = {
         "id": post_id,
         "user_id": current_user.id,
@@ -930,8 +938,10 @@ async def create_enhanced_post(post_data: PostCreateEnhanced, current_user: User
         "image": post_data.image,
         "likes": [],
         "dislikes": [],
+        "reactions": {},
         "comments_count": 0,
         "privacy": post_data.privacy.dict(),
+        "group_id": post_data.group_id,
         "created_at": datetime.utcnow()
     }
     
