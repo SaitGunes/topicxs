@@ -565,6 +565,8 @@ export const translations = {
     joinDriverCommunity: 'Sürücü topluluğuna katılın',
     confirmDriver: 'Profesyonel şoför olarak çalışıyorum',
     mustConfirmDriver: 'Lütfen profesyonel şoför olarak çalıştığınızı onaylayın',
+    confirm18Plus: '18 yaşında veya daha büyük olduğumu onaylıyorum',
+    mustConfirm18Plus: 'Bu uygulamayı kullanmak için 18 yaşında veya daha büyük olmalısınız',
     
     // Tabs
     home: 'Ana Sayfa',
