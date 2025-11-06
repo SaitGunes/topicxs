@@ -336,6 +336,29 @@ const styles = StyleSheet.create({
     marginTop: 8,
     marginBottom: 16,
   },
+  starBadgeSmall: {
+    backgroundColor: '#FFF9E6',
+    padding: 12,
+    borderRadius: 12,
+    marginTop: 12,
+    marginBottom: 8,
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: '#FFD700',
+  },
+  starRow: {
+    flexDirection: 'row',
+    marginBottom: 4,
+    gap: 2,
+  },
+  starIconSmall: {
+    fontSize: 20,
+  },
+  levelNameSmall: {
+    fontSize: 13,
+    fontWeight: '600',
+    color: '#D4AF37',
+  },
   messageButton: {
     flexDirection: 'row',
     alignItems: 'center',
