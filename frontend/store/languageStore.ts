@@ -57,6 +57,8 @@ export const translations = {
     referralCodeOptional: 'Referral Code (optional)',
     creatingAccount: 'Creating account...',
     joinDriverCommunity: 'Join the driver community',
+    confirmDriver: 'I work as a professional driver',
+    mustConfirmDriver: 'Please confirm that you work as a professional driver',
     
     // Tabs
     home: 'Home',
