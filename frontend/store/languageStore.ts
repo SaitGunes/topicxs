@@ -1532,6 +1532,14 @@ export const translations = {
     noChatMessages: 'Aún no hay mensajes. ¡Inicia la conversación!',
     justNow: 'Ahora mismo',
     online: 'en línea',
+    deleteMessage: 'Eliminar Mensaje',
+    confirmDeleteMessage: '¿Estás seguro de que quieres eliminar este mensaje?',
+    clearChat: 'Limpiar Chat',
+    confirmClearChat: '¿Estás seguro de que quieres eliminar todos los mensajes? Esta acción no se puede deshacer.',
+    disableChat: 'Desactivar Chat',
+    enableChat: 'Activar Chat',
+    chatDisabled: 'Chat desactivado',
+    chatDisabledMessage: 'La sala de chat ha sido desactivada por el administrador',
   },
 };
 
