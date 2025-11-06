@@ -1455,7 +1455,7 @@ async def delete_post_admin(
 @api_router.get("/admin/stats")
 async def get_admin_stats(admin: User = Depends(require_admin)):
     total_users = await db.users.count_documents({})
-    total_posts = await db.posts.count_documents({})
+    total_posts = await db.posts_enhanced.count_documents({})  # Use posts_enhanced
     total_comments = await db.comments.count_documents({})
     total_reports = await db.reports.count_documents({})
     pending_reports = await db.reports.count_documents({"status": "pending"})
@@ -1463,7 +1463,7 @@ async def get_admin_stats(admin: User = Depends(require_admin)):
     # Get recent activity (last 7 days)
     seven_days_ago = datetime.utcnow() - timedelta(days=7)
     recent_users = await db.users.count_documents({"created_at": {"$gte": seven_days_ago}})
-    recent_posts = await db.posts.count_documents({"created_at": {"$gte": seven_days_ago}})
+    recent_posts = await db.posts_enhanced.count_documents({"created_at": {"$gte": seven_days_ago}})  # Use posts_enhanced
     
     return {
         "total_users": total_users,
