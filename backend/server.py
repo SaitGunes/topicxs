@@ -256,6 +256,34 @@ class NotificationPreferences(BaseModel):
     likes: bool = True
     comments: bool = True
 
+# ==================== STAR RATING SYSTEM ====================
+
+def calculate_star_level(referral_count: int) -> dict:
+    """Calculate star level based on referral count"""
+    stars = min(referral_count // 5, 5)  # Max 5 stars
+    
+    # Define levels
+    level_names = {
+        0: "Newbie Driver",
+        1: "Active Driver",
+        2: "Community Driver",
+        3: "Elite Driver",
+        4: "Master Driver",
+        5: "Legend Driver"
+    }
+    
+    # Calculate progress to next star
+    next_star_at = (stars + 1) * 5 if stars < 5 else 25
+    remaining = next_star_at - referral_count if stars < 5 else 0
+    
+    return {
+        "stars": stars,
+        "level_name": level_names.get(stars, "Newbie Driver"),
+        "total_referrals": referral_count,
+        "next_star_at": next_star_at if stars < 5 else None,
+        "remaining_referrals": remaining if stars < 5 else 0
+    }
+
 # ==================== PUSH NOTIFICATIONS ====================
 
 async def send_push_notification(push_token: str, title: str, body: str, data: dict = None):
