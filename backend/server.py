@@ -1483,7 +1483,7 @@ async def get_chatroom_messages(
     current_user: User = Depends(get_current_user)
 ):
     """Get latest public chat messages"""
-    messages = await db.chatroom_messages.find().sort("created_at", -1).limit(limit).to_list(limit)
+    messages = await db.chatroom_messages.find({}, {"_id": 0}).sort("created_at", -1).limit(limit).to_list(limit)
     messages.reverse()  # Oldest first
     return messages
 
