@@ -1057,7 +1057,7 @@ export const translations = {
     aboutLegal: 'Legal',
     aboutTermsService: 'Términos de Servicio',
     aboutPrivacyPolicy: 'Política de Privacidad',
-    aboutMadeWith: 'Hecho con ❤️ para conductores de rideshare',
+    aboutMadeWith: 'Hecho con ❤️ para conductores profesionales',
     aboutCopyright: '© 2025 Drivers Chat. Todos los derechos reservados.',
     aboutLegalGuidelines: 'Legal & Directrices',
   },
