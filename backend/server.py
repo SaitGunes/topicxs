@@ -242,7 +242,13 @@ class GroupInvite(BaseModel):
     user_ids: List[str]
 
 class PushTokenRegister(BaseModel):
-    push_token: str
+    token: str
+
+class NotificationPreferences(BaseModel):
+    friend_requests: bool = True
+    messages: bool = True
+    likes: bool = True
+    comments: bool = True
 
 # ==================== PUSH NOTIFICATIONS ====================
 
