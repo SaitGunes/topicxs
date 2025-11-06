@@ -950,6 +950,23 @@ async def get_user_enhanced_posts(user_id: str, skip: int = 0, limit: int = 20, 
     posts = await db.posts_enhanced.find({"user_id": user_id}).sort("created_at", -1).skip(skip).limit(limit).to_list(limit)
     return [PostEnhanced(**post) for post in posts]
 
+@api_router.get("/posts/search", response_model=List[PostEnhanced])
+async def search_posts(q: str, skip: int = 0, limit: int = 20, current_user: User = Depends(get_current_user)):
+    """Search posts by content or username"""
+    if not q or len(q) < 2:
+        return []
+    
+    # Search in post content or username
+    search_filter = {
+        "$or": [
+            {"content": {"$regex": q, "$options": "i"}},
+            {"username": {"$regex": q, "$options": "i"}}
+        ]
+    }
+    
+    posts = await db.posts_enhanced.find(search_filter).sort("created_at", -1).skip(skip).limit(limit).to_list(limit)
+    return [PostEnhanced(**post) for post in posts]
+
 # ==================== GROUP ROUTES ====================
 
 @api_router.post("/groups", response_model=Group)
