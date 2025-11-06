@@ -106,6 +106,25 @@ export default function ProfileScreen() {
         <Text style={styles.username}>@{user.username}</Text>
         {user.bio ? <Text style={styles.bio}>{user.bio}</Text> : null}
         
+        {/* Star Rating Badge */}
+        {user.star_level && (
+          <View style={styles.starBadge}>
+            <View style={styles.starRow}>
+              {[...Array(5)].map((_, index) => (
+                <Text key={index} style={styles.starIcon}>
+                  {index < user.star_level.stars ? '⭐' : '☆'}
+                </Text>
+              ))}
+            </View>
+            <Text style={styles.levelName}>{user.star_level.level_name}</Text>
+            {user.star_level.remaining_referrals > 0 && (
+              <Text style={styles.progressText}>
+                {t('nextStarIn')} {user.star_level.remaining_referrals} {t('referrals')}
+              </Text>
+            )}
+          </View>
+        )}
+        
         {user.referral_code && (
           <View style={styles.referralCard}>
             <Text style={styles.referralLabel}>{t('yourReferralCode')}</Text>
