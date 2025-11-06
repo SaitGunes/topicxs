@@ -85,24 +85,22 @@ export default function FriendsScreen() {
         to_user_id: userId,
         message: null,
       });
-      Alert.alert('Success', 'Friend request sent!');
-      // Remove from search results
+      Alert.alert(t('success'), t('friendsFriendRequestSent'));
       setSearchResults(searchResults.filter(u => u.id !== userId));
     } catch (error: any) {
-      Alert.alert('Error', error.response?.data?.detail || 'Failed to send request');
+      Alert.alert(t('error'), error.response?.data?.detail || t('friendsFailedSendRequest'));
     }
   };
 
   const handleRequest = async (requestId: string, action: 'accept' | 'reject') => {
     try {
       await api.post(`/api/friends/requests/${requestId}/action`, { action });
-      Alert.alert('Success', action === 'accept' ? 'Friend added!' : 'Request rejected');
+      Alert.alert(t('success'), action === 'accept' ? t('friendsFriendAdded') : t('friendsRequestRejected'));
       loadFriendRequests();
       loadFriends();
-      // Update badge count
       loadFriendRequestCount();
     } catch (error: any) {
-      Alert.alert('Error', error.response?.data?.detail || 'Action failed');
+      Alert.alert(t('error'), error.response?.data?.detail || t('friendsActionFailed'));
     }
   };
 
