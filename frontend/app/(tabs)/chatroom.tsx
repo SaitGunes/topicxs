@@ -290,6 +290,9 @@ export default function ChatRoomScreen() {
         </View>
         <View style={styles.headerRight}>
           {!chatEnabled && <View style={styles.disabledBadge}><Text style={styles.disabledBadgeText}>🔒</Text></View>}
+          <TouchableOpacity onPress={onRefresh} style={styles.adminButton} disabled={refreshing}>
+            <Ionicons name="refresh" size={20} color={refreshing ? "#ccc" : "#007AFF"} />
+          </TouchableOpacity>
           {user?.is_admin && (
             <TouchableOpacity onPress={handleToggleChat} style={styles.adminButton}>
               <Ionicons name={chatEnabled ? 'lock-open' : 'lock-closed'} size={20} color="#007AFF" />
