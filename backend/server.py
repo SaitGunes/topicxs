@@ -532,6 +532,42 @@ async def search_users(q: str = "", current_user: User = Depends(get_current_use
     
     return [User(**{k: v for k, v in user.items() if k != 'password'}) for user in users]
 
+@api_router.post("/users/{user_id}/block")
+async def block_user(user_id: str, current_user: User = Depends(get_current_user)):
+    """Block a user"""
+    if user_id == current_user.id:
+        raise HTTPException(status_code=400, detail="Cannot block yourself")
+    
+    # Add to blocked list
+    await db.users.update_one(
+        {"id": current_user.id},
+        {"$addToSet": {"blocked_user_ids": user_id}}
+    )
+    
+    return {"message": "User blocked successfully"}
+
+@api_router.delete("/users/{user_id}/unblock")
+async def unblock_user(user_id: str, current_user: User = Depends(get_current_user)):
+    """Unblock a user"""
+    await db.users.update_one(
+        {"id": current_user.id},
+        {"$pull": {"blocked_user_ids": user_id}}
+    )
+    
+    return {"message": "User unblocked successfully"}
+
+@api_router.get("/users/blocked", response_model=List[User])
+async def get_blocked_users(current_user: User = Depends(get_current_user)):
+    """Get list of blocked users"""
+    user = await db.users.find_one({"id": current_user.id})
+    blocked_ids = user.get("blocked_user_ids", [])
+    
+    if not blocked_ids:
+        return []
+    
+    blocked_users = await db.users.find({"id": {"$in": blocked_ids}}).to_list(100)
+    return [User(**{k: v for k, v in user.items() if k != 'password'}) for user in blocked_users]
+
 # ==================== POST ROUTES ====================
 
 @api_router.post("/posts", response_model=Post)
