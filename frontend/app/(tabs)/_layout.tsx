@@ -61,13 +61,12 @@ export default function TabsLayout() {
         }}
       />
       <Tabs.Screen
-        name="messages"
+        name="chatroom"
         options={{
-          title: 'Messages',
+          title: 'Chat Room',
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="chatbubbles" size={size} color={color} />
           ),
-          tabBarBadge: unreadMessageCount > 0 ? unreadMessageCount : undefined,
         }}
       />
       <Tabs.Screen
