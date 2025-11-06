@@ -315,6 +315,12 @@ export const translations = {
     // Full Screen Image
     fullScreenImageClose: 'Close',
     
+    // Search
+    searchPosts: 'Search posts...',
+    searchResults: 'Search Results',
+    noResultsFound: 'No results found',
+    searching: 'Searching...',
+    
     // About
     aboutTitle: 'About Drivers Chat',
     aboutDescription: 'Drivers Chat is a community platform built by drivers, for drivers. Connect with fellow drivers, share your experiences, and build meaningful connections.',
