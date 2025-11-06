@@ -68,7 +68,7 @@ export default function MessagesScreen() {
       </View>
       {item.last_message_time && (
         <Text style={styles.timestamp}>
-          {formatDistanceToNow(new Date(item.last_message_time), { locale: tr })}
+          {formatDistanceToNow(new Date(item.last_message_time), { locale: getDateLocale() })}
         </Text>
       )}
     </TouchableOpacity>
@@ -77,7 +77,7 @@ export default function MessagesScreen() {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <Text style={styles.headerTitle}>Messages</Text>
+        <Text style={styles.headerTitle}>{t('messages')}</Text>
         <TouchableOpacity onPress={() => router.push('/new-chat')}>
           <Ionicons name="create-outline" size={28} color="#007AFF" />
         </TouchableOpacity>
@@ -90,8 +90,8 @@ export default function MessagesScreen() {
         ListEmptyComponent={
           <View style={styles.emptyContainer}>
             <Ionicons name="chatbubbles-outline" size={64} color="#ccc" />
-            <Text style={styles.emptyText}>No messages yet</Text>
-            <Text style={styles.emptySubtext}>Start chatting!</Text>
+            <Text style={styles.emptyText}>{t('messagesNoMessagesYet')}</Text>
+            <Text style={styles.emptySubtext}>{t('messagesStartChatting')}</Text>
           </View>
         }
       />
