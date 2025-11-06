@@ -846,6 +846,18 @@ const styles = StyleSheet.create({
     gap: 8,
   },
   // Posts
+  statsHeader: {
+    backgroundColor: '#E3F2FD',
+    padding: 12,
+    borderRadius: 8,
+    marginBottom: 16,
+  },
+  statsHeaderText: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: '#007AFF',
+    textAlign: 'center',
+  },
   postCard: {
     backgroundColor: '#fff',
     padding: 16,
@@ -860,7 +872,7 @@ const styles = StyleSheet.create({
   postHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'center',
+    alignItems: 'flex-start',
     marginBottom: 12,
   },
   postUsername: {
@@ -869,13 +881,23 @@ const styles = StyleSheet.create({
     color: '#333',
   },
   postDate: {
-    fontSize: 12,
-    color: '#666',
+    fontSize: 10,
+    color: '#999',
+    marginTop: 2,
+  },
+  postId: {
+    fontSize: 10,
+    color: '#999',
+    backgroundColor: '#f0f0f0',
+    paddingHorizontal: 6,
+    paddingVertical: 2,
+    borderRadius: 4,
   },
   postContent: {
     fontSize: 14,
     color: '#333',
     marginBottom: 12,
+    lineHeight: 20,
   },
   postImage: {
     width: '100%',
@@ -885,8 +907,26 @@ const styles = StyleSheet.create({
   },
   postStats: {
     flexDirection: 'row',
-    gap: 16,
+    gap: 12,
     marginBottom: 12,
+    paddingTop: 12,
+    borderTopWidth: 1,
+    borderTopColor: '#f0f0f0',
+  },
+  statItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
+  },
+  postStatValue: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: '#333',
+  },
+  postStatLabel: {
+    fontSize: 12,
+    color: '#666',
+    fontWeight: '600',
   },
   postStat: {
     fontSize: 12,
