@@ -63,11 +63,6 @@ export default function SettingsScreen() {
       setUpdating(false);
     }
   };
-      Alert.alert('Error', 'Failed to update profile');
-    } finally {
-      setUpdating(false);
-    }
-  };
 
   const handleChangePassword = async () => {
     if (!currentPassword || !newPassword || !confirmPassword) {
