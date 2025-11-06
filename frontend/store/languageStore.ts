@@ -195,14 +195,14 @@ export const translations = {
     helpA14: 'Tap on any username or profile picture in posts or the friends list to view their profile and see all their posts.',
     
     // Help Q&A - Messages
-    helpQ15: 'How do I start a chat?',
-    helpA15: 'Visit a user\'s profile and tap "Send Message", or go to the Messages tab and select an existing conversation.',
-    helpQ16: 'How do I know if I have new messages?',
-    helpA16: 'You\'ll see a red badge with the number of unread messages on the Messages tab icon at the bottom.',
-    helpQ17: 'Can I send images in chat?',
-    helpA17: 'Currently, chat only supports text messages. Image sharing in messages will be added in future updates.',
-    helpQ18: 'Are messages real-time?',
-    helpA18: 'Yes! Messages use Socket.IO technology for real-time delivery. Messages appear instantly when sent.',
+    helpQ15: 'How does the Chat Room work?',
+    helpA15: 'Chat Room is a public space where all users can chat in real-time. Go to the Chat Room tab and start messaging. Everyone can see and participate!',
+    helpQ16: 'Can I delete my chat messages?',
+    helpA16: 'Yes! You can delete your own messages by tapping the trash icon on your message. Admins can also delete any message or clear the entire chat.',
+    helpQ17: 'How do I create or join groups?',
+    helpA17: 'Go to the Groups tab, tap the + button to create a group. You can join public groups directly or request to join private groups that require approval.',
+    helpQ18: 'Can I share posts to groups?',
+    helpA18: 'Yes! Group members can share posts with images and emojis to the group. All group posts support likes, dislikes, emoji reactions, and comments.',
     
     // Help Q&A - Other
     helpQ19: 'How do I sign out?',
