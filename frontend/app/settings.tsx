@@ -42,7 +42,7 @@ export default function SettingsScreen() {
 
   const handleUpdateProfile = async () => {
     if (!fullName.trim()) {
-      Alert.alert('Error', 'Name cannot be empty');
+      Alert.alert(t('error'), t('settingsNameCannotEmpty'));
       return;
     }
 
@@ -54,10 +54,15 @@ export default function SettingsScreen() {
       });
       
       setUser(response.data);
-      Alert.alert('Success', 'Profile updated successfully!');
+      Alert.alert(t('success'), t('settingsProfileUpdated'));
       setEditProfileModal(false);
     } catch (error) {
       console.error('Update error:', error);
+      Alert.alert(t('error'), t('settingsFailedUpdateProfile'));
+    } finally {
+      setUpdating(false);
+    }
+  };
       Alert.alert('Error', 'Failed to update profile');
     } finally {
       setUpdating(false);
