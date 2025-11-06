@@ -1,18 +1,16 @@
 #!/usr/bin/env python3
 """
-Backend API Test Suite for Driver Forum Application
-Tests all backend endpoints with realistic data and scenarios
+Comprehensive Backend API Testing for Chat/Messaging System
+Testing all chat and messaging endpoints as requested by user
 """
 
 import requests
 import json
 import time
 from datetime import datetime
-import base64
 
-# Configuration
-BASE_URL = "https://driverschat-i18n.preview.emergentagent.com/api"
-HEADERS = {"Content-Type": "application/json"}
+# Backend URL from environment
+BACKEND_URL = "https://driverschat-i18n.preview.emergentagent.com/api"
 
 class BackendTester:
     def __init__(self):
