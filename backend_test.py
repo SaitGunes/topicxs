@@ -29,591 +29,467 @@ REGULAR_USER = {
 
 class AdminEndpointTester:
     def __init__(self):
-        self.session = requests.Session()
-        self.user1_token = None
-        self.user2_token = None
-        self.user1_id = None
-        self.user2_id = None
-        self.chat_id = None
+        self.admin_token = None
+        self.regular_token = None
         self.test_results = []
+        self.admin_user_id = None
+        self.regular_user_id = None
         
-    def log_result(self, test_name, success, message, response_data=None):
-        """Log test results"""
+    def log_result(self, test_name, success, message, details=None):
+        """Log test result"""
         status = "✅ PASS" if success else "❌ FAIL"
         result = {
             "test": test_name,
             "status": status,
             "message": message,
+            "details": details,
             "timestamp": datetime.now().isoformat()
         }
-        if response_data:
-            result["response"] = response_data
         self.test_results.append(result)
         print(f"{status}: {test_name} - {message}")
-        
-    def create_test_users(self):
-        """Create two test users for messaging"""
-        print("\n=== Creating Test Users ===")
-        
-        # Create User 1
-        user1_data = {
-            "username": f"chatuser1_{int(time.time())}",
-            "email": f"chatuser1_{int(time.time())}@test.com",
-            "password": "testpass123",
-            "full_name": "Chat User One",
-            "bio": "Test user for messaging system"
-        }
-        
+        if details:
+            print(f"   Details: {details}")
+    
+    def authenticate_admin(self):
+        """Authenticate admin user and get token"""
         try:
-            response = self.session.post(f"{BACKEND_URL}/auth/register", json=user1_data)
+            response = requests.post(f"{BASE_URL}/auth/login", json=ADMIN_USER)
             if response.status_code == 200:
                 data = response.json()
-                self.user1_token = data["access_token"]
-                self.user1_id = data["user"]["id"]
-                self.log_result("Create User 1", True, f"User created with ID: {self.user1_id}")
+                self.admin_token = data["access_token"]
+                self.admin_user_id = data["user"]["id"]
+                self.log_result("Admin Authentication", True, "Admin user authenticated successfully")
+                return True
             else:
-                self.log_result("Create User 1", False, f"Failed: {response.status_code} - {response.text}")
+                self.log_result("Admin Authentication", False, f"Failed with status {response.status_code}", response.text)
                 return False
         except Exception as e:
-            self.log_result("Create User 1", False, f"Exception: {str(e)}")
+            self.log_result("Admin Authentication", False, f"Exception occurred: {str(e)}")
             return False
+    
+    def create_and_authenticate_regular_user(self):
+        """Create and authenticate regular user for authorization testing"""
+        try:
+            # Try to register regular user
+            response = requests.post(f"{BASE_URL}/auth/register", json=REGULAR_USER)
+            if response.status_code == 200:
+                data = response.json()
+                self.regular_token = data["access_token"]
+                self.regular_user_id = data["user"]["id"]
+                self.log_result("Regular User Creation", True, "Regular user created and authenticated")
+                return True
+            elif response.status_code == 400 and "already exists" in response.text:
+                # User exists, try to login
+                login_data = {"username": REGULAR_USER["username"], "password": REGULAR_USER["password"]}
+                response = requests.post(f"{BASE_URL}/auth/login", json=login_data)
+                if response.status_code == 200:
+                    data = response.json()
+                    self.regular_token = data["access_token"]
+                    self.regular_user_id = data["user"]["id"]
+                    self.log_result("Regular User Authentication", True, "Regular user authenticated (existing user)")
+                    return True
             
-        # Create User 2
-        user2_data = {
-            "username": f"chatuser2_{int(time.time())}",
-            "email": f"chatuser2_{int(time.time())}@test.com", 
-            "password": "testpass123",
-            "full_name": "Chat User Two",
-            "bio": "Second test user for messaging system"
-        }
-        
-        try:
-            response = self.session.post(f"{BACKEND_URL}/auth/register", json=user2_data)
-            if response.status_code == 200:
-                data = response.json()
-                self.user2_token = data["access_token"]
-                self.user2_id = data["user"]["id"]
-                self.log_result("Create User 2", True, f"User created with ID: {self.user2_id}")
-                return True
-            else:
-                self.log_result("Create User 2", False, f"Failed: {response.status_code} - {response.text}")
-                return False
+            self.log_result("Regular User Setup", False, f"Failed with status {response.status_code}", response.text)
+            return False
         except Exception as e:
-            self.log_result("Create User 2", False, f"Exception: {str(e)}")
+            self.log_result("Regular User Setup", False, f"Exception occurred: {str(e)}")
             return False
     
-    def test_create_chat(self):
-        """Test POST /api/chats - Create new chat"""
-        print("\n=== Testing Chat Creation ===")
-        
-        headers = {"Authorization": f"Bearer {self.user1_token}"}
-        chat_data = {
-            "name": "Test Chat Between Users",
-            "is_group": False,
-            "members": [self.user2_id]
-        }
-        
+    def get_headers(self, use_admin=True):
+        """Get authorization headers"""
+        token = self.admin_token if use_admin else self.regular_token
+        return {"Authorization": f"Bearer {token}"}
+    
+    def test_admin_stats(self):
+        """Test GET /api/admin/stats endpoint"""
         try:
-            response = self.session.post(f"{BACKEND_URL}/chats", json=chat_data, headers=headers)
+            # Test with admin user
+            response = requests.get(f"{BASE_URL}/admin/stats", headers=self.get_headers(True))
             if response.status_code == 200:
                 data = response.json()
-                self.chat_id = data["id"]
+                required_fields = ["total_users", "total_posts", "total_comments", "total_reports", 
+                                 "pending_reports", "recent_users_7d", "recent_posts_7d"]
                 
-                # Verify chat structure
-                required_fields = ["id", "name", "is_group", "members", "created_at"]
                 missing_fields = [field for field in required_fields if field not in data]
-                
-                if missing_fields:
-                    self.log_result("Create Chat", False, f"Missing fields: {missing_fields}")
-                    return False
-                
-                # Verify members include both users
-                if self.user1_id not in data["members"] or self.user2_id not in data["members"]:
-                    self.log_result("Create Chat", False, "Both users not in members list")
-                    return False
-                    
-                self.log_result("Create Chat", True, f"Chat created successfully with ID: {self.chat_id}", data)
-                return True
-            else:
-                self.log_result("Create Chat", False, f"Failed: {response.status_code} - {response.text}")
-                return False
-        except Exception as e:
-            self.log_result("Create Chat", False, f"Exception: {str(e)}")
-            return False
-    
-    def test_get_user_chats(self):
-        """Test GET /api/chats - Get user's chat list"""
-        print("\n=== Testing Get User Chats ===")
-        
-        # Test for User 1
-        headers1 = {"Authorization": f"Bearer {self.user1_token}"}
-        try:
-            response = self.session.get(f"{BACKEND_URL}/chats", headers=headers1)
-            if response.status_code == 200:
-                data = response.json()
-                
-                # Verify it's a list
-                if not isinstance(data, list):
-                    self.log_result("Get User 1 Chats", False, "Response is not a list")
-                    return False
-                
-                # Find our test chat
-                test_chat = None
-                for chat in data:
-                    if chat["id"] == self.chat_id:
-                        test_chat = chat
-                        break
-                
-                if not test_chat:
-                    self.log_result("Get User 1 Chats", False, "Test chat not found in user's chat list")
-                    return False
-                    
-                self.log_result("Get User 1 Chats", True, f"Found {len(data)} chats including test chat")
-            else:
-                self.log_result("Get User 1 Chats", False, f"Failed: {response.status_code} - {response.text}")
-                return False
-        except Exception as e:
-            self.log_result("Get User 1 Chats", False, f"Exception: {str(e)}")
-            return False
-        
-        # Test for User 2
-        headers2 = {"Authorization": f"Bearer {self.user2_token}"}
-        try:
-            response = self.session.get(f"{BACKEND_URL}/chats", headers=headers2)
-            if response.status_code == 200:
-                data = response.json()
-                
-                # Find our test chat
-                test_chat = None
-                for chat in data:
-                    if chat["id"] == self.chat_id:
-                        test_chat = chat
-                        break
-                
-                if not test_chat:
-                    self.log_result("Get User 2 Chats", False, "Test chat not found in user 2's chat list")
-                    return False
-                    
-                self.log_result("Get User 2 Chats", True, f"Found {len(data)} chats including test chat")
-                return True
-            else:
-                self.log_result("Get User 2 Chats", False, f"Failed: {response.status_code} - {response.text}")
-                return False
-        except Exception as e:
-            self.log_result("Get User 2 Chats", False, f"Exception: {str(e)}")
-            return False
-    
-    def test_send_messages(self):
-        """Test POST /api/chats/{chat_id}/messages - Send messages"""
-        print("\n=== Testing Send Messages ===")
-        
-        messages_sent = []
-        
-        # User 1 sends first message
-        headers1 = {"Authorization": f"Bearer {self.user1_token}"}
-        message1_data = {
-            "chat_id": self.chat_id,
-            "content": "Merhaba! Bu test mesajlaşma sisteminin ilk mesajı."
-        }
-        
-        try:
-            response = self.session.post(f"{BACKEND_URL}/chats/{self.chat_id}/messages", 
-                                       json=message1_data, headers=headers1)
-            if response.status_code == 200:
-                data = response.json()
-                
-                # Verify message structure
-                required_fields = ["id", "chat_id", "user_id", "username", "content", "created_at"]
-                missing_fields = [field for field in required_fields if field not in data]
-                
-                if missing_fields:
-                    self.log_result("Send Message 1", False, f"Missing fields: {missing_fields}")
-                    return False
-                
-                # Verify content and user
-                if data["content"] != message1_data["content"]:
-                    self.log_result("Send Message 1", False, "Message content mismatch")
-                    return False
-                    
-                if data["user_id"] != self.user1_id:
-                    self.log_result("Send Message 1", False, "Message user_id mismatch")
-                    return False
-                
-                messages_sent.append(data)
-                self.log_result("Send Message 1", True, f"Message sent by User 1: {data['id']}")
-            else:
-                self.log_result("Send Message 1", False, f"Failed: {response.status_code} - {response.text}")
-                return False
-        except Exception as e:
-            self.log_result("Send Message 1", False, f"Exception: {str(e)}")
-            return False
-        
-        # User 2 sends reply
-        headers2 = {"Authorization": f"Bearer {self.user2_token}"}
-        message2_data = {
-            "chat_id": self.chat_id,
-            "content": "Merhaba! Bu da ikinci kullanıcıdan gelen cevap mesajı."
-        }
-        
-        try:
-            response = self.session.post(f"{BACKEND_URL}/chats/{self.chat_id}/messages", 
-                                       json=message2_data, headers=headers2)
-            if response.status_code == 200:
-                data = response.json()
-                
-                if data["user_id"] != self.user2_id:
-                    self.log_result("Send Message 2", False, "Message user_id mismatch")
-                    return False
-                
-                messages_sent.append(data)
-                self.log_result("Send Message 2", True, f"Reply sent by User 2: {data['id']}")
-            else:
-                self.log_result("Send Message 2", False, f"Failed: {response.status_code} - {response.text}")
-                return False
-        except Exception as e:
-            self.log_result("Send Message 2", False, f"Exception: {str(e)}")
-            return False
-        
-        # User 1 sends another message
-        message3_data = {
-            "chat_id": self.chat_id,
-            "content": "Harika! Mesajlaşma sistemi çalışıyor. Bu üçüncü test mesajı."
-        }
-        
-        try:
-            response = self.session.post(f"{BACKEND_URL}/chats/{self.chat_id}/messages", 
-                                       json=message3_data, headers=headers1)
-            if response.status_code == 200:
-                data = response.json()
-                messages_sent.append(data)
-                self.log_result("Send Message 3", True, f"Third message sent by User 1: {data['id']}")
-                return True
-            else:
-                self.log_result("Send Message 3", False, f"Failed: {response.status_code} - {response.text}")
-                return False
-        except Exception as e:
-            self.log_result("Send Message 3", False, f"Exception: {str(e)}")
-            return False
-    
-    def test_get_messages(self):
-        """Test GET /api/chats/{chat_id}/messages - Get messages"""
-        print("\n=== Testing Get Messages ===")
-        
-        # User 1 gets messages
-        headers1 = {"Authorization": f"Bearer {self.user1_token}"}
-        try:
-            response = self.session.get(f"{BACKEND_URL}/chats/{self.chat_id}/messages", headers=headers1)
-            if response.status_code == 200:
-                data = response.json()
-                
-                # Verify it's a list
-                if not isinstance(data, list):
-                    self.log_result("Get Messages User 1", False, "Response is not a list")
-                    return False
-                
-                # Should have at least 3 messages
-                if len(data) < 3:
-                    self.log_result("Get Messages User 1", False, f"Expected at least 3 messages, got {len(data)}")
-                    return False
-                
-                # Verify messages are sorted by creation time (oldest first)
-                for i in range(1, len(data)):
-                    if data[i]["created_at"] < data[i-1]["created_at"]:
-                        self.log_result("Get Messages User 1", False, "Messages not sorted by creation time")
-                        return False
-                
-                # Verify message structure
-                for msg in data:
-                    required_fields = ["id", "chat_id", "user_id", "username", "content", "created_at"]
-                    missing_fields = [field for field in required_fields if field not in msg]
-                    if missing_fields:
-                        self.log_result("Get Messages User 1", False, f"Message missing fields: {missing_fields}")
-                        return False
-                
-                self.log_result("Get Messages User 1", True, f"Retrieved {len(data)} messages correctly")
-            else:
-                self.log_result("Get Messages User 1", False, f"Failed: {response.status_code} - {response.text}")
-                return False
-        except Exception as e:
-            self.log_result("Get Messages User 1", False, f"Exception: {str(e)}")
-            return False
-        
-        # User 2 gets messages
-        headers2 = {"Authorization": f"Bearer {self.user2_token}"}
-        try:
-            response = self.session.get(f"{BACKEND_URL}/chats/{self.chat_id}/messages", headers=headers2)
-            if response.status_code == 200:
-                data = response.json()
-                
-                if len(data) < 3:
-                    self.log_result("Get Messages User 2", False, f"Expected at least 3 messages, got {len(data)}")
-                    return False
-                
-                self.log_result("Get Messages User 2", True, f"Retrieved {len(data)} messages correctly")
-                return True
-            else:
-                self.log_result("Get Messages User 2", False, f"Failed: {response.status_code} - {response.text}")
-                return False
-        except Exception as e:
-            self.log_result("Get Messages User 2", False, f"Exception: {str(e)}")
-            return False
-    
-    def test_error_scenarios(self):
-        """Test error handling scenarios"""
-        print("\n=== Testing Error Scenarios ===")
-        
-        # Test unauthorized access (no token)
-        try:
-            response = self.session.get(f"{BACKEND_URL}/chats")
-            if response.status_code in [401, 403]:
-                self.log_result("Unauthorized Access", True, f"Correctly blocked unauthorized access: {response.status_code}")
-            else:
-                self.log_result("Unauthorized Access", False, f"Should block unauthorized access, got: {response.status_code}")
-        except Exception as e:
-            self.log_result("Unauthorized Access", False, f"Exception: {str(e)}")
-        
-        # Test sending message to non-existent chat
-        headers = {"Authorization": f"Bearer {self.user1_token}"}
-        fake_chat_id = "nonexistent_chat_id"
-        message_data = {
-            "chat_id": fake_chat_id,
-            "content": "This should fail"
-        }
-        
-        try:
-            response = self.session.post(f"{BACKEND_URL}/chats/{fake_chat_id}/messages", 
-                                       json=message_data, headers=headers)
-            if response.status_code in [403, 404]:
-                self.log_result("Send to Non-existent Chat", True, f"Correctly blocked message to non-existent chat: {response.status_code}")
-            else:
-                self.log_result("Send to Non-existent Chat", False, f"Should block message to non-existent chat, got: {response.status_code}")
-        except Exception as e:
-            self.log_result("Send to Non-existent Chat", False, f"Exception: {str(e)}")
-        
-        # Test getting messages from non-existent chat
-        try:
-            response = self.session.get(f"{BACKEND_URL}/chats/{fake_chat_id}/messages", headers=headers)
-            if response.status_code in [403, 404]:
-                self.log_result("Get Messages Non-existent Chat", True, f"Correctly blocked access to non-existent chat: {response.status_code}")
-            else:
-                self.log_result("Get Messages Non-existent Chat", False, f"Should block access to non-existent chat, got: {response.status_code}")
-        except Exception as e:
-            self.log_result("Get Messages Non-existent Chat", False, f"Exception: {str(e)}")
-    
-    def test_chat_updates(self):
-        """Test that chat list updates with last message"""
-        print("\n=== Testing Chat Updates ===")
-        
-        headers = {"Authorization": f"Bearer {self.user1_token}"}
-        
-        # Get current chat list
-        try:
-            response = self.session.get(f"{BACKEND_URL}/chats", headers=headers)
-            if response.status_code == 200:
-                chats = response.json()
-                
-                # Find our test chat
-                test_chat = None
-                for chat in chats:
-                    if chat["id"] == self.chat_id:
-                        test_chat = chat
-                        break
-                
-                if not test_chat:
-                    self.log_result("Chat Updates", False, "Test chat not found")
-                    return False
-                
-                # Check if last_message is updated
-                if test_chat.get("last_message"):
-                    self.log_result("Chat Updates", True, f"Chat has last_message: {test_chat['last_message']}")
+                if not missing_fields:
+                    self.log_result("Admin Stats - Data Structure", True, 
+                                  f"All required fields present: {list(data.keys())}", data)
                 else:
-                    self.log_result("Chat Updates", False, "Chat last_message not updated")
-                    return False
-                
-                # Check if last_message_time exists
-                if test_chat.get("last_message_time"):
-                    self.log_result("Chat Last Message Time", True, f"Chat has last_message_time: {test_chat['last_message_time']}")
-                    return True
-                else:
-                    self.log_result("Chat Last Message Time", False, "Chat last_message_time not updated")
-                    return False
+                    self.log_result("Admin Stats - Data Structure", False, 
+                                  f"Missing fields: {missing_fields}", data)
             else:
-                self.log_result("Chat Updates", False, f"Failed to get chats: {response.status_code}")
-                return False
+                self.log_result("Admin Stats - Admin Access", False, 
+                              f"Failed with status {response.status_code}", response.text)
+            
+            # Test authorization - regular user should get 403
+            if self.regular_token:
+                response = requests.get(f"{BASE_URL}/admin/stats", headers=self.get_headers(False))
+                if response.status_code == 403:
+                    self.log_result("Admin Stats - Authorization", True, "Regular user correctly denied access (403)")
+                else:
+                    self.log_result("Admin Stats - Authorization", False, 
+                                  f"Expected 403, got {response.status_code}", response.text)
+            
         except Exception as e:
-            self.log_result("Chat Updates", False, f"Exception: {str(e)}")
-            return False
+            self.log_result("Admin Stats", False, f"Exception occurred: {str(e)}")
     
-    def test_message_ordering(self):
-        """Test that messages are properly ordered"""
-        print("\n=== Testing Message Ordering ===")
-        
-        headers = {"Authorization": f"Bearer {self.user1_token}"}
+    def test_admin_reports(self):
+        """Test GET /api/admin/reports endpoint"""
+        try:
+            # Test getting all reports
+            response = requests.get(f"{BASE_URL}/admin/reports", headers=self.get_headers(True))
+            if response.status_code == 200:
+                reports = response.json()
+                self.log_result("Admin Reports - Get All", True, 
+                              f"Retrieved {len(reports)} reports", f"Sample: {reports[:1] if reports else 'No reports'}")
+            else:
+                self.log_result("Admin Reports - Get All", False, 
+                              f"Failed with status {response.status_code}", response.text)
+            
+            # Test with status filter
+            for status in ["pending", "reviewed", "resolved", "dismissed"]:
+                response = requests.get(f"{BASE_URL}/admin/reports?status={status}", headers=self.get_headers(True))
+                if response.status_code == 200:
+                    filtered_reports = response.json()
+                    self.log_result(f"Admin Reports - Filter {status}", True, 
+                                  f"Retrieved {len(filtered_reports)} {status} reports")
+                else:
+                    self.log_result(f"Admin Reports - Filter {status}", False, 
+                                  f"Failed with status {response.status_code}", response.text)
+            
+            # Test authorization
+            if self.regular_token:
+                response = requests.get(f"{BASE_URL}/admin/reports", headers=self.get_headers(False))
+                if response.status_code == 403:
+                    self.log_result("Admin Reports - Authorization", True, "Regular user correctly denied access (403)")
+                else:
+                    self.log_result("Admin Reports - Authorization", False, 
+                                  f"Expected 403, got {response.status_code}", response.text)
+            
+        except Exception as e:
+            self.log_result("Admin Reports", False, f"Exception occurred: {str(e)}")
+    
+    def test_admin_users(self):
+        """Test GET /api/admin/users endpoint"""
+        try:
+            # Test getting all users
+            response = requests.get(f"{BASE_URL}/admin/users", headers=self.get_headers(True))
+            if response.status_code == 200:
+                users = response.json()
+                self.log_result("Admin Users - Get All", True, 
+                              f"Retrieved {len(users)} users", f"Sample user fields: {list(users[0].keys()) if users else 'No users'}")
+            else:
+                self.log_result("Admin Users - Get All", False, 
+                              f"Failed with status {response.status_code}", response.text)
+            
+            # Test pagination
+            response = requests.get(f"{BASE_URL}/admin/users?skip=0&limit=5", headers=self.get_headers(True))
+            if response.status_code == 200:
+                paginated_users = response.json()
+                self.log_result("Admin Users - Pagination", True, 
+                              f"Retrieved {len(paginated_users)} users with pagination (limit=5)")
+            else:
+                self.log_result("Admin Users - Pagination", False, 
+                              f"Failed with status {response.status_code}", response.text)
+            
+            # Test authorization
+            if self.regular_token:
+                response = requests.get(f"{BASE_URL}/admin/users", headers=self.get_headers(False))
+                if response.status_code == 403:
+                    self.log_result("Admin Users - Authorization", True, "Regular user correctly denied access (403)")
+                else:
+                    self.log_result("Admin Users - Authorization", False, 
+                                  f"Expected 403, got {response.status_code}", response.text)
+            
+        except Exception as e:
+            self.log_result("Admin Users", False, f"Exception occurred: {str(e)}")
+    
+    def test_admin_toggle_admin(self):
+        """Test PUT /api/admin/users/{user_id}/toggle-admin endpoint"""
+        if not self.regular_user_id:
+            self.log_result("Admin Toggle Admin", False, "No regular user ID available for testing")
+            return
         
         try:
-            response = self.session.get(f"{BACKEND_URL}/chats/{self.chat_id}/messages", headers=headers)
+            # Toggle regular user to admin
+            response = requests.put(f"{BASE_URL}/admin/users/{self.regular_user_id}/toggle-admin", 
+                                  headers=self.get_headers(True))
             if response.status_code == 200:
-                messages = response.json()
-                
-                if len(messages) < 2:
-                    self.log_result("Message Ordering", False, "Need at least 2 messages to test ordering")
-                    return False
-                
-                # Check if messages are ordered by created_at (oldest first)
-                is_ordered = True
-                for i in range(1, len(messages)):
-                    if messages[i]["created_at"] < messages[i-1]["created_at"]:
-                        is_ordered = False
-                        break
-                
-                if is_ordered:
-                    self.log_result("Message Ordering", True, f"Messages properly ordered by creation time ({len(messages)} messages)")
-                    return True
-                else:
-                    self.log_result("Message Ordering", False, "Messages not properly ordered by creation time")
-                    return False
+                data = response.json()
+                self.log_result("Admin Toggle Admin - Make Admin", True, 
+                              f"User admin status toggled: {data.get('message', 'Success')}", data)
             else:
-                self.log_result("Message Ordering", False, f"Failed to get messages: {response.status_code}")
-                return False
+                self.log_result("Admin Toggle Admin - Make Admin", False, 
+                              f"Failed with status {response.status_code}", response.text)
+            
+            # Toggle back to regular user
+            response = requests.put(f"{BASE_URL}/admin/users/{self.regular_user_id}/toggle-admin", 
+                                  headers=self.get_headers(True))
+            if response.status_code == 200:
+                data = response.json()
+                self.log_result("Admin Toggle Admin - Remove Admin", True, 
+                              f"User admin status toggled back: {data.get('message', 'Success')}", data)
+            else:
+                self.log_result("Admin Toggle Admin - Remove Admin", False, 
+                              f"Failed with status {response.status_code}", response.text)
+            
+            # Test with non-existent user
+            response = requests.put(f"{BASE_URL}/admin/users/nonexistent123/toggle-admin", 
+                                  headers=self.get_headers(True))
+            if response.status_code == 404:
+                self.log_result("Admin Toggle Admin - Non-existent User", True, "Correctly returned 404 for non-existent user")
+            else:
+                self.log_result("Admin Toggle Admin - Non-existent User", False, 
+                              f"Expected 404, got {response.status_code}", response.text)
+            
+            # Test authorization
+            if self.regular_token:
+                response = requests.put(f"{BASE_URL}/admin/users/{self.regular_user_id}/toggle-admin", 
+                                      headers=self.get_headers(False))
+                if response.status_code == 403:
+                    self.log_result("Admin Toggle Admin - Authorization", True, "Regular user correctly denied access (403)")
+                else:
+                    self.log_result("Admin Toggle Admin - Authorization", False, 
+                                  f"Expected 403, got {response.status_code}", response.text)
+            
         except Exception as e:
-            self.log_result("Message Ordering", False, f"Exception: {str(e)}")
-            return False
+            self.log_result("Admin Toggle Admin", False, f"Exception occurred: {str(e)}")
     
-    def test_unread_message_count(self):
-        """Test unread message functionality (if implemented)"""
-        print("\n=== Testing Unread Message Count ===")
-        
-        # This is a placeholder test since unread count might not be implemented
-        # We'll just verify the chat structure includes necessary fields
-        headers = {"Authorization": f"Bearer {self.user2_token}"}
+    def test_admin_ban_user(self):
+        """Test PUT /api/admin/users/{user_id}/ban endpoint"""
+        if not self.regular_user_id:
+            self.log_result("Admin Ban User", False, "No regular user ID available for testing")
+            return
         
         try:
-            response = self.session.get(f"{BACKEND_URL}/chats", headers=headers)
+            # Ban user
+            response = requests.put(f"{BASE_URL}/admin/users/{self.regular_user_id}/ban?ban=true", 
+                                  headers=self.get_headers(True))
             if response.status_code == 200:
-                chats = response.json()
+                data = response.json()
+                self.log_result("Admin Ban User - Ban", True, 
+                              f"User banned successfully: {data.get('message', 'Success')}", data)
+            else:
+                self.log_result("Admin Ban User - Ban", False, 
+                              f"Failed with status {response.status_code}", response.text)
+            
+            # Unban user
+            response = requests.put(f"{BASE_URL}/admin/users/{self.regular_user_id}/ban?ban=false", 
+                                  headers=self.get_headers(True))
+            if response.status_code == 200:
+                data = response.json()
+                self.log_result("Admin Ban User - Unban", True, 
+                              f"User unbanned successfully: {data.get('message', 'Success')}", data)
+            else:
+                self.log_result("Admin Ban User - Unban", False, 
+                              f"Failed with status {response.status_code}", response.text)
+            
+            # Test self-banning prevention
+            response = requests.put(f"{BASE_URL}/admin/users/{self.admin_user_id}/ban?ban=true", 
+                                  headers=self.get_headers(True))
+            if response.status_code == 400:
+                self.log_result("Admin Ban User - Self-ban Prevention", True, "Correctly prevented self-banning (400)")
+            else:
+                self.log_result("Admin Ban User - Self-ban Prevention", False, 
+                              f"Expected 400, got {response.status_code}", response.text)
+            
+            # Test authorization
+            if self.regular_token:
+                response = requests.put(f"{BASE_URL}/admin/users/{self.regular_user_id}/ban?ban=true", 
+                                      headers=self.get_headers(False))
+                if response.status_code == 403:
+                    self.log_result("Admin Ban User - Authorization", True, "Regular user correctly denied access (403)")
+                else:
+                    self.log_result("Admin Ban User - Authorization", False, 
+                                  f"Expected 403, got {response.status_code}", response.text)
+            
+        except Exception as e:
+            self.log_result("Admin Ban User", False, f"Exception occurred: {str(e)}")
+    
+    def test_admin_posts(self):
+        """Test GET /api/admin/posts endpoint"""
+        try:
+            # Test getting all posts
+            response = requests.get(f"{BASE_URL}/admin/posts", headers=self.get_headers(True))
+            if response.status_code == 200:
+                posts = response.json()
+                self.log_result("Admin Posts - Get All", True, 
+                              f"Retrieved {len(posts)} posts", f"Sample post fields: {list(posts[0].keys()) if posts else 'No posts'}")
+            else:
+                self.log_result("Admin Posts - Get All", False, 
+                              f"Failed with status {response.status_code}", response.text)
+            
+            # Test pagination
+            response = requests.get(f"{BASE_URL}/admin/posts?skip=0&limit=5", headers=self.get_headers(True))
+            if response.status_code == 200:
+                paginated_posts = response.json()
+                self.log_result("Admin Posts - Pagination", True, 
+                              f"Retrieved {len(paginated_posts)} posts with pagination (limit=5)")
+            else:
+                self.log_result("Admin Posts - Pagination", False, 
+                              f"Failed with status {response.status_code}", response.text)
+            
+            # Test authorization
+            if self.regular_token:
+                response = requests.get(f"{BASE_URL}/admin/posts", headers=self.get_headers(False))
+                if response.status_code == 403:
+                    self.log_result("Admin Posts - Authorization", True, "Regular user correctly denied access (403)")
+                else:
+                    self.log_result("Admin Posts - Authorization", False, 
+                                  f"Expected 403, got {response.status_code}", response.text)
+            
+        except Exception as e:
+            self.log_result("Admin Posts", False, f"Exception occurred: {str(e)}")
+    
+    def test_admin_delete_post(self):
+        """Test DELETE /api/admin/posts/{post_id} endpoint"""
+        try:
+            # First create a test post to delete
+            test_post = {"content": "Test post for admin deletion", "image": None}
+            response = requests.post(f"{BASE_URL}/posts", json=test_post, headers=self.get_headers(False))
+            
+            if response.status_code == 200:
+                post_data = response.json()
+                post_id = post_data["id"]
+                self.log_result("Admin Delete Post - Create Test Post", True, f"Created test post with ID: {post_id}")
                 
-                # Find our test chat
-                test_chat = None
-                for chat in chats:
-                    if chat["id"] == self.chat_id:
-                        test_chat = chat
-                        break
-                
-                if test_chat:
-                    # Check if chat has the basic structure for potential unread count
-                    has_last_message = "last_message" in test_chat
-                    has_last_message_time = "last_message_time" in test_chat
+                # Now delete it as admin
+                response = requests.delete(f"{BASE_URL}/admin/posts/{post_id}", headers=self.get_headers(True))
+                if response.status_code == 200:
+                    self.log_result("Admin Delete Post - Delete", True, "Post deleted successfully by admin")
+                else:
+                    self.log_result("Admin Delete Post - Delete", False, 
+                                  f"Failed with status {response.status_code}", response.text)
+            else:
+                self.log_result("Admin Delete Post - Create Test Post", False, 
+                              f"Failed to create test post: {response.status_code}", response.text)
+            
+            # Test deleting non-existent post
+            response = requests.delete(f"{BASE_URL}/admin/posts/nonexistent123", headers=self.get_headers(True))
+            if response.status_code == 404:
+                self.log_result("Admin Delete Post - Non-existent Post", True, "Correctly returned 404 for non-existent post")
+            else:
+                self.log_result("Admin Delete Post - Non-existent Post", False, 
+                              f"Expected 404, got {response.status_code}", response.text)
+            
+            # Test authorization
+            if self.regular_token:
+                response = requests.delete(f"{BASE_URL}/admin/posts/somepostid", headers=self.get_headers(False))
+                if response.status_code == 403:
+                    self.log_result("Admin Delete Post - Authorization", True, "Regular user correctly denied access (403)")
+                else:
+                    self.log_result("Admin Delete Post - Authorization", False, 
+                                  f"Expected 403, got {response.status_code}", response.text)
+            
+        except Exception as e:
+            self.log_result("Admin Delete Post", False, f"Exception occurred: {str(e)}")
+    
+    def test_admin_resolve_report(self):
+        """Test PUT /api/admin/reports/{report_id}/resolve endpoint"""
+        try:
+            # First, try to get existing reports to test with
+            response = requests.get(f"{BASE_URL}/admin/reports", headers=self.get_headers(True))
+            if response.status_code == 200:
+                reports = response.json()
+                if reports:
+                    report_id = reports[0]["id"]
                     
-                    if has_last_message and has_last_message_time:
-                        self.log_result("Unread Message Structure", True, "Chat has structure for unread message tracking")
-                        return True
-                    else:
-                        self.log_result("Unread Message Structure", False, "Chat missing fields for unread message tracking")
-                        return False
+                    # Test resolving report with different statuses
+                    for status in ["reviewed", "resolved", "dismissed"]:
+                        response = requests.put(f"{BASE_URL}/admin/reports/{report_id}/resolve?status={status}", 
+                                              headers=self.get_headers(True))
+                        if response.status_code == 200:
+                            self.log_result(f"Admin Resolve Report - {status}", True, 
+                                          f"Report status updated to {status}")
+                        else:
+                            self.log_result(f"Admin Resolve Report - {status}", False, 
+                                          f"Failed with status {response.status_code}", response.text)
                 else:
-                    self.log_result("Unread Message Structure", False, "Test chat not found")
-                    return False
+                    self.log_result("Admin Resolve Report", False, "No reports available for testing")
+            
+            # Test with invalid status
+            response = requests.put(f"{BASE_URL}/admin/reports/someid/resolve?status=invalid", 
+                                  headers=self.get_headers(True))
+            if response.status_code == 400:
+                self.log_result("Admin Resolve Report - Invalid Status", True, "Correctly rejected invalid status (400)")
             else:
-                self.log_result("Unread Message Structure", False, f"Failed to get chats: {response.status_code}")
-                return False
+                self.log_result("Admin Resolve Report - Invalid Status", False, 
+                              f"Expected 400, got {response.status_code}", response.text)
+            
+            # Test with non-existent report
+            response = requests.put(f"{BASE_URL}/admin/reports/nonexistent123/resolve?status=resolved", 
+                                  headers=self.get_headers(True))
+            if response.status_code == 404:
+                self.log_result("Admin Resolve Report - Non-existent Report", True, "Correctly returned 404 for non-existent report")
+            else:
+                self.log_result("Admin Resolve Report - Non-existent Report", False, 
+                              f"Expected 404, got {response.status_code}", response.text)
+            
+            # Test authorization
+            if self.regular_token:
+                response = requests.put(f"{BASE_URL}/admin/reports/someid/resolve?status=resolved", 
+                                      headers=self.get_headers(False))
+                if response.status_code == 403:
+                    self.log_result("Admin Resolve Report - Authorization", True, "Regular user correctly denied access (403)")
+                else:
+                    self.log_result("Admin Resolve Report - Authorization", False, 
+                                  f"Expected 403, got {response.status_code}", response.text)
+            
         except Exception as e:
-            self.log_result("Unread Message Structure", False, f"Exception: {str(e)}")
-            return False
+            self.log_result("Admin Resolve Report", False, f"Exception occurred: {str(e)}")
     
     def run_all_tests(self):
-        """Run all messaging system tests"""
-        print("🚀 Starting Comprehensive Chat/Messaging System Tests")
+        """Run all admin endpoint tests"""
+        print("🚀 Starting Admin Panel Backend API Tests")
         print("=" * 60)
         
-        # Create test users
-        if not self.create_test_users():
-            print("❌ Failed to create test users. Stopping tests.")
+        # Setup authentication
+        if not self.authenticate_admin():
+            print("❌ Cannot proceed without admin authentication")
             return False
         
-        # Test chat creation
-        if not self.test_create_chat():
-            print("❌ Failed to create chat. Stopping tests.")
-            return False
+        self.create_and_authenticate_regular_user()
         
-        # Test getting user chats
-        if not self.test_get_user_chats():
-            print("❌ Failed to get user chats. Continuing with other tests.")
+        # Run all tests
+        print("\n📊 Testing Admin Statistics Endpoint...")
+        self.test_admin_stats()
         
-        # Test sending messages
-        if not self.test_send_messages():
-            print("❌ Failed to send messages. Continuing with other tests.")
+        print("\n📋 Testing Admin Reports Endpoints...")
+        self.test_admin_reports()
+        self.test_admin_resolve_report()
         
-        # Test getting messages
-        if not self.test_get_messages():
-            print("❌ Failed to get messages. Continuing with other tests.")
+        print("\n👥 Testing Admin Users Endpoints...")
+        self.test_admin_users()
+        self.test_admin_toggle_admin()
+        self.test_admin_ban_user()
         
-        # Test message ordering
-        if not self.test_message_ordering():
-            print("❌ Failed message ordering test. Continuing with other tests.")
+        print("\n📝 Testing Admin Posts Endpoints...")
+        self.test_admin_posts()
+        self.test_admin_delete_post()
         
-        # Test chat updates
-        if not self.test_chat_updates():
-            print("❌ Failed chat updates test. Continuing with other tests.")
-        
-        # Test unread message count structure
-        if not self.test_unread_message_count():
-            print("❌ Failed unread message count test. Continuing with other tests.")
-        
-        # Test error scenarios
-        self.test_error_scenarios()
-        
-        # Print summary
-        self.print_summary()
-        
-        return True
-    
-    def print_summary(self):
-        """Print test summary"""
+        # Summary
         print("\n" + "=" * 60)
-        print("📊 MESAJLAŞMA SİSTEMİ TEST SONUÇLARI")
+        print("📈 TEST SUMMARY")
         print("=" * 60)
         
-        passed = sum(1 for result in self.test_results if "✅ PASS" in result["status"])
-        failed = sum(1 for result in self.test_results if "❌ FAIL" in result["status"])
-        total = len(self.test_results)
+        total_tests = len(self.test_results)
+        passed_tests = len([r for r in self.test_results if "✅ PASS" in r["status"]])
+        failed_tests = total_tests - passed_tests
         
-        print(f"Toplam Test: {total}")
-        print(f"Başarılı: {passed} ✅")
-        print(f"Başarısız: {failed} ❌")
-        print(f"Başarı Oranı: {(passed/total*100):.1f}%")
+        print(f"Total Tests: {total_tests}")
+        print(f"Passed: {passed_tests}")
+        print(f"Failed: {failed_tests}")
+        print(f"Success Rate: {(passed_tests/total_tests)*100:.1f}%")
         
-        if failed > 0:
-            print("\n❌ BAŞARISIZ TESTLER:")
+        if failed_tests > 0:
+            print("\n❌ FAILED TESTS:")
             for result in self.test_results:
                 if "❌ FAIL" in result["status"]:
                     print(f"  - {result['test']}: {result['message']}")
         
-        print("\n✅ BAŞARILI TESTLER:")
-        for result in self.test_results:
-            if "✅ PASS" in result["status"]:
-                print(f"  - {result['test']}: {result['message']}")
-        
-        print("\n" + "=" * 60)
-        
-        # Test edilen endpoint'ler
-        print("\n📋 TEST EDİLEN ENDPOINT'LER:")
-        print("✅ POST /api/chats - Yeni sohbet oluşturma")
-        print("✅ GET /api/chats - Kullanıcının sohbet listesi")
-        print("✅ POST /api/chats/{chat_id}/messages - Mesaj gönderme")
-        print("✅ GET /api/chats/{chat_id}/messages - Mesajları alma")
-        print("\n📋 TEST EDİLEN ÖZELLİKLER:")
-        print("✅ İki kullanıcı arası sohbet başlatma")
-        print("✅ Mesaj gönderme ve alma")
-        print("✅ Mesaj sıralaması (eskiden yeniye)")
-        print("✅ Sohbet listesi güncelleme")
-        print("✅ Yetkilendirme kontrolü")
-        print("✅ Hata senaryoları")
-        
-        if passed == total:
-            print("\n🎉 TÜM TESTLER BAŞARILI! Mesajlaşma sistemi tam olarak çalışıyor.")
-        else:
-            print(f"\n⚠️ {failed} test başarısız oldu. Detaylar yukarıda listelenmiştir.")
+        return failed_tests == 0
 
 if __name__ == "__main__":
-    tester = ChatMessagingTester()
-    tester.run_all_tests()
+    tester = AdminEndpointTester()
+    success = tester.run_all_tests()
+    sys.exit(0 if success else 1)
