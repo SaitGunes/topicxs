@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, TouchableOpacity, Image, ScrollView, Alert, ActivityIndicator } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Image, ScrollView, Alert, ActivityIndicator, Share } from 'react-native';
 import { useState } from 'react';
 import { Ionicons } from '@expo/vector-icons';
 import { useAuthStore } from '../../store/authStore';
