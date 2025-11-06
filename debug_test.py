@@ -6,7 +6,7 @@ Debug specific failing tests
 import requests
 import json
 
-BASE_URL = "https://drivercommunity.preview.emergentagent.com/api"
+BASE_URL = "https://trucknet-hub-1.preview.emergentagent.com/api"
 HEADERS = {"Content-Type": "application/json"}
 
 def debug_duplicate_registration():

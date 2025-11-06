@@ -10,7 +10,7 @@ import sys
 from datetime import datetime
 
 # Configuration
-BASE_URL = "https://drivercommunity.preview.emergentagent.com/api"
+BASE_URL = "https://trucknet-hub-1.preview.emergentagent.com/api"
 
 # Test credentials - testadmin123 is admin user
 ADMIN_USER = {
