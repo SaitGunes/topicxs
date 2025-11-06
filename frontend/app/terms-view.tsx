@@ -334,6 +334,17 @@ const styles = StyleSheet.create({
     color: '#333',
     lineHeight: 24,
   },
+  highlightedSection: {
+    backgroundColor: '#FFF9E6',
+    padding: 16,
+    borderRadius: 12,
+    borderLeftWidth: 4,
+    borderLeftColor: '#FF9500',
+  },
+  importantText: {
+    fontWeight: '500',
+    color: '#000',
+  },
   bold: {
     fontWeight: '600',
     color: '#000',
