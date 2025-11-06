@@ -1021,6 +1021,12 @@ export const translations = {
     // Full Screen Image
     fullScreenImageClose: 'Cerrar',
     
+    // Search
+    searchPosts: 'Buscar publicaciones...',
+    searchResults: 'Resultados de Búsqueda',
+    noResultsFound: 'No se encontraron resultados',
+    searching: 'Buscando...',
+    
     // About
     aboutTitle: 'Acerca de Drivers Chat',
     aboutDescription: 'Drivers Chat es una plataforma comunitaria construida por conductores, para conductores. Conéctate con otros conductores profesionales, comparte tus experiencias y construye conexiones significativas.',
