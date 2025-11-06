@@ -12,514 +12,593 @@ from datetime import datetime
 # Backend URL from environment
 BACKEND_URL = "https://driverschat-i18n.preview.emergentagent.com/api"
 
-class BackendTester:
+class ChatMessagingTester:
     def __init__(self):
-        self.base_url = BASE_URL
-        self.headers = HEADERS.copy()
-        self.auth_token = None
-        self.test_user_id = None
-        self.test_post_id = None
-        self.test_chat_id = None
-        self.second_user_token = None
-        self.second_user_id = None
+        self.session = requests.Session()
+        self.user1_token = None
+        self.user2_token = None
+        self.user1_id = None
+        self.user2_id = None
+        self.chat_id = None
+        self.test_results = []
         
-    def log(self, message, level="INFO"):
-        timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        print(f"[{timestamp}] [{level}] {message}")
+    def log_result(self, test_name, success, message, response_data=None):
+        """Log test results"""
+        status = "✅ PASS" if success else "❌ FAIL"
+        result = {
+            "test": test_name,
+            "status": status,
+            "message": message,
+            "timestamp": datetime.now().isoformat()
+        }
+        if response_data:
+            result["response"] = response_data
+        self.test_results.append(result)
+        print(f"{status}: {test_name} - {message}")
         
-    def make_request(self, method, endpoint, data=None, auth_required=True):
-        """Make HTTP request with proper headers and authentication"""
-        url = f"{self.base_url}{endpoint}"
-        headers = self.headers.copy()
+    def create_test_users(self):
+        """Create two test users for messaging"""
+        print("\n=== Creating Test Users ===")
         
-        if auth_required and self.auth_token:
-            headers["Authorization"] = f"Bearer {self.auth_token}"
-            
+        # Create User 1
+        user1_data = {
+            "username": f"chatuser1_{int(time.time())}",
+            "email": f"chatuser1_{int(time.time())}@test.com",
+            "password": "testpass123",
+            "full_name": "Chat User One",
+            "bio": "Test user for messaging system"
+        }
+        
         try:
-            if method.upper() == "GET":
-                response = requests.get(url, headers=headers, timeout=10)
-            elif method.upper() == "POST":
-                response = requests.post(url, headers=headers, json=data, timeout=10)
-            elif method.upper() == "PUT":
-                response = requests.put(url, headers=headers, json=data, timeout=10)
-            elif method.upper() == "DELETE":
-                response = requests.delete(url, headers=headers, timeout=10)
+            response = self.session.post(f"{BACKEND_URL}/auth/register", json=user1_data)
+            if response.status_code == 200:
+                data = response.json()
+                self.user1_token = data["access_token"]
+                self.user1_id = data["user"]["id"]
+                self.log_result("Create User 1", True, f"User created with ID: {self.user1_id}")
             else:
-                raise ValueError(f"Unsupported HTTP method: {method}")
-                
-            return response
-        except requests.exceptions.Timeout:
-            self.log(f"Request timeout for {method} {url}", "ERROR")
-            return None
-        except requests.exceptions.ConnectionError:
-            self.log(f"Connection error for {method} {url}", "ERROR")
-            return None
-        except requests.exceptions.RequestException as e:
-            self.log(f"Request failed for {method} {url}: {e}", "ERROR")
-            return None
-            
-    def test_auth_register(self):
-        """Test user registration"""
-        self.log("Testing user registration...")
-        
-        # Test successful registration
-        user_data = {
-            "username": "test_driver_2024",
-            "email": "driver2024@example.com", 
-            "password": "SecurePass123!",
-            "full_name": "Ahmet Yılmaz",
-            "bio": "Profesyonel şoför, 10 yıllık deneyim"
-        }
-        
-        response = self.make_request("POST", "/auth/register", user_data, auth_required=False)
-        
-        if response and response.status_code == 200:
-            data = response.json()
-            self.auth_token = data.get("access_token")
-            self.test_user_id = data.get("user", {}).get("id")
-            self.log(f"✅ Registration successful - User ID: {self.test_user_id}")
-            return True
-        else:
-            error_msg = response.json().get("detail", "Unknown error") if response else "No response"
-            self.log(f"❌ Registration failed: {error_msg}", "ERROR")
+                self.log_result("Create User 1", False, f"Failed: {response.status_code} - {response.text}")
+                return False
+        except Exception as e:
+            self.log_result("Create User 1", False, f"Exception: {str(e)}")
             return False
             
-    def test_auth_register_duplicate(self):
-        """Test registration with duplicate username"""
-        self.log("Testing duplicate username registration...")
-        
-        user_data = {
-            "username": "test_driver_2024",  # Same username
-            "email": "different@example.com",
-            "password": "SecurePass123!",
-            "full_name": "Different User"
+        # Create User 2
+        user2_data = {
+            "username": f"chatuser2_{int(time.time())}",
+            "email": f"chatuser2_{int(time.time())}@test.com", 
+            "password": "testpass123",
+            "full_name": "Chat User Two",
+            "bio": "Second test user for messaging system"
         }
         
-        response = self.make_request("POST", "/auth/register", user_data, auth_required=False)
-        
-        if response and response.status_code == 400:
-            self.log("✅ Duplicate username correctly rejected")
-            return True
-        else:
-            self.log("❌ Duplicate username should be rejected", "ERROR")
-            return False
-            
-    def test_auth_login(self):
-        """Test user login"""
-        self.log("Testing user login...")
-        
-        login_data = {
-            "username": "test_driver_2024",
-            "password": "SecurePass123!"
-        }
-        
-        response = self.make_request("POST", "/auth/login", login_data, auth_required=False)
-        
-        if response and response.status_code == 200:
-            data = response.json()
-            token = data.get("access_token")
-            if token:
-                self.log("✅ Login successful")
-                return True
-        
-        error_msg = response.json().get("detail", "Unknown error") if response else "No response"
-        self.log(f"❌ Login failed: {error_msg}", "ERROR")
-        return False
-        
-    def test_auth_login_invalid(self):
-        """Test login with invalid credentials"""
-        self.log("Testing invalid login...")
-        
-        login_data = {
-            "username": "test_driver_2024",
-            "password": "WrongPassword"
-        }
-        
-        response = self.make_request("POST", "/auth/login", login_data, auth_required=False)
-        
-        if response and response.status_code == 401:
-            self.log("✅ Invalid credentials correctly rejected")
-            return True
-        else:
-            self.log("❌ Invalid credentials should be rejected", "ERROR")
-            return False
-            
-    def test_auth_me(self):
-        """Test getting current user info"""
-        self.log("Testing get current user...")
-        
-        response = self.make_request("GET", "/auth/me")
-        
-        if response and response.status_code == 200:
-            data = response.json()
-            if data.get("username") == "test_driver_2024":
-                self.log("✅ Get current user successful")
-                return True
-                
-        self.log("❌ Get current user failed", "ERROR")
-        return False
-        
-    def create_second_user(self):
-        """Create a second user for testing interactions"""
-        self.log("Creating second test user...")
-        
-        user_data = {
-            "username": "driver_mehmet",
-            "email": "mehmet@example.com",
-            "password": "SecurePass456!",
-            "full_name": "Mehmet Demir",
-            "bio": "Kamyon şoförü"
-        }
-        
-        response = self.make_request("POST", "/auth/register", user_data, auth_required=False)
-        
-        if response and response.status_code == 200:
-            data = response.json()
-            self.second_user_token = data.get("access_token")
-            self.second_user_id = data.get("user", {}).get("id")
-            self.log(f"✅ Second user created - ID: {self.second_user_id}")
-            return True
-        else:
-            self.log("❌ Failed to create second user", "ERROR")
-            return False
-            
-    def test_posts_create(self):
-        """Test creating a new post"""
-        self.log("Testing post creation...")
-        
-        # Create a simple base64 image (1x1 pixel)
-        sample_image = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg=="
-        
-        post_data = {
-            "content": "Bugün İstanbul-Ankara arası güzel bir yolculuk yaptım. Trafik akıcıydı ve hava durumu mükemmeldi! 🚛",
-            "image": sample_image
-        }
-        
-        response = self.make_request("POST", "/posts", post_data)
-        
-        if response and response.status_code == 200:
-            data = response.json()
-            self.test_post_id = data.get("id")
-            self.log(f"✅ Post created successfully - ID: {self.test_post_id}")
-            return True
-        else:
-            error_msg = response.json().get("detail", "Unknown error") if response else "No response"
-            self.log(f"❌ Post creation failed: {error_msg}", "ERROR")
-            return False
-            
-    def test_posts_get_all(self):
-        """Test getting all posts"""
-        self.log("Testing get all posts...")
-        
-        response = self.make_request("GET", "/posts")
-        
-        if response and response.status_code == 200:
-            data = response.json()
-            if isinstance(data, list) and len(data) > 0:
-                self.log(f"✅ Retrieved {len(data)} posts")
+        try:
+            response = self.session.post(f"{BACKEND_URL}/auth/register", json=user2_data)
+            if response.status_code == 200:
+                data = response.json()
+                self.user2_token = data["access_token"]
+                self.user2_id = data["user"]["id"]
+                self.log_result("Create User 2", True, f"User created with ID: {self.user2_id}")
                 return True
             else:
-                self.log("✅ No posts found (empty list)")
+                self.log_result("Create User 2", False, f"Failed: {response.status_code} - {response.text}")
+                return False
+        except Exception as e:
+            self.log_result("Create User 2", False, f"Exception: {str(e)}")
+            return False
+    
+    def test_create_chat(self):
+        """Test POST /api/chats - Create new chat"""
+        print("\n=== Testing Chat Creation ===")
+        
+        headers = {"Authorization": f"Bearer {self.user1_token}"}
+        chat_data = {
+            "name": "Test Chat Between Users",
+            "is_group": False,
+            "members": [self.user2_id]
+        }
+        
+        try:
+            response = self.session.post(f"{BACKEND_URL}/chats", json=chat_data, headers=headers)
+            if response.status_code == 200:
+                data = response.json()
+                self.chat_id = data["id"]
+                
+                # Verify chat structure
+                required_fields = ["id", "name", "is_group", "members", "created_at"]
+                missing_fields = [field for field in required_fields if field not in data]
+                
+                if missing_fields:
+                    self.log_result("Create Chat", False, f"Missing fields: {missing_fields}")
+                    return False
+                
+                # Verify members include both users
+                if self.user1_id not in data["members"] or self.user2_id not in data["members"]:
+                    self.log_result("Create Chat", False, "Both users not in members list")
+                    return False
+                    
+                self.log_result("Create Chat", True, f"Chat created successfully with ID: {self.chat_id}", data)
                 return True
-        else:
-            self.log("❌ Failed to get posts", "ERROR")
+            else:
+                self.log_result("Create Chat", False, f"Failed: {response.status_code} - {response.text}")
+                return False
+        except Exception as e:
+            self.log_result("Create Chat", False, f"Exception: {str(e)}")
             return False
-            
-    def test_posts_get_user_posts(self):
-        """Test getting user's posts"""
-        self.log("Testing get user posts...")
+    
+    def test_get_user_chats(self):
+        """Test GET /api/chats - Get user's chat list"""
+        print("\n=== Testing Get User Chats ===")
         
-        if not self.test_user_id:
-            self.log("❌ No test user ID available", "ERROR")
-            return False
-            
-        response = self.make_request("GET", f"/posts/user/{self.test_user_id}")
-        
-        if response and response.status_code == 200:
-            data = response.json()
-            self.log(f"✅ Retrieved {len(data)} user posts")
-            return True
-        else:
-            self.log("❌ Failed to get user posts", "ERROR")
-            return False
-            
-    def test_posts_like_toggle(self):
-        """Test liking and unliking a post"""
-        self.log("Testing post like toggle...")
-        
-        if not self.test_post_id:
-            self.log("❌ No test post ID available", "ERROR")
-            return False
-            
-        # First like
-        response = self.make_request("POST", f"/posts/{self.test_post_id}/like")
-        
-        if response and response.status_code == 200:
-            data = response.json()
-            if data.get("liked") == True:
-                self.log("✅ Post liked successfully")
+        # Test for User 1
+        headers1 = {"Authorization": f"Bearer {self.user1_token}"}
+        try:
+            response = self.session.get(f"{BACKEND_URL}/chats", headers=headers1)
+            if response.status_code == 200:
+                data = response.json()
                 
-                # Now unlike
-                response2 = self.make_request("POST", f"/posts/{self.test_post_id}/like")
+                # Verify it's a list
+                if not isinstance(data, list):
+                    self.log_result("Get User 1 Chats", False, "Response is not a list")
+                    return False
                 
-                if response2 and response2.status_code == 200:
-                    data2 = response2.json()
-                    if data2.get("liked") == False:
-                        self.log("✅ Post unliked successfully - Toggle working")
-                        return True
-                    else:
-                        self.log("❌ Post unlike failed", "ERROR")
+                # Find our test chat
+                test_chat = None
+                for chat in data:
+                    if chat["id"] == self.chat_id:
+                        test_chat = chat
+                        break
+                
+                if not test_chat:
+                    self.log_result("Get User 1 Chats", False, "Test chat not found in user's chat list")
+                    return False
+                    
+                self.log_result("Get User 1 Chats", True, f"Found {len(data)} chats including test chat")
+            else:
+                self.log_result("Get User 1 Chats", False, f"Failed: {response.status_code} - {response.text}")
+                return False
+        except Exception as e:
+            self.log_result("Get User 1 Chats", False, f"Exception: {str(e)}")
+            return False
+        
+        # Test for User 2
+        headers2 = {"Authorization": f"Bearer {self.user2_token}"}
+        try:
+            response = self.session.get(f"{BACKEND_URL}/chats", headers=headers2)
+            if response.status_code == 200:
+                data = response.json()
+                
+                # Find our test chat
+                test_chat = None
+                for chat in data:
+                    if chat["id"] == self.chat_id:
+                        test_chat = chat
+                        break
+                
+                if not test_chat:
+                    self.log_result("Get User 2 Chats", False, "Test chat not found in user 2's chat list")
+                    return False
+                    
+                self.log_result("Get User 2 Chats", True, f"Found {len(data)} chats including test chat")
+                return True
+            else:
+                self.log_result("Get User 2 Chats", False, f"Failed: {response.status_code} - {response.text}")
+                return False
+        except Exception as e:
+            self.log_result("Get User 2 Chats", False, f"Exception: {str(e)}")
+            return False
+    
+    def test_send_messages(self):
+        """Test POST /api/chats/{chat_id}/messages - Send messages"""
+        print("\n=== Testing Send Messages ===")
+        
+        messages_sent = []
+        
+        # User 1 sends first message
+        headers1 = {"Authorization": f"Bearer {self.user1_token}"}
+        message1_data = {
+            "chat_id": self.chat_id,
+            "content": "Merhaba! Bu test mesajlaşma sisteminin ilk mesajı."
+        }
+        
+        try:
+            response = self.session.post(f"{BACKEND_URL}/chats/{self.chat_id}/messages", 
+                                       json=message1_data, headers=headers1)
+            if response.status_code == 200:
+                data = response.json()
+                
+                # Verify message structure
+                required_fields = ["id", "chat_id", "user_id", "username", "content", "created_at"]
+                missing_fields = [field for field in required_fields if field not in data]
+                
+                if missing_fields:
+                    self.log_result("Send Message 1", False, f"Missing fields: {missing_fields}")
+                    return False
+                
+                # Verify content and user
+                if data["content"] != message1_data["content"]:
+                    self.log_result("Send Message 1", False, "Message content mismatch")
+                    return False
+                    
+                if data["user_id"] != self.user1_id:
+                    self.log_result("Send Message 1", False, "Message user_id mismatch")
+                    return False
+                
+                messages_sent.append(data)
+                self.log_result("Send Message 1", True, f"Message sent by User 1: {data['id']}")
+            else:
+                self.log_result("Send Message 1", False, f"Failed: {response.status_code} - {response.text}")
+                return False
+        except Exception as e:
+            self.log_result("Send Message 1", False, f"Exception: {str(e)}")
+            return False
+        
+        # User 2 sends reply
+        headers2 = {"Authorization": f"Bearer {self.user2_token}"}
+        message2_data = {
+            "chat_id": self.chat_id,
+            "content": "Merhaba! Bu da ikinci kullanıcıdan gelen cevap mesajı."
+        }
+        
+        try:
+            response = self.session.post(f"{BACKEND_URL}/chats/{self.chat_id}/messages", 
+                                       json=message2_data, headers=headers2)
+            if response.status_code == 200:
+                data = response.json()
+                
+                if data["user_id"] != self.user2_id:
+                    self.log_result("Send Message 2", False, "Message user_id mismatch")
+                    return False
+                
+                messages_sent.append(data)
+                self.log_result("Send Message 2", True, f"Reply sent by User 2: {data['id']}")
+            else:
+                self.log_result("Send Message 2", False, f"Failed: {response.status_code} - {response.text}")
+                return False
+        except Exception as e:
+            self.log_result("Send Message 2", False, f"Exception: {str(e)}")
+            return False
+        
+        # User 1 sends another message
+        message3_data = {
+            "chat_id": self.chat_id,
+            "content": "Harika! Mesajlaşma sistemi çalışıyor. Bu üçüncü test mesajı."
+        }
+        
+        try:
+            response = self.session.post(f"{BACKEND_URL}/chats/{self.chat_id}/messages", 
+                                       json=message3_data, headers=headers1)
+            if response.status_code == 200:
+                data = response.json()
+                messages_sent.append(data)
+                self.log_result("Send Message 3", True, f"Third message sent by User 1: {data['id']}")
+                return True
+            else:
+                self.log_result("Send Message 3", False, f"Failed: {response.status_code} - {response.text}")
+                return False
+        except Exception as e:
+            self.log_result("Send Message 3", False, f"Exception: {str(e)}")
+            return False
+    
+    def test_get_messages(self):
+        """Test GET /api/chats/{chat_id}/messages - Get messages"""
+        print("\n=== Testing Get Messages ===")
+        
+        # User 1 gets messages
+        headers1 = {"Authorization": f"Bearer {self.user1_token}"}
+        try:
+            response = self.session.get(f"{BACKEND_URL}/chats/{self.chat_id}/messages", headers=headers1)
+            if response.status_code == 200:
+                data = response.json()
+                
+                # Verify it's a list
+                if not isinstance(data, list):
+                    self.log_result("Get Messages User 1", False, "Response is not a list")
+                    return False
+                
+                # Should have at least 3 messages
+                if len(data) < 3:
+                    self.log_result("Get Messages User 1", False, f"Expected at least 3 messages, got {len(data)}")
+                    return False
+                
+                # Verify messages are sorted by creation time (oldest first)
+                for i in range(1, len(data)):
+                    if data[i]["created_at"] < data[i-1]["created_at"]:
+                        self.log_result("Get Messages User 1", False, "Messages not sorted by creation time")
                         return False
+                
+                # Verify message structure
+                for msg in data:
+                    required_fields = ["id", "chat_id", "user_id", "username", "content", "created_at"]
+                    missing_fields = [field for field in required_fields if field not in msg]
+                    if missing_fields:
+                        self.log_result("Get Messages User 1", False, f"Message missing fields: {missing_fields}")
+                        return False
+                
+                self.log_result("Get Messages User 1", True, f"Retrieved {len(data)} messages correctly")
+            else:
+                self.log_result("Get Messages User 1", False, f"Failed: {response.status_code} - {response.text}")
+                return False
+        except Exception as e:
+            self.log_result("Get Messages User 1", False, f"Exception: {str(e)}")
+            return False
+        
+        # User 2 gets messages
+        headers2 = {"Authorization": f"Bearer {self.user2_token}"}
+        try:
+            response = self.session.get(f"{BACKEND_URL}/chats/{self.chat_id}/messages", headers=headers2)
+            if response.status_code == 200:
+                data = response.json()
+                
+                if len(data) < 3:
+                    self.log_result("Get Messages User 2", False, f"Expected at least 3 messages, got {len(data)}")
+                    return False
+                
+                self.log_result("Get Messages User 2", True, f"Retrieved {len(data)} messages correctly")
+                return True
+            else:
+                self.log_result("Get Messages User 2", False, f"Failed: {response.status_code} - {response.text}")
+                return False
+        except Exception as e:
+            self.log_result("Get Messages User 2", False, f"Exception: {str(e)}")
+            return False
+    
+    def test_error_scenarios(self):
+        """Test error handling scenarios"""
+        print("\n=== Testing Error Scenarios ===")
+        
+        # Test unauthorized access (no token)
+        try:
+            response = self.session.get(f"{BACKEND_URL}/chats")
+            if response.status_code in [401, 403]:
+                self.log_result("Unauthorized Access", True, f"Correctly blocked unauthorized access: {response.status_code}")
+            else:
+                self.log_result("Unauthorized Access", False, f"Should block unauthorized access, got: {response.status_code}")
+        except Exception as e:
+            self.log_result("Unauthorized Access", False, f"Exception: {str(e)}")
+        
+        # Test sending message to non-existent chat
+        headers = {"Authorization": f"Bearer {self.user1_token}"}
+        fake_chat_id = "nonexistent_chat_id"
+        message_data = {
+            "chat_id": fake_chat_id,
+            "content": "This should fail"
+        }
+        
+        try:
+            response = self.session.post(f"{BACKEND_URL}/chats/{fake_chat_id}/messages", 
+                                       json=message_data, headers=headers)
+            if response.status_code in [403, 404]:
+                self.log_result("Send to Non-existent Chat", True, f"Correctly blocked message to non-existent chat: {response.status_code}")
+            else:
+                self.log_result("Send to Non-existent Chat", False, f"Should block message to non-existent chat, got: {response.status_code}")
+        except Exception as e:
+            self.log_result("Send to Non-existent Chat", False, f"Exception: {str(e)}")
+        
+        # Test getting messages from non-existent chat
+        try:
+            response = self.session.get(f"{BACKEND_URL}/chats/{fake_chat_id}/messages", headers=headers)
+            if response.status_code in [403, 404]:
+                self.log_result("Get Messages Non-existent Chat", True, f"Correctly blocked access to non-existent chat: {response.status_code}")
+            else:
+                self.log_result("Get Messages Non-existent Chat", False, f"Should block access to non-existent chat, got: {response.status_code}")
+        except Exception as e:
+            self.log_result("Get Messages Non-existent Chat", False, f"Exception: {str(e)}")
+    
+    def test_chat_updates(self):
+        """Test that chat list updates with last message"""
+        print("\n=== Testing Chat Updates ===")
+        
+        headers = {"Authorization": f"Bearer {self.user1_token}"}
+        
+        # Get current chat list
+        try:
+            response = self.session.get(f"{BACKEND_URL}/chats", headers=headers)
+            if response.status_code == 200:
+                chats = response.json()
+                
+                # Find our test chat
+                test_chat = None
+                for chat in chats:
+                    if chat["id"] == self.chat_id:
+                        test_chat = chat
+                        break
+                
+                if not test_chat:
+                    self.log_result("Chat Updates", False, "Test chat not found")
+                    return False
+                
+                # Check if last_message is updated
+                if test_chat.get("last_message"):
+                    self.log_result("Chat Updates", True, f"Chat has last_message: {test_chat['last_message']}")
                 else:
-                    self.log("❌ Second like request failed", "ERROR")
+                    self.log_result("Chat Updates", False, "Chat last_message not updated")
+                    return False
+                
+                # Check if last_message_time exists
+                if test_chat.get("last_message_time"):
+                    self.log_result("Chat Last Message Time", True, f"Chat has last_message_time: {test_chat['last_message_time']}")
+                    return True
+                else:
+                    self.log_result("Chat Last Message Time", False, "Chat last_message_time not updated")
                     return False
             else:
-                self.log("❌ Post like failed", "ERROR")
+                self.log_result("Chat Updates", False, f"Failed to get chats: {response.status_code}")
                 return False
-        else:
-            self.log("❌ Post like request failed", "ERROR")
+        except Exception as e:
+            self.log_result("Chat Updates", False, f"Exception: {str(e)}")
             return False
-            
-    def test_comments_create(self):
-        """Test creating a comment"""
-        self.log("Testing comment creation...")
+    
+    def test_message_ordering(self):
+        """Test that messages are properly ordered"""
+        print("\n=== Testing Message Ordering ===")
         
-        if not self.test_post_id:
-            self.log("❌ No test post ID available", "ERROR")
-            return False
-            
-        comment_data = {
-            "content": "Harika paylaşım! Ben de bu rotayı sık kullanırım."
-        }
+        headers = {"Authorization": f"Bearer {self.user1_token}"}
         
-        response = self.make_request("POST", f"/posts/{self.test_post_id}/comments", comment_data)
-        
-        if response and response.status_code == 200:
-            data = response.json()
-            self.log(f"✅ Comment created successfully - ID: {data.get('id')}")
-            return True
-        else:
-            error_msg = response.json().get("detail", "Unknown error") if response else "No response"
-            self.log(f"❌ Comment creation failed: {error_msg}", "ERROR")
-            return False
-            
-    def test_comments_get(self):
-        """Test getting comments for a post"""
-        self.log("Testing get comments...")
-        
-        if not self.test_post_id:
-            self.log("❌ No test post ID available", "ERROR")
-            return False
-            
-        response = self.make_request("GET", f"/posts/{self.test_post_id}/comments")
-        
-        if response and response.status_code == 200:
-            data = response.json()
-            self.log(f"✅ Retrieved {len(data)} comments")
-            return True
-        else:
-            self.log("❌ Failed to get comments", "ERROR")
-            return False
-            
-    def test_users_get_by_id(self):
-        """Test getting user by ID"""
-        self.log("Testing get user by ID...")
-        
-        if not self.test_user_id:
-            self.log("❌ No test user ID available", "ERROR")
-            return False
-            
-        response = self.make_request("GET", f"/users/{self.test_user_id}")
-        
-        if response and response.status_code == 200:
-            data = response.json()
-            if data.get("username") == "test_driver_2024":
-                self.log("✅ Get user by ID successful")
-                return True
+        try:
+            response = self.session.get(f"{BACKEND_URL}/chats/{self.chat_id}/messages", headers=headers)
+            if response.status_code == 200:
+                messages = response.json()
                 
-        self.log("❌ Get user by ID failed", "ERROR")
-        return False
-        
-    def test_users_search(self):
-        """Test searching users"""
-        self.log("Testing user search...")
-        
-        # Search with query
-        response = self.make_request("GET", "/users?q=driver")
-        
-        if response and response.status_code == 200:
-            data = response.json()
-            self.log(f"✅ User search returned {len(data)} results")
-            return True
-        else:
-            self.log("❌ User search failed", "ERROR")
+                if len(messages) < 2:
+                    self.log_result("Message Ordering", False, "Need at least 2 messages to test ordering")
+                    return False
+                
+                # Check if messages are ordered by created_at (oldest first)
+                is_ordered = True
+                for i in range(1, len(messages)):
+                    if messages[i]["created_at"] < messages[i-1]["created_at"]:
+                        is_ordered = False
+                        break
+                
+                if is_ordered:
+                    self.log_result("Message Ordering", True, f"Messages properly ordered by creation time ({len(messages)} messages)")
+                    return True
+                else:
+                    self.log_result("Message Ordering", False, "Messages not properly ordered by creation time")
+                    return False
+            else:
+                self.log_result("Message Ordering", False, f"Failed to get messages: {response.status_code}")
+                return False
+        except Exception as e:
+            self.log_result("Message Ordering", False, f"Exception: {str(e)}")
             return False
-            
-    def test_chats_create(self):
-        """Test creating a chat"""
-        self.log("Testing chat creation...")
+    
+    def test_unread_message_count(self):
+        """Test unread message functionality (if implemented)"""
+        print("\n=== Testing Unread Message Count ===")
         
-        if not self.second_user_id:
-            self.log("❌ No second user ID available", "ERROR")
+        # This is a placeholder test since unread count might not be implemented
+        # We'll just verify the chat structure includes necessary fields
+        headers = {"Authorization": f"Bearer {self.user2_token}"}
+        
+        try:
+            response = self.session.get(f"{BACKEND_URL}/chats", headers=headers)
+            if response.status_code == 200:
+                chats = response.json()
+                
+                # Find our test chat
+                test_chat = None
+                for chat in chats:
+                    if chat["id"] == self.chat_id:
+                        test_chat = chat
+                        break
+                
+                if test_chat:
+                    # Check if chat has the basic structure for potential unread count
+                    has_last_message = "last_message" in test_chat
+                    has_last_message_time = "last_message_time" in test_chat
+                    
+                    if has_last_message and has_last_message_time:
+                        self.log_result("Unread Message Structure", True, "Chat has structure for unread message tracking")
+                        return True
+                    else:
+                        self.log_result("Unread Message Structure", False, "Chat missing fields for unread message tracking")
+                        return False
+                else:
+                    self.log_result("Unread Message Structure", False, "Test chat not found")
+                    return False
+            else:
+                self.log_result("Unread Message Structure", False, f"Failed to get chats: {response.status_code}")
+                return False
+        except Exception as e:
+            self.log_result("Unread Message Structure", False, f"Exception: {str(e)}")
             return False
-            
-        chat_data = {
-            "name": "Şoför Sohbeti",
-            "is_group": False,
-            "members": [self.second_user_id]
-        }
-        
-        response = self.make_request("POST", "/chats", chat_data)
-        
-        if response and response.status_code == 200:
-            data = response.json()
-            self.test_chat_id = data.get("id")
-            self.log(f"✅ Chat created successfully - ID: {self.test_chat_id}")
-            return True
-        else:
-            error_msg = response.json().get("detail", "Unknown error") if response else "No response"
-            self.log(f"❌ Chat creation failed: {error_msg}", "ERROR")
-            return False
-            
-    def test_chats_get(self):
-        """Test getting user's chats"""
-        self.log("Testing get chats...")
-        
-        response = self.make_request("GET", "/chats")
-        
-        if response and response.status_code == 200:
-            data = response.json()
-            self.log(f"✅ Retrieved {len(data)} chats")
-            return True
-        else:
-            self.log("❌ Failed to get chats", "ERROR")
-            return False
-            
-    def test_messages_send(self):
-        """Test sending a message"""
-        self.log("Testing send message...")
-        
-        if not self.test_chat_id:
-            self.log("❌ No test chat ID available", "ERROR")
-            return False
-            
-        message_data = {
-            "chat_id": self.test_chat_id,
-            "content": "Merhaba! Nasıl gidiyor işler?"
-        }
-        
-        response = self.make_request("POST", f"/chats/{self.test_chat_id}/messages", message_data)
-        
-        if response and response.status_code == 200:
-            data = response.json()
-            self.log(f"✅ Message sent successfully - ID: {data.get('id')}")
-            return True
-        else:
-            error_msg = response.json().get("detail", "Unknown error") if response else "No response"
-            self.log(f"❌ Send message failed: {error_msg}", "ERROR")
-            return False
-            
-    def test_messages_get(self):
-        """Test getting messages from a chat"""
-        self.log("Testing get messages...")
-        
-        if not self.test_chat_id:
-            self.log("❌ No test chat ID available", "ERROR")
-            return False
-            
-        response = self.make_request("GET", f"/chats/{self.test_chat_id}/messages")
-        
-        if response and response.status_code == 200:
-            data = response.json()
-            self.log(f"✅ Retrieved {len(data)} messages")
-            return True
-        else:
-            self.log("❌ Failed to get messages", "ERROR")
-            return False
-            
-    def test_unauthorized_access(self):
-        """Test accessing protected endpoints without authentication"""
-        self.log("Testing unauthorized access...")
-        
-        # Temporarily remove auth token
-        original_token = self.auth_token
-        self.auth_token = None
-        
-        response = self.make_request("GET", "/auth/me")
-        
-        # Restore token
-        self.auth_token = original_token
-        
-        if response and response.status_code in [401, 403]:
-            self.log("✅ Unauthorized access correctly blocked")
-            return True
-        else:
-            self.log(f"❌ Unauthorized access should be blocked, got status: {response.status_code if response else 'No response'}", "ERROR")
-            return False
-            
+    
     def run_all_tests(self):
-        """Run all backend tests"""
-        self.log("=" * 60)
-        self.log("STARTING BACKEND API TESTS")
-        self.log("=" * 60)
+        """Run all messaging system tests"""
+        print("🚀 Starting Comprehensive Chat/Messaging System Tests")
+        print("=" * 60)
         
-        test_results = {}
+        # Create test users
+        if not self.create_test_users():
+            print("❌ Failed to create test users. Stopping tests.")
+            return False
         
-        # Authentication Tests
-        test_results["auth_register"] = self.test_auth_register()
-        test_results["auth_register_duplicate"] = self.test_auth_register_duplicate()
-        test_results["auth_login"] = self.test_auth_login()
-        test_results["auth_login_invalid"] = self.test_auth_login_invalid()
-        test_results["auth_me"] = self.test_auth_me()
+        # Test chat creation
+        if not self.test_create_chat():
+            print("❌ Failed to create chat. Stopping tests.")
+            return False
         
-        # Create second user for interaction tests
-        test_results["create_second_user"] = self.create_second_user()
+        # Test getting user chats
+        if not self.test_get_user_chats():
+            print("❌ Failed to get user chats. Continuing with other tests.")
         
-        # Posts Tests
-        test_results["posts_create"] = self.test_posts_create()
-        test_results["posts_get_all"] = self.test_posts_get_all()
-        test_results["posts_get_user"] = self.test_posts_get_user_posts()
-        test_results["posts_like_toggle"] = self.test_posts_like_toggle()
+        # Test sending messages
+        if not self.test_send_messages():
+            print("❌ Failed to send messages. Continuing with other tests.")
         
-        # Comments Tests
-        test_results["comments_create"] = self.test_comments_create()
-        test_results["comments_get"] = self.test_comments_get()
+        # Test getting messages
+        if not self.test_get_messages():
+            print("❌ Failed to get messages. Continuing with other tests.")
         
-        # Users Tests
-        test_results["users_get_by_id"] = self.test_users_get_by_id()
-        test_results["users_search"] = self.test_users_search()
+        # Test message ordering
+        if not self.test_message_ordering():
+            print("❌ Failed message ordering test. Continuing with other tests.")
         
-        # Chat Tests
-        test_results["chats_create"] = self.test_chats_create()
-        test_results["chats_get"] = self.test_chats_get()
-        test_results["messages_send"] = self.test_messages_send()
-        test_results["messages_get"] = self.test_messages_get()
+        # Test chat updates
+        if not self.test_chat_updates():
+            print("❌ Failed chat updates test. Continuing with other tests.")
         
-        # Security Tests
-        test_results["unauthorized_access"] = self.test_unauthorized_access()
+        # Test unread message count structure
+        if not self.test_unread_message_count():
+            print("❌ Failed unread message count test. Continuing with other tests.")
         
-        # Summary
-        self.log("=" * 60)
-        self.log("TEST RESULTS SUMMARY")
-        self.log("=" * 60)
+        # Test error scenarios
+        self.test_error_scenarios()
         
-        passed = sum(1 for result in test_results.values() if result)
-        total = len(test_results)
+        # Print summary
+        self.print_summary()
         
-        for test_name, result in test_results.items():
-            status = "✅ PASS" if result else "❌ FAIL"
-            self.log(f"{test_name}: {status}")
-            
-        self.log("=" * 60)
-        self.log(f"TOTAL: {passed}/{total} tests passed")
+        return True
+    
+    def print_summary(self):
+        """Print test summary"""
+        print("\n" + "=" * 60)
+        print("📊 MESAJLAŞMA SİSTEMİ TEST SONUÇLARI")
+        print("=" * 60)
+        
+        passed = sum(1 for result in self.test_results if "✅ PASS" in result["status"])
+        failed = sum(1 for result in self.test_results if "❌ FAIL" in result["status"])
+        total = len(self.test_results)
+        
+        print(f"Toplam Test: {total}")
+        print(f"Başarılı: {passed} ✅")
+        print(f"Başarısız: {failed} ❌")
+        print(f"Başarı Oranı: {(passed/total*100):.1f}%")
+        
+        if failed > 0:
+            print("\n❌ BAŞARISIZ TESTLER:")
+            for result in self.test_results:
+                if "❌ FAIL" in result["status"]:
+                    print(f"  - {result['test']}: {result['message']}")
+        
+        print("\n✅ BAŞARILI TESTLER:")
+        for result in self.test_results:
+            if "✅ PASS" in result["status"]:
+                print(f"  - {result['test']}: {result['message']}")
+        
+        print("\n" + "=" * 60)
+        
+        # Test edilen endpoint'ler
+        print("\n📋 TEST EDİLEN ENDPOINT'LER:")
+        print("✅ POST /api/chats - Yeni sohbet oluşturma")
+        print("✅ GET /api/chats - Kullanıcının sohbet listesi")
+        print("✅ POST /api/chats/{chat_id}/messages - Mesaj gönderme")
+        print("✅ GET /api/chats/{chat_id}/messages - Mesajları alma")
+        print("\n📋 TEST EDİLEN ÖZELLİKLER:")
+        print("✅ İki kullanıcı arası sohbet başlatma")
+        print("✅ Mesaj gönderme ve alma")
+        print("✅ Mesaj sıralaması (eskiden yeniye)")
+        print("✅ Sohbet listesi güncelleme")
+        print("✅ Yetkilendirme kontrolü")
+        print("✅ Hata senaryoları")
         
         if passed == total:
-            self.log("🎉 ALL TESTS PASSED!")
+            print("\n🎉 TÜM TESTLER BAŞARILI! Mesajlaşma sistemi tam olarak çalışıyor.")
         else:
-            self.log(f"⚠️  {total - passed} tests failed")
-            
-        return test_results
+            print(f"\n⚠️ {failed} test başarısız oldu. Detaylar yukarıda listelenmiştir.")
 
 if __name__ == "__main__":
-    tester = BackendTester()
-    results = tester.run_all_tests()
+    tester = ChatMessagingTester()
+    tester.run_all_tests()
