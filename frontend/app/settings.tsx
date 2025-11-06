@@ -4,13 +4,16 @@ import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import { useAuthStore } from '../store/authStore';
 import { useLanguageStore } from '../store/languageStore';
+import { useNotificationStore } from '../store/notificationStore';
 import { useTranslation } from '../store/languageStore';
 import api from '../utils/api';
+import { updateNotificationPreferences } from '../utils/notifications';
 
 export default function SettingsScreen() {
   const router = useRouter();
   const { user, logout, setUser } = useAuthStore();
   const { language, setLanguage } = useLanguageStore();
+  const { preferences, setPreferences, loadPreferences, expoPushToken } = useNotificationStore();
   const { t } = useTranslation();
   
   // Profile Edit Modal
@@ -30,15 +33,31 @@ export default function SettingsScreen() {
   // Language Modal
   const [languageModal, setLanguageModal] = useState(false);
 
-  // Notification Settings
-  const [friendRequestNotif, setFriendRequestNotif] = useState(true);
-  const [messageNotif, setMessageNotif] = useState(true);
-  const [likeNotif, setLikeNotif] = useState(true);
+  // Notification Settings - synced with store
+  const [friendRequestNotif, setFriendRequestNotif] = useState(preferences.friend_requests);
+  const [messageNotif, setMessageNotif] = useState(preferences.messages);
+  const [likeNotif, setLikeNotif] = useState(preferences.likes);
+  const [commentNotif, setCommentNotif] = useState(preferences.comments);
 
   // Delete Account Modal
   const [deleteModal, setDeleteModal] = useState(false);
   const [deleteConfirmText, setDeleteConfirmText] = useState('');
   const [deleting, setDeleting] = useState(false);
+
+  // Load notification preferences on mount
+  useEffect(() => {
+    if (user) {
+      loadPreferences();
+    }
+  }, [user]);
+
+  // Sync local state with store
+  useEffect(() => {
+    setFriendRequestNotif(preferences.friend_requests);
+    setMessageNotif(preferences.messages);
+    setLikeNotif(preferences.likes);
+    setCommentNotif(preferences.comments);
+  }, [preferences]);
 
   const handleUpdateProfile = async () => {
     if (!fullName.trim()) {
