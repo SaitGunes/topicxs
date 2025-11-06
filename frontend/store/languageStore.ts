@@ -680,6 +680,12 @@ export const translations = {
     noResultsFound: 'Sonuç bulunamadı',
     searching: 'Aranıyor...',
     
+    // Comments
+    comments: 'Yorumlar',
+    viewAllComments: 'Tüm yorumları gör',
+    writeComment: 'Yorum yaz...',
+    noComments: 'Henüz yorum yok',
+    
     // About
     aboutTitle: 'Drivers Chat Hakkında',
     aboutDescription: 'Drivers Chat, sürücüler tarafından sürücüler için oluşturulmuş bir topluluk platformudur. Diğer profesyonel sürücülerle bağlantı kurun, deneyimlerinizi paylaşın ve anlamlı bağlantılar oluşturun.',
