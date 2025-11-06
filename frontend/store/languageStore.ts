@@ -59,6 +59,8 @@ export const translations = {
     joinDriverCommunity: 'Join the driver community',
     confirmDriver: 'I work as a professional driver',
     mustConfirmDriver: 'Please confirm that you work as a professional driver',
+    confirm18Plus: 'I confirm I am 18 years old or older',
+    mustConfirm18Plus: 'You must be 18 years or older to use this app',
     
     // Tabs
     home: 'Home',
