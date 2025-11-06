@@ -1610,6 +1610,98 @@ async def toggle_chatroom(
     
     return {"message": f"Chatroom {'enabled' if enabled else 'disabled'}", "enabled": enabled}
 
+# ==================== PUSH NOTIFICATIONS ENDPOINTS ====================
+
+@api_router.post("/notifications/register")
+async def register_push_token(
+    token_data: PushTokenRegister,
+    current_user: User = Depends(get_current_user)
+):
+    """Register or update user's push notification token"""
+    try:
+        result = await db.users.update_one(
+            {"_id": current_user.id},
+            {"$set": {"push_token": token_data.token}}
+        )
+        
+        if result.modified_count > 0 or result.matched_count > 0:
+            return {"message": "Push token registered successfully", "token": token_data.token}
+        else:
+            raise HTTPException(status_code=404, detail="User not found")
+    except Exception as e:
+        logging.error(f"Error registering push token: {e}")
+        raise HTTPException(status_code=500, detail="Failed to register push token")
+
+@api_router.delete("/notifications/unregister")
+async def unregister_push_token(
+    current_user: User = Depends(get_current_user)
+):
+    """Remove user's push notification token (logout)"""
+    try:
+        result = await db.users.update_one(
+            {"_id": current_user.id},
+            {"$set": {"push_token": None}}
+        )
+        
+        if result.modified_count > 0 or result.matched_count > 0:
+            return {"message": "Push token removed successfully"}
+        else:
+            raise HTTPException(status_code=404, detail="User not found")
+    except Exception as e:
+        logging.error(f"Error removing push token: {e}")
+        raise HTTPException(status_code=500, detail="Failed to remove push token")
+
+@api_router.put("/notifications/preferences")
+async def update_notification_preferences(
+    preferences: NotificationPreferences,
+    current_user: User = Depends(get_current_user)
+):
+    """Update user's notification preferences"""
+    try:
+        prefs_dict = {
+            "friend_requests": preferences.friend_requests,
+            "messages": preferences.messages,
+            "likes": preferences.likes,
+            "comments": preferences.comments
+        }
+        
+        result = await db.users.update_one(
+            {"_id": current_user.id},
+            {"$set": {"notification_preferences": prefs_dict}}
+        )
+        
+        if result.modified_count > 0 or result.matched_count > 0:
+            return prefs_dict
+        else:
+            raise HTTPException(status_code=404, detail="User not found")
+    except Exception as e:
+        logging.error(f"Error updating notification preferences: {e}")
+        raise HTTPException(status_code=500, detail="Failed to update preferences")
+
+@api_router.get("/notifications/preferences")
+async def get_notification_preferences(
+    current_user: User = Depends(get_current_user)
+):
+    """Get user's notification preferences"""
+    try:
+        user = await db.users.find_one({"_id": current_user.id})
+        
+        if not user:
+            raise HTTPException(status_code=404, detail="User not found")
+        
+        # Return preferences or defaults
+        prefs = user.get("notification_preferences", {
+            "friend_requests": True,
+            "messages": True,
+            "likes": True,
+            "comments": True
+        })
+        
+        return prefs
+    except Exception as e:
+        logging.error(f"Error getting notification preferences: {e}")
+        raise HTTPException(status_code=500, detail="Failed to get preferences")
+
 # ==================== SOCKET.IO ====================
 
 @sio.event
