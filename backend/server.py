@@ -484,7 +484,14 @@ async def register(user_data: UserRegister):
     # Create token
     access_token = create_access_token(data={"sub": user_id})
     
-    user_response = User(**{k: v for k, v in user_dict.items() if k != 'password'})
+    # Calculate star level for response
+    star_info = calculate_star_level(0)  # New user has 0 referrals
+    
+    # Add star info to user response
+    user_data = {k: v for k, v in user_dict.items() if k != 'password'}
+    user_data['star_level'] = star_info
+    
+    user_response = User(**user_data)
     
     return Token(access_token=access_token, token_type="bearer", user=user_response)
 
