@@ -1,3 +1,4 @@
+import React from 'react';
 import { View, Text, StyleSheet, TextInput, FlatList, TouchableOpacity, Image, Alert, ScrollView } from 'react-native';
 import { useState, useEffect } from 'react';
 import { Ionicons } from '@expo/vector-icons';
