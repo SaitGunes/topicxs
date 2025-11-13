@@ -199,70 +199,73 @@ export default function FriendsScreen() {
         <Text style={styles.headerTitle}>{t('friendsTitle')}</Text>
       </View>
 
-      {/* Search Section */}
-      <View style={styles.searchSection}>
-        <View style={styles.searchContainer}>
-          <Ionicons name="search" size={20} color="#999" style={styles.searchIcon} />
-          <TextInput
-            style={styles.searchInput}
-            placeholder={t('friendsSearchDrivers')}
-            value={searchQuery}
-            onChangeText={setSearchQuery}
-            onSubmitEditing={searchUsers}
-            placeholderTextColor="#999"
-          />
-          {searchQuery.length > 0 && (
-            <TouchableOpacity onPress={() => { setSearchQuery(''); setSearchResults([]); }}>
-              <Ionicons name="close-circle" size={20} color="#999" />
-            </TouchableOpacity>
+      <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
+        {/* Search Section */}
+        <View style={styles.searchSection}>
+          <View style={styles.searchContainer}>
+            <Ionicons name="search" size={20} color="#999" style={styles.searchIcon} />
+            <TextInput
+              style={styles.searchInput}
+              placeholder={t('friendsSearchDrivers')}
+              value={searchQuery}
+              onChangeText={setSearchQuery}
+              onSubmitEditing={searchUsers}
+              placeholderTextColor="#999"
+            />
+            {searchQuery.length > 0 && (
+              <TouchableOpacity onPress={() => { setSearchQuery(''); setSearchResults([]); }}>
+                <Ionicons name="close-circle" size={20} color="#999" />
+              </TouchableOpacity>
+            )}
+          </View>
+          {searchResults.length > 0 && (
+            <FlatList
+              data={searchResults}
+              renderItem={renderUser}
+              keyExtractor={(item) => item.id}
+              style={styles.searchResults}
+              scrollEnabled={false}
+            />
           )}
         </View>
-        {searchResults.length > 0 && (
-          <FlatList
-            data={searchResults}
-            renderItem={renderUser}
-            keyExtractor={(item) => item.id}
-            style={styles.searchResults}
-          />
-        )}
-      </View>
 
-      {/* Friend Requests */}
-      {friendRequests.length > 0 && (
-        <View style={styles.section}>
-          <View style={styles.sectionHeader}>
-            <Text style={styles.sectionTitle}>{t('friendsFriendRequests')}</Text>
-            <View style={styles.badge}>
-              <Text style={styles.badgeText}>{friendRequests.length}</Text>
+        {/* Friend Requests */}
+        {friendRequests.length > 0 && (
+          <View style={styles.section}>
+            <View style={styles.sectionHeader}>
+              <Text style={styles.sectionTitle}>{t('friendsFriendRequests')}</Text>
+              <View style={styles.badge}>
+                <Text style={styles.badgeText}>{friendRequests.length}</Text>
+              </View>
             </View>
+            <FlatList
+              data={friendRequests}
+              renderItem={renderRequest}
+              keyExtractor={(item) => item.id}
+              scrollEnabled={false}
+            />
           </View>
-          <FlatList
-            data={friendRequests}
-            renderItem={renderRequest}
-            keyExtractor={(item) => item.id}
-            scrollEnabled={false}
-          />
-        </View>
-      )}
-
-      {/* Friends List */}
-      <View style={styles.section}>
-        <Text style={styles.sectionTitle}>{t('friendsMyFriends')} ({friends.length})</Text>
-        {friends.length === 0 ? (
-          <View style={styles.emptyContainer}>
-            <Ionicons name="people-outline" size={48} color="#ccc" />
-            <Text style={styles.emptyText}>{t('friendsNoFriendsYet')}</Text>
-            <Text style={styles.emptySubtext}>{t('friendsSearchAddFriends')}</Text>
-          </View>
-        ) : (
-          <FlatList
-            data={friends}
-            renderItem={renderFriend}
-            keyExtractor={(item) => item.id}
-            scrollEnabled={false}
-          />
         )}
-      </View>
+
+        {/* Friends List */}
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>{t('friendsMyFriends')} ({friends.length})</Text>
+          {friends.length === 0 ? (
+            <View style={styles.emptyContainer}>
+              <Ionicons name="people-outline" size={48} color="#ccc" />
+              <Text style={styles.emptyText}>{t('friendsNoFriendsYet')}</Text>
+              <Text style={styles.emptySubtext}>{t('friendsSearchAddFriends')}</Text>
+            </View>
+          ) : (
+            <FlatList
+              data={friends}
+              renderItem={renderFriend}
+              keyExtractor={(item) => item.id}
+              scrollEnabled={false}
+            />
+          )}
+        </View>
+      </ScrollView>
     </View>
   );
 }
