@@ -21,6 +21,7 @@ export default function SettingsScreen() {
   const [fullName, setFullName] = useState(user?.full_name || '');
   const [bio, setBio] = useState(user?.bio || '');
   const [email, setEmail] = useState(user?.email || '');
+  const [phoneNumber, setPhoneNumber] = useState(user?.phone_number || '');
   const [updating, setUpdating] = useState(false);
 
   // Password Change Modal
