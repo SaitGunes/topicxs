@@ -416,6 +416,26 @@ export default function SettingsScreen() {
               placeholderTextColor="#999"
             />
             <Text style={styles.helperText}>Email cannot be changed</Text>
+
+            <View style={styles.phoneSection}>
+              <View style={styles.phoneHeader}>
+                <Text style={styles.label}>{t('phoneNumber')}</Text>
+                {user?.phone_number && (
+                  <TouchableOpacity onPress={handleRemovePhone}>
+                    <Text style={styles.removePhoneButton}>{t('remove')}</Text>
+                  </TouchableOpacity>
+                )}
+              </View>
+              <TextInput
+                style={styles.input}
+                value={phoneNumber}
+                onChangeText={setPhoneNumber}
+                placeholder={t('phoneNumberOptional')}
+                placeholderTextColor="#999"
+                keyboardType="phone-pad"
+              />
+              <Text style={styles.helperText}>{t('phoneNumberHelper')}</Text>
+            </View>
           </ScrollView>
         </View>
       </Modal>
