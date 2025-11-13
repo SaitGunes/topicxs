@@ -298,8 +298,31 @@ export default function FriendsScreen() {
               <Text style={styles.emptySubtext}>{t('friendsSearchAddFriends')}</Text>
             </View>
           ) : (
-            friends.map((item) => (
-              <View key={item.id}>{renderFriend({ item })}</View>
+            friends.map((friend) => (
+              <View key={friend.id} style={styles.friendItem}>
+                <TouchableOpacity 
+                  style={styles.friendTouchable}
+                  onPress={() => router.push(`/profile/${friend.id}`)}
+                >
+                  {friend.profile_picture ? (
+                    <Image source={{ uri: friend.profile_picture }} style={styles.avatar} />
+                  ) : (
+                    <View style={[styles.avatar, styles.avatarPlaceholder]}>
+                      <Ionicons name="person" size={24} color="#999" />
+                    </View>
+                  )}
+                  <View style={styles.userInfo}>
+                    <Text style={styles.userName}>{friend.full_name}</Text>
+                    <Text style={styles.username}>@{friend.username}</Text>
+                  </View>
+                </TouchableOpacity>
+                <TouchableOpacity 
+                  style={styles.messageButton}
+                  onPress={() => handleMessage(friend.id)}
+                >
+                  <Ionicons name="chatbubble" size={20} color="#007AFF" />
+                </TouchableOpacity>
+              </View>
             ))
           )}
         </View>
