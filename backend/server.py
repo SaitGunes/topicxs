@@ -368,6 +368,54 @@ async def get_current_user(credentials: HTTPAuthorizationCredentials = Depends(s
 
 # ==================== AUTH ROUTES ====================
 
+@api_router.post("/auth/verify-email")
+async def verify_email(code: str, current_user: User = Depends(get_current_user)):
+    """Verify email with the provided code"""
+    user = await db.users.find_one({"id": current_user.id})
+    
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+    
+    if user.get("email_verified"):
+        return {"message": "Email already verified", "verified": True}
+    
+    if user.get("email_verification_code") != code:
+        raise HTTPException(status_code=400, detail="Invalid verification code")
+    
+    # Mark email as verified
+    await db.users.update_one(
+        {"id": current_user.id},
+        {
+            "$set": {"email_verified": True},
+            "$unset": {"email_verification_code": ""}
+        }
+    )
+    
+    return {"message": "Email verified successfully", "verified": True}
+
+@api_router.post("/auth/resend-verification")
+async def resend_verification(current_user: User = Depends(get_current_user)):
+    """Resend verification email"""
+    user = await db.users.find_one({"id": current_user.id})
+    
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+    
+    if user.get("email_verified"):
+        return {"message": "Email already verified"}
+    
+    # Generate new code
+    verification_code = generate_verification_code()
+    await db.users.update_one(
+        {"id": current_user.id},
+        {"$set": {"email_verification_code": verification_code}}
+    )
+    
+    # Send email
+    await send_verification_email(user["email"], verification_code, user["username"])
+    
+    return {"message": "Verification code sent"}
+
 @api_router.post("/auth/register", response_model=Token)
 async def register(user_data: UserRegister):
     # Check if username exists
