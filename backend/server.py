@@ -262,6 +262,21 @@ class NotificationPreferences(BaseModel):
     likes: bool = True
     comments: bool = True
 
+# ==================== EMAIL VERIFICATION ====================
+
+def generate_verification_code() -> str:
+    """Generate a 6-digit verification code"""
+    return ''.join(random.choices('0123456789', k=6))
+
+async def send_verification_email(email: str, code: str, username: str):
+    """Send verification email (mock for now - you can integrate real email service)"""
+    # TODO: Integrate with real email service (SendGrid, AWS SES, etc.)
+    logging.info(f"📧 Verification email sent to {email}")
+    logging.info(f"   Username: {username}")
+    logging.info(f"   Code: {code}")
+    # For now, just log it. In production, send actual email.
+    return True
+
 # ==================== STAR RATING SYSTEM ====================
 
 def calculate_star_level(referral_count: int) -> dict:
