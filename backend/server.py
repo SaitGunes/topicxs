@@ -1846,17 +1846,19 @@ async def unregister_push_token(
     """Remove user's push notification token (logout)"""
     try:
         result = await db.users.update_one(
-            {"_id": current_user.id},
+            {"id": current_user.id},
             {"$set": {"push_token": None}}
         )
         
         if result.modified_count > 0 or result.matched_count > 0:
             return {"message": "Push token removed successfully"}
         else:
-            raise HTTPException(status_code=404, detail="User not found")
+            # User might not have a token, that's OK
+            return {"message": "No push token to remove"}
     except Exception as e:
         logging.error(f"Error removing push token: {e}")
-        raise HTTPException(status_code=500, detail="Failed to remove push token")
+        # Don't fail logout for this
+        return {"message": "Push token removal skipped"}
 
 @api_router.put("/notifications/preferences")
 async def update_notification_preferences(
