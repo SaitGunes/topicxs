@@ -1,30 +1,19 @@
 #!/usr/bin/env python3
 """
-Backend API Testing for Driver Forum Application - Admin Panel Endpoints
-Testing all admin endpoints with proper authentication and authorization
+Comprehensive Backend API Testing for Drivers Chat Application
+Testing all authentication, user management, notifications, and enhanced features
 """
 
 import requests
 import json
-import sys
+import time
 from datetime import datetime
 
 # Configuration
 BASE_URL = "https://trucknet-hub-1.preview.emergentagent.com/api"
-
-# Test credentials - testadmin123 is admin user
-ADMIN_USER = {
-    "username": "testadmin123",
-    "password": "password123"
-}
-
-# Regular user for authorization testing
-REGULAR_USER = {
-    "username": "testuser",
-    "email": "testuser@example.com", 
-    "password": "password123",
-    "full_name": "Test User",
-    "bio": "Regular user for testing"
+TEST_CREDENTIALS = {
+    "username": "admin",
+    "password": "admin123"
 }
 
 class AdminEndpointTester:
