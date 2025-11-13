@@ -609,8 +609,8 @@ class DriversChatAPITester:
             return False
         
         # Test POST /api/chatroom/messages
-        message_data = {"content": f"Test chatroom message at {datetime.now().isoformat()}"}
-        response = self.make_request("POST", "/chatroom/messages", message_data, token=self.test_user_token)
+        message_content = f"Test chatroom message at {datetime.now().isoformat()}"
+        response = self.make_request("POST", f"/chatroom/messages?content={message_content}", token=self.test_user_token)
         
         if response and response.status_code == 200:
             data = response.json()
