@@ -69,7 +69,7 @@ export const useAuthStore = create<AuthState>((set) => ({
     }
   },
 
-  register: async (username: string, email: string, password: string, full_name: string, referral_code?: string) => {
+  register: async (username: string, email: string, password: string, full_name: string, referral_code?: string, user_type?: string, phone_number?: string) => {
     try {
       const response = await axios.post(`${API_URL}/api/auth/register`, {
         username,
@@ -77,6 +77,8 @@ export const useAuthStore = create<AuthState>((set) => ({
         password,
         full_name,
         referral_code: referral_code || undefined,
+        user_type: user_type || 'driver',
+        phone_number: phone_number || undefined,
       });
 
       const { access_token, user } = response.data;
