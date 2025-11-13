@@ -20,8 +20,9 @@ export default function RegisterScreen() {
   const [loading, setLoading] = useState(false);
   const [showTerms, setShowTerms] = useState(false);
   const [pendingRegistration, setPendingRegistration] = useState(false);
-  const [confirmDriver, setConfirmDriver] = useState(false);
+  const [userType, setUserType] = useState<'professional_driver' | 'driver' | 'non_driver'>('driver');
   const [confirm18Plus, setConfirm18Plus] = useState(false);
+  const [phoneNumber, setPhoneNumber] = useState('');
 
   // Auto-fill referral code from deep link
   useEffect(() => {
