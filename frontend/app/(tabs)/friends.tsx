@@ -104,27 +104,7 @@ export default function FriendsScreen() {
     }
   };
 
-  const renderUser = ({ item }: { item: User }) => (
-    <View style={styles.userItem}>
-      {item.profile_picture ? (
-        <Image source={{ uri: item.profile_picture }} style={styles.avatar} />
-      ) : (
-        <View style={[styles.avatar, styles.avatarPlaceholder]}>
-          <Ionicons name="person" size={24} color="#999" />
-        </View>
-      )}
-      <View style={styles.userInfo}>
-        <Text style={styles.userName}>{item.full_name}</Text>
-        <Text style={styles.username}>@{item.username}</Text>
-      </View>
-      <TouchableOpacity 
-        style={styles.addButton}
-        onPress={() => sendFriendRequest(item.id)}
-      >
-        <Ionicons name="person-add" size={20} color="#fff" />
-      </TouchableOpacity>
-    </View>
-  );
+  // renderUser function removed - using inline JSX instead
 
   const renderRequest = ({ item }: { item: FriendRequest }) => (
     <View style={styles.requestItem}>
