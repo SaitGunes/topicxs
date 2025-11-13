@@ -194,126 +194,211 @@ export default function FriendsScreen() {
     </View>
   );
 
-  const renderHeader = () => (
-    <>
-      {/* Search Section */}
-      <View style={styles.searchSection}>
-        <View style={styles.searchContainer}>
-          <Ionicons name="search" size={20} color="#999" style={styles.searchIcon} />
-          <TextInput
-            style={styles.searchInput}
-            placeholder={t('friendsSearchDrivers')}
-            value={searchQuery}
-            onChangeText={setSearchQuery}
-            onSubmitEditing={searchUsers}
-            placeholderTextColor="#999"
-          />
-          {searchQuery.length > 0 && (
-            <TouchableOpacity onPress={() => { setSearchQuery(''); setSearchResults([]); }}>
-              <Ionicons name="close-circle" size={20} color="#999" />
-            </TouchableOpacity>
-          )}
-        </View>
-        {searchResults.length > 0 && (
-          <View style={styles.searchResultsContainer}>
-            {searchResults.map((item) => (
-              <View key={item.id} style={styles.userItem}>
-                {item.profile_picture ? (
-                  <Image source={{ uri: item.profile_picture }} style={styles.avatar} />
-                ) : (
-                  <View style={[styles.avatar, styles.avatarPlaceholder]}>
-                    <Ionicons name="person" size={24} color="#999" />
-                  </View>
-                )}
-                <View style={styles.userInfo}>
-                  <Text style={styles.userName}>{item.full_name}</Text>
-                  <Text style={styles.username}>@{item.username}</Text>
-                </View>
-                <TouchableOpacity 
-                  style={styles.addButton}
-                  onPress={() => sendFriendRequest(item.id)}
-                >
-                  <Ionicons name="person-add" size={20} color="#fff" />
-                </TouchableOpacity>
-              </View>
-            ))}
-          </View>
-        )}
-      </View>
+  // Combine all items into one FlatList data array
+  type ListItem = 
+    | { type: 'search' }
+    | { type: 'searchResult'; data: User }
+    | { type: 'requestHeader' }
+    | { type: 'request'; data: FriendRequest }
+    | { type: 'friendHeader' }
+    | { type: 'friend'; data: User }
+    | { type: 'empty' };
 
-      {/* Friend Requests */}
-      {friendRequests.length > 0 && (
-        <View style={styles.section}>
-          <View style={styles.sectionHeader}>
-            <Text style={styles.sectionTitle}>{t('friendsFriendRequests')}</Text>
-            <View style={styles.badge}>
-              <Text style={styles.badgeText}>{friendRequests.length}</Text>
-            </View>
-          </View>
-          {friendRequests.map((item) => (
-            <View key={item.id} style={styles.requestItem}>
-              {item.from_user_picture ? (
-                <Image source={{ uri: item.from_user_picture }} style={styles.avatar} />
-              ) : (
-                <View style={[styles.avatar, styles.avatarPlaceholder]}>
-                  <Ionicons name="person" size={24} color="#999" />
-                </View>
+  const getListData = (): ListItem[] => {
+    const items: ListItem[] = [];
+    
+    // Search section
+    items.push({ type: 'search' });
+    
+    // Search results
+    if (searchResults.length > 0) {
+      searchResults.forEach(user => {
+        items.push({ type: 'searchResult', data: user });
+      });
+    }
+    
+    // Friend requests
+    if (friendRequests.length > 0) {
+      items.push({ type: 'requestHeader' });
+      friendRequests.forEach(request => {
+        items.push({ type: 'request', data: request });
+      });
+    }
+    
+    // Friends list header
+    items.push({ type: 'friendHeader' });
+    
+    // Friends
+    if (friends.length === 0) {
+      items.push({ type: 'empty' });
+    } else {
+      friends.forEach(friend => {
+        items.push({ type: 'friend', data: friend });
+      });
+    }
+    
+    return items;
+  };
+
+  const renderItem = ({ item }: { item: ListItem }) => {
+    switch (item.type) {
+      case 'search':
+        return (
+          <View style={styles.searchSection}>
+            <View style={styles.searchContainer}>
+              <Ionicons name="search" size={20} color="#999" style={styles.searchIcon} />
+              <TextInput
+                style={styles.searchInput}
+                placeholder={t('friendsSearchDrivers')}
+                value={searchQuery}
+                onChangeText={setSearchQuery}
+                onSubmitEditing={searchUsers}
+                placeholderTextColor="#999"
+              />
+              {searchQuery.length > 0 && (
+                <TouchableOpacity onPress={() => { setSearchQuery(''); setSearchResults([]); }}>
+                  <Ionicons name="close-circle" size={20} color="#999" />
+                </TouchableOpacity>
               )}
-              <View style={styles.requestInfo}>
-                <Text style={styles.userName}>@{item.from_username}</Text>
-                {item.message && <Text style={styles.requestMessage}>{item.message}</Text>}
+            </View>
+          </View>
+        );
+      
+      case 'searchResult':
+        return (
+          <View style={styles.userItem}>
+            {item.data.profile_picture ? (
+              <Image source={{ uri: item.data.profile_picture }} style={styles.avatar} />
+            ) : (
+              <View style={[styles.avatar, styles.avatarPlaceholder]}>
+                <Ionicons name="person" size={24} color="#999" />
               </View>
-              <View style={styles.requestActions}>
-                <TouchableOpacity 
-                  style={styles.acceptButton}
-                  onPress={() => handleRequest(item.id, 'accept')}
-                >
-                  <Ionicons name="checkmark" size={20} color="#fff" />
-                </TouchableOpacity>
-                <TouchableOpacity 
-                  style={styles.rejectButton}
-                  onPress={() => handleRequest(item.id, 'reject')}
-                >
-                  <Ionicons name="close" size={20} color="#fff" />
-                </TouchableOpacity>
+            )}
+            <View style={styles.userInfo}>
+              <Text style={styles.userName}>{item.data.full_name}</Text>
+              <Text style={styles.username}>@{item.data.username}</Text>
+            </View>
+            <TouchableOpacity 
+              style={styles.addButton}
+              onPress={() => sendFriendRequest(item.data.id)}
+            >
+              <Ionicons name="person-add" size={20} color="#fff" />
+            </TouchableOpacity>
+          </View>
+        );
+      
+      case 'requestHeader':
+        return (
+          <View style={styles.section}>
+            <View style={styles.sectionHeader}>
+              <Text style={styles.sectionTitle}>{t('friendsFriendRequests')}</Text>
+              <View style={styles.badge}>
+                <Text style={styles.badgeText}>{friendRequests.length}</Text>
               </View>
             </View>
-          ))}
-        </View>
-      )}
-
-      {/* Friends List Header */}
-      <View style={styles.section}>
-        <Text style={styles.sectionTitle}>{t('friendsMyFriends')} ({friends.length})</Text>
-      </View>
-    </>
-  );
-
-  return (
-    <View style={styles.container}>
-      <View style={styles.header}>
-        <Text style={styles.headerTitle}>{t('friendsTitle')}</Text>
-      </View>
-
-      {friends.length === 0 ? (
-        <ScrollView style={styles.scrollView}>
-          {renderHeader()}
+          </View>
+        );
+      
+      case 'request':
+        return (
+          <View style={styles.requestItem}>
+            {item.data.from_user_picture ? (
+              <Image source={{ uri: item.data.from_user_picture }} style={styles.avatar} />
+            ) : (
+              <View style={[styles.avatar, styles.avatarPlaceholder]}>
+                <Ionicons name="person" size={24} color="#999" />
+              </View>
+            )}
+            <View style={styles.requestInfo}>
+              <Text style={styles.userName}>@{item.data.from_username}</Text>
+              {item.data.message && <Text style={styles.requestMessage}>{item.data.message}</Text>}
+            </View>
+            <View style={styles.requestActions}>
+              <TouchableOpacity 
+                style={styles.acceptButton}
+                onPress={() => handleRequest(item.data.id, 'accept')}
+              >
+                <Ionicons name="checkmark" size={20} color="#fff" />
+              </TouchableOpacity>
+              <TouchableOpacity 
+                style={styles.rejectButton}
+                onPress={() => handleRequest(item.data.id, 'reject')}
+              >
+                <Ionicons name="close" size={20} color="#fff" />
+              </TouchableOpacity>
+            </View>
+          </View>
+        );
+      
+      case 'friendHeader':
+        return (
+          <View style={styles.section}>
+            <Text style={styles.sectionTitle}>{t('friendsMyFriends')} ({friends.length})</Text>
+          </View>
+        );
+      
+      case 'empty':
+        return (
           <View style={styles.emptyContainer}>
             <Ionicons name="people-outline" size={48} color="#ccc" />
             <Text style={styles.emptyText}>{t('friendsNoFriendsYet')}</Text>
             <Text style={styles.emptySubtext}>{t('friendsSearchAddFriends')}</Text>
           </View>
-        </ScrollView>
-      ) : (
+        );
+      
+      case 'friend':
+        return (
+          <View style={styles.friendItem}>
+            <TouchableOpacity 
+              style={styles.friendTouchable}
+              onPress={() => router.push(`/profile/${item.data.id}`)}
+            >
+              {item.data.profile_picture ? (
+                <Image source={{ uri: item.data.profile_picture }} style={styles.avatar} />
+              ) : (
+                <View style={[styles.avatar, styles.avatarPlaceholder]}>
+                  <Ionicons name="person" size={24} color="#999" />
+                </View>
+              )}
+              <View style={styles.userInfo}>
+                <Text style={styles.userName}>{item.data.full_name}</Text>
+                <Text style={styles.username}>@{item.data.username}</Text>
+              </View>
+            </TouchableOpacity>
+            <TouchableOpacity 
+              style={styles.messageButton}
+              onPress={() => handleMessage(item.data.id)}
+            >
+              <Ionicons name="chatbubble" size={20} color="#007AFF" />
+            </TouchableOpacity>
+          </View>
+        );
+      
+      default:
+        return null;
+    }
+  };
+
+  return (
+    <SafeAreaView style={styles.container} edges={['top']}>
+      <View style={styles.header}>
+        <Text style={styles.headerTitle}>{t('friendsTitle')}</Text>
+      </View>
+
+      <KeyboardAvoidingView 
+        style={styles.content} 
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        keyboardVerticalOffset={90}
+      >
         <FlatList
-          data={friends}
-          renderItem={renderFriend}
-          keyExtractor={(item) => item.id}
-          ListHeaderComponent={renderHeader}
+          data={getListData()}
+          renderItem={renderItem}
+          keyExtractor={(item, index) => `${item.type}-${index}`}
           contentContainerStyle={styles.listContent}
+          showsVerticalScrollIndicator={false}
         />
-      )}
-    </View>
+      </KeyboardAvoidingView>
+    </SafeAreaView>
   );
 }
 
