@@ -286,16 +286,39 @@ const styles = StyleSheet.create({
     color: '#000',
     marginBottom: 4,
   },
+  usernameRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 4,
+    gap: 6,
+  },
   username: {
     fontSize: 16,
     color: '#666',
-    marginBottom: 12,
+  },
+  verifiedBadge: {
+    marginTop: 2,
   },
   bio: {
     fontSize: 14,
     color: '#666',
     textAlign: 'center',
     marginTop: 8,
+  },
+  userTypeBadge: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#E3F2FD',
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: 16,
+    marginTop: 12,
+    gap: 6,
+  },
+  userTypeText: {
+    fontSize: 13,
+    color: '#007AFF',
+    fontWeight: '500',
   },
   starBadge: {
     backgroundColor: '#FFF9E6',
