@@ -156,24 +156,41 @@ export default function FriendsScreen() {
     </View>
   );
 
+  const handleMessage = async (friendId: string) => {
+    try {
+      // Get or create chat
+      const response = await api.post('/api/chats', { user_id: friendId });
+      router.push(`/chat/${response.data.id}`);
+    } catch (error: any) {
+      Alert.alert(t('error'), error.response?.data?.detail || 'Failed to start chat');
+    }
+  };
+
   const renderFriend = ({ item }: { item: User }) => (
-    <TouchableOpacity 
-      style={styles.friendItem}
-      onPress={() => router.push(`/profile/${item.id}`)}
-    >
-      {item.profile_picture ? (
-        <Image source={{ uri: item.profile_picture }} style={styles.avatar} />
-      ) : (
-        <View style={[styles.avatar, styles.avatarPlaceholder]}>
-          <Ionicons name="person" size={24} color="#999" />
+    <View style={styles.friendItem}>
+      <TouchableOpacity 
+        style={styles.friendTouchable}
+        onPress={() => router.push(`/profile/${item.id}`)}
+      >
+        {item.profile_picture ? (
+          <Image source={{ uri: item.profile_picture }} style={styles.avatar} />
+        ) : (
+          <View style={[styles.avatar, styles.avatarPlaceholder]}>
+            <Ionicons name="person" size={24} color="#999" />
+          </View>
+        )}
+        <View style={styles.userInfo}>
+          <Text style={styles.userName}>{item.full_name}</Text>
+          <Text style={styles.username}>@{item.username}</Text>
         </View>
-      )}
-      <View style={styles.userInfo}>
-        <Text style={styles.userName}>{item.full_name}</Text>
-        <Text style={styles.username}>@{item.username}</Text>
-      </View>
-      <Ionicons name="chevron-forward" size={20} color="#ccc" />
-    </TouchableOpacity>
+      </TouchableOpacity>
+      <TouchableOpacity 
+        style={styles.messageButton}
+        onPress={() => handleMessage(item.id)}
+      >
+        <Ionicons name="chatbubble" size={20} color="#007AFF" />
+      </TouchableOpacity>
+    </View>
   );
 
   return (
