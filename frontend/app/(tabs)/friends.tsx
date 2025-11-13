@@ -287,6 +287,9 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: '#000',
   },
+  scrollView: {
+    flex: 1,
+  },
   searchSection: {
     backgroundColor: '#fff',
     padding: 16,
