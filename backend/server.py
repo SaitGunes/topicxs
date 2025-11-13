@@ -512,7 +512,7 @@ async def get_me(current_user: User = Depends(get_current_user)):
     star_info = calculate_star_level(referral_count)
     
     # Add star info to user response
-    user_data = {k: v for k, v in user.items() if k != 'password'}
+    user_data = {k: v for k, v in user.items() if k not in ['password', '_id']}
     user_data['star_level'] = star_info
     
     return user_data
@@ -680,7 +680,7 @@ async def get_user(user_id: str, current_user: User = Depends(get_current_user))
     star_info = calculate_star_level(referral_count)
     
     # Add star info to user response
-    user_data = {k: v for k, v in user.items() if k != 'password'}
+    user_data = {k: v for k, v in user.items() if k not in ['password', '_id']}
     user_data['star_level'] = star_info
     
     return user_data
