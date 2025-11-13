@@ -118,32 +118,7 @@ export default function FriendsScreen() {
     }
   };
 
-  const renderFriend = ({ item }: { item: User }) => (
-    <View style={styles.friendItem}>
-      <TouchableOpacity 
-        style={styles.friendTouchable}
-        onPress={() => router.push(`/profile/${item.id}`)}
-      >
-        {item.profile_picture ? (
-          <Image source={{ uri: item.profile_picture }} style={styles.avatar} />
-        ) : (
-          <View style={[styles.avatar, styles.avatarPlaceholder]}>
-            <Ionicons name="person" size={24} color="#999" />
-          </View>
-        )}
-        <View style={styles.userInfo}>
-          <Text style={styles.userName}>{item.full_name}</Text>
-          <Text style={styles.username}>@{item.username}</Text>
-        </View>
-      </TouchableOpacity>
-      <TouchableOpacity 
-        style={styles.messageButton}
-        onPress={() => handleMessage(item.id)}
-      >
-        <Ionicons name="chatbubble" size={20} color="#007AFF" />
-      </TouchableOpacity>
-    </View>
-  );
+  // renderFriend function removed - using inline JSX instead
 
   // Duplicate render functions removed - using inline JSX instead
 
