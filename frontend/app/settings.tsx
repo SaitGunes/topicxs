@@ -71,6 +71,7 @@ export default function SettingsScreen() {
       const response = await api.put('/api/auth/me', {
         full_name: fullName,
         bio: bio,
+        phone_number: phoneNumber.trim() || null,
       });
       
       setUser(response.data);
@@ -82,6 +83,32 @@ export default function SettingsScreen() {
     } finally {
       setUpdating(false);
     }
+  };
+
+  const handleRemovePhone = () => {
+    Alert.alert(
+      t('confirm'),
+      t('confirmRemovePhone'),
+      [
+        { text: t('cancel'), style: 'cancel' },
+        {
+          text: t('remove'),
+          style: 'destructive',
+          onPress: async () => {
+            try {
+              const response = await api.put('/api/auth/me', {
+                phone_number: null,
+              });
+              setUser(response.data);
+              setPhoneNumber('');
+              Alert.alert(t('success'), t('phoneRemoved'));
+            } catch (error) {
+              Alert.alert(t('error'), t('failedRemovePhone'));
+            }
+          }
+        }
+      ]
+    );
   };
 
   const handleChangePassword = async () => {
