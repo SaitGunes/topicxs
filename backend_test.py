@@ -10,7 +10,7 @@ import time
 from datetime import datetime
 
 # Configuration
-BASE_URL = "https://trucknet-hub-1.preview.emergentagent.com/api"
+BASE_URL = "https://drivesocial-1.preview.emergentagent.com/api"
 TEST_CREDENTIALS = {
     "username": "admin",
     "password": "admin123"
