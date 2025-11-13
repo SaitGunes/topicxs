@@ -953,15 +953,15 @@ async def create_chat(
             "last_message_time": None
         }
     else:
-        # Group chat with full ChatCreate
+        # Group chat
         chat_id = str(datetime.utcnow().timestamp()).replace(".", "")
-        members = list(set([current_user.id] + chat_data.members))
+        all_members = list(set([current_user.id] + members))
         
         chat_dict = {
             "id": chat_id,
-            "name": chat_data.name,
-            "is_group": chat_data.is_group,
-            "members": members,
+            "name": name or "Group Chat",
+            "is_group": is_group,
+            "members": all_members,
             "created_at": datetime.utcnow(),
             "last_message": None,
             "last_message_time": None
