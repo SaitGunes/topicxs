@@ -106,35 +106,7 @@ export default function FriendsScreen() {
 
   // renderUser function removed - using inline JSX instead
 
-  const renderRequest = ({ item }: { item: FriendRequest }) => (
-    <View style={styles.requestItem}>
-      {item.from_user_picture ? (
-        <Image source={{ uri: item.from_user_picture }} style={styles.avatar} />
-      ) : (
-        <View style={[styles.avatar, styles.avatarPlaceholder]}>
-          <Ionicons name="person" size={24} color="#999" />
-        </View>
-      )}
-      <View style={styles.requestInfo}>
-        <Text style={styles.userName}>@{item.from_username}</Text>
-        {item.message && <Text style={styles.requestMessage}>{item.message}</Text>}
-      </View>
-      <View style={styles.requestActions}>
-        <TouchableOpacity 
-          style={styles.acceptButton}
-          onPress={() => handleRequest(item.id, 'accept')}
-        >
-          <Ionicons name="checkmark" size={20} color="#fff" />
-        </TouchableOpacity>
-        <TouchableOpacity 
-          style={styles.rejectButton}
-          onPress={() => handleRequest(item.id, 'reject')}
-        >
-          <Ionicons name="close" size={20} color="#fff" />
-        </TouchableOpacity>
-      </View>
-    </View>
-  );
+  // renderRequest function removed - using inline JSX instead
 
   const handleMessage = async (friendId: string) => {
     try {
