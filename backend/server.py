@@ -56,6 +56,8 @@ class UserRegister(BaseModel):
     bio: Optional[str] = ""
     profile_picture: Optional[str] = None
     referral_code: Optional[str] = None
+    user_type: str = "driver"  # "professional_driver", "driver", "non_driver"
+    phone_number: Optional[str] = None
 
 class UserLogin(BaseModel):
     username: str
