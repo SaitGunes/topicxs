@@ -48,7 +48,10 @@ export async function registerForPushNotificationsAsync(): Promise<string | null
       token = tokenData.data;
       console.log('Push token:', token);
     } catch (error) {
-      console.error('Error getting push token:', error);
+      // Silent fail - push notifications don't work in Expo Go
+      // They will work in production build
+      console.log('Push notifications not available (Expo Go limitation)');
+      return null;
     }
   } else {
     console.log('Must use physical device for Push Notifications');
