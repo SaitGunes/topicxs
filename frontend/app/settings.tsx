@@ -765,6 +765,20 @@ const styles = StyleSheet.create({
     color: '#999',
     marginTop: 4,
   },
+  phoneSection: {
+    marginTop: 16,
+  },
+  phoneHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 8,
+  },
+  removePhoneButton: {
+    fontSize: 14,
+    color: '#FF3B30',
+    fontWeight: '600',
+  },
   centeredModal: {
     flex: 1,
     justifyContent: 'center',
