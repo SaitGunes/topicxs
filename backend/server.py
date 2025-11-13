@@ -919,9 +919,11 @@ async def get_comments(post_id: str, current_user: User = Depends(get_current_us
 
 @api_router.post("/chats", response_model=Chat)
 async def create_chat(
+    current_user: User = Depends(get_current_user),
     user_id: str = None,
-    chat_data: ChatCreate = None,
-    current_user: User = Depends(get_current_user)
+    name: str = None,
+    is_group: bool = False,
+    members: List[str] = []
 ):
     # Support both simple user_id (for 1-1 chat) and full ChatCreate (for groups)
     if user_id:
