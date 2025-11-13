@@ -16,6 +16,16 @@ interface User {
   referral_count?: number;
   friend_ids?: string[];
   is_admin?: boolean;
+  user_type?: 'professional_driver' | 'driver' | 'non_driver';
+  email_verified?: boolean;
+  phone_number?: string | null;
+  star_level?: {
+    stars: number;
+    level_name: string;
+    total_referrals: number;
+    next_star_at: number | null;
+    remaining_referrals: number;
+  };
   created_at: string;
 }
 
