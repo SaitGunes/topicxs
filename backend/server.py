@@ -397,6 +397,9 @@ async def register(user_data: UserRegister):
     while await db.users.find_one({"referral_code": referral_code}):
         referral_code = generate_referral_code()
     
+    # Generate email verification code
+    verification_code = generate_verification_code()
+    
     user_dict = {
         "id": user_id,
         "username": user_data.username,
@@ -410,10 +413,17 @@ async def register(user_data: UserRegister):
         "referral_count": 0,
         "friend_ids": [],
         "is_admin": False,
+        "user_type": user_data.user_type,
+        "phone_number": user_data.phone_number,
+        "email_verified": False,
+        "email_verification_code": verification_code,
         "created_at": datetime.utcnow()
     }
     
     await db.users.insert_one(user_dict)
+    
+    # Send verification email
+    await send_verification_email(user_data.email, verification_code, user_data.username)
     
     # Update referrer's count if there was a valid referral
     if referrer_id:
@@ -424,10 +434,6 @@ async def register(user_data: UserRegister):
     
     # Create token
     access_token = create_access_token(data={"sub": user_id})
-    
-    user_response = User(**{k: v for k, v in user_dict.items() if k != 'password'})
-    
-    return Token(access_token=access_token, token_type="bearer", user=user_response)
     
     user_response = User(**{k: v for k, v in user_dict.items() if k != 'password'})
     
