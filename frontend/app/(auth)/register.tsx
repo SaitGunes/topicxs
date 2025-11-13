@@ -158,15 +158,49 @@ export default function RegisterScreen() {
             />
           </View>
 
-          {/* Driver Confirmation Checkbox */}
+          <View style={styles.inputContainer}>
+            <Ionicons name="call-outline" size={20} color="#666" style={styles.inputIcon} />
+            <TextInput
+              style={styles.input}
+              placeholder={t('phoneNumberOptional')}
+              value={phoneNumber}
+              onChangeText={setPhoneNumber}
+              keyboardType="phone-pad"
+              placeholderTextColor="#999"
+            />
+          </View>
+
+          {/* User Type Selection */}
+          <Text style={styles.sectionLabel}>{t('selectUserType')}</Text>
+          
           <TouchableOpacity 
-            style={styles.checkboxContainer}
-            onPress={() => setConfirmDriver(!confirmDriver)}
+            style={styles.radioContainer}
+            onPress={() => setUserType('professional_driver')}
           >
-            <View style={[styles.checkbox, confirmDriver && styles.checkboxChecked]}>
-              {confirmDriver && <Ionicons name="checkmark" size={18} color="#fff" />}
+            <View style={[styles.radio, userType === 'professional_driver' && styles.radioSelected]}>
+              {userType === 'professional_driver' && <View style={styles.radioDot} />}
             </View>
-            <Text style={styles.checkboxLabel}>{t('confirmDriver')}</Text>
+            <Text style={styles.radioLabel}>{t('professionalDriver')}</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity 
+            style={styles.radioContainer}
+            onPress={() => setUserType('driver')}
+          >
+            <View style={[styles.radio, userType === 'driver' && styles.radioSelected]}>
+              {userType === 'driver' && <View style={styles.radioDot} />}
+            </View>
+            <Text style={styles.radioLabel}>{t('regularDriver')}</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity 
+            style={styles.radioContainer}
+            onPress={() => setUserType('non_driver')}
+          >
+            <View style={[styles.radio, userType === 'non_driver' && styles.radioSelected]}>
+              {userType === 'non_driver' && <View style={styles.radioDot} />}
+            </View>
+            <Text style={styles.radioLabel}>{t('nonDriver')}</Text>
           </TouchableOpacity>
 
           {/* 18+ Age Confirmation Checkbox */}
