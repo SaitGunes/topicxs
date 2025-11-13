@@ -79,6 +79,13 @@ export const translations = {
     verificationCodeResent: 'Verification code sent!',
     resendFailed: 'Failed to resend code',
     skip: 'Skip',
+    phoneNumber: 'Phone Number',
+    phoneNumberHelper: 'Your phone number is optional and can be removed anytime',
+    confirmRemovePhone: 'Are you sure you want to remove your phone number?',
+    phoneRemoved: 'Phone number removed successfully',
+    failedRemovePhone: 'Failed to remove phone number',
+    confirm: 'Confirm',
+    remove: 'Remove',
     
     // Tabs
     home: 'Home',
