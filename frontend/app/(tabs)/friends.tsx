@@ -351,17 +351,18 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     borderBottomWidth: 1,
     borderBottomColor: '#e0e0e0',
+    paddingTop: 48,
   },
   headerTitle: {
     fontSize: 24,
     fontWeight: 'bold',
     color: '#000',
   },
-  content: {
+  scrollView: {
     flex: 1,
   },
-  flatList: {
-    flex: 1,
+  scrollContent: {
+    paddingBottom: 100,
   },
   searchSection: {
     backgroundColor: '#fff',
