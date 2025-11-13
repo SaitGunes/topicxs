@@ -82,25 +82,34 @@ export default function ChatRoomScreen() {
     const socketUrl = API_URL?.replace('/api', '') || 'http://localhost:8001';
     console.log('Connecting to Socket.IO:', socketUrl);
     
-    socketRef.current = io(socketUrl, {
-      transports: ['websocket', 'polling'],
-      reconnection: true,
-    });
+    try {
+      socketRef.current = io(socketUrl, {
+        transports: ['polling', 'websocket'], // Try polling first
+        reconnection: true,
+        reconnectionDelay: 1000,
+        reconnectionAttempts: 3,
+        timeout: 10000,
+      });
 
-    socketRef.current.on('connect', () => {
-      console.log('Socket.IO connected!');
-      if (user) {
-        socketRef.current?.emit('join_chatroom', {
-          user_id: user.id,
-          username: user.username,
-        });
-        console.log('Joined chatroom');
-      }
-    });
+      socketRef.current.on('connect', () => {
+        console.log('Socket.IO connected!');
+        if (user) {
+          socketRef.current?.emit('join_chatroom', {
+            user_id: user.id,
+            username: user.username,
+          });
+          console.log('Joined chatroom');
+        }
+      });
 
-    socketRef.current.on('connect_error', (error) => {
-      console.error('Socket connection error:', error);
-    });
+      socketRef.current.on('connect_error', (error) => {
+        console.error('Socket connection error (will work without real-time):', error.message);
+        // Don't block the app, continue with polling
+      });
+    } catch (error) {
+      console.error('Failed to initialize Socket.IO:', error);
+      // Continue without real-time updates
+    }
 
     socketRef.current.on('new_chatroom_message', (message: ChatMessage) => {
       console.log('New message received via Socket.IO:', message);
