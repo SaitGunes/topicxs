@@ -416,6 +416,9 @@ const styles = StyleSheet.create({
   content: {
     flex: 1,
   },
+  flatList: {
+    flex: 1,
+  },
   searchSection: {
     backgroundColor: '#fff',
     padding: 16,
