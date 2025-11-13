@@ -14,6 +14,9 @@ interface User {
   bio: string;
   profile_picture: string | null;
   created_at: string;
+  user_type?: 'professional_driver' | 'driver' | 'non_driver';
+  email_verified?: boolean;
+  phone_number?: string | null;
   star_level?: {
     stars: number;
     level_name: string;
