@@ -530,6 +530,9 @@ async def update_profile(user_update: UserUpdate, current_user: User = Depends(g
     if user_update.profile_picture is not None:
         update_data["profile_picture"] = user_update.profile_picture
     
+    if user_update.phone_number is not None:
+        update_data["phone_number"] = user_update.phone_number if user_update.phone_number.strip() else None
+    
     if update_data:
         await db.users.update_one(
             {"id": current_user.id},
