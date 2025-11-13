@@ -98,6 +98,7 @@ class UserUpdate(BaseModel):
     full_name: Optional[str] = None
     bio: Optional[str] = None
     profile_picture: Optional[str] = None
+    phone_number: Optional[str] = None
 
 class PasswordChange(BaseModel):
     current_password: str
