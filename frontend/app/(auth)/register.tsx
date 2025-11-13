@@ -56,9 +56,22 @@ export default function RegisterScreen() {
     setShowTerms(false);
     setLoading(true);
     try {
-      await register(username, email, password, fullName, referralCode.trim() || undefined);
+      await register(
+        username, 
+        email, 
+        password, 
+        fullName, 
+        referralCode.trim() || undefined,
+        userType,
+        phoneNumber.trim() || undefined
+      );
       await AsyncStorage.setItem('termsAccepted', 'true');
-      router.replace('/(tabs)/home');
+      // Show email verification alert
+      Alert.alert(
+        t('success'),
+        t('accountCreatedVerifyEmail'),
+        [{ text: t('ok'), onPress: () => router.replace('/(tabs)/home') }]
+      );
     } catch (error: any) {
       Alert.alert(t('error'), error.message);
     } finally {
