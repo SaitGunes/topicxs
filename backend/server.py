@@ -917,14 +917,24 @@ async def get_comments(post_id: str, current_user: User = Depends(get_current_us
 
 # ==================== CHAT ROUTES ====================
 
+from typing import Optional
+from pydantic import BaseModel
+
+class ChatCreateSimple(BaseModel):
+    user_id: Optional[str] = None
+    name: Optional[str] = None
+    is_group: bool = False
+    members: List[str] = []
+
 @api_router.post("/chats", response_model=Chat)
 async def create_chat(
-    current_user: User = Depends(get_current_user),
-    user_id: str = None,
-    name: str = None,
-    is_group: bool = False,
-    members: List[str] = []
+    chat_request: ChatCreateSimple,
+    current_user: User = Depends(get_current_user)
 ):
+    user_id = chat_request.user_id
+    name = chat_request.name
+    is_group = chat_request.is_group
+    members = chat_request.members
     # Support both simple user_id (for 1-1 chat) and full ChatCreate (for groups)
     if user_id:
         # Simple 1-1 chat
