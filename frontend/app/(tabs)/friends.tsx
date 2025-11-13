@@ -222,8 +222,26 @@ export default function FriendsScreen() {
           </View>
           {searchResults.length > 0 && (
             <View style={styles.searchResultsContainer}>
-              {searchResults.map((item) => (
-                <View key={item.id}>{renderUser({ item })}</View>
+              {searchResults.map((user) => (
+                <View key={user.id} style={styles.userItem}>
+                  {user.profile_picture ? (
+                    <Image source={{ uri: user.profile_picture }} style={styles.avatar} />
+                  ) : (
+                    <View style={[styles.avatar, styles.avatarPlaceholder]}>
+                      <Ionicons name="person" size={24} color="#999" />
+                    </View>
+                  )}
+                  <View style={styles.userInfo}>
+                    <Text style={styles.userName}>{user.full_name}</Text>
+                    <Text style={styles.username}>@{user.username}</Text>
+                  </View>
+                  <TouchableOpacity 
+                    style={styles.addButton}
+                    onPress={() => sendFriendRequest(user.id)}
+                  >
+                    <Ionicons name="person-add" size={20} color="#fff" />
+                  </TouchableOpacity>
+                </View>
               ))}
             </View>
           )}
