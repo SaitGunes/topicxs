@@ -256,8 +256,34 @@ export default function FriendsScreen() {
                 <Text style={styles.badgeText}>{friendRequests.length}</Text>
               </View>
             </View>
-            {friendRequests.map((item) => (
-              <View key={item.id}>{renderRequest({ item })}</View>
+            {friendRequests.map((request) => (
+              <View key={request.id} style={styles.requestItem}>
+                {request.from_user_picture ? (
+                  <Image source={{ uri: request.from_user_picture }} style={styles.avatar} />
+                ) : (
+                  <View style={[styles.avatar, styles.avatarPlaceholder]}>
+                    <Ionicons name="person" size={24} color="#999" />
+                  </View>
+                )}
+                <View style={styles.requestInfo}>
+                  <Text style={styles.userName}>@{request.from_username}</Text>
+                  {request.message && <Text style={styles.requestMessage}>{request.message}</Text>}
+                </View>
+                <View style={styles.requestActions}>
+                  <TouchableOpacity 
+                    style={styles.acceptButton}
+                    onPress={() => handleRequest(request.id, 'accept')}
+                  >
+                    <Ionicons name="checkmark" size={20} color="#fff" />
+                  </TouchableOpacity>
+                  <TouchableOpacity 
+                    style={styles.rejectButton}
+                    onPress={() => handleRequest(request.id, 'reject')}
+                  >
+                    <Ionicons name="close" size={20} color="#fff" />
+                  </TouchableOpacity>
+                </View>
+              </View>
             ))}
           </View>
         )}
