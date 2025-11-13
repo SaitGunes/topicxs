@@ -42,11 +42,6 @@ export default function RegisterScreen() {
       return;
     }
 
-    if (!confirmDriver) {
-      Alert.alert(t('error'), t('mustConfirmDriver'));
-      return;
-    }
-
     if (!confirm18Plus) {
       Alert.alert(t('error'), t('mustConfirm18Plus'));
       return;
