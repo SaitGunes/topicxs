@@ -61,6 +61,12 @@ export const translations = {
     mustConfirmDriver: 'Please confirm that you work as a professional driver',
     confirm18Plus: 'I confirm I am 18 years old or older',
     mustConfirm18Plus: 'You must be 18 years or older to use this app',
+    phoneNumberOptional: 'Phone Number (Optional)',
+    selectUserType: 'Select User Type',
+    professionalDriver: 'I am a professional driver (earn money driving)',
+    regularDriver: 'I am a driver',
+    nonDriver: 'I am not a driver',
+    accountCreatedVerifyEmail: 'Account created! Check your email for verification code.',
     
     // Tabs
     home: 'Home',
