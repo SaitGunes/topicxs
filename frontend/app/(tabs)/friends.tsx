@@ -361,6 +361,12 @@ const styles = StyleSheet.create({
     marginTop: 12,
     maxHeight: 200,
   },
+  searchResultsContainer: {
+    marginTop: 12,
+  },
+  listContent: {
+    paddingBottom: 20,
+  },
   section: {
     backgroundColor: '#fff',
     marginBottom: 8,
