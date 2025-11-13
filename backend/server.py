@@ -918,21 +918,52 @@ async def get_comments(post_id: str, current_user: User = Depends(get_current_us
 # ==================== CHAT ROUTES ====================
 
 @api_router.post("/chats", response_model=Chat)
-async def create_chat(chat_data: ChatCreate, current_user: User = Depends(get_current_user)):
-    chat_id = str(datetime.utcnow().timestamp()).replace(".", "")
-    
-    # Add current user to members if not already
-    members = list(set([current_user.id] + chat_data.members))
-    
-    chat_dict = {
-        "id": chat_id,
-        "name": chat_data.name,
-        "is_group": chat_data.is_group,
-        "members": members,
-        "created_at": datetime.utcnow(),
-        "last_message": None,
-        "last_message_time": None
-    }
+async def create_chat(
+    user_id: str = None,
+    chat_data: ChatCreate = None,
+    current_user: User = Depends(get_current_user)
+):
+    # Support both simple user_id (for 1-1 chat) and full ChatCreate (for groups)
+    if user_id:
+        # Simple 1-1 chat
+        # Check if chat already exists
+        existing_chat = await db.chats.find_one({
+            "is_group": False,
+            "members": {"$all": [current_user.id, user_id]}
+        })
+        
+        if existing_chat:
+            return Chat(**existing_chat)
+        
+        # Create new 1-1 chat
+        other_user = await db.users.find_one({"id": user_id})
+        if not other_user:
+            raise HTTPException(status_code=404, detail="User not found")
+        
+        chat_id = str(datetime.utcnow().timestamp()).replace(".", "")
+        chat_dict = {
+            "id": chat_id,
+            "name": other_user["full_name"],
+            "is_group": False,
+            "members": [current_user.id, user_id],
+            "created_at": datetime.utcnow(),
+            "last_message": None,
+            "last_message_time": None
+        }
+    else:
+        # Group chat with full ChatCreate
+        chat_id = str(datetime.utcnow().timestamp()).replace(".", "")
+        members = list(set([current_user.id] + chat_data.members))
+        
+        chat_dict = {
+            "id": chat_id,
+            "name": chat_data.name,
+            "is_group": chat_data.is_group,
+            "members": members,
+            "created_at": datetime.utcnow(),
+            "last_message": None,
+            "last_message_time": None
+        }
     
     await db.chats.insert_one(chat_dict)
     return Chat(**chat_dict)
