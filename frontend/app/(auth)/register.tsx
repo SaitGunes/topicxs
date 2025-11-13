@@ -1,16 +1,16 @@
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, KeyboardAvoidingView, Platform, ScrollView, Alert } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert, ScrollView } from 'react-native';
 import { useState, useEffect } from 'react';
 import { useRouter, useLocalSearchParams } from 'expo-router';
+import { Ionicons } from '@expo/vector-icons';
 import { useAuthStore } from '../../store/authStore';
 import { useTranslation } from '../../store/languageStore';
-import { Ionicons } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import TermsModal from '../../components/TermsModal';
 
 export default function RegisterScreen() {
   const router = useRouter();
   const params = useLocalSearchParams();
-  const register = useAuthStore((state) => state.register);
+  const { register } = useAuthStore();
   const { t } = useTranslation();
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
@@ -24,7 +24,6 @@ export default function RegisterScreen() {
   const [confirm18Plus, setConfirm18Plus] = useState(false);
   const [phoneNumber, setPhoneNumber] = useState('');
 
-  // Auto-fill referral code from deep link
   useEffect(() => {
     if (params.ref && typeof params.ref === 'string') {
       setReferralCode(params.ref.toUpperCase());
@@ -47,7 +46,6 @@ export default function RegisterScreen() {
       return;
     }
 
-    // Show terms modal before registration
     setPendingRegistration(true);
     setShowTerms(true);
   };
@@ -66,7 +64,6 @@ export default function RegisterScreen() {
         phoneNumber.trim() || undefined
       );
       await AsyncStorage.setItem('termsAccepted', 'true');
-      // Show email verification alert
       Alert.alert(
         t('success'),
         t('accountCreatedVerifyEmail'),
@@ -80,24 +77,36 @@ export default function RegisterScreen() {
     }
   };
 
+  const handleTermsDecline = () => {
+    setShowTerms(false);
+    setPendingRegistration(false);
+  };
+
   return (
-    <KeyboardAvoidingView 
-      style={styles.container}
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-    >
-      <ScrollView contentContainerStyle={styles.scrollContent}>
-        <View style={styles.header}>
-          <TouchableOpacity 
-            style={styles.backButton}
-            onPress={() => router.back()}
-          >
-            <Ionicons name="arrow-back" size={24} color="#007AFF" />
-          </TouchableOpacity>
-          <Text style={styles.title}>{t('register')}</Text>
-          <Text style={styles.subtitle}>{t('joinDriverCommunity')}</Text>
-        </View>
+    <ScrollView style={styles.container} contentContainerStyle={styles.scrollContent}>
+      <View style={styles.header}>
+        <TouchableOpacity onPress={() => router.back()} style={styles.backButton}>
+          <Ionicons name="arrow-back" size={24} color="#000" />
+        </TouchableOpacity>
+      </View>
+
+      <View style={styles.content}>
+        <Text style={styles.title}>{t('createAccount')}</Text>
+        <Text style={styles.subtitle}>{t('joinCommunity')}</Text>
 
         <View style={styles.form}>
+          <View style={styles.inputContainer}>
+            <Ionicons name="person-outline" size={20} color="#666" style={styles.inputIcon} />
+            <TextInput
+              style={styles.input}
+              placeholder={t('username')}
+              value={username}
+              onChangeText={setUsername}
+              autoCapitalize="none"
+              placeholderTextColor="#999"
+            />
+          </View>
+
           <View style={styles.inputContainer}>
             <Ionicons name="person-outline" size={20} color="#666" style={styles.inputIcon} />
             <TextInput
@@ -105,18 +114,6 @@ export default function RegisterScreen() {
               placeholder={t('fullName')}
               value={fullName}
               onChangeText={setFullName}
-              placeholderTextColor="#999"
-            />
-          </View>
-
-          <View style={styles.inputContainer}>
-            <Ionicons name="at-outline" size={20} color="#666" style={styles.inputIcon} />
-            <TextInput
-              style={styles.input}
-              placeholder={t('username')}
-              value={username}
-              onChangeText={setUsername}
-              autoCapitalize="none"
               placeholderTextColor="#999"
             />
           </View>
@@ -170,7 +167,6 @@ export default function RegisterScreen() {
             />
           </View>
 
-          {/* User Type Selection */}
           <Text style={styles.sectionLabel}>{t('selectUserType')}</Text>
           
           <TouchableOpacity 
@@ -203,7 +199,6 @@ export default function RegisterScreen() {
             <Text style={styles.radioLabel}>{t('nonDriver')}</Text>
           </TouchableOpacity>
 
-          {/* 18+ Age Confirmation Checkbox */}
           <TouchableOpacity 
             style={styles.checkboxContainer}
             onPress={() => setConfirm18Plus(!confirm18Plus)}
@@ -214,33 +209,30 @@ export default function RegisterScreen() {
             <Text style={styles.checkboxLabel}>{t('confirm18Plus')}</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity 
-            style={[styles.button, loading && styles.buttonDisabled]}
+          <TouchableOpacity
+            style={[styles.registerButton, loading && styles.registerButtonDisabled]}
             onPress={handleRegister}
             disabled={loading}
           >
-            <Text style={styles.buttonText}>
-              {loading ? t('creatingAccount') : t('register')}
+            <Text style={styles.registerButtonText}>
+              {loading ? t('loading') : t('register')}
             </Text>
           </TouchableOpacity>
 
-          <TouchableOpacity 
-            style={styles.linkButton}
-            onPress={() => router.back()}
-          >
-            <Text style={styles.linkText}>{t('alreadyHaveAccount')}</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity 
-            style={[styles.linkButton, { marginTop: 8 }]}
-            onPress={() => router.push('/about')}
-          >
-            <Text style={[styles.linkText, { color: '#666' }]}>{t('aboutApp')}</Text>
+          <TouchableOpacity onPress={() => router.back()} style={styles.loginLink}>
+            <Text style={styles.loginLinkText}>
+              {t('alreadyHaveAccount')} <Text style={styles.loginLinkBold}>{t('loginHere')}</Text>
+            </Text>
           </TouchableOpacity>
         </View>
-      </ScrollView>
-      <TermsModal visible={showTerms} onAccept={handleTermsAccept} />
-    </KeyboardAvoidingView>
+      </View>
+
+      <TermsModal
+        visible={showTerms}
+        onAccept={handleTermsAccept}
+        onDecline={handleTermsDecline}
+      />
+    </ScrollView>
   );
 }
 
@@ -251,48 +243,111 @@ const styles = StyleSheet.create({
   },
   scrollContent: {
     flexGrow: 1,
-    padding: 24,
-    paddingTop: 48,
   },
   header: {
-    marginBottom: 32,
+    paddingHorizontal: 16,
+    paddingTop: 48,
+    paddingBottom: 16,
   },
   backButton: {
-    marginBottom: 16,
+    width: 40,
+    height: 40,
+    justifyContent: 'center',
+  },
+  content: {
+    flex: 1,
+    paddingHorizontal: 24,
   },
   title: {
-    fontSize: 32,
+    fontSize: 28,
     fontWeight: 'bold',
+    marginBottom: 8,
     color: '#000',
   },
   subtitle: {
     fontSize: 16,
     color: '#666',
-    marginTop: 8,
+    marginBottom: 32,
   },
   form: {
-    width: '100%',
+    gap: 16,
   },
   inputContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: '#f5f5f5',
     borderRadius: 12,
-    marginBottom: 16,
     paddingHorizontal: 16,
-    borderWidth: 1,
-    borderColor: '#e0e0e0',
+    height: 56,
   },
   inputIcon: {
     marginRight: 12,
   },
   input: {
     flex: 1,
-    height: 56,
     fontSize: 16,
     color: '#000',
   },
-  button: {
+  sectionLabel: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: '#000',
+    marginTop: 8,
+    marginBottom: 4,
+  },
+  radioContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: 12,
+  },
+  radio: {
+    width: 24,
+    height: 24,
+    borderRadius: 12,
+    borderWidth: 2,
+    borderColor: '#ccc',
+    marginRight: 12,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  radioSelected: {
+    borderColor: '#007AFF',
+  },
+  radioDot: {
+    width: 12,
+    height: 12,
+    borderRadius: 6,
+    backgroundColor: '#007AFF',
+  },
+  radioLabel: {
+    fontSize: 15,
+    color: '#000',
+  },
+  checkboxContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: 12,
+  },
+  checkbox: {
+    width: 24,
+    height: 24,
+    borderRadius: 6,
+    borderWidth: 2,
+    borderColor: '#ccc',
+    marginRight: 12,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  checkboxChecked: {
+    backgroundColor: '#007AFF',
+    borderColor: '#007AFF',
+  },
+  checkboxLabel: {
+    flex: 1,
+    fontSize: 14,
+    color: '#000',
+  },
+  registerButton: {
     backgroundColor: '#007AFF',
     borderRadius: 12,
     height: 56,
@@ -300,44 +355,24 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginTop: 8,
   },
-  buttonDisabled: {
-    opacity: 0.6,
+  registerButtonDisabled: {
+    backgroundColor: '#ccc',
   },
-  buttonText: {
+  registerButtonText: {
     color: '#fff',
     fontSize: 18,
     fontWeight: '600',
   },
-  linkButton: {
-    marginTop: 24,
+  loginLink: {
     alignItems: 'center',
+    paddingVertical: 16,
   },
-  linkText: {
-    color: '#007AFF',
-    fontSize: 16,
-  },
-  checkboxContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 20,
-    paddingHorizontal: 4,
-  },
-  checkbox: {
-    width: 24,
-    height: 24,
-    borderRadius: 6,
-    borderWidth: 2,
-    borderColor: '#007AFF',
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginRight: 12,
-  },
-  checkboxChecked: {
-    backgroundColor: '#007AFF',
-  },
-  checkboxLabel: {
+  loginLinkText: {
     fontSize: 14,
-    color: '#333',
-    flex: 1,
+    color: '#666',
+  },
+  loginLinkBold: {
+    color: '#007AFF',
+    fontWeight: '600',
   },
 });
