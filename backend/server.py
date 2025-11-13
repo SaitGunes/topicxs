@@ -654,7 +654,7 @@ async def register_push_token(
     """Register or update user's push notification token"""
     await db.users.update_one(
         {"id": current_user.id},
-        {"$set": {"push_token": token_data.push_token}}
+        {"$set": {"push_token": token_data.token}}
     )
     return {"message": "Push token registered successfully"}
 
