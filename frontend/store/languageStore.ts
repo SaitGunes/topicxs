@@ -67,6 +67,18 @@ export const translations = {
     regularDriver: 'I am a driver',
     nonDriver: 'I am not a driver',
     accountCreatedVerifyEmail: 'Account created! Check your email for verification code.',
+    verifyYourEmail: 'Verify Your Email',
+    verificationCodeSentTo: 'We sent a 6-digit code to',
+    enterVerificationCode: 'Enter Verification Code',
+    verify: 'Verify',
+    resendCode: 'Resend Code',
+    checkSpamFolder: 'Check your spam folder if you don\'t see the email',
+    enterValidCode: 'Please enter a valid 6-digit code',
+    emailVerifiedSuccess: 'Email verified successfully!',
+    verificationFailed: 'Verification failed',
+    verificationCodeResent: 'Verification code sent!',
+    resendFailed: 'Failed to resend code',
+    skip: 'Skip',
     
     // Tabs
     home: 'Home',
