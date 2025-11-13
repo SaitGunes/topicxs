@@ -412,14 +412,13 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     borderBottomWidth: 1,
     borderBottomColor: '#e0e0e0',
-    paddingTop: 48,
   },
   headerTitle: {
     fontSize: 24,
     fontWeight: 'bold',
     color: '#000',
   },
-  scrollView: {
+  content: {
     flex: 1,
   },
   searchSection: {
