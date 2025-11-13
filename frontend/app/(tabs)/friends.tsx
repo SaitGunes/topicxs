@@ -380,24 +380,19 @@ export default function FriendsScreen() {
   };
 
   return (
-    <SafeAreaView style={styles.container} edges={['top']}>
+    <SafeAreaView style={styles.container} edges={['top', 'bottom']}>
       <View style={styles.header}>
         <Text style={styles.headerTitle}>{t('friendsTitle')}</Text>
       </View>
 
-      <KeyboardAvoidingView 
-        style={styles.content} 
-        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        keyboardVerticalOffset={90}
-      >
-        <FlatList
-          data={getListData()}
-          renderItem={renderItem}
-          keyExtractor={(item, index) => `${item.type}-${index}`}
-          contentContainerStyle={styles.listContent}
-          showsVerticalScrollIndicator={false}
-        />
-      </KeyboardAvoidingView>
+      <FlatList
+        data={getListData()}
+        renderItem={renderItem}
+        keyExtractor={(item, index) => `${item.type}-${index}`}
+        contentContainerStyle={styles.listContent}
+        showsVerticalScrollIndicator={false}
+        style={styles.flatList}
+      />
     </SafeAreaView>
   );
 }
