@@ -1956,9 +1956,6 @@ async def get_group_messages(
     
     return messages
 
-class GroupMessageCreate(BaseModel):
-    content: str
-
 @api_router.post("/groups/{group_id}/messages")
 async def send_group_message(
     group_id: str,
