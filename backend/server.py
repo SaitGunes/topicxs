@@ -603,7 +603,8 @@ async def register(request: Request, user_data: UserRegister):
     return Token(access_token=access_token, token_type="bearer", user=user_response)
 
 @api_router.post("/auth/login", response_model=Token)
-async def login(user_data: UserLogin):
+@limiter.limit("10/minute")  # Max 10 login attempts per minute per IP (brute force protection)
+async def login(request: Request, user_data: UserLogin):
     user = await db.users.find_one({"username": user_data.username})
     if not user or not verify_password(user_data.password, user["password"]):
         raise HTTPException(status_code=401, detail="Invalid credentials")
