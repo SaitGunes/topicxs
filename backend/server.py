@@ -548,13 +548,21 @@ async def register(request: Request, user_data: UserRegister):
     # Generate email verification code
     verification_code = generate_verification_code()
     
+    # Sanitize text inputs
+    full_name = sanitize_text(user_data.full_name, max_length=100)
+    bio = sanitize_text(user_data.bio if user_data.bio else "", max_length=500)
+    
+    # Validate profile picture if provided
+    if user_data.profile_picture and not validate_image_data(user_data.profile_picture):
+        raise HTTPException(status_code=400, detail="Invalid profile picture format or size")
+    
     user_dict = {
         "id": user_id,
         "username": user_data.username,
         "email": user_data.email,
         "password": hashed_password,
-        "full_name": user_data.full_name,
-        "bio": user_data.bio,
+        "full_name": full_name,
+        "bio": bio,
         "profile_picture": user_data.profile_picture,
         "referral_code": referral_code,
         "invited_by": referrer_id,
