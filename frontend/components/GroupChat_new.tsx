@@ -189,7 +189,7 @@ export default function GroupChat({ groupId }: GroupChatProps) {
         style: 'destructive',
         onPress: async () => {
           try {
-            await axios.delete(`${API_URL}/api/chatroom/messages/${messageId}`, {
+            await axios.delete(`${API_URL}/api/groups/${groupId}/messages/${messageId}`, {
               headers: { Authorization: `Bearer ${token}` },
             });
           } catch (error: any) {
