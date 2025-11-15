@@ -682,6 +682,8 @@ export default function GroupDetailScreen() {
           </View>
         </ScrollView>
       )}
+        </>
+      )}
 
       <Modal visible={createPostModal} transparent animationType="slide">
         <KeyboardAvoidingView
