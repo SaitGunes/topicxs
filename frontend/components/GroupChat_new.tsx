@@ -33,6 +33,7 @@ export default function GroupChat({ groupId }: GroupChatProps) {
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [sending, setSending] = useState(false);
+  const [chatEnabled, setChatEnabled] = useState(true);
   
   const socketRef = useRef<Socket | null>(null);
   const flatListRef = useRef<FlatList>(null);
