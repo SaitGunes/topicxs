@@ -353,24 +353,41 @@ export default function GroupChat({ groupId }: GroupChatProps) {
           }
         />
 
-        <View style={styles.inputContainer}>
-          <TextInput
-            style={[styles.input, !chatEnabled && styles.inputDisabled]}
-            placeholder={chatEnabled ? t('typeMessage') : t('chatDisabled')}
-            value={newMessage}
-            onChangeText={setNewMessage}
-            multiline
-            maxLength={500}
-            editable={chatEnabled}
+        {showVoiceRecorder ? (
+          <VoiceRecorder
+            onSend={handleSendVoiceMessage}
+            onCancel={() => setShowVoiceRecorder(false)}
+            maxDuration={60}
           />
-          <TouchableOpacity
-            style={[styles.sendButton, (!newMessage.trim() || sending) && styles.sendButtonDisabled]}
-            onPress={handleSendMessage}
-            disabled={!newMessage.trim() || sending}
-          >
-            {sending ? <ActivityIndicator size="small" color="#fff" /> : <Ionicons name="send" size={20} color="#fff" />}
-          </TouchableOpacity>
-        </View>
+        ) : (
+          <View style={styles.inputContainer}>
+            <TouchableOpacity
+              style={styles.voiceButton}
+              onPress={() => setShowVoiceRecorder(true)}
+              disabled={!chatEnabled}
+            >
+              <Ionicons name="mic" size={24} color={chatEnabled ? '#007AFF' : '#ccc'} />
+            </TouchableOpacity>
+            
+            <TextInput
+              style={[styles.input, !chatEnabled && styles.inputDisabled]}
+              placeholder={chatEnabled ? t('typeMessage') : t('chatDisabled')}
+              value={newMessage}
+              onChangeText={setNewMessage}
+              multiline
+              maxLength={500}
+              editable={chatEnabled}
+            />
+            
+            <TouchableOpacity
+              style={[styles.sendButton, (!newMessage.trim() || sending) && styles.sendButtonDisabled]}
+              onPress={handleSendMessage}
+              disabled={!newMessage.trim() || sending}
+            >
+              {sending ? <ActivityIndicator size="small" color="#fff" /> : <Ionicons name="send" size={20} color="#fff" />}
+            </TouchableOpacity>
+          </View>
+        )}
       </KeyboardAvoidingView>
     </SafeAreaView>
   );
