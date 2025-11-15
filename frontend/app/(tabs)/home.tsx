@@ -102,9 +102,8 @@ export default function HomeScreen() {
   const pickImage = async () => {
     const result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ['images'],
-      allowsEditing: true,
-      aspect: [4, 3],
-      quality: 0.5,
+      allowsEditing: false,  // No cropping - keep original aspect ratio
+      quality: 0.7,  // Better quality, reasonable size
       base64: true,
     });
 
