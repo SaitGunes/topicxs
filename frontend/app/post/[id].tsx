@@ -473,15 +473,45 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   commentHeader: {
+    marginBottom: 4,
+  },
+  commentNameRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 4,
+    gap: 6,
+    marginBottom: 2,
   },
   commentUsername: {
     fontSize: 14,
     fontWeight: '600',
     color: '#000',
-    marginRight: 8,
+  },
+  commentFollowBadge: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#007AFF',
+    paddingHorizontal: 6,
+    paddingVertical: 2,
+    borderRadius: 10,
+    gap: 2,
+  },
+  commentFollowText: {
+    color: '#fff',
+    fontSize: 10,
+    fontWeight: '600',
+  },
+  commentFollowingBadge: {
+    backgroundColor: '#E8F5E9',
+    paddingHorizontal: 6,
+    paddingVertical: 2,
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: '#4CAF50',
+  },
+  commentFollowingText: {
+    color: '#4CAF50',
+    fontSize: 10,
+    fontWeight: '600',
   },
   commentTime: {
     fontSize: 12,
