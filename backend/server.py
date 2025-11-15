@@ -215,7 +215,10 @@ class SharePost(BaseModel):
     comment: Optional[str] = None  # Optional comment when sharing
 
 class GroupMessageCreate(BaseModel):
-    content: str
+    content: Optional[str] = None
+    audio: Optional[str] = None  # base64 encoded audio
+    duration: Optional[int] = None  # in seconds
+    message_type: str = "text"  # "text" or "audio"
 
 class Report(BaseModel):
     id: str
