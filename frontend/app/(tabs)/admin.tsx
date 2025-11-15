@@ -633,6 +633,24 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#f5f5f5',
   },
+  unauthorizedContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 32,
+  },
+  unauthorizedTitle: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: '#FF3B30',
+    marginTop: 16,
+    marginBottom: 8,
+  },
+  unauthorizedText: {
+    fontSize: 16,
+    color: '#666',
+    textAlign: 'center',
+  },
   header: {
     backgroundColor: '#fff',
     padding: 16,
