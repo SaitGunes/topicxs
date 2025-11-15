@@ -1169,6 +1169,25 @@ async def get_friends(current_user: User = Depends(get_current_user)):
 async def create_enhanced_post(post_data: PostCreateEnhanced, current_user: User = Depends(get_current_user)):
     post_id = str(datetime.utcnow().timestamp()).replace(".", "")
     
+    # Generate content hash for duplicate detection
+    import hashlib
+    content_for_hash = f"{post_data.content}{post_data.image or ''}"
+    content_hash = hashlib.md5(content_for_hash.encode()).hexdigest()
+    
+    # Check for duplicate posts in last 24 hours
+    duplicate_check_time = datetime.utcnow() - timedelta(hours=24)
+    duplicate_post = await db.posts_enhanced.find_one({
+        "user_id": current_user.id,
+        "content_hash": content_hash,
+        "created_at": {"$gte": duplicate_check_time}
+    })
+    
+    if duplicate_post:
+        raise HTTPException(
+            status_code=400, 
+            detail="You have already posted this content in the last 24 hours"
+        )
+    
     # If posting to a group, verify membership
     if post_data.group_id:
         group = await db.groups.find_one({"id": post_data.group_id})
@@ -1190,6 +1209,9 @@ async def create_enhanced_post(post_data: PostCreateEnhanced, current_user: User
         "comments_count": 0,
         "privacy": post_data.privacy.dict(),
         "group_id": post_data.group_id,
+        "content_hash": content_hash,
+        "share_count": 0,
+        "shared_from_id": None,
         "created_at": datetime.utcnow()
     }
     
