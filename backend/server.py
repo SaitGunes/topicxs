@@ -1983,8 +1983,7 @@ async def send_group_message(
     message: GroupMessageCreate,
     current_user: User = Depends(get_current_user)
 ):
-    """Send a message to group chat"""
-    content = message.content
+    """Send a message (text or audio) to group chat"""
     # Verify user is a member
     group = await db.groups.find_one({"id": group_id})
     if not group:
@@ -1992,6 +1991,12 @@ async def send_group_message(
     
     if current_user.id not in group["member_ids"]:
         raise HTTPException(status_code=403, detail="Not a member of this group")
+    
+    # Validate message
+    if message.message_type == "text" and not message.content:
+        raise HTTPException(status_code=400, detail="Text message requires content")
+    if message.message_type == "audio" and not message.audio:
+        raise HTTPException(status_code=400, detail="Audio message requires audio data")
     
     message_id = str(int(datetime.utcnow().timestamp() * 1000))
     now = datetime.utcnow()
@@ -2003,7 +2008,10 @@ async def send_group_message(
         "username": current_user.username,
         "full_name": current_user.full_name,
         "user_profile_picture": current_user.profile_picture,
-        "content": content,
+        "content": message.content,
+        "audio": message.audio,
+        "duration": message.duration,
+        "message_type": message.message_type,
         "created_at": now
     }
     
@@ -2017,7 +2025,10 @@ async def send_group_message(
         "username": current_user.username,
         "full_name": current_user.full_name,
         "user_profile_picture": current_user.profile_picture,
-        "content": content,
+        "content": message.content,
+        "audio": message.audio,
+        "duration": message.duration,
+        "message_type": message.message_type,
         "created_at": now.isoformat()
     }
     
