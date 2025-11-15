@@ -35,6 +35,7 @@ export default function HomeScreen() {
   const [posts, setPosts] = useState<Post[]>([]);
   const [activeTab, setActiveTab] = useState<'forYou' | 'following'>('forYou');
   const [refreshing, setRefreshing] = useState(false);
+  const [followingIds, setFollowingIds] = useState<string[]>([]);
   const [createModalVisible, setCreateModalVisible] = useState(false);
   const [newPostContent, setNewPostContent] = useState('');
   const [newPostImage, setNewPostImage] = useState<string | null>(null);
