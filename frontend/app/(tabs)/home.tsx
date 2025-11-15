@@ -68,7 +68,7 @@ export default function HomeScreen() {
 
   useEffect(() => {
     loadPosts();
-  }, []);
+  }, [activeTab]);
 
   useEffect(() => {
     if (createModalVisible) {
