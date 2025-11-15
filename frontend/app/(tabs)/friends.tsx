@@ -196,12 +196,31 @@ export default function FriendsScreen() {
                     <Text style={styles.userName}>{user.full_name}</Text>
                     <Text style={styles.username}>@{user.username}</Text>
                   </View>
-                  <TouchableOpacity 
-                    style={styles.addButton}
-                    onPress={() => sendFriendRequest(user.id)}
-                  >
-                    <Ionicons name="person-add" size={20} color="#fff" />
-                  </TouchableOpacity>
+                  <View style={styles.actionButtons}>
+                    {followingIds.includes(user.id) ? (
+                      <TouchableOpacity 
+                        style={styles.followingButton}
+                        onPress={() => handleUnfollow(user.id)}
+                      >
+                        <Ionicons name="checkmark" size={16} color="#007AFF" />
+                        <Text style={styles.followingButtonText}>Following</Text>
+                      </TouchableOpacity>
+                    ) : (
+                      <TouchableOpacity 
+                        style={styles.followButton}
+                        onPress={() => handleFollow(user.id)}
+                      >
+                        <Ionicons name="person-add-outline" size={16} color="#fff" />
+                        <Text style={styles.followButtonText}>Follow</Text>
+                      </TouchableOpacity>
+                    )}
+                    <TouchableOpacity 
+                      style={styles.addButton}
+                      onPress={() => sendFriendRequest(user.id)}
+                    >
+                      <Ionicons name="person-add" size={20} color="#fff" />
+                    </TouchableOpacity>
+                  </View>
                 </View>
               ))}
             </View>
