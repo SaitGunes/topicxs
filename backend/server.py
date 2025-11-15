@@ -1907,6 +1907,110 @@ async def send_chatroom_message(
     
     return message_emit
 
+# ==================== GROUP CHAT ====================
+
+@api_router.get("/groups/{group_id}/messages")
+async def get_group_messages(
+    group_id: str,
+    current_user: User = Depends(get_current_user)
+):
+    """Get group chat messages - only for group members"""
+    # Verify user is a member
+    group = await db.groups.find_one({"id": group_id})
+    if not group:
+        raise HTTPException(status_code=404, detail="Group not found")
+    
+    if current_user.id not in group["member_ids"]:
+        raise HTTPException(status_code=403, detail="Not a member of this group")
+    
+    # Get last 200 messages
+    messages = await db.group_messages.find(
+        {"group_id": group_id},
+        {"_id": 0}
+    ).sort("created_at", -1).limit(200).to_list(200)
+    
+    messages.reverse()  # Oldest first
+    
+    # Convert datetime to ISO string
+    for msg in messages:
+        if isinstance(msg.get("created_at"), datetime):
+            msg["created_at"] = msg["created_at"].isoformat()
+    
+    return messages
+
+@api_router.post("/groups/{group_id}/messages")
+async def send_group_message(
+    group_id: str,
+    content: str,
+    current_user: User = Depends(get_current_user)
+):
+    """Send a message to group chat"""
+    # Verify user is a member
+    group = await db.groups.find_one({"id": group_id})
+    if not group:
+        raise HTTPException(status_code=404, detail="Group not found")
+    
+    if current_user.id not in group["member_ids"]:
+        raise HTTPException(status_code=403, detail="Not a member of this group")
+    
+    message_id = str(int(datetime.utcnow().timestamp() * 1000))
+    now = datetime.utcnow()
+    
+    message_db = {
+        "id": message_id,
+        "group_id": group_id,
+        "user_id": current_user.id,
+        "username": current_user.username,
+        "full_name": current_user.full_name,
+        "user_profile_picture": current_user.profile_picture,
+        "content": content,
+        "created_at": now
+    }
+    
+    await db.group_messages.insert_one(message_db)
+    
+    # Prepare message for Socket.IO (with ISO string datetime)
+    message_emit = {
+        "id": message_id,
+        "group_id": group_id,
+        "user_id": current_user.id,
+        "username": current_user.username,
+        "full_name": current_user.full_name,
+        "user_profile_picture": current_user.profile_picture,
+        "content": content,
+        "created_at": now.isoformat()
+    }
+    
+    # Emit to group room via Socket.IO
+    await sio.emit('new_group_message', message_emit, room=f'group_{group_id}')
+    
+    return message_emit
+
+@api_router.delete("/groups/{group_id}/messages/{message_id}")
+async def delete_group_message(
+    group_id: str,
+    message_id: str,
+    current_user: User = Depends(get_current_user)
+):
+    """Delete own message from group chat"""
+    message = await db.group_messages.find_one({"id": message_id, "group_id": group_id})
+    
+    if not message:
+        raise HTTPException(status_code=404, detail="Message not found")
+    
+    # Only owner or admin can delete
+    if message["user_id"] != current_user.id and not current_user.is_admin:
+        raise HTTPException(status_code=403, detail="Not authorized")
+    
+    await db.group_messages.delete_one({"id": message_id})
+    
+    # Notify via Socket.IO
+    await sio.emit('delete_group_message', {"message_id": message_id}, room=f'group_{group_id}')
+    
+    return {"message": "Message deleted"}
+
+# ==================== CHATROOM ====================
+
 @api_router.delete("/chatroom/messages/{message_id}")
 async def delete_chatroom_message(
     message_id: str,
