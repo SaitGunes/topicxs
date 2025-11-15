@@ -45,7 +45,37 @@ export default function PostDetailScreen() {
   useEffect(() => {
     loadPost();
     loadComments();
+    loadFollowing();
   }, [id]);
+
+  const loadFollowing = async () => {
+    try {
+      if (!user?.id) return;
+      const response = await api.get(`/api/users/${user.id}/following`);
+      const ids = response.data.map((u: any) => u.id);
+      setFollowingIds(ids);
+    } catch (error) {
+      console.error('Load following error:', error);
+    }
+  };
+
+  const handleFollow = async (userId: string) => {
+    try {
+      await api.post(`/api/users/${userId}/follow`);
+      setFollowingIds([...followingIds, userId]);
+    } catch (error: any) {
+      Alert.alert('Error', error.response?.data?.detail || 'Failed to follow user');
+    }
+  };
+
+  const handleUnfollow = async (userId: string) => {
+    try {
+      await api.delete(`/api/users/${userId}/follow`);
+      setFollowingIds(followingIds.filter(id => id !== userId));
+    } catch (error: any) {
+      Alert.alert('Error', error.response?.data?.detail || 'Failed to unfollow user');
+    }
+  };
 
   const loadPost = async () => {
     try {
