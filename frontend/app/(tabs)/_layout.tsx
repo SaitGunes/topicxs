@@ -87,17 +87,13 @@ export default function TabsLayout() {
           ),
         }}
       />
-      {user?.is_admin && (
-        <Tabs.Screen
-          name="admin"
-          options={{
-            title: 'Admin',
-            tabBarIcon: ({ color, size }) => (
-              <Ionicons name="shield-checkmark" size={size} color={color} />
-            ),
-          }}
-        />
-      )}
+      {/* Admin panel moved to profile page - not in navigation bar */}
+      <Tabs.Screen
+        name="admin"
+        options={{
+          href: null, // Hide from tab bar
+        }}
+      />
     </Tabs>
   );
 }
