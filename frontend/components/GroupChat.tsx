@@ -1,12 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { View, Text, StyleSheet, FlatList, TextInput, TouchableOpacity, KeyboardAvoidingView, Platform, Alert } from 'react-native';
+import { View, Text, StyleSheet, FlatList, TextInput, TouchableOpacity, KeyboardAvoidingView, Platform, ActivityIndicator, Alert, RefreshControl } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
+import axios from 'axios';
 import { io, Socket } from 'socket.io-client';
-import { formatDistanceToNow } from 'date-fns';
-import { tr, es } from 'date-fns/locale';
 import { useAuthStore } from '../store/authStore';
 import { useTranslation } from '../store/languageStore';
-import api from '../utils/api';
 
 const API_URL = process.env.EXPO_PUBLIC_BACKEND_URL;
 
