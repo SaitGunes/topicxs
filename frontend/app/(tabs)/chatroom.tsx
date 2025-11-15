@@ -476,6 +476,7 @@ const styles = StyleSheet.create({
   ownTimeText: { color: 'rgba(255, 255, 255, 0.7)' },
   deleteButton: { marginLeft: 8 },
   inputContainer: { flexDirection: 'row', padding: 12, backgroundColor: '#fff', borderTopWidth: 1, borderTopColor: '#e0e0e0', alignItems: 'flex-end' },
+  voiceButton: { width: 40, height: 40, borderRadius: 20, backgroundColor: '#f5f5f5', justifyContent: 'center', alignItems: 'center', marginRight: 8 },
   input: { flex: 1, backgroundColor: '#f5f5f5', borderRadius: 20, paddingHorizontal: 16, paddingVertical: 10, fontSize: 16, maxHeight: 100, marginRight: 8 },
   inputDisabled: { backgroundColor: '#e0e0e0', color: '#999' },
   sendButton: { width: 40, height: 40, borderRadius: 20, backgroundColor: '#007AFF', justifyContent: 'center', alignItems: 'center' },
