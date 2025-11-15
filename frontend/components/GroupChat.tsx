@@ -377,6 +377,8 @@ const styles = StyleSheet.create({
   disabledBadgeText: { fontSize: 14 },
   adminButton: { padding: 4 },
   content: { flex: 1 },
+  infoContainer: { flexDirection: 'row', alignItems: 'center', backgroundColor: '#f0f8ff', padding: 12, marginHorizontal: 16, marginTop: 8, borderRadius: 8, gap: 8 },
+  infoText: { fontSize: 12, color: '#666', flex: 1 },
   messagesList: { padding: 16 },
   emptyContainer: { flex: 1, justifyContent: 'center', alignItems: 'center', paddingVertical: 60 },
   emptyText: { fontSize: 16, color: '#999', marginTop: 16, textAlign: 'center' },
