@@ -46,7 +46,7 @@ interface JoinRequest {
   created_at: string;
 }
 
-type TabType = 'posts' | 'members' | 'requests';
+type TabType = 'posts' | 'members' | 'requests' | 'chat';
 
 export default function GroupDetailScreen() {
   const { id } = useLocalSearchParams();
