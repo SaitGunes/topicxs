@@ -192,7 +192,7 @@ export default function PostDetailScreen() {
                 </View>
               )}
               <View>
-                <Text style={styles.username}>{post.username}</Text>
+                <Text style={styles.username}>{post.full_name || post.username}</Text>
                 <Text style={styles.timestamp}>
                   {formatDistanceToNow(new Date(post.created_at), { addSuffix: true, locale: tr })}
                 </Text>
