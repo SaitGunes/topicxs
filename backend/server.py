@@ -231,7 +231,7 @@ class Group(BaseModel):
     id: str
     name: str
     description: Optional[str] = None
-    creator_id: str
+    creator_id: Optional[str] = None  # Optional for legacy groups
     admin_ids: List[str] = []
     moderator_ids: List[str] = []
     member_ids: List[str] = []
