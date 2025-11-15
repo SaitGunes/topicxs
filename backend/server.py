@@ -2182,6 +2182,28 @@ async def leave_chatroom(sid):
     print(f"Client {sid} left chatroom")
 
 @sio.event
+async def join_group_chat(sid, data):
+    """Join a group chat room"""
+    group_id = data.get('group_id')
+    user_id = data.get('user_id')
+    username = data.get('username')
+    
+    room_name = f'group_{group_id}'
+    sio.enter_room(sid, room_name)
+    print(f"User {username} ({sid}) joined group chat {group_id}")
+    
+    # Notify others in the group
+    await sio.emit('user_joined_group', {'username': username, 'user_id': user_id}, room=room_name, skip_sid=sid)
+
+@sio.event
+async def leave_group_chat(sid, data):
+    """Leave a group chat room"""
+    group_id = data.get('group_id')
+    room_name = f'group_{group_id}'
+    sio.leave_room(sid, room_name)
+    print(f"Client {sid} left group chat {group_id}")
+
+@sio.event
 async def join_chat(sid, data):
     chat_id = data.get('chat_id')
     if chat_id:
