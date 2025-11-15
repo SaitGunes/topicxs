@@ -214,8 +214,9 @@ class Comment(BaseModel):
     post_id: str
     user_id: str
     username: str
+    full_name: Optional[str] = None
     user_profile_picture: Optional[str] = None
-    content: str
+    content: Optional[str] = None
     created_at: datetime = Field(default_factory=datetime.utcnow)
 
 class ChatCreate(BaseModel):
