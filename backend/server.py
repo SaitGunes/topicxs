@@ -1712,6 +1712,24 @@ async def search_posts(q: str, skip: int = 0, limit: int = 20, current_user: Use
     posts = await db.posts_enhanced.find(search_filter).sort("created_at", -1).skip(skip).limit(limit).to_list(limit)
     return [PostEnhanced(**post) for post in posts]
 
+@api_router.get("/posts/following", response_model=List[PostEnhanced])
+async def get_following_posts(skip: int = 0, limit: int = 20, current_user: User = Depends(get_current_user)):
+    """Get posts only from users you follow"""
+    # Get current user's following list
+    user = await db.users.find_one({"id": current_user.id})
+    following_ids = user.get("following_ids", [])
+    
+    # If not following anyone, return empty list
+    if not following_ids:
+        return []
+    
+    # Get posts from followed users only
+    posts = await db.posts_enhanced.find(
+        {"user_id": {"$in": following_ids}}
+    ).sort("created_at", -1).skip(skip).limit(limit).to_list(limit)
+    
+    return [PostEnhanced(**post) for post in posts]
+
 # ==================== GROUP ROUTES ====================
 
 @api_router.post("/groups", response_model=Group)
