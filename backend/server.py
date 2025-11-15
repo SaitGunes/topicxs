@@ -516,7 +516,8 @@ async def resend_verification(current_user: User = Depends(get_current_user)):
     return {"message": "Verification code sent"}
 
 @api_router.post("/auth/register", response_model=Token)
-async def register(user_data: UserRegister):
+@limiter.limit("5/minute")  # Max 5 registrations per minute per IP
+async def register(request: Request, user_data: UserRegister):
     # Check if username exists
     existing_user = await db.users.find_one({"username": user_data.username})
     if existing_user:
