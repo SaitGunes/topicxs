@@ -549,39 +549,42 @@ export default function GroupDetailScreen() {
         )}
       </View>
 
-      <View style={styles.tabs}>
-        <TouchableOpacity
-          style={[styles.tab, activeTab === 'posts' && styles.activeTab]}
-          onPress={() => setActiveTab('posts')}
-        >
-          <Text style={[styles.tabText, activeTab === 'posts' && styles.activeTabText]}>{t('groupPosts')}</Text>
-        </TouchableOpacity>
-        
-        <TouchableOpacity
-          style={[styles.tab, activeTab === 'members' && styles.activeTab]}
-          onPress={() => setActiveTab('members')}
-        >
-          <Text style={[styles.tabText, activeTab === 'members' && styles.activeTabText]}>{t('members')}</Text>
-        </TouchableOpacity>
-        
-        <TouchableOpacity
-          style={[styles.tab, activeTab === 'chat' && styles.activeTab]}
-          onPress={() => setActiveTab('chat')}
-        >
-          <Text style={[styles.tabText, activeTab === 'chat' && styles.activeTabText]}>💬 Chat</Text>
-        </TouchableOpacity>
-        
-        {isCreator && group.requires_approval && (
+      {/* Private grup + üye değilse tabs gösterme */}
+      {group.requires_approval && !isMember ? null : (
+        <View style={styles.tabs}>
           <TouchableOpacity
-            style={[styles.tab, activeTab === 'requests' && styles.activeTab]}
-            onPress={() => setActiveTab('requests')}
+            style={[styles.tab, activeTab === 'posts' && styles.activeTab]}
+            onPress={() => setActiveTab('posts')}
           >
-            <Text style={[styles.tabText, activeTab === 'requests' && styles.activeTabText]}>
-              {t('joinRequests')} {joinRequests.length > 0 && `(${joinRequests.length})`}
-            </Text>
+            <Text style={[styles.tabText, activeTab === 'posts' && styles.activeTabText]}>{t('groupPosts')}</Text>
           </TouchableOpacity>
-        )}
-      </View>
+          
+          <TouchableOpacity
+            style={[styles.tab, activeTab === 'members' && styles.activeTab]}
+            onPress={() => setActiveTab('members')}
+          >
+            <Text style={[styles.tabText, activeTab === 'members' && styles.activeTabText]}>{t('members')}</Text>
+          </TouchableOpacity>
+          
+          <TouchableOpacity
+            style={[styles.tab, activeTab === 'chat' && styles.activeTab]}
+            onPress={() => setActiveTab('chat')}
+          >
+            <Text style={[styles.tabText, activeTab === 'chat' && styles.activeTabText]}>💬 Chat</Text>
+          </TouchableOpacity>
+          
+          {isCreator && group.requires_approval && (
+            <TouchableOpacity
+              style={[styles.tab, activeTab === 'requests' && styles.activeTab]}
+              onPress={() => setActiveTab('requests')}
+            >
+              <Text style={[styles.tabText, activeTab === 'requests' && styles.activeTabText]}>
+                {t('joinRequests')} {joinRequests.length > 0 && `(${joinRequests.length})`}
+              </Text>
+            </TouchableOpacity>
+          )}
+        </View>
+      )}
 
       {activeTab === 'posts' && isMember && (
         <TouchableOpacity style={styles.createPostButton} onPress={() => setCreatePostModal(true)}>
