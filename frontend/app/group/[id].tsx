@@ -336,7 +336,7 @@ export default function GroupDetailScreen() {
       <View style={styles.postCard}>
         <View style={styles.postHeader}>
           <View style={styles.postHeaderLeft}>
-            <Text style={styles.postUsername}>@{post.username}</Text>
+            <Text style={styles.postUsername}>{post.full_name || post.username}</Text>
             <Text style={styles.postTime}>{getTimeAgo(post.created_at)}</Text>
           </View>
           
