@@ -190,6 +190,7 @@ class PostEnhanced(BaseModel):
     id: str
     user_id: str
     username: str
+    full_name: Optional[str] = None
     user_profile_picture: Optional[str] = None
     content: str
     image: Optional[str] = None
