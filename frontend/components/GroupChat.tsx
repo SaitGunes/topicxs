@@ -200,43 +200,6 @@ export default function GroupChat({ groupId }: GroupChatProps) {
     ]);
   };
 
-  const handleClearChat = () => {
-    Alert.alert(t('clearChat'), t('confirmClearChat'), [
-      { text: t('cancel'), style: 'cancel' },
-      {
-        text: t('clearChat'),
-        style: 'destructive',
-        onPress: async () => {
-          try {
-            await axios.delete(`${API_URL}/api/admin/groups/${groupId}/clear`, {
-              headers: { Authorization: `Bearer ${token}` },
-            });
-            Alert.alert(t('success'), 'Chat cleared');
-          } catch (error: any) {
-            Alert.alert(t('error'), error.response?.data?.detail || error.message);
-          }
-        },
-      },
-    ]);
-  };
-
-  const handleToggleChat = async () => {
-    try {
-      const response = await axios.post(
-        `${API_URL}/api/admin/groups/${groupId}/toggle`,
-        null,
-        {
-          params: { enabled: !chatEnabled },
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
-      setChatEnabled(response.data.enabled);
-      Alert.alert(t('success'), response.data.message);
-    } catch (error: any) {
-      Alert.alert(t('error'), error.response?.data?.detail || error.message);
-    }
-  };
-
   const formatTime = (dateString: string) => {
     const date = new Date(dateString);
     const now = new Date();
