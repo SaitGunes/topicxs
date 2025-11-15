@@ -3,9 +3,12 @@ import { View, Text, StyleSheet, FlatList, TextInput, TouchableOpacity, Keyboard
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import axios from 'axios';
+import * as FileSystem from 'expo-file-system';
 import { io, Socket } from 'socket.io-client';
 import { useAuthStore } from '../../store/authStore';
 import { useTranslation } from '../../store/languageStore';
+import VoiceRecorder from '../../components/VoiceRecorder';
+import AudioPlayer from '../../components/AudioPlayer';
 
 const API_URL = process.env.EXPO_PUBLIC_BACKEND_URL;
 
@@ -15,7 +18,10 @@ interface ChatMessage {
   username: string;
   full_name: string;
   user_profile_picture?: string;
-  content: string;
+  content?: string;
+  audio?: string;
+  duration?: number;
+  message_type: 'text' | 'audio';
   created_at: string;
 }
 
