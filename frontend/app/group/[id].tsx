@@ -83,6 +83,7 @@ export default function GroupDetailScreen() {
   
   const [selectedPostForReaction, setSelectedPostForReaction] = useState<string | null>(null);
   const [showReactionPicker, setShowReactionPicker] = useState(false);
+  const [joining, setJoining] = useState(false);
 
   useEffect(() => {
     loadGroup();
