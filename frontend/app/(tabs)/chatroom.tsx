@@ -13,6 +13,7 @@ interface ChatMessage {
   id: string;
   user_id: string;
   username: string;
+  full_name: string;
   user_profile_picture?: string;
   content: string;
   created_at: string;
