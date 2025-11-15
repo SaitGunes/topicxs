@@ -704,6 +704,286 @@ class DriversChatAPITester:
                 self.log_test("Friends - Send Request", False, f"Failed to send friend request: {error_msg}")
                 return False
 
+    def test_voice_messages_chatroom(self):
+        """Test voice message functionality in public chatroom"""
+        print("🎤 Testing Voice Messages in Chatroom...")
+        
+        if not self.test_user_token:
+            self.log_test("Voice Messages Chatroom", False, "No test user token available")
+            return False
+        
+        # Test 1: Send text message to chatroom
+        text_message_data = {
+            "content": "Test text message for voice testing",
+            "message_type": "text"
+        }
+        
+        response = self.make_request("POST", "/chatroom/messages", data=text_message_data, token=self.test_user_token)
+        
+        if response and response.status_code == 200:
+            data = response.json()
+            if data.get("message_type") == "text" and data.get("content"):
+                self.log_test("Chatroom - Text Message", True, f"Text message sent successfully: {data.get('id')}")
+            else:
+                self.log_test("Chatroom - Text Message", False, "Invalid text message response format")
+                return False
+        else:
+            error_msg = response.json().get("detail", "Unknown error") if response else "No response"
+            self.log_test("Chatroom - Text Message", False, f"Failed to send text message: {error_msg}")
+            return False
+        
+        # Test 2: Send voice message to chatroom
+        voice_message_data = {
+            "audio": SAMPLE_AUDIO_BASE64,
+            "duration": 5,
+            "message_type": "audio"
+        }
+        
+        response = self.make_request("POST", "/chatroom/messages", data=voice_message_data, token=self.test_user_token)
+        
+        if response and response.status_code == 200:
+            data = response.json()
+            if (data.get("message_type") == "audio" and 
+                data.get("audio") and 
+                data.get("duration") == 5):
+                self.log_test("Chatroom - Voice Message", True, f"Voice message sent successfully: {data.get('id')}")
+            else:
+                self.log_test("Chatroom - Voice Message", False, "Invalid voice message response format")
+                return False
+        else:
+            error_msg = response.json().get("detail", "Unknown error") if response else "No response"
+            self.log_test("Chatroom - Voice Message", False, f"Failed to send voice message: {error_msg}")
+            return False
+        
+        # Test 3: Get chatroom messages (should include both text and audio)
+        response = self.make_request("GET", "/chatroom/messages", token=self.test_user_token)
+        
+        if response and response.status_code == 200:
+            messages = response.json()
+            if isinstance(messages, list):
+                # Check for both message types
+                text_messages = [m for m in messages if m.get("message_type") == "text"]
+                audio_messages = [m for m in messages if m.get("message_type") == "audio"]
+                
+                if text_messages and audio_messages:
+                    # Verify audio message structure
+                    audio_msg = audio_messages[-1]  # Get latest audio message
+                    if (audio_msg.get("audio") and 
+                        audio_msg.get("duration") and 
+                        audio_msg.get("message_type") == "audio"):
+                        self.log_test("Chatroom - Get Mixed Messages", True, 
+                                    f"Retrieved {len(messages)} messages: {len(text_messages)} text, {len(audio_messages)} audio")
+                    else:
+                        self.log_test("Chatroom - Get Mixed Messages", False, "Audio message structure incomplete")
+                        return False
+                else:
+                    self.log_test("Chatroom - Get Mixed Messages", False, 
+                                f"Missing message types - Text: {len(text_messages)}, Audio: {len(audio_messages)}")
+                    return False
+            else:
+                self.log_test("Chatroom - Get Mixed Messages", False, "Invalid messages response format")
+                return False
+        else:
+            self.log_test("Chatroom - Get Mixed Messages", False, "Failed to get chatroom messages")
+            return False
+        
+        # Test 4: Validation - Text message without content
+        invalid_text_data = {"message_type": "text"}
+        response = self.make_request("POST", "/chatroom/messages", data=invalid_text_data, token=self.test_user_token)
+        
+        if response and response.status_code == 400:
+            self.log_test("Chatroom - Validation Text", True, "Correctly rejected text message without content")
+        else:
+            self.log_test("Chatroom - Validation Text", False, f"Expected 400 for invalid text, got {response.status_code if response else 'No response'}")
+            return False
+        
+        # Test 5: Validation - Audio message without audio data
+        invalid_audio_data = {"message_type": "audio", "duration": 5}
+        response = self.make_request("POST", "/chatroom/messages", data=invalid_audio_data, token=self.test_user_token)
+        
+        if response and response.status_code == 400:
+            self.log_test("Chatroom - Validation Audio", True, "Correctly rejected audio message without audio data")
+        else:
+            self.log_test("Chatroom - Validation Audio", False, f"Expected 400 for invalid audio, got {response.status_code if response else 'No response'}")
+            return False
+        
+        return True
+
+    def test_voice_messages_groups(self):
+        """Test voice message functionality in group chats"""
+        print("🎤 Testing Voice Messages in Groups...")
+        
+        if not self.test_user_token:
+            self.log_test("Voice Messages Groups", False, "No test user token available")
+            return False
+        
+        # First create a test group
+        group_data = {
+            "name": "Voice Test Group",
+            "description": "Group for testing voice messages",
+            "requires_approval": False
+        }
+        
+        response = self.make_request("POST", "/groups", data=group_data, token=self.test_user_token)
+        
+        if not (response and response.status_code == 200):
+            self.log_test("Groups - Create Test Group", False, "Failed to create test group")
+            return False
+        
+        group_id = response.json().get("id")
+        if not group_id:
+            self.log_test("Groups - Create Test Group", False, "No group ID in response")
+            return False
+        
+        self.log_test("Groups - Create Test Group", True, f"Created test group: {group_id}")
+        
+        # Test 1: Send text message to group
+        text_message_data = {
+            "content": "Test text message for group voice testing",
+            "message_type": "text"
+        }
+        
+        response = self.make_request("POST", f"/groups/{group_id}/messages", data=text_message_data, token=self.test_user_token)
+        
+        if response and response.status_code == 200:
+            data = response.json()
+            if (data.get("message_type") == "text" and 
+                data.get("content") and 
+                data.get("group_id") == group_id):
+                self.log_test("Groups - Text Message", True, f"Group text message sent successfully: {data.get('id')}")
+            else:
+                self.log_test("Groups - Text Message", False, "Invalid group text message response format")
+                return False
+        else:
+            error_msg = response.json().get("detail", "Unknown error") if response else "No response"
+            self.log_test("Groups - Text Message", False, f"Failed to send group text message: {error_msg}")
+            return False
+        
+        # Test 2: Send voice message to group
+        voice_message_data = {
+            "audio": SAMPLE_AUDIO_BASE64,
+            "duration": 8,
+            "message_type": "audio"
+        }
+        
+        response = self.make_request("POST", f"/groups/{group_id}/messages", data=voice_message_data, token=self.test_user_token)
+        
+        if response and response.status_code == 200:
+            data = response.json()
+            if (data.get("message_type") == "audio" and 
+                data.get("audio") and 
+                data.get("duration") == 8 and
+                data.get("group_id") == group_id):
+                self.log_test("Groups - Voice Message", True, f"Group voice message sent successfully: {data.get('id')}")
+            else:
+                self.log_test("Groups - Voice Message", False, "Invalid group voice message response format")
+                return False
+        else:
+            error_msg = response.json().get("detail", "Unknown error") if response else "No response"
+            self.log_test("Groups - Voice Message", False, f"Failed to send group voice message: {error_msg}")
+            return False
+        
+        # Test 3: Get group messages (should include both text and audio)
+        response = self.make_request("GET", f"/groups/{group_id}/messages", token=self.test_user_token)
+        
+        if response and response.status_code == 200:
+            messages = response.json()
+            if isinstance(messages, list):
+                # Check for both message types
+                text_messages = [m for m in messages if m.get("message_type") == "text"]
+                audio_messages = [m for m in messages if m.get("message_type") == "audio"]
+                
+                if text_messages and audio_messages:
+                    # Verify audio message structure
+                    audio_msg = audio_messages[-1]  # Get latest audio message
+                    if (audio_msg.get("audio") and 
+                        audio_msg.get("duration") and 
+                        audio_msg.get("message_type") == "audio" and
+                        audio_msg.get("group_id") == group_id):
+                        self.log_test("Groups - Get Mixed Messages", True, 
+                                    f"Retrieved {len(messages)} group messages: {len(text_messages)} text, {len(audio_messages)} audio")
+                    else:
+                        self.log_test("Groups - Get Mixed Messages", False, "Group audio message structure incomplete")
+                        return False
+                else:
+                    self.log_test("Groups - Get Mixed Messages", False, 
+                                f"Missing group message types - Text: {len(text_messages)}, Audio: {len(audio_messages)}")
+                    return False
+            else:
+                self.log_test("Groups - Get Mixed Messages", False, "Invalid group messages response format")
+                return False
+        else:
+            self.log_test("Groups - Get Mixed Messages", False, "Failed to get group messages")
+            return False
+        
+        # Test 4: Validation - Group text message without content
+        invalid_text_data = {"message_type": "text"}
+        response = self.make_request("POST", f"/groups/{group_id}/messages", data=invalid_text_data, token=self.test_user_token)
+        
+        if response and response.status_code == 400:
+            self.log_test("Groups - Validation Text", True, "Correctly rejected group text message without content")
+        else:
+            self.log_test("Groups - Validation Text", False, f"Expected 400 for invalid group text, got {response.status_code if response else 'No response'}")
+            return False
+        
+        # Test 5: Validation - Group audio message without audio data
+        invalid_audio_data = {"message_type": "audio", "duration": 5}
+        response = self.make_request("POST", f"/groups/{group_id}/messages", data=invalid_audio_data, token=self.test_user_token)
+        
+        if response and response.status_code == 400:
+            self.log_test("Groups - Validation Audio", True, "Correctly rejected group audio message without audio data")
+        else:
+            self.log_test("Groups - Validation Audio", False, f"Expected 400 for invalid group audio, got {response.status_code if response else 'No response'}")
+            return False
+        
+        return True
+
+    def test_private_group_security(self):
+        """Test private group security (existing endpoint)"""
+        print("🔒 Testing Private Group Security...")
+        
+        if not self.test_user_token:
+            self.log_test("Private Group Security", False, "No test user token available")
+            return False
+        
+        # Create a private group
+        group_data = {
+            "name": "Private Security Test Group",
+            "description": "Testing private group access",
+            "requires_approval": True
+        }
+        
+        response = self.make_request("POST", "/groups", data=group_data, token=self.test_user_token)
+        
+        if not (response and response.status_code == 200):
+            self.log_test("Private Group - Create", False, "Failed to create private group")
+            return False
+        
+        group_id = response.json().get("id")
+        if not group_id:
+            self.log_test("Private Group - Create", False, "No group ID in response")
+            return False
+        
+        self.log_test("Private Group - Create", True, f"Created private group: {group_id}")
+        
+        # Test access to group details
+        response = self.make_request("GET", f"/groups/{group_id}", token=self.test_user_token)
+        
+        if response and response.status_code == 200:
+            data = response.json()
+            if (data.get("id") == group_id and 
+                "members" in data and 
+                data.get("requires_approval") == True):
+                self.log_test("Private Group - Access Details", True, "Group details accessible to creator/member")
+            else:
+                self.log_test("Private Group - Access Details", False, "Group data structure incorrect")
+                return False
+        else:
+            self.log_test("Private Group - Access Details", False, f"Failed to access group details: {response.status_code if response else 'No response'}")
+            return False
+        
+        return True
+
     def run_comprehensive_test(self):
         """Run all tests in sequence"""
         print("🚀 Starting Comprehensive Drivers Chat Backend API Testing")
