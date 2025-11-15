@@ -67,6 +67,7 @@ interface Post {
 export default function AdminPanel() {
   const { t } = useTranslation();
   const token = useAuthStore((state) => state.token);
+  const user = useAuthStore((state) => state.user);
   const [activeTab, setActiveTab] = useState<TabType>('statistics');
   const [loading, setLoading] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
@@ -76,6 +77,21 @@ export default function AdminPanel() {
   const [reports, setReports] = useState<Report[]>([]);
   const [users, setUsers] = useState<User[]>([]);
   const [posts, setPosts] = useState<Post[]>([]);
+
+  // Check if user is admin
+  if (!user?.is_admin) {
+    return (
+      <SafeAreaView style={styles.container}>
+        <View style={styles.unauthorizedContainer}>
+          <Ionicons name="shield-off-outline" size={80} color="#FF3B30" />
+          <Text style={styles.unauthorizedTitle}>Access Denied</Text>
+          <Text style={styles.unauthorizedText}>
+            You don't have permission to access the admin panel.
+          </Text>
+        </View>
+      </SafeAreaView>
+    );
+  }
 
   useEffect(() => {
     loadData();
