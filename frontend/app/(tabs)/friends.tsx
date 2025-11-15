@@ -118,6 +118,26 @@ export default function FriendsScreen() {
     }
   };
 
+  const handleFollow = async (userId: string) => {
+    try {
+      await api.post(`/api/users/${userId}/follow`);
+      setFollowingIds([...followingIds, userId]);
+      Alert.alert(t('success'), 'Successfully followed user');
+    } catch (error: any) {
+      Alert.alert(t('error'), error.response?.data?.detail || 'Failed to follow user');
+    }
+  };
+
+  const handleUnfollow = async (userId: string) => {
+    try {
+      await api.delete(`/api/users/${userId}/follow`);
+      setFollowingIds(followingIds.filter(id => id !== userId));
+      Alert.alert(t('success'), 'Successfully unfollowed user');
+    } catch (error: any) {
+      Alert.alert(t('error'), error.response?.data?.detail || 'Failed to unfollow user');
+    }
+  };
+
   // renderUser function removed - using inline JSX instead
 
   // renderRequest function removed - using inline JSX instead
