@@ -682,7 +682,7 @@ export default function GroupDetailScreen() {
               </View>
             </ScrollView>
           )}
-        </>
+        </React.Fragment>
       )}
 
       <Modal visible={createPostModal} transparent animationType="slide">
