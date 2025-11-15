@@ -79,16 +79,19 @@ export default function ChatRoomScreen() {
   };
 
   const connectSocket = () => {
-    const socketUrl = API_URL?.replace('/api', '') || 'http://localhost:8001';
+    // For Socket.IO, use the base URL without /api prefix
+    const socketUrl = API_URL || 'http://localhost:8001';
     console.log('Connecting to Socket.IO:', socketUrl);
     
     try {
       socketRef.current = io(socketUrl, {
-        transports: ['polling', 'websocket'], // Try polling first
+        path: '/socket.io/',  // Socket.IO default path
+        transports: ['websocket', 'polling'], // Try websocket first
         reconnection: true,
         reconnectionDelay: 1000,
-        reconnectionAttempts: 3,
-        timeout: 10000,
+        reconnectionAttempts: 5,
+        timeout: 20000,
+        forceNew: true,
       });
 
       socketRef.current.on('connect', () => {
