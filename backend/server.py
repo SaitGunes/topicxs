@@ -973,7 +973,14 @@ async def like_post(post_id: str, current_user: User = Depends(get_current_user)
 # ==================== COMMENT ROUTES ====================
 
 @api_router.post("/posts/{post_id}/comments", response_model=Comment)
-async def create_comment(post_id: str, comment_data: CommentCreate, current_user: User = Depends(get_current_user)):
+@limiter.limit("30/minute")  # Max 30 comments per minute (spam protection)
+async def create_comment(request: Request, post_id: str, comment_data: CommentCreate, current_user: User = Depends(get_current_user)):
+    # Sanitize comment content
+    content = sanitize_text(comment_data.content, max_length=500)
+    
+    if not content.strip():
+        raise HTTPException(status_code=400, detail="Comment cannot be empty")
+    
     # Check in both collections
     post = await db.posts_enhanced.find_one({"id": post_id})
     if not post:
@@ -989,7 +996,7 @@ async def create_comment(post_id: str, comment_data: CommentCreate, current_user
         "user_id": current_user.id,
         "username": current_user.username,
         "user_profile_picture": current_user.profile_picture,
-        "content": comment_data.content,
+        "content": content,
         "created_at": datetime.utcnow()
     }
     
