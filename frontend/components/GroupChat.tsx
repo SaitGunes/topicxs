@@ -141,7 +141,7 @@ export default function GroupChat({ groupId }: GroupChatProps) {
   };
 
   const handleSendMessage = async () => {
-    if (!newMessage.trim() || sending || !chatEnabled) return;
+    if (!newMessage.trim() || sending) return;
 
     setSending(true);
     const messageContent = newMessage.trim();
