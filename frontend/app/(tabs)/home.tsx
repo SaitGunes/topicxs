@@ -136,8 +136,16 @@ export default function HomeScreen() {
       setSelectedFriends([]);
       setCreateModalVisible(false);
       Alert.alert(t('success'), t('postPublished'));
-    } catch (error) {
-      Alert.alert(t('error'), t('failedCreatePost'));
+    } catch (error: any) {
+      // Check if it's a duplicate post error
+      if (error.response?.status === 400 && error.response?.data?.detail?.includes('already posted')) {
+        Alert.alert(
+          'Duplicate Post', 
+          'You have already posted this content in the last 24 hours. Please share something new!'
+        );
+      } else {
+        Alert.alert(t('error'), t('failedCreatePost'));
+      }
     } finally {
       setPosting(false);
     }
