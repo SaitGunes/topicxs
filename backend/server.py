@@ -209,6 +209,9 @@ class VoteAction(BaseModel):
 class ReactionAction(BaseModel):
     emoji: str  # Any emoji like 😀, ❤️, 😂, 😮, 😢, 😡
 
+class SharePost(BaseModel):
+    comment: Optional[str] = None  # Optional comment when sharing
+
 class Report(BaseModel):
     id: str
     reporter_user_id: str
