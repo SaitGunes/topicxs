@@ -150,10 +150,9 @@ export default function GroupChat({ groupId }: GroupChatProps) {
     try {
       console.log('Sending message:', messageContent);
       const response = await axios.post(
-        `${API_URL}/api/chatroom/messages`,
-        null,
+        `${API_URL}/api/groups/${groupId}/messages`,
+        { content: messageContent },
         {
-          params: { content: messageContent },
           headers: { Authorization: `Bearer ${token}` },
         }
       );
