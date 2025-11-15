@@ -22,6 +22,7 @@ interface Group {
   description?: string;
   creator_id: string;
   member_ids: string[];
+  members?: Member[];  // Full member details from backend
   requires_approval: boolean;
   created_at: string;
 }
