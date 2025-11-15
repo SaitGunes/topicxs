@@ -52,7 +52,7 @@ export default function GroupChat({ groupId }: GroupChatProps) {
   const loadMessages = async (showLoading = true) => {
     if (showLoading) setLoading(true);
     try {
-      const response = await axios.get(`${API_URL}/api/chatroom/messages`, {
+      const response = await axios.get(`${API_URL}/api/groups/${groupId}/messages`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setMessages(response.data);
@@ -66,19 +66,7 @@ export default function GroupChat({ groupId }: GroupChatProps) {
   const onRefresh = async () => {
     setRefreshing(true);
     await loadMessages(false);
-    await checkChatStatus();
     setRefreshing(false);
-  };
-
-  const checkChatStatus = async () => {
-    try {
-      const response = await axios.get(`${API_URL}/api/chatroom/status`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      setChatEnabled(response.data.enabled);
-    } catch (error) {
-      console.error('Check status error:', error);
-    }
   };
 
   const connectSocket = () => {
