@@ -201,6 +201,7 @@ class PostEnhanced(BaseModel):
     group_id: Optional[str] = None  # If post is shared to a group
     shared_from_id: Optional[str] = None  # ID of original post if this is a share
     share_count: int = 0  # How many times this post has been shared
+    content_hash: Optional[str] = None  # Hash for duplicate detection
     created_at: datetime = Field(default_factory=datetime.utcnow)
 
 class VoteAction(BaseModel):
