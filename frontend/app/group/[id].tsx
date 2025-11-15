@@ -415,23 +415,39 @@ export default function GroupDetailScreen() {
       );
     }
 
+    const members = group.members || [];
+
     return (
       <View style={styles.membersList}>
         <Text style={styles.membersCount}>
           {group.member_ids.length} {t('members')}
         </Text>
-        {group.member_ids.map((memberId, index) => (
-          <View key={memberId} style={styles.memberItem}>
-            <View style={styles.memberAvatar}>
-              <Text style={styles.memberAvatarText}>👤</Text>
-            </View>
-            <Text style={styles.memberText}>
-              {memberId === group.creator_id ? `${t('creator')}` : `Member ${index + 1}`}
-            </Text>
-            {memberId === group.creator_id && (
-              <Ionicons name="shield-checkmark" size={16} color="#4CAF50" />
+        {members.map((member) => (
+          <TouchableOpacity 
+            key={member.id} 
+            style={styles.memberItem}
+            onPress={() => router.push(`/profile/${member.id}`)}
+          >
+            {member.profile_picture ? (
+              <Image source={{ uri: member.profile_picture }} style={styles.memberAvatar} />
+            ) : (
+              <View style={[styles.memberAvatar, styles.memberAvatarPlaceholder]}>
+                <Text style={styles.memberAvatarText}>
+                  {member.full_name?.charAt(0).toUpperCase() || member.username.charAt(0).toUpperCase()}
+                </Text>
+              </View>
             )}
-          </View>
+            <View style={styles.memberInfo}>
+              <Text style={styles.memberName}>{member.full_name || member.username}</Text>
+              <Text style={styles.memberUsername}>@{member.username}</Text>
+            </View>
+            {member.id === group.creator_id && (
+              <View style={styles.creatorBadge}>
+                <Ionicons name="shield-checkmark" size={16} color="#4CAF50" />
+                <Text style={styles.creatorText}>{t('creator')}</Text>
+              </View>
+            )}
+          </TouchableOpacity>
         ))}
       </View>
     );
