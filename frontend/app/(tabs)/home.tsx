@@ -20,7 +20,11 @@ interface Post {
   likes: string[];
   dislikes: string[];
   comments_count: number;
+  share_count: number;
+  shared_from_id: string | null;
   created_at: string;
+  reactions?: { [emoji: string]: string[] };
+  privacy?: { type: string };
 }
 
 export default function HomeScreen() {
