@@ -31,6 +31,7 @@ interface Post {
   id: string;
   user_id: string;
   username: string;
+  full_name?: string;
   user_profile_picture?: string;
   content: string;
   image?: string;
