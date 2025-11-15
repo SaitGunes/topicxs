@@ -1881,6 +1881,7 @@ async def send_chatroom_message(
         "id": message_id,
         "user_id": current_user.id,
         "username": current_user.username,
+        "full_name": current_user.full_name,
         "user_profile_picture": current_user.profile_picture,
         "content": content,
         "created_at": now
@@ -1893,6 +1894,7 @@ async def send_chatroom_message(
         "id": message_id,
         "user_id": current_user.id,
         "username": current_user.username,
+        "full_name": current_user.full_name,
         "user_profile_picture": current_user.profile_picture,
         "content": content,
         "created_at": now.isoformat()
