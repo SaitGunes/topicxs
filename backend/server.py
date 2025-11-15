@@ -1953,13 +1953,17 @@ async def get_group_messages(
     
     return messages
 
+class GroupMessageCreate(BaseModel):
+    content: str
+
 @api_router.post("/groups/{group_id}/messages")
 async def send_group_message(
     group_id: str,
-    content: str,
+    message: GroupMessageCreate,
     current_user: User = Depends(get_current_user)
 ):
     """Send a message to group chat"""
+    content = message.content
     # Verify user is a member
     group = await db.groups.find_one({"id": group_id})
     if not group:
