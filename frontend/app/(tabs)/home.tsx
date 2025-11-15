@@ -87,7 +87,10 @@ export default function HomeScreen() {
 
   const loadPosts = async () => {
     try {
-      const response = await api.get('/api/posts/enhanced');
+      const endpoint = activeTab === 'following' 
+        ? '/api/posts/following' 
+        : '/api/posts/enhanced';
+      const response = await api.get(endpoint);
       setPosts(response.data);
     } catch (error) {
       console.error('Load posts error:', error);
