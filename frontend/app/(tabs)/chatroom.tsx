@@ -167,9 +167,11 @@ export default function ChatRoomScreen() {
       console.log('Sending message:', messageContent);
       const response = await axios.post(
         `${API_URL}/api/chatroom/messages`,
-        null,
         {
-          params: { content: messageContent },
+          content: messageContent,
+          message_type: 'text'
+        },
+        {
           headers: { Authorization: `Bearer ${token}` },
         }
       );
@@ -194,6 +196,45 @@ export default function ChatRoomScreen() {
       setNewMessage(messageContent); // Restore message on error
     } finally {
       setSending(false);
+    }
+  };
+
+  const handleSendVoiceMessage = async (audioUri: string, duration: number) => {
+    try {
+      console.log('Reading audio file:', audioUri);
+      const base64Audio = await FileSystem.readAsStringAsync(audioUri, {
+        encoding: FileSystem.EncodingType.Base64,
+      });
+      
+      console.log('Sending voice message...');
+      const response = await axios.post(
+        `${API_URL}/api/chatroom/messages`,
+        {
+          audio: `data:audio/m4a;base64,${base64Audio}`,
+          duration: duration,
+          message_type: 'audio'
+        },
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+      
+      console.log('Voice message sent successfully');
+      
+      // Optimistic update
+      setMessages((prev) => {
+        const exists = prev.some(m => m.id === response.data.id);
+        if (!exists) {
+          return [...prev, response.data];
+        }
+        return prev;
+      });
+      
+      setTimeout(() => flatListRef.current?.scrollToEnd({ animated: true }), 100);
+      setShowVoiceRecorder(false);
+    } catch (error: any) {
+      console.error('Send voice message error:', error);
+      Alert.alert(t('error'), error.response?.data?.detail || error.message);
     }
   };
 
