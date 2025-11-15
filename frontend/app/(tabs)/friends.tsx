@@ -35,6 +35,7 @@ export default function FriendsScreen() {
   const [friendRequests, setFriendRequests] = useState<FriendRequest[]>([]);
   const [friends, setFriends] = useState<User[]>([]);
   const [loading, setLoading] = useState(false);
+  const [followingIds, setFollowingIds] = useState<string[]>([]);
 
   useEffect(() => {
     loadFriendRequests();
