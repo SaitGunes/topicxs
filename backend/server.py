@@ -2006,7 +2006,9 @@ class ChatMessageCreate(BaseModel):
     message_type: str = "text"  # "text" or "audio"
 
 @api_router.post("/chatroom/messages")
+@limiter.limit("60/minute")  # Max 60 chat messages per minute (1 per second average)
 async def send_chatroom_message(
+    request: Request,
     message_data: ChatMessageCreate,
     current_user: User = Depends(get_current_user)
 ):
@@ -2016,11 +2018,24 @@ async def send_chatroom_message(
     if status and not status.get("enabled", True):
         raise HTTPException(status_code=403, detail="Chat is currently disabled by admin")
     
-    # Validate message
-    if message_data.message_type == "text" and not message_data.content:
-        raise HTTPException(status_code=400, detail="Text message requires content")
-    if message_data.message_type == "audio" and not message_data.audio:
-        raise HTTPException(status_code=400, detail="Audio message requires audio data")
+    # Sanitize and validate based on message type
+    content = None
+    audio = None
+    
+    if message_data.message_type == "text":
+        if not message_data.content:
+            raise HTTPException(status_code=400, detail="Text message requires content")
+        content = sanitize_text(message_data.content, max_length=1000)
+        if not content.strip():
+            raise HTTPException(status_code=400, detail="Message cannot be empty")
+    elif message_data.message_type == "audio":
+        if not message_data.audio:
+            raise HTTPException(status_code=400, detail="Audio message requires audio data")
+        if not validate_audio_data(message_data.audio):
+            raise HTTPException(status_code=400, detail="Invalid audio format or size (max 5MB)")
+        audio = message_data.audio
+    else:
+        raise HTTPException(status_code=400, detail="Invalid message type")
     
     message_id = str(int(datetime.utcnow().timestamp() * 1000))
     now = datetime.utcnow()
@@ -2031,8 +2046,8 @@ async def send_chatroom_message(
         "username": current_user.username,
         "full_name": current_user.full_name,
         "user_profile_picture": current_user.profile_picture,
-        "content": message_data.content,
-        "audio": message_data.audio,
+        "content": content,
+        "audio": audio,
         "duration": message_data.duration,
         "message_type": message_data.message_type,
         "created_at": now
