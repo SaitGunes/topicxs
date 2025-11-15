@@ -570,6 +570,8 @@ async def register(request: Request, user_data: UserRegister):
         "invited_by": referrer_id,
         "referral_count": 0,
         "friend_ids": [],
+        "following_ids": [],
+        "followers_ids": [],
         "is_admin": False,
         "user_type": user_data.user_type,
         "phone_number": user_data.phone_number,
