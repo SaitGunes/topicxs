@@ -1201,6 +1201,7 @@ async def create_enhanced_post(post_data: PostCreateEnhanced, current_user: User
         "id": post_id,
         "user_id": current_user.id,
         "username": current_user.username,
+        "full_name": current_user.full_name,
         "user_profile_picture": current_user.profile_picture,
         "content": post_data.content,
         "image": post_data.image,
