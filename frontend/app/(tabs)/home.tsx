@@ -186,6 +186,21 @@ export default function HomeScreen() {
     }
   };
 
+  const handleShare = async (postId: string) => {
+    try {
+      const response = await api.post(`/api/posts/${postId}/share`);
+      Alert.alert(t('success'), 'Post shared to your timeline!');
+      // Refresh posts to show the shared post
+      loadPosts();
+    } catch (error: any) {
+      if (error.response?.status === 400) {
+        Alert.alert(t('error'), "Can't share your own post");
+      } else {
+        Alert.alert(t('error'), 'Failed to share post');
+      }
+    }
+  };
+
   const handleDeletePost = async (postId: string) => {
     const message = user?.is_admin 
       ? t('deletePostAdminMessage')
