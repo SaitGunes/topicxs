@@ -267,13 +267,13 @@ export default function ChatRoomScreen() {
         {!isOwnMessage && (
           <View style={styles.avatarContainer}>
             <View style={styles.avatarPlaceholder}>
-              <Text style={styles.avatarText}>{item.username.charAt(0).toUpperCase()}</Text>
+              <Text style={styles.avatarText}>{item.full_name?.charAt(0).toUpperCase() || item.username.charAt(0).toUpperCase()}</Text>
             </View>
           </View>
         )}
         
         <View style={[styles.messageBubble, isOwnMessage ? styles.ownBubble : styles.otherBubble]}>
-          {!isOwnMessage && <Text style={styles.username}>{item.username}</Text>}
+          {!isOwnMessage && <Text style={styles.username}>{item.full_name || item.username}</Text>}
           <Text style={[styles.messageText, isOwnMessage && styles.ownMessageText]}>{item.content}</Text>
           <View style={styles.messageFooter}>
             <Text style={[styles.timeText, isOwnMessage && styles.ownTimeText]}>{formatTime(item.created_at)}</Text>
