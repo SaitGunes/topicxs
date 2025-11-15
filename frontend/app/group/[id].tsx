@@ -12,6 +12,7 @@ import { useAuthStore } from '../../store/authStore';
 import { useTranslation } from '../../store/languageStore';
 import FullScreenImage from '../../components/FullScreenImage';
 import EditPostModal from '../../components/EditPostModal';
+import GroupChat from '../../components/GroupChat';
 
 const API_URL = process.env.EXPO_PUBLIC_BACKEND_URL;
 
