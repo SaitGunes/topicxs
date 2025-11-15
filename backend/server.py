@@ -2106,7 +2106,9 @@ async def get_group_messages(
     return messages
 
 @api_router.post("/groups/{group_id}/messages")
+@limiter.limit("60/minute")  # Max 60 group messages per minute
 async def send_group_message(
+    request: Request,
     group_id: str,
     message: GroupMessageCreate,
     current_user: User = Depends(get_current_user)
@@ -2120,11 +2122,24 @@ async def send_group_message(
     if current_user.id not in group["member_ids"]:
         raise HTTPException(status_code=403, detail="Not a member of this group")
     
-    # Validate message
-    if message.message_type == "text" and not message.content:
-        raise HTTPException(status_code=400, detail="Text message requires content")
-    if message.message_type == "audio" and not message.audio:
-        raise HTTPException(status_code=400, detail="Audio message requires audio data")
+    # Sanitize and validate based on message type
+    content = None
+    audio = None
+    
+    if message.message_type == "text":
+        if not message.content:
+            raise HTTPException(status_code=400, detail="Text message requires content")
+        content = sanitize_text(message.content, max_length=1000)
+        if not content.strip():
+            raise HTTPException(status_code=400, detail="Message cannot be empty")
+    elif message.message_type == "audio":
+        if not message.audio:
+            raise HTTPException(status_code=400, detail="Audio message requires audio data")
+        if not validate_audio_data(message.audio):
+            raise HTTPException(status_code=400, detail="Invalid audio format or size (max 5MB)")
+        audio = message.audio
+    else:
+        raise HTTPException(status_code=400, detail="Invalid message type")
     
     message_id = str(int(datetime.utcnow().timestamp() * 1000))
     now = datetime.utcnow()
@@ -2136,8 +2151,8 @@ async def send_group_message(
         "username": current_user.username,
         "full_name": current_user.full_name,
         "user_profile_picture": current_user.profile_picture,
-        "content": message.content,
-        "audio": message.audio,
+        "content": content,
+        "audio": audio,
         "duration": message.duration,
         "message_type": message.message_type,
         "created_at": now
