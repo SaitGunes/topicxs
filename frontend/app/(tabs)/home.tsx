@@ -33,6 +33,7 @@ export default function HomeScreen() {
   const user = useAuthStore((state) => state.user);
   const { t, language } = useTranslation();
   const [posts, setPosts] = useState<Post[]>([]);
+  const [activeTab, setActiveTab] = useState<'forYou' | 'following'>('forYou');
   const [refreshing, setRefreshing] = useState(false);
   const [createModalVisible, setCreateModalVisible] = useState(false);
   const [newPostContent, setNewPostContent] = useState('');
