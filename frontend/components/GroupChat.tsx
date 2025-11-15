@@ -292,25 +292,13 @@ export default function GroupChat({ groupId }: GroupChatProps) {
   return (
     <SafeAreaView style={styles.container} edges={['top']}>
       <View style={styles.header}>
-        <View>
-          <Text style={styles.title}>{t('chatRoom')}</Text>
-          <Text style={styles.subtitle}>{chatEnabled ? t('everyoneCanSee') : t('chatDisabled')}</Text>
+        <View style={styles.headerLeft}>
+          <Text style={styles.title}>Group Chat Room</Text>
         </View>
         <View style={styles.headerRight}>
-          {!chatEnabled && <View style={styles.disabledBadge}><Text style={styles.disabledBadgeText}>🔒</Text></View>}
           <TouchableOpacity onPress={onRefresh} style={styles.adminButton} disabled={refreshing}>
             <Ionicons name="refresh" size={20} color={refreshing ? "#ccc" : "#007AFF"} />
           </TouchableOpacity>
-          {user?.is_admin && (
-            <TouchableOpacity onPress={handleToggleChat} style={styles.adminButton}>
-              <Ionicons name={chatEnabled ? 'lock-open' : 'lock-closed'} size={20} color="#007AFF" />
-            </TouchableOpacity>
-          )}
-          {user?.is_admin && (
-            <TouchableOpacity onPress={handleClearChat} style={styles.adminButton}>
-              <Ionicons name="trash" size={20} color="#F44336" />
-            </TouchableOpacity>
-          )}
         </View>
       </View>
 
