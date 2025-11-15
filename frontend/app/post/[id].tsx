@@ -12,6 +12,7 @@ interface Comment {
   post_id: string;
   user_id: string;
   username: string;
+  full_name?: string;
   user_profile_picture: string | null;
   content: string;
   created_at: string;
@@ -21,6 +22,7 @@ interface Post {
   id: string;
   user_id: string;
   username: string;
+  full_name?: string;
   user_profile_picture: string | null;
   content: string;
   image: string | null;
