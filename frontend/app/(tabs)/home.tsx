@@ -356,7 +356,27 @@ export default function HomeScreen() {
               </View>
             )}
             <View style={styles.userTextContainer}>
-              <Text style={styles.fullName}>{item.full_name || item.username}</Text>
+              <View style={styles.nameRow}>
+                <Text style={styles.fullName}>{item.full_name || item.username}</Text>
+                {!isOwnPost && (
+                  followingIds.includes(item.user_id) ? (
+                    <TouchableOpacity 
+                      style={styles.followingBadge}
+                      onPress={() => handleUnfollow(item.user_id)}
+                    >
+                      <Text style={styles.followingBadgeText}>Following</Text>
+                    </TouchableOpacity>
+                  ) : (
+                    <TouchableOpacity 
+                      style={styles.followBadge}
+                      onPress={() => handleFollow(item.user_id)}
+                    >
+                      <Ionicons name="add" size={14} color="#fff" />
+                      <Text style={styles.followBadgeText}>Follow</Text>
+                    </TouchableOpacity>
+                  )
+                )}
+              </View>
               <Text style={styles.timestamp}>
                 {formatDistanceToNow(new Date(item.created_at), { addSuffix: true, locale: getDateLocale() })}
               </Text>
