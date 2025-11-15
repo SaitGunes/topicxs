@@ -4,14 +4,13 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import axios from 'axios';
 import { io, Socket } from 'socket.io-client';
-import { useAuthStore } from '../store/authStore';
-import { useTranslation } from '../store/languageStore';
+import { useAuthStore } from '../../store/authStore';
+import { useTranslation } from '../../store/languageStore';
 
 const API_URL = process.env.EXPO_PUBLIC_BACKEND_URL;
 
-interface Message {
+interface ChatMessage {
   id: string;
-  group_id: string;
   user_id: string;
   username: string;
   full_name: string;
@@ -25,27 +24,24 @@ interface GroupChatProps {
 }
 
 export default function GroupChat({ groupId }: GroupChatProps) {
-  const { t, language } = useTranslation();
+  const { t } = useTranslation();
+  const token = useAuthStore((state) => state.token);
   const user = useAuthStore((state) => state.user);
-  const [messages, setMessages] = useState<Message[]>([]);
+  
+  const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [newMessage, setNewMessage] = useState('');
   const [loading, setLoading] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
   const [sending, setSending] = useState(false);
-  const flatListRef = useRef<FlatList>(null);
+  const [chatEnabled, setChatEnabled] = useState(true);
+  
   const socketRef = useRef<Socket | null>(null);
-
-  const getDateLocale = () => {
-    switch (language) {
-      case 'tr': return tr;
-      case 'es': return es;
-      default: return undefined;
-    }
-  };
+  const flatListRef = useRef<FlatList>(null);
 
   useEffect(() => {
     loadMessages();
     connectSocket();
-
+    
     return () => {
       if (socketRef.current) {
         socketRef.current.emit('leave_group_chat', { group_id: groupId });
@@ -54,14 +50,35 @@ export default function GroupChat({ groupId }: GroupChatProps) {
     };
   }, [groupId]);
 
+  const loadMessages = async (showLoading = true) => {
+    if (showLoading) setLoading(true);
+    try {
+      const response = await axios.get(`${API_URL}/api/groups/${groupId}/messages`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      setMessages(response.data);
+      if (showLoading) setLoading(false);
+    } catch (error: any) {
+      console.error('Load messages error:', error);
+      if (showLoading) setLoading(false);
+    }
+  };
+
+  const onRefresh = async () => {
+    setRefreshing(true);
+    await loadMessages(false);
+    setRefreshing(false);
+  };
+
   const connectSocket = () => {
+    // For Socket.IO, use the base URL without /api prefix
     const socketUrl = API_URL || 'http://localhost:8001';
-    console.log('Connecting to Socket.IO for group:', socketUrl);
+    console.log('Connecting to Socket.IO:', socketUrl);
     
     try {
       socketRef.current = io(socketUrl, {
-        path: '/socket.io/',
-        transports: ['websocket', 'polling'],
+        path: '/socket.io/',  // Socket.IO default path
+        transports: ['websocket', 'polling'], // Try websocket first
         reconnection: true,
         reconnectionDelay: 1000,
         reconnectionAttempts: 5,
@@ -70,109 +87,193 @@ export default function GroupChat({ groupId }: GroupChatProps) {
       });
 
       socketRef.current.on('connect', () => {
-        console.log('Socket.IO connected for group chat');
-        socketRef.current?.emit('join_group_chat', {
-          group_id: groupId,
-          user_id: user?.id,
-          username: user?.username,
-        });
-      });
-
-      socketRef.current.on('new_group_message', (message: Message) => {
-        console.log('New group message received:', message);
-        if (message.group_id === groupId) {
-          setMessages(prev => [...prev, message]);
-          setTimeout(() => flatListRef.current?.scrollToEnd({ animated: true }), 100);
+        console.log('Socket.IO connected to group chat!');
+        if (user) {
+          socketRef.current?.emit('join_group_chat', {
+            group_id: groupId,
+            user_id: user.id,
+            username: user.username,
+          });
+          console.log('Joined group chat');
         }
-      });
-
-      socketRef.current.on('delete_group_message', (data: { message_id: string }) => {
-        console.log('Message deleted:', data.message_id);
-        setMessages(prev => prev.filter(m => m.id !== data.message_id));
       });
 
       socketRef.current.on('connect_error', (error) => {
         console.log('Real-time connection not available, using manual refresh');
+        // Don't block the app, continue with manual refresh
       });
 
       socketRef.current.on('disconnect', () => {
-        console.log('Socket.IO disconnected from group chat');
+        console.log('Socket.IO disconnected');
       });
     } catch (error) {
-      console.log('Real-time updates not available for group chat');
+      console.log('Real-time updates not available, please use refresh button');
+      // Continue without real-time updates
     }
-  };
 
-  const loadMessages = async () => {
-    try {
-      setLoading(true);
-      const response = await api.get(`/api/groups/${groupId}/messages`);
-      setMessages(response.data);
-    } catch (error: any) {
-      if (error.response?.status === 403) {
-        Alert.alert('Error', 'You are not a member of this group');
-      } else {
-        console.error('Failed to load messages:', error);
+    socketRef.current.on('new_group_message', (message: ChatMessage) => {
+      console.log('New message received via Socket.IO:', message);
+      setMessages((prev) => {
+        const exists = prev.some(m => m.id === message.id);
+        if (exists) {
+          console.log('Message already exists, skipping');
+          return prev;
+        }
+        console.log('Adding new message to state');
+        return [...prev, message];
+      });
+      setTimeout(() => flatListRef.current?.scrollToEnd({ animated: true }), 100);
+    });
+
+    socketRef.current.on('group_message_deleted', (data: { message_id: string }) => {
+      setMessages((prev) => prev.filter(m => m.id !== data.message_id));
+    });
+
+    socketRef.current.on('group_chat_cleared', () => {
+      setMessages([]);
+    });
+
+    socketRef.current.on('group_chat_status_changed', (data: { enabled: boolean }) => {
+      setChatEnabled(data.enabled);
+      if (!data.enabled) {
+        Alert.alert(t('chatDisabled'), t('chatDisabledMessage'));
       }
-    } finally {
-      setLoading(false);
-    }
+    });
   };
 
-  const sendMessage = async () => {
-    if (!newMessage.trim() || sending) return;
+  const handleSendMessage = async () => {
+    if (!newMessage.trim() || sending || !chatEnabled) return;
 
-    const messageText = newMessage.trim();
-    setNewMessage('');
     setSending(true);
-
+    const messageContent = newMessage.trim();
+    setNewMessage(''); // Clear input immediately
+    
     try {
-      const formData = new URLSearchParams();
-      formData.append('content', messageText);
-
-      await api.post(`/api/groups/${groupId}/messages`, formData, {
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
-        },
+      console.log('Sending message:', messageContent);
+      const response = await axios.post(
+        `${API_URL}/api/groups/${groupId}/messages`,
+        { content: messageContent },
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+      
+      console.log('Message sent successfully:', response.data);
+      
+      // Optimistic update: add message immediately
+      setMessages((prev) => {
+        const exists = prev.some(m => m.id === response.data.id);
+        if (exists) {
+          console.log('Message already in list (from Socket.IO?)');
+          return prev;
+        }
+        console.log('Adding message to list (optimistic)');
+        return [...prev, response.data];
       });
       
-      // Message will be added via Socket.IO
       setTimeout(() => flatListRef.current?.scrollToEnd({ animated: true }), 100);
     } catch (error: any) {
       console.error('Send message error:', error);
-      Alert.alert('Error', 'Failed to send message');
-      setNewMessage(messageText); // Restore message
+      Alert.alert(t('error'), error.response?.data?.detail || error.message);
+      setNewMessage(messageContent); // Restore message on error
     } finally {
       setSending(false);
     }
   };
 
-  const renderMessage = ({ item }: { item: Message }) => {
-    const isOwnMessage = item.user_id === user?.id;
+  const handleDeleteMessage = (messageId: string) => {
+    Alert.alert(t('deleteMessage'), t('confirmDeleteMessage'), [
+      { text: t('cancel'), style: 'cancel' },
+      {
+        text: t('delete'),
+        style: 'destructive',
+        onPress: async () => {
+          try {
+            await axios.delete(`${API_URL}/api/groups/${groupId}/messages/${messageId}`, {
+              headers: { Authorization: `Bearer ${token}` },
+            });
+          } catch (error: any) {
+            Alert.alert(t('error'), error.response?.data?.detail || error.message);
+          }
+        },
+      },
+    ]);
+  };
 
+  const handleClearChat = () => {
+    Alert.alert(t('clearChat'), t('confirmClearChat'), [
+      { text: t('cancel'), style: 'cancel' },
+      {
+        text: t('clearChat'),
+        style: 'destructive',
+        onPress: async () => {
+          try {
+            await axios.delete(`${API_URL}/api/admin/groups/${groupId}/clear`, {
+              headers: { Authorization: `Bearer ${token}` },
+            });
+            Alert.alert(t('success'), 'Chat cleared');
+          } catch (error: any) {
+            Alert.alert(t('error'), error.response?.data?.detail || error.message);
+          }
+        },
+      },
+    ]);
+  };
+
+  const handleToggleChat = async () => {
+    try {
+      const response = await axios.post(
+        `${API_URL}/api/admin/groups/${groupId}/toggle`,
+        null,
+        {
+          params: { enabled: !chatEnabled },
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+      setChatEnabled(response.data.enabled);
+      Alert.alert(t('success'), response.data.message);
+    } catch (error: any) {
+      Alert.alert(t('error'), error.response?.data?.detail || error.message);
+    }
+  };
+
+  const formatTime = (dateString: string) => {
+    const date = new Date(dateString);
+    const now = new Date();
+    const diff = now.getTime() - date.getTime();
+    
+    if (diff < 60000) return t('justNow');
+    if (diff < 3600000) return `${Math.floor(diff / 60000)}m`;
+    if (diff < 86400000) return `${Math.floor(diff / 3600000)}h`;
+    
+    return date.toLocaleDateString();
+  };
+
+  const renderMessage = ({ item }: { item: ChatMessage }) => {
+    const isOwnMessage = item.user_id === user?.id;
+    const canDelete = isOwnMessage || user?.is_admin;
+    
     return (
-      <View style={[styles.messageContainer, isOwnMessage && styles.ownMessageContainer]}>
+      <View style={[styles.messageContainer, isOwnMessage ? styles.ownMessageContainer : styles.otherMessageContainer]}>
         {!isOwnMessage && (
           <View style={styles.avatarContainer}>
             <View style={styles.avatarPlaceholder}>
-              <Text style={styles.avatarText}>
-                {item.full_name?.charAt(0).toUpperCase() || item.username.charAt(0).toUpperCase()}
-              </Text>
+              <Text style={styles.avatarText}>{item.full_name?.charAt(0).toUpperCase() || item.username.charAt(0).toUpperCase()}</Text>
             </View>
           </View>
         )}
         
         <View style={[styles.messageBubble, isOwnMessage ? styles.ownBubble : styles.otherBubble]}>
-          {!isOwnMessage && <Text style={styles.senderName}>{item.full_name || item.username}</Text>}
-          <Text style={[styles.messageText, isOwnMessage && styles.ownMessageText]}>
-            {item.content}
-          </Text>
-          <Text style={[styles.timestamp, isOwnMessage && styles.ownTimestamp]}>
-            {formatDistanceToNow(new Date(item.created_at), { 
-              addSuffix: true, 
-              locale: getDateLocale() 
-            })}
-          </Text>
+          {!isOwnMessage && <Text style={styles.username}>{item.full_name || item.username}</Text>}
+          <Text style={[styles.messageText, isOwnMessage && styles.ownMessageText]}>{item.content}</Text>
+          <View style={styles.messageFooter}>
+            <Text style={[styles.timeText, isOwnMessage && styles.ownTimeText]}>{formatTime(item.created_at)}</Text>
+            {canDelete && (
+              <TouchableOpacity onPress={() => handleDeleteMessage(item.id)} style={styles.deleteButton}>
+                <Ionicons name="trash-outline" size={12} color={isOwnMessage ? 'rgba(255,255,255,0.7)' : '#999'} />
+              </TouchableOpacity>
+            )}
+          </View>
         </View>
       </View>
     );
@@ -180,176 +281,119 @@ export default function GroupChat({ groupId }: GroupChatProps) {
 
   if (loading) {
     return (
-      <View style={styles.loadingContainer}>
-        <Text>Loading messages...</Text>
-      </View>
+      <SafeAreaView style={styles.container} edges={['top']}>
+        <View style={styles.loadingContainer}>
+          <ActivityIndicator size="large" color="#007AFF" />
+        </View>
+      </SafeAreaView>
     );
   }
 
   return (
-    <KeyboardAvoidingView 
-      style={styles.container}
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      keyboardVerticalOffset={100}
-    >
-      <FlatList
-        ref={flatListRef}
-        data={messages}
-        renderItem={renderMessage}
-        keyExtractor={(item) => item.id}
-        contentContainerStyle={styles.messagesList}
-        onContentSizeChange={() => flatListRef.current?.scrollToEnd({ animated: true })}
-        ListEmptyComponent={
-          <View style={styles.emptyContainer}>
-            <Ionicons name="chatbubbles-outline" size={48} color="#ccc" />
-            <Text style={styles.emptyText}>{t('noMessages') || 'No messages yet'}</Text>
-            <Text style={styles.emptySubtext}>{t('startConversation') || 'Start the conversation!'}</Text>
-          </View>
-        }
-      />
-
-      <View style={styles.inputContainer}>
-        <TextInput
-          style={styles.input}
-          placeholder={t('typeMessage') || 'Type a message...'}
-          value={newMessage}
-          onChangeText={setNewMessage}
-          onSubmitEditing={sendMessage}
-          returnKeyType="send"
-          multiline
-          maxLength={1000}
-        />
-        <TouchableOpacity 
-          style={[styles.sendButton, (!newMessage.trim() || sending) && styles.sendButtonDisabled]}
-          onPress={sendMessage}
-          disabled={!newMessage.trim() || sending}
-        >
-          <Ionicons name="send" size={20} color="#fff" />
-        </TouchableOpacity>
+    <SafeAreaView style={styles.container} edges={['top']}>
+      <View style={styles.header}>
+        <View>
+          <Text style={styles.title}>{t('chatRoom')}</Text>
+          <Text style={styles.subtitle}>{chatEnabled ? t('everyoneCanSee') : t('chatDisabled')}</Text>
+        </View>
+        <View style={styles.headerRight}>
+          {!chatEnabled && <View style={styles.disabledBadge}><Text style={styles.disabledBadgeText}>🔒</Text></View>}
+          <TouchableOpacity onPress={onRefresh} style={styles.adminButton} disabled={refreshing}>
+            <Ionicons name="refresh" size={20} color={refreshing ? "#ccc" : "#007AFF"} />
+          </TouchableOpacity>
+          {user?.is_admin && (
+            <TouchableOpacity onPress={handleToggleChat} style={styles.adminButton}>
+              <Ionicons name={chatEnabled ? 'lock-open' : 'lock-closed'} size={20} color="#007AFF" />
+            </TouchableOpacity>
+          )}
+          {user?.is_admin && (
+            <TouchableOpacity onPress={handleClearChat} style={styles.adminButton}>
+              <Ionicons name="trash" size={20} color="#F44336" />
+            </TouchableOpacity>
+          )}
+        </View>
       </View>
-    </KeyboardAvoidingView>
+
+      <KeyboardAvoidingView style={styles.content} behavior={Platform.OS === 'ios' ? 'padding' : 'height'} keyboardVerticalOffset={90}>
+        <FlatList
+          ref={flatListRef}
+          data={messages}
+          keyExtractor={(item) => item.id}
+          renderItem={renderMessage}
+          contentContainerStyle={styles.messagesList}
+          onContentSizeChange={() => flatListRef.current?.scrollToEnd({ animated: false })}
+          refreshControl={
+            <RefreshControl
+              refreshing={refreshing}
+              onRefresh={onRefresh}
+              tintColor="#007AFF"
+              colors={['#007AFF']}
+            />
+          }
+          ListEmptyComponent={
+            <View style={styles.emptyContainer}>
+              <Ionicons name="chatbubbles-outline" size={64} color="#ccc" />
+              <Text style={styles.emptyText}>{t('noChatMessages')}</Text>
+            </View>
+          }
+        />
+
+        <View style={styles.inputContainer}>
+          <TextInput
+            style={[styles.input, !chatEnabled && styles.inputDisabled]}
+            placeholder={chatEnabled ? t('typeMessage') : t('chatDisabled')}
+            value={newMessage}
+            onChangeText={setNewMessage}
+            multiline
+            maxLength={500}
+            editable={chatEnabled}
+          />
+          <TouchableOpacity
+            style={[styles.sendButton, (!newMessage.trim() || sending || !chatEnabled) && styles.sendButtonDisabled]}
+            onPress={handleSendMessage}
+            disabled={!newMessage.trim() || sending || !chatEnabled}
+          >
+            {sending ? <ActivityIndicator size="small" color="#fff" /> : <Ionicons name="send" size={20} color="#fff" />}
+          </TouchableOpacity>
+        </View>
+      </KeyboardAvoidingView>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#f5f5f5',
-  },
-  loadingContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  messagesList: {
-    padding: 16,
-    paddingBottom: 8,
-  },
-  messageContainer: {
-    flexDirection: 'row',
-    marginBottom: 16,
-    alignItems: 'flex-end',
-  },
-  ownMessageContainer: {
-    justifyContent: 'flex-end',
-  },
-  avatarContainer: {
-    marginRight: 8,
-    marginBottom: 4,
-  },
-  avatarPlaceholder: {
-    width: 32,
-    height: 32,
-    borderRadius: 16,
-    backgroundColor: '#007AFF',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  avatarText: {
-    color: '#fff',
-    fontWeight: '600',
-    fontSize: 14,
-  },
-  messageBubble: {
-    maxWidth: '70%',
-    padding: 12,
-    borderRadius: 16,
-  },
-  ownBubble: {
-    backgroundColor: '#007AFF',
-    borderBottomRightRadius: 4,
-  },
-  otherBubble: {
-    backgroundColor: '#fff',
-    borderBottomLeftRadius: 4,
-  },
-  senderName: {
-    fontSize: 12,
-    fontWeight: '600',
-    color: '#007AFF',
-    marginBottom: 4,
-  },
-  messageText: {
-    fontSize: 15,
-    color: '#000',
-    lineHeight: 20,
-  },
-  ownMessageText: {
-    color: '#fff',
-  },
-  timestamp: {
-    fontSize: 10,
-    color: '#999',
-    marginTop: 4,
-  },
-  ownTimestamp: {
-    color: 'rgba(255, 255, 255, 0.7)',
-  },
-  emptyContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    paddingVertical: 80,
-  },
-  emptyText: {
-    fontSize: 18,
-    fontWeight: '600',
-    color: '#666',
-    marginTop: 16,
-  },
-  emptySubtext: {
-    fontSize: 14,
-    color: '#999',
-    marginTop: 8,
-  },
-  inputContainer: {
-    flexDirection: 'row',
-    padding: 16,
-    paddingBottom: Platform.OS === 'ios' ? 24 : 16,
-    backgroundColor: '#fff',
-    borderTopWidth: 1,
-    borderTopColor: '#e0e0e0',
-    alignItems: 'center',
-  },
-  input: {
-    flex: 1,
-    backgroundColor: '#f5f5f5',
-    borderRadius: 20,
-    paddingHorizontal: 16,
-    paddingVertical: 10,
-    marginRight: 8,
-    fontSize: 15,
-    maxHeight: 100,
-  },
-  sendButton: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    backgroundColor: '#007AFF',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  sendButtonDisabled: {
-    backgroundColor: '#ccc',
-  },
+  container: { flex: 1, backgroundColor: '#f5f5f5' },
+  loadingContainer: { flex: 1, justifyContent: 'center', alignItems: 'center' },
+  header: { backgroundColor: '#fff', padding: 16, borderBottomWidth: 1, borderBottomColor: '#e0e0e0', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
+  title: { fontSize: 24, fontWeight: 'bold', color: '#333' },
+  subtitle: { fontSize: 12, color: '#666', marginTop: 2 },
+  headerRight: { flexDirection: 'row', alignItems: 'center', gap: 12 },
+  disabledBadge: { backgroundColor: '#FFF3CD', paddingHorizontal: 8, paddingVertical: 4, borderRadius: 12 },
+  disabledBadgeText: { fontSize: 14 },
+  adminButton: { padding: 4 },
+  content: { flex: 1 },
+  messagesList: { padding: 16 },
+  emptyContainer: { flex: 1, justifyContent: 'center', alignItems: 'center', paddingVertical: 60 },
+  emptyText: { fontSize: 16, color: '#999', marginTop: 16, textAlign: 'center' },
+  messageContainer: { flexDirection: 'row', marginBottom: 12, alignItems: 'flex-end' },
+  ownMessageContainer: { justifyContent: 'flex-end' },
+  otherMessageContainer: { justifyContent: 'flex-start' },
+  avatarContainer: { marginRight: 8 },
+  avatarPlaceholder: { width: 32, height: 32, borderRadius: 16, backgroundColor: '#007AFF', justifyContent: 'center', alignItems: 'center' },
+  avatarText: { fontSize: 14, fontWeight: 'bold', color: '#fff' },
+  messageBubble: { maxWidth: '70%', padding: 12, borderRadius: 16 },
+  ownBubble: { backgroundColor: '#007AFF', borderBottomRightRadius: 4 },
+  otherBubble: { backgroundColor: '#fff', borderBottomLeftRadius: 4, shadowColor: '#000', shadowOffset: { width: 0, height: 1 }, shadowOpacity: 0.1, shadowRadius: 2, elevation: 2 },
+  username: { fontSize: 12, fontWeight: '600', color: '#007AFF', marginBottom: 4 },
+  messageText: { fontSize: 16, color: '#333', lineHeight: 20 },
+  ownMessageText: { color: '#fff' },
+  messageFooter: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginTop: 4 },
+  timeText: { fontSize: 10, color: '#999' },
+  ownTimeText: { color: 'rgba(255, 255, 255, 0.7)' },
+  deleteButton: { marginLeft: 8 },
+  inputContainer: { flexDirection: 'row', padding: 12, backgroundColor: '#fff', borderTopWidth: 1, borderTopColor: '#e0e0e0', alignItems: 'flex-end' },
+  input: { flex: 1, backgroundColor: '#f5f5f5', borderRadius: 20, paddingHorizontal: 16, paddingVertical: 10, fontSize: 16, maxHeight: 100, marginRight: 8 },
+  inputDisabled: { backgroundColor: '#e0e0e0', color: '#999' },
+  sendButton: { width: 40, height: 40, borderRadius: 20, backgroundColor: '#007AFF', justifyContent: 'center', alignItems: 'center' },
+  sendButtonDisabled: { backgroundColor: '#ccc' },
 });
