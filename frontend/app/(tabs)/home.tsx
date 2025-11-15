@@ -835,6 +835,24 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+  userTextContainer: {
+    flex: 1,
+  },
+  nameRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+  },
+  fullName: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: '#000',
+  },
+  usernameGray: {
+    fontSize: 14,
+    fontWeight: '400',
+    color: '#666',
+  },
   username: {
     fontSize: 16,
     fontWeight: '600',
