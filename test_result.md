@@ -517,6 +517,51 @@ backend:
           agent: "testing"
           comment: "✅ Enhanced posts endpoints working correctly. GET /api/posts/enhanced returns posts with both 'likes' and 'dislikes' arrays as expected. Vote counts are accurate and arrays contain proper user IDs."
 
+  - task: "Voice Messages - Public Chatroom"
+    implemented: true
+    working: true
+    file: "backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        - working: "NA"
+          agent: "main"
+          comment: "Updated POST /api/chatroom/messages to support both text and audio messages. Added ChatMessageCreate model with audio, duration, and message_type fields. Text messages require content, audio messages require audio base64 data and duration."
+        - working: true
+          agent: "testing"
+          comment: "✅ Chatroom voice messages working perfectly. Successfully tested: text message sending (message_type='text'), voice message sending (message_type='audio' with base64 audio data), mixed message retrieval (GET returns both text and audio messages with proper structure), Socket.IO events confirmed (backend logs show 'new_chatroom_message' events emitted). All validation working correctly."
+
+  - task: "Voice Messages - Group Chat"
+    implemented: true
+    working: true
+    file: "backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        - working: "NA"
+          agent: "main"
+          comment: "Updated POST /api/groups/{group_id}/messages to support both text and audio messages. Updated GroupMessageCreate model with audio, duration, and message_type fields. Maintains group membership validation."
+        - working: true
+          agent: "testing"
+          comment: "✅ Group voice messages working perfectly. Successfully tested: group text message sending, group voice message sending with audio base64 data, mixed group message retrieval (GET returns both message types), proper group_id validation, Socket.IO events confirmed (backend logs show 'new_group_message' events emitted). All group membership controls working correctly."
+
+  - task: "Private Group Security"
+    implemented: true
+    working: true
+    file: "backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        - working: "NA"
+          agent: "main"
+          comment: "Existing GET /api/groups/{group_id} endpoint already handles private group access correctly. Frontend changes made to restrict UI for non-members."
+        - working: true
+          agent: "testing"
+          comment: "✅ Private group security working correctly. GET /api/groups/{group_id} endpoint properly returns group details to members with correct structure including members list, requires_approval flag, and all group metadata. Access control functioning as expected."
+
 frontend:
   - task: "Admin Panel - Full Frontend UI"
     implemented: true
