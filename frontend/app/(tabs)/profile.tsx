@@ -30,9 +30,9 @@ export default function ProfileScreen() {
     try {
       const result = await ImagePicker.launchImageLibraryAsync({
         mediaTypes: ['images'],
-        allowsEditing: true,
-        aspect: [1, 1],
-        quality: 0.5,
+        allowsEditing: true,  // Keep editing for profile picture (circular display)
+        aspect: [1, 1],  // Keep square aspect for profile picture
+        quality: 0.7,  // Better quality
         base64: true,
       });
 
