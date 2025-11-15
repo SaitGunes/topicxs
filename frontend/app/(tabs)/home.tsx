@@ -321,10 +321,7 @@ export default function HomeScreen() {
               </View>
             )}
             <View style={styles.userTextContainer}>
-              <View style={styles.nameRow}>
-                <Text style={styles.fullName}>{item.username}</Text>
-                <Text style={styles.usernameGray}>@{item.username}</Text>
-              </View>
+              <Text style={styles.fullName}>{item.full_name || item.username}</Text>
               <Text style={styles.timestamp}>
                 {formatDistanceToNow(new Date(item.created_at), { addSuffix: true, locale: getDateLocale() })}
               </Text>
