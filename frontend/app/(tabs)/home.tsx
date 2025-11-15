@@ -941,6 +941,33 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     gap: 6,
   },
+  followBadge: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#007AFF',
+    paddingHorizontal: 8,
+    paddingVertical: 3,
+    borderRadius: 12,
+    gap: 2,
+  },
+  followBadgeText: {
+    color: '#fff',
+    fontSize: 11,
+    fontWeight: '600',
+  },
+  followingBadge: {
+    backgroundColor: '#E8F5E9',
+    paddingHorizontal: 8,
+    paddingVertical: 3,
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: '#4CAF50',
+  },
+  followingBadgeText: {
+    color: '#4CAF50',
+    fontSize: 11,
+    fontWeight: '600',
+  },
   fullName: {
     fontSize: 16,
     fontWeight: '600',
