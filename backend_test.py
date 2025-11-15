@@ -1002,7 +1002,10 @@ class DriversChatAPITester:
             ("Enhanced Posts System", self.test_enhanced_posts_system),
             ("Groups System", self.test_groups_system),
             ("Chatroom System", self.test_chatroom_system),
-            ("Friends System", self.test_friends_system)
+            ("Friends System", self.test_friends_system),
+            ("Voice Messages Chatroom", self.test_voice_messages_chatroom),
+            ("Voice Messages Groups", self.test_voice_messages_groups),
+            ("Private Group Security", self.test_private_group_security)
         ]
         
         passed_tests = 0
