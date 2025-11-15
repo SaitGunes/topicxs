@@ -214,6 +214,9 @@ class ReactionAction(BaseModel):
 class SharePost(BaseModel):
     comment: Optional[str] = None  # Optional comment when sharing
 
+class GroupMessageCreate(BaseModel):
+    content: str
+
 class Report(BaseModel):
     id: str
     reporter_user_id: str
