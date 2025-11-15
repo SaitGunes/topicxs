@@ -223,7 +223,7 @@ export default function GroupChat({ groupId }: GroupChatProps) {
   const handleToggleChat = async () => {
     try {
       const response = await axios.post(
-        `${API_URL}/api/admin/chatroom/toggle`,
+        `${API_URL}/api/admin/groups/${groupId}/toggle`,
         null,
         {
           params: { enabled: !chatEnabled },
