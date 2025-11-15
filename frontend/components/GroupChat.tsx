@@ -315,6 +315,11 @@ export default function GroupChat({ groupId }: GroupChatProps) {
       </View>
 
       <KeyboardAvoidingView style={styles.content} behavior={Platform.OS === 'ios' ? 'padding' : 'height'} keyboardVerticalOffset={90}>
+        <View style={styles.infoContainer}>
+          <Ionicons name="information-circle-outline" size={16} color="#666" />
+          <Text style={styles.infoText}>Group members can see all messages</Text>
+        </View>
+
         <FlatList
           ref={flatListRef}
           data={messages}
