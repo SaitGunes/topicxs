@@ -580,6 +580,15 @@ export default function GroupDetailScreen() {
           }
           contentContainerStyle={styles.postsList}
         />
+      ) : activeTab === 'chat' ? (
+        isMember ? (
+          <GroupChat groupId={id as string} />
+        ) : (
+          <View style={styles.emptyContainer}>
+            <Ionicons name="lock-closed-outline" size={64} color="#ccc" />
+            <Text style={styles.emptyText}>Join the group to access chat</Text>
+          </View>
+        )
       ) : (
         <ScrollView
           style={styles.content}
