@@ -1883,16 +1883,28 @@ async def get_chatroom_status(current_user: User = Depends(get_current_user)):
         return {"enabled": True}
     return {"enabled": status.get("enabled", True)}
 
+class ChatMessageCreate(BaseModel):
+    content: Optional[str] = None
+    audio: Optional[str] = None  # base64 encoded audio
+    duration: Optional[int] = None  # in seconds
+    message_type: str = "text"  # "text" or "audio"
+
 @api_router.post("/chatroom/messages")
 async def send_chatroom_message(
-    content: str,
+    message_data: ChatMessageCreate,
     current_user: User = Depends(get_current_user)
 ):
-    """Send a message to public chat room"""
+    """Send a message (text or audio) to public chat room"""
     # Check if chat is enabled
     status = await db.chatroom_status.find_one({"id": "chatroom"})
     if status and not status.get("enabled", True):
         raise HTTPException(status_code=403, detail="Chat is currently disabled by admin")
+    
+    # Validate message
+    if message_data.message_type == "text" and not message_data.content:
+        raise HTTPException(status_code=400, detail="Text message requires content")
+    if message_data.message_type == "audio" and not message_data.audio:
+        raise HTTPException(status_code=400, detail="Audio message requires audio data")
     
     message_id = str(int(datetime.utcnow().timestamp() * 1000))
     now = datetime.utcnow()
@@ -1903,7 +1915,10 @@ async def send_chatroom_message(
         "username": current_user.username,
         "full_name": current_user.full_name,
         "user_profile_picture": current_user.profile_picture,
-        "content": content,
+        "content": message_data.content,
+        "audio": message_data.audio,
+        "duration": message_data.duration,
+        "message_type": message_data.message_type,
         "created_at": now
     }
     
@@ -1916,7 +1931,10 @@ async def send_chatroom_message(
         "username": current_user.username,
         "full_name": current_user.full_name,
         "user_profile_picture": current_user.profile_picture,
-        "content": content,
+        "content": message_data.content,
+        "audio": message_data.audio,
+        "duration": message_data.duration,
+        "message_type": message_data.message_type,
         "created_at": now.isoformat()
     }
     
