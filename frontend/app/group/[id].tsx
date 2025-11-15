@@ -626,7 +626,7 @@ export default function GroupDetailScreen() {
           </TouchableOpacity>
         </View>
       ) : (
-        <>
+        <React.Fragment>
           {activeTab === 'posts' && isMember && (
             <TouchableOpacity style={styles.createPostButton} onPress={() => setCreatePostModal(true)}>
               <Ionicons name="add-circle" size={24} color="#007AFF" />
