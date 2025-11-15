@@ -47,6 +47,13 @@ interface JoinRequest {
   created_at: string;
 }
 
+interface Member {
+  id: string;
+  username: string;
+  full_name: string;
+  profile_picture?: string;
+}
+
 type TabType = 'posts' | 'members' | 'requests' | 'chat';
 
 export default function GroupDetailScreen() {
