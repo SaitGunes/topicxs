@@ -4,8 +4,8 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import axios from 'axios';
 import { io, Socket } from 'socket.io-client';
-import { useAuthStore } from '../../store/authStore';
-import { useTranslation } from '../../store/languageStore';
+import { useAuthStore } from '../store/authStore';
+import { useTranslation } from '../store/languageStore';
 
 const API_URL = process.env.EXPO_PUBLIC_BACKEND_URL;
 
