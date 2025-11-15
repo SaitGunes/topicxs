@@ -1346,8 +1346,8 @@ async def react_to_post(post_id: str, reaction_data: ReactionAction, current_use
     return PostEnhanced(**updated_post)
 
 @api_router.post("/posts/{post_id}/share", response_model=PostEnhanced)
-async def share_post(post_id: str, share_comment: Optional[str] = None, current_user: User = Depends(get_current_user)):
-    """Share a post to your timeline with optional comment"""
+async def share_post(post_id: str, current_user: User = Depends(get_current_user)):
+    """Share a post to your timeline"""
     # Find original post
     original_post = await db.posts_enhanced.find_one({"id": post_id})
     if not original_post:
