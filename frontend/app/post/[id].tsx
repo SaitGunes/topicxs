@@ -134,7 +134,7 @@ export default function PostDetailScreen() {
       </TouchableOpacity>
       <View style={styles.commentContent}>
         <View style={styles.commentHeader}>
-          <Text style={styles.commentUsername}>{item.username}</Text>
+          <Text style={styles.commentUsername}>{item.full_name || item.username}</Text>
           <Text style={styles.commentTime}>
             {formatDistanceToNow(new Date(item.created_at), { addSuffix: true, locale: tr })}
           </Text>
