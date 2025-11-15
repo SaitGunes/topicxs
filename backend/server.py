@@ -1342,6 +1342,70 @@ async def react_to_post(post_id: str, reaction_data: ReactionAction, current_use
     updated_post = await db.posts_enhanced.find_one({"id": post_id})
     return PostEnhanced(**updated_post)
 
+@api_router.post("/posts/{post_id}/share", response_model=PostEnhanced)
+async def share_post(post_id: str, share_comment: Optional[str] = None, current_user: User = Depends(get_current_user)):
+    """Share a post to your timeline with optional comment"""
+    # Find original post
+    original_post = await db.posts_enhanced.find_one({"id": post_id})
+    if not original_post:
+        raise HTTPException(status_code=404, detail="Post not found")
+    
+    # Cannot share your own post
+    if original_post["user_id"] == current_user.id:
+        raise HTTPException(status_code=400, detail="Cannot share your own post")
+    
+    # Create new post as a share
+    new_post_id = str(int(datetime.utcnow().timestamp() * 1000))
+    shared_post = {
+        "id": new_post_id,
+        "user_id": current_user.id,
+        "username": current_user.username,
+        "user_profile_picture": current_user.profile_picture,
+        "content": share_comment or "",  # Optional comment from sharer
+        "image": None,  # Shared posts don't have their own image
+        "likes": [],
+        "dislikes": [],
+        "reactions": {},
+        "comments_count": 0,
+        "privacy": {"type": "public"},  # Shares are always public
+        "group_id": None,
+        "shared_from_id": post_id,  # Link to original post
+        "share_count": 0,
+        "created_at": datetime.utcnow()
+    }
+    
+    await db.posts_enhanced.insert_one(shared_post)
+    
+    # Increment share count on original post
+    await db.posts_enhanced.update_one(
+        {"id": post_id},
+        {"$inc": {"share_count": 1}}
+    )
+    
+    # Send notification to original post owner
+    try:
+        if original_post["user_id"] != current_user.id:
+            post_owner = await db.users.find_one({"id": original_post["user_id"]})
+            if post_owner and post_owner.get("push_token"):
+                prefs = post_owner.get("notification_preferences", {})
+                if prefs.get("comments", True):  # Using comments pref for shares
+                    await send_push_notification(
+                        post_owner["push_token"],
+                        "Post Shared",
+                        f"{current_user.username} shared your post!",
+                        {
+                            "type": "share",
+                            "post_id": post_id,
+                            "share_id": new_post_id,
+                            "user_id": current_user.id,
+                            "username": current_user.username
+                        }
+                    )
+    except Exception as e:
+        logging.error(f"Error sending share notification: {e}")
+    
+    return PostEnhanced(**shared_post)
+
 @api_router.delete("/posts/{post_id}")
 async def delete_post(post_id: str, current_user: User = Depends(get_current_user)):
     post = await db.posts_enhanced.find_one({"id": post_id})
