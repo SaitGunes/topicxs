@@ -854,6 +854,102 @@ async def get_blocked_users(current_user: User = Depends(get_current_user)):
     blocked_users = await db.users.find({"id": {"$in": blocked_ids}}).to_list(100)
     return [User(**{k: v for k, v in user.items() if k != 'password'}) for user in blocked_users]
 
+# ==================== FOLLOW ROUTES ====================
+
+@api_router.post("/users/{user_id}/follow")
+@limiter.limit("100/minute")  # Max 100 follow/unfollow per minute
+async def follow_user(request: Request, user_id: str, current_user: User = Depends(get_current_user)):
+    """Follow a user"""
+    # Can't follow yourself
+    if user_id == current_user.id:
+        raise HTTPException(status_code=400, detail="Cannot follow yourself")
+    
+    # Check if user exists
+    target_user = await db.users.find_one({"id": user_id})
+    if not target_user:
+        raise HTTPException(status_code=404, detail="User not found")
+    
+    # Check if already following
+    current_user_data = await db.users.find_one({"id": current_user.id})
+    following_ids = current_user_data.get("following_ids", [])
+    
+    if user_id in following_ids:
+        raise HTTPException(status_code=400, detail="Already following this user")
+    
+    # Add to following list
+    await db.users.update_one(
+        {"id": current_user.id},
+        {"$push": {"following_ids": user_id}}
+    )
+    
+    # Add to followers list
+    await db.users.update_one(
+        {"id": user_id},
+        {"$push": {"followers_ids": current_user.id}}
+    )
+    
+    return {
+        "message": "Successfully followed user",
+        "user_id": user_id,
+        "following": True
+    }
+
+@api_router.delete("/users/{user_id}/follow")
+@limiter.limit("100/minute")
+async def unfollow_user(request: Request, user_id: str, current_user: User = Depends(get_current_user)):
+    """Unfollow a user"""
+    # Can't unfollow yourself
+    if user_id == current_user.id:
+        raise HTTPException(status_code=400, detail="Cannot unfollow yourself")
+    
+    # Remove from following list
+    await db.users.update_one(
+        {"id": current_user.id},
+        {"$pull": {"following_ids": user_id}}
+    )
+    
+    # Remove from followers list
+    await db.users.update_one(
+        {"id": user_id},
+        {"$pull": {"followers_ids": current_user.id}}
+    )
+    
+    return {
+        "message": "Successfully unfollowed user",
+        "user_id": user_id,
+        "following": False
+    }
+
+@api_router.get("/users/{user_id}/followers", response_model=List[User])
+async def get_followers(user_id: str, current_user: User = Depends(get_current_user)):
+    """Get list of users following this user"""
+    user = await db.users.find_one({"id": user_id})
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+    
+    followers_ids = user.get("followers_ids", [])
+    
+    if not followers_ids:
+        return []
+    
+    followers = await db.users.find({"id": {"$in": followers_ids}}).to_list(200)
+    return [User(**{k: v for k, v in user.items() if k != 'password'}) for user in followers]
+
+@api_router.get("/users/{user_id}/following", response_model=List[User])
+async def get_following(user_id: str, current_user: User = Depends(get_current_user)):
+    """Get list of users this user is following"""
+    user = await db.users.find_one({"id": user_id})
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+    
+    following_ids = user.get("following_ids", [])
+    
+    if not following_ids:
+        return []
+    
+    following = await db.users.find({"id": {"$in": following_ids}}).to_list(200)
+    return [User(**{k: v for k, v in user.items() if k != 'password'}) for user in following]
+
 # ==================== REPORT ROUTES ====================
 
 @api_router.post("/reports", response_model=Report)
