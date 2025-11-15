@@ -1364,13 +1364,13 @@ async def share_post(post_id: str, share_comment: Optional[str] = None, current_
         "user_id": current_user.id,
         "username": current_user.username,
         "user_profile_picture": current_user.profile_picture,
-        "content": share_comment or "",  # Optional comment from sharer
+        "content": "",  # Shared posts don't have content, just reference
         "image": None,  # Shared posts don't have their own image
         "likes": [],
         "dislikes": [],
         "reactions": {},
         "comments_count": 0,
-        "privacy": {"type": "public"},  # Shares are always public
+        "privacy": {"level": "public", "specific_user_ids": []},  # Shares are always public
         "group_id": None,
         "shared_from_id": post_id,  # Link to original post
         "share_count": 0,
