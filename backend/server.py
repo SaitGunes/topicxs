@@ -159,6 +159,8 @@ class User(BaseModel):
     invited_by: Optional[str] = None
     referral_count: int = 0
     friend_ids: List[str] = []
+    following_ids: List[str] = []  # Users this user follows
+    followers_ids: List[str] = []  # Users following this user
     blocked_user_ids: List[str] = []
     is_admin: bool = False
     push_token: Optional[str] = None
