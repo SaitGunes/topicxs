@@ -19,7 +19,11 @@ interface ChatMessage {
   created_at: string;
 }
 
-export default function ChatRoomScreen() {
+interface GroupChatProps {
+  groupId: string;
+}
+
+export default function GroupChat({ groupId }: GroupChatProps) {
   const { t } = useTranslation();
   const token = useAuthStore((state) => state.token);
   const user = useAuthStore((state) => state.user);
@@ -29,23 +33,21 @@ export default function ChatRoomScreen() {
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [sending, setSending] = useState(false);
-  const [chatEnabled, setChatEnabled] = useState(true);
   
   const socketRef = useRef<Socket | null>(null);
   const flatListRef = useRef<FlatList>(null);
 
   useEffect(() => {
     loadMessages();
-    checkChatStatus();
     connectSocket();
     
     return () => {
       if (socketRef.current) {
-        socketRef.current.emit('leave_chatroom');
+        socketRef.current.emit('leave_group_chat', { group_id: groupId });
         socketRef.current.disconnect();
       }
     };
-  }, []);
+  }, [groupId]);
 
   const loadMessages = async (showLoading = true) => {
     if (showLoading) setLoading(true);
