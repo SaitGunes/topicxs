@@ -40,7 +40,19 @@ export default function FriendsScreen() {
   useEffect(() => {
     loadFriendRequests();
     loadFriends();
+    loadFollowing();
   }, []);
+
+  const loadFollowing = async () => {
+    try {
+      if (!user?.id) return;
+      const response = await api.get(`/api/users/${user.id}/following`);
+      const ids = response.data.map((u: User) => u.id);
+      setFollowingIds(ids);
+    } catch (error) {
+      console.error('Load following error:', error);
+    }
+  };
 
   const loadFriendRequests = async () => {
     try {
