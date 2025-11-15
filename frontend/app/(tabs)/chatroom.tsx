@@ -36,6 +36,7 @@ export default function ChatRoomScreen() {
   const [refreshing, setRefreshing] = useState(false);
   const [sending, setSending] = useState(false);
   const [chatEnabled, setChatEnabled] = useState(true);
+  const [showVoiceRecorder, setShowVoiceRecorder] = useState(false);
   
   const socketRef = useRef<Socket | null>(null);
   const flatListRef = useRef<FlatList>(null);
