@@ -803,6 +803,31 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
   },
+  tabContainer: {
+    flexDirection: 'row',
+    backgroundColor: '#fff',
+    borderBottomWidth: 1,
+    borderBottomColor: '#e0e0e0',
+  },
+  tab: {
+    flex: 1,
+    paddingVertical: 12,
+    alignItems: 'center',
+    borderBottomWidth: 2,
+    borderBottomColor: 'transparent',
+  },
+  activeTab: {
+    borderBottomColor: '#007AFF',
+  },
+  tabText: {
+    fontSize: 16,
+    color: '#666',
+    fontWeight: '500',
+  },
+  activeTabText: {
+    color: '#007AFF',
+    fontWeight: '700',
+  },
   searchButton: {
     width: 40,
     height: 40,
