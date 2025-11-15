@@ -86,13 +86,14 @@ export default function GroupChat({ groupId }: GroupChatProps) {
       });
 
       socketRef.current.on('connect', () => {
-        console.log('Socket.IO connected!');
+        console.log('Socket.IO connected to group chat!');
         if (user) {
-          socketRef.current?.emit('join_chatroom', {
+          socketRef.current?.emit('join_group_chat', {
+            group_id: groupId,
             user_id: user.id,
             username: user.username,
           });
-          console.log('Joined chatroom');
+          console.log('Joined group chat');
         }
       });
 
@@ -109,7 +110,7 @@ export default function GroupChat({ groupId }: GroupChatProps) {
       // Continue without real-time updates
     }
 
-    socketRef.current.on('new_chatroom_message', (message: ChatMessage) => {
+    socketRef.current.on('new_group_message', (message: ChatMessage) => {
       console.log('New message received via Socket.IO:', message);
       setMessages((prev) => {
         const exists = prev.some(m => m.id === message.id);
