@@ -322,7 +322,17 @@ export default function ChatRoomScreen() {
         
         <View style={[styles.messageBubble, isOwnMessage ? styles.ownBubble : styles.otherBubble]}>
           {!isOwnMessage && <Text style={styles.username}>{item.full_name || item.username}</Text>}
-          <Text style={[styles.messageText, isOwnMessage && styles.ownMessageText]}>{item.content}</Text>
+          
+          {item.message_type === 'audio' && item.audio ? (
+            <AudioPlayer 
+              audioUri={item.audio} 
+              duration={item.duration || 0}
+              isOwnMessage={isOwnMessage}
+            />
+          ) : (
+            <Text style={[styles.messageText, isOwnMessage && styles.ownMessageText]}>{item.content}</Text>
+          )}
+          
           <View style={styles.messageFooter}>
             <Text style={[styles.timeText, isOwnMessage && styles.ownTimeText]}>{formatTime(item.created_at)}</Text>
             {canDelete && (
