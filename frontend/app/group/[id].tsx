@@ -540,6 +540,13 @@ export default function GroupDetailScreen() {
           <Text style={[styles.tabText, activeTab === 'members' && styles.activeTabText]}>{t('members')}</Text>
         </TouchableOpacity>
         
+        <TouchableOpacity
+          style={[styles.tab, activeTab === 'chat' && styles.activeTab]}
+          onPress={() => setActiveTab('chat')}
+        >
+          <Text style={[styles.tabText, activeTab === 'chat' && styles.activeTabText]}>💬 Chat</Text>
+        </TouchableOpacity>
+        
         {isCreator && group.requires_approval && (
           <TouchableOpacity
             style={[styles.tab, activeTab === 'requests' && styles.activeTab]}
