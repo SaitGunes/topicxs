@@ -106,11 +106,15 @@ export default function ChatRoomScreen() {
       });
 
       socketRef.current.on('connect_error', (error) => {
-        console.error('Socket connection error (will work without real-time):', error.message);
-        // Don't block the app, continue with polling
+        console.log('Real-time connection not available, using manual refresh');
+        // Don't block the app, continue with manual refresh
+      });
+
+      socketRef.current.on('disconnect', () => {
+        console.log('Socket.IO disconnected');
       });
     } catch (error) {
-      console.error('Failed to initialize Socket.IO:', error);
+      console.log('Real-time updates not available, please use refresh button');
       // Continue without real-time updates
     }
 
