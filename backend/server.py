@@ -909,7 +909,18 @@ async def update_report_status(report_id: str, status: str, current_user: User =
 # ==================== POST ROUTES ====================
 
 @api_router.post("/posts", response_model=Post)
-async def create_post(post_data: PostCreate, current_user: User = Depends(get_current_user)):
+@limiter.limit("20/minute")  # Max 20 posts per minute (spam protection)
+async def create_post(request: Request, post_data: PostCreate, current_user: User = Depends(get_current_user)):
+    # Sanitize content
+    content = sanitize_text(post_data.content, max_length=2000)
+    
+    if not content.strip():
+        raise HTTPException(status_code=400, detail="Post content cannot be empty")
+    
+    # Validate image if provided
+    if post_data.image and not validate_image_data(post_data.image):
+        raise HTTPException(status_code=400, detail="Invalid image format or size (max 10MB)")
+    
     post_id = str(datetime.utcnow().timestamp()).replace(".", "")
     
     post_dict = {
@@ -917,7 +928,7 @@ async def create_post(post_data: PostCreate, current_user: User = Depends(get_cu
         "user_id": current_user.id,
         "username": current_user.username,
         "user_profile_picture": current_user.profile_picture,
-        "content": post_data.content,
+        "content": content,
         "image": post_data.image,
         "likes": [],
         "comments_count": 0,
