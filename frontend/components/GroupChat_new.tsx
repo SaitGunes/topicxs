@@ -125,15 +125,15 @@ export default function GroupChat({ groupId }: GroupChatProps) {
       setTimeout(() => flatListRef.current?.scrollToEnd({ animated: true }), 100);
     });
 
-    socketRef.current.on('chatroom_message_deleted', (data: { message_id: string }) => {
+    socketRef.current.on('group_message_deleted', (data: { message_id: string }) => {
       setMessages((prev) => prev.filter(m => m.id !== data.message_id));
     });
 
-    socketRef.current.on('chatroom_cleared', () => {
+    socketRef.current.on('group_chat_cleared', () => {
       setMessages([]);
     });
 
-    socketRef.current.on('chatroom_status_changed', (data: { enabled: boolean }) => {
+    socketRef.current.on('group_chat_status_changed', (data: { enabled: boolean }) => {
       setChatEnabled(data.enabled);
       if (!data.enabled) {
         Alert.alert(t('chatDisabled'), t('chatDisabledMessage'));
