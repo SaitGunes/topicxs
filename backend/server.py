@@ -45,11 +45,91 @@ sio = socketio.AsyncServer(
     engineio_logger=True
 )
 
+# Rate Limiter setup
+limiter = Limiter(key_func=get_remote_address)
+
 # Create the main app
 app = FastAPI()
+app.state.limiter = limiter
+app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
 
 # Create a router with the /api prefix
 api_router = APIRouter(prefix="/api")
+
+# ==================== INPUT VALIDATION & SECURITY ====================
+
+def sanitize_text(text: str, max_length: int = 5000) -> str:
+    """
+    Sanitize user input to prevent XSS attacks
+    - Remove HTML tags
+    - Limit length
+    - Strip dangerous characters
+    """
+    if not text:
+        return ""
+    
+    # Remove HTML tags using bleach
+    clean_text = bleach.clean(text, tags=[], strip=True)
+    
+    # Limit length
+    if len(clean_text) > max_length:
+        clean_text = clean_text[:max_length]
+    
+    return clean_text.strip()
+
+def validate_image_data(image_data: str) -> bool:
+    """
+    Validate image data format
+    - Must be base64 data URI
+    - Must be image type (jpeg, png, gif, webp)
+    - Size limit check (10MB)
+    """
+    if not image_data:
+        return True
+    
+    # Check if it's a data URI
+    if not image_data.startswith('data:image/'):
+        return False
+    
+    # Check allowed formats
+    allowed_formats = ['jpeg', 'jpg', 'png', 'gif', 'webp']
+    format_match = re.match(r'data:image/(\w+);base64,', image_data)
+    if not format_match or format_match.group(1).lower() not in allowed_formats:
+        return False
+    
+    # Check size (approximate - base64 is ~1.37x larger than binary)
+    # 10MB binary = ~13.7MB base64
+    if len(image_data) > 14 * 1024 * 1024:  # ~14MB base64 limit
+        return False
+    
+    return True
+
+def validate_audio_data(audio_data: str) -> bool:
+    """
+    Validate audio data format for voice messages
+    - Must be base64 data URI
+    - Must be audio type (m4a, mp3, wav, ogg)
+    - Size limit check (5MB for 1 minute audio)
+    """
+    if not audio_data:
+        return True
+    
+    # Check if it's a data URI
+    if not audio_data.startswith('data:audio/'):
+        return False
+    
+    # Check allowed formats
+    allowed_formats = ['m4a', 'mp3', 'wav', 'ogg', 'webm']
+    format_match = re.match(r'data:audio/(\w+);base64,', audio_data)
+    if not format_match or format_match.group(1).lower() not in allowed_formats:
+        return False
+    
+    # Check size (~5MB for 1 minute voice message)
+    # 5MB binary = ~6.85MB base64
+    if len(audio_data) > 7 * 1024 * 1024:  # ~7MB base64 limit
+        return False
+    
+    return True
 
 # ==================== MODELS ====================
 
