@@ -1096,6 +1096,7 @@ async def create_comment(request: Request, post_id: str, comment_data: CommentCr
         "post_id": post_id,
         "user_id": current_user.id,
         "username": current_user.username,
+        "full_name": current_user.full_name,
         "user_profile_picture": current_user.profile_picture,
         "content": content,
         "created_at": datetime.utcnow()
