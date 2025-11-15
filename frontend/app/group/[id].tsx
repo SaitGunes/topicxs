@@ -635,53 +635,53 @@ export default function GroupDetailScreen() {
           )}
 
           {activeTab === 'posts' ? (
-        <FlatList
-          data={posts}
-          renderItem={renderPost}
-          keyExtractor={(item) => item.id}
-          refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
-          ListEmptyComponent={
-            <View style={styles.emptyContainer}>
-              <Ionicons name="document-text-outline" size={64} color="#ccc" />
-              <Text style={styles.emptyText}>{t('noPostsInGroup')}</Text>
-            </View>
-          }
-          contentContainerStyle={styles.postsList}
-        />
-      ) : activeTab === 'chat' ? (
-        isMember ? (
-          <GroupChat groupId={id as string} />
-        ) : (
-          <View style={styles.emptyContainer}>
-            <Ionicons name="lock-closed-outline" size={64} color="#ccc" />
-            <Text style={styles.emptyText}>Join the group to access chat</Text>
-          </View>
-        )
-      ) : (
-        <ScrollView
-          style={styles.content}
-          refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
-        >
-          {activeTab === 'members' && renderMembers()}
-          {activeTab === 'requests' && renderJoinRequests()}
+            <FlatList
+              data={posts}
+              renderItem={renderPost}
+              keyExtractor={(item) => item.id}
+              refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
+              ListEmptyComponent={
+                <View style={styles.emptyContainer}>
+                  <Ionicons name="document-text-outline" size={64} color="#ccc" />
+                  <Text style={styles.emptyText}>{t('noPostsInGroup')}</Text>
+                </View>
+              }
+              contentContainerStyle={styles.postsList}
+            />
+          ) : activeTab === 'chat' ? (
+            isMember ? (
+              <GroupChat groupId={id as string} />
+            ) : (
+              <View style={styles.emptyContainer}>
+                <Ionicons name="lock-closed-outline" size={64} color="#ccc" />
+                <Text style={styles.emptyText}>Join the group to access chat</Text>
+              </View>
+            )
+          ) : (
+            <ScrollView
+              style={styles.content}
+              refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
+            >
+              {activeTab === 'members' && renderMembers()}
+              {activeTab === 'requests' && renderJoinRequests()}
 
-          <View style={styles.actions}>
-            {isMember && !isCreator && (
-              <TouchableOpacity style={styles.leaveButton} onPress={handleLeaveGroup}>
-                <Ionicons name="exit-outline" size={20} color="#fff" />
-                <Text style={styles.leaveButtonText}>{t('leaveGroup')}</Text>
-              </TouchableOpacity>
-            )}
+              <View style={styles.actions}>
+                {isMember && !isCreator && (
+                  <TouchableOpacity style={styles.leaveButton} onPress={handleLeaveGroup}>
+                    <Ionicons name="exit-outline" size={20} color="#fff" />
+                    <Text style={styles.leaveButtonText}>{t('leaveGroup')}</Text>
+                  </TouchableOpacity>
+                )}
 
-            {isCreator && (
-              <TouchableOpacity style={styles.deleteButton} onPress={handleDeleteGroup}>
-                <Ionicons name="trash-outline" size={20} color="#fff" />
-                <Text style={styles.deleteButtonText}>{t('deleteGroup')}</Text>
-              </TouchableOpacity>
-            )}
-          </View>
-        </ScrollView>
-      )}
+                {isCreator && (
+                  <TouchableOpacity style={styles.deleteButton} onPress={handleDeleteGroup}>
+                    <Ionicons name="trash-outline" size={20} color="#fff" />
+                    <Text style={styles.deleteButtonText}>{t('deleteGroup')}</Text>
+                  </TouchableOpacity>
+                )}
+              </View>
+            </ScrollView>
+          )}
         </>
       )}
 
