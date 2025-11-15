@@ -319,8 +319,11 @@ export default function HomeScreen() {
                 <Ionicons name="person" size={24} color="#999" />
               </View>
             )}
-            <View>
-              <Text style={styles.username}>{item.username}</Text>
+            <View style={styles.userTextContainer}>
+              <View style={styles.nameRow}>
+                <Text style={styles.fullName}>{item.username}</Text>
+                <Text style={styles.usernameGray}>@{item.username}</Text>
+              </View>
               <Text style={styles.timestamp}>
                 {formatDistanceToNow(new Date(item.created_at), { addSuffix: true, locale: getDateLocale() })}
               </Text>
