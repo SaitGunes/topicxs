@@ -83,7 +83,7 @@ export default function AdminPanel() {
     return (
       <SafeAreaView style={styles.container}>
         <View style={styles.unauthorizedContainer}>
-          <Ionicons name="shield-off-outline" size={80} color="#FF3B30" />
+          <Ionicons name="shield-outline" size={80} color="#FF3B30" />
           <Text style={styles.unauthorizedTitle}>Access Denied</Text>
           <Text style={styles.unauthorizedText}>
             You don't have permission to access the admin panel.
