@@ -349,9 +349,9 @@ export default function GroupChat({ groupId }: GroupChatProps) {
             editable={chatEnabled}
           />
           <TouchableOpacity
-            style={[styles.sendButton, (!newMessage.trim() || sending || !chatEnabled) && styles.sendButtonDisabled]}
+            style={[styles.sendButton, (!newMessage.trim() || sending) && styles.sendButtonDisabled]}
             onPress={handleSendMessage}
-            disabled={!newMessage.trim() || sending || !chatEnabled}
+            disabled={!newMessage.trim() || sending}
           >
             {sending ? <ActivityIndicator size="small" color="#fff" /> : <Ionicons name="send" size={20} color="#fff" />}
           </TouchableOpacity>
