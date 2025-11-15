@@ -299,6 +299,25 @@ export default function GroupDetailScreen() {
     ]);
   };
 
+  const handleJoinGroup = async () => {
+    if (joining) return;
+    
+    setJoining(true);
+    try {
+      await axios.post(
+        `${API_URL}/api/groups/${id}/join`,
+        null,
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      Alert.alert(t('success'), 'Join request sent successfully');
+      await loadGroup();
+    } catch (error: any) {
+      Alert.alert(t('error'), error.response?.data?.detail || error.message);
+    } finally {
+      setJoining(false);
+    }
+  };
+
   const getTimeAgo = (dateString: string) => {
     const locale = language === 'tr' ? tr : language === 'es' ? es : undefined;
     return formatDistanceToNow(new Date(dateString), { addSuffix: true, locale });
