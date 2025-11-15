@@ -586,14 +586,35 @@ export default function GroupDetailScreen() {
         </View>
       )}
 
-      {activeTab === 'posts' && isMember && (
-        <TouchableOpacity style={styles.createPostButton} onPress={() => setCreatePostModal(true)}>
-          <Ionicons name="add-circle" size={24} color="#007AFF" />
-          <Text style={styles.createPostText}>{t('postToGroup')}</Text>
-        </TouchableOpacity>
-      )}
+      {/* Private grup + üye değilse içeriği gösterme */}
+      {group.requires_approval && !isMember ? (
+        <View style={styles.privateGroupContainer}>
+          <Ionicons name="lock-closed" size={80} color="#ccc" />
+          <Text style={styles.privateGroupTitle}>Private Group</Text>
+          <Text style={styles.privateGroupText}>
+            This is a private group. You need to join to see posts, members and chat.
+          </Text>
+          <TouchableOpacity 
+            style={styles.joinGroupButton}
+            onPress={handleJoinGroup}
+            disabled={joining}
+          >
+            <Ionicons name="person-add" size={20} color="#fff" />
+            <Text style={styles.joinGroupButtonText}>
+              {joining ? 'Sending Request...' : 'Request to Join'}
+            </Text>
+          </TouchableOpacity>
+        </View>
+      ) : (
+        <>
+          {activeTab === 'posts' && isMember && (
+            <TouchableOpacity style={styles.createPostButton} onPress={() => setCreatePostModal(true)}>
+              <Ionicons name="add-circle" size={24} color="#007AFF" />
+              <Text style={styles.createPostText}>{t('postToGroup')}</Text>
+            </TouchableOpacity>
+          )}
 
-      {activeTab === 'posts' ? (
+          {activeTab === 'posts' ? (
         <FlatList
           data={posts}
           renderItem={renderPost}
