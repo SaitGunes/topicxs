@@ -385,6 +385,17 @@ export default function HomeScreen() {
             <Ionicons name="chatbubble-outline" size={22} color="#666" />
             <Text style={styles.actionText}>{item.comments_count}</Text>
           </TouchableOpacity>
+
+          <TouchableOpacity 
+            style={[styles.actionButton, isOwnPost && styles.actionButtonDisabled]}
+            onPress={() => !isOwnPost && handleShare(item.id)}
+            disabled={isOwnPost}
+          >
+            <Ionicons name="share-outline" size={22} color={isOwnPost ? "#ccc" : "#666"} />
+            <Text style={[styles.actionText, isOwnPost && styles.disabledText]}>
+              {item.share_count || 0}
+            </Text>
+          </TouchableOpacity>
         </View>
 
         {/* Emoji Reactions */}
