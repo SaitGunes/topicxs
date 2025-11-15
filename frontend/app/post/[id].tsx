@@ -152,28 +152,52 @@ export default function PostDetailScreen() {
     }
   };
 
-  const renderComment = ({ item }: { item: Comment }) => (
-    <View style={styles.commentItem}>
-      <TouchableOpacity onPress={() => router.push(`/profile/${item.user_id}`)}>
-        {item.user_profile_picture ? (
-          <Image source={{ uri: item.user_profile_picture }} style={styles.commentAvatar} />
-        ) : (
-          <View style={[styles.commentAvatar, styles.avatarPlaceholder]}>
-            <Ionicons name="person" size={16} color="#999" />
+  const renderComment = ({ item }: { item: Comment }) => {
+    const isOwnComment = item.user_id === user?.id;
+    
+    return (
+      <View style={styles.commentItem}>
+        <TouchableOpacity onPress={() => router.push(`/profile/${item.user_id}`)}>
+          {item.user_profile_picture ? (
+            <Image source={{ uri: item.user_profile_picture }} style={styles.commentAvatar} />
+          ) : (
+            <View style={[styles.commentAvatar, styles.avatarPlaceholder]}>
+              <Ionicons name="person" size={16} color="#999" />
+            </View>
+          )}
+        </TouchableOpacity>
+        <View style={styles.commentContent}>
+          <View style={styles.commentHeader}>
+            <View style={styles.commentNameRow}>
+              <Text style={styles.commentUsername}>{item.full_name || item.username}</Text>
+              {!isOwnComment && (
+                followingIds.includes(item.user_id) ? (
+                  <TouchableOpacity 
+                    style={styles.commentFollowingBadge}
+                    onPress={() => handleUnfollow(item.user_id)}
+                  >
+                    <Text style={styles.commentFollowingText}>Following</Text>
+                  </TouchableOpacity>
+                ) : (
+                  <TouchableOpacity 
+                    style={styles.commentFollowBadge}
+                    onPress={() => handleFollow(item.user_id)}
+                  >
+                    <Ionicons name="add" size={12} color="#fff" />
+                    <Text style={styles.commentFollowText}>Follow</Text>
+                  </TouchableOpacity>
+                )
+              )}
+            </View>
+            <Text style={styles.commentTime}>
+              {formatDistanceToNow(new Date(item.created_at), { addSuffix: true, locale: tr })}
+            </Text>
           </View>
-        )}
-      </TouchableOpacity>
-      <View style={styles.commentContent}>
-        <View style={styles.commentHeader}>
-          <Text style={styles.commentUsername}>{item.full_name || item.username}</Text>
-          <Text style={styles.commentTime}>
-            {formatDistanceToNow(new Date(item.created_at), { addSuffix: true, locale: tr })}
-          </Text>
+          <Text style={styles.commentText}>{item.content}</Text>
         </View>
-        <Text style={styles.commentText}>{item.content}</Text>
       </View>
-    </View>
-  );
+    );
+  };
 
   if (!post) {
     return (
