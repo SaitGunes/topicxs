@@ -902,4 +902,9 @@ const styles = StyleSheet.create({
   reactionPickerContainer: { flexDirection: 'row', flexWrap: 'wrap', backgroundColor: '#fff', borderRadius: 16, padding: 16, gap: 12, maxWidth: 300 },
   reactionButton: { width: 48, height: 48, borderRadius: 24, backgroundColor: '#f0f0f0', justifyContent: 'center', alignItems: 'center' },
   reactionButtonEmoji: { fontSize: 24 },
+  privateGroupContainer: { flex: 1, justifyContent: 'center', alignItems: 'center', padding: 32, backgroundColor: '#f5f5f5' },
+  privateGroupTitle: { fontSize: 24, fontWeight: 'bold', color: '#333', marginTop: 16, marginBottom: 8 },
+  privateGroupText: { fontSize: 14, color: '#666', textAlign: 'center', marginBottom: 24, lineHeight: 20 },
+  joinGroupButton: { flexDirection: 'row', alignItems: 'center', backgroundColor: '#007AFF', paddingHorizontal: 24, paddingVertical: 12, borderRadius: 8, gap: 8 },
+  joinGroupButtonText: { color: '#fff', fontSize: 16, fontWeight: '600' },
 });
