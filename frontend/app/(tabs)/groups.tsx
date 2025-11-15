@@ -240,50 +240,78 @@ export default function GroupsScreen() {
       </ScrollView>
 
       <Modal visible={createModalVisible} transparent animationType="slide">
-        <View style={styles.modalOverlay}>
-          <View style={styles.modalContent}>
-            <View style={styles.modalHeader}>
-              <Text style={styles.modalTitle}>{t('createGroup')}</Text>
-              <TouchableOpacity onPress={() => setCreateModalVisible(false)}>
-                <Ionicons name="close" size={24} color="#666" />
-              </TouchableOpacity>
+        <KeyboardAvoidingView 
+          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+          style={styles.modalOverlay}
+        >
+          <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+            <View style={styles.modalOverlay}>
+              <TouchableWithoutFeedback onPress={(e) => e.stopPropagation()}>
+                <View style={styles.modalContent}>
+                  <View style={styles.modalHeader}>
+                    <Text style={styles.modalTitle}>{t('createGroup')}</Text>
+                    <TouchableOpacity onPress={() => {
+                      Keyboard.dismiss();
+                      setCreateModalVisible(false);
+                    }}>
+                      <Ionicons name="close" size={24} color="#666" />
+                    </TouchableOpacity>
+                  </View>
+
+                  <ScrollView 
+                    style={styles.modalScrollView}
+                    keyboardShouldPersistTaps="handled"
+                    showsVerticalScrollIndicator={false}
+                  >
+                    <TextInput
+                      style={styles.input}
+                      placeholder={t('groupName')}
+                      value={groupName}
+                      onChangeText={setGroupName}
+                      returnKeyType="next"
+                      blurOnSubmit={false}
+                    />
+
+                    <TextInput
+                      style={[styles.input, styles.textArea]}
+                      placeholder={t('groupDescription')}
+                      value={groupDescription}
+                      onChangeText={setGroupDescription}
+                      multiline
+                      numberOfLines={3}
+                      returnKeyType="done"
+                      blurOnSubmit={true}
+                    />
+
+                    <View style={styles.switchContainer}>
+                      <View>
+                        <Text style={styles.switchLabel}>{t('groupPrivacy')}</Text>
+                        <Text style={styles.switchSubLabel}>
+                          {requiresApproval ? t('privateGroup') : t('publicGroup')}
+                        </Text>
+                      </View>
+                      <Switch
+                        value={requiresApproval}
+                        onValueChange={setRequiresApproval}
+                        trackColor={{ false: '#767577', true: '#007AFF' }}
+                      />
+                    </View>
+
+                    <TouchableOpacity 
+                      style={styles.createGroupButton} 
+                      onPress={() => {
+                        Keyboard.dismiss();
+                        handleCreateGroup();
+                      }}
+                    >
+                      <Text style={styles.createGroupButtonText}>{t('createGroup')}</Text>
+                    </TouchableOpacity>
+                  </ScrollView>
+                </View>
+              </TouchableWithoutFeedback>
             </View>
-
-            <TextInput
-              style={styles.input}
-              placeholder={t('groupName')}
-              value={groupName}
-              onChangeText={setGroupName}
-            />
-
-            <TextInput
-              style={[styles.input, styles.textArea]}
-              placeholder={t('groupDescription')}
-              value={groupDescription}
-              onChangeText={setGroupDescription}
-              multiline
-              numberOfLines={3}
-            />
-
-            <View style={styles.switchContainer}>
-              <View>
-                <Text style={styles.switchLabel}>{t('groupPrivacy')}</Text>
-                <Text style={styles.switchSubLabel}>
-                  {requiresApproval ? t('privateGroup') : t('publicGroup')}
-                </Text>
-              </View>
-              <Switch
-                value={requiresApproval}
-                onValueChange={setRequiresApproval}
-                trackColor={{ false: '#767577', true: '#007AFF' }}
-              />
-            </View>
-
-            <TouchableOpacity style={styles.createGroupButton} onPress={handleCreateGroup}>
-              <Text style={styles.createGroupButtonText}>{t('createGroup')}</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
+          </TouchableWithoutFeedback>
+        </KeyboardAvoidingView>
       </Modal>
     </SafeAreaView>
   );
