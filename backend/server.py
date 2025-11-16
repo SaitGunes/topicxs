@@ -318,6 +318,10 @@ class GroupMessageCreate(BaseModel):
     duration: Optional[int] = None  # in seconds
     message_type: str = "text"  # "text" or "audio"
 
+class UpdateCredentialsRequest(BaseModel):
+    email: Optional[str] = None
+    password: Optional[str] = None
+
 class Report(BaseModel):
     id: str
     reporter_user_id: str
