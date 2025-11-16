@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet, Dimensions, Linking, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import MapView, { Marker, PROVIDER_DEFAULT } from 'react-native-maps';
+import { ExpoMap, Marker } from 'expo-maps';
 
 interface LocationDisplayProps {
   location: {
