@@ -191,9 +191,16 @@ class PasswordChange(BaseModel):
     current_password: str
     new_password: str
 
+class LocationInfo(BaseModel):
+    latitude: float
+    longitude: float
+    location_type: str  # traffic, roadwork, accident, closed, police
+    description: Optional[str] = None
+
 class PostCreate(BaseModel):
     content: str
     image: Optional[str] = None
+    location: Optional[LocationInfo] = None
 
 class Post(BaseModel):
     id: str
@@ -202,6 +209,7 @@ class Post(BaseModel):
     user_profile_picture: Optional[str] = None
     content: str
     image: Optional[str] = None
+    location: Optional[LocationInfo] = None
     likes: List[str] = []
     comments_count: int = 0
     created_at: datetime = Field(default_factory=datetime.utcnow)
