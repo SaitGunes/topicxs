@@ -615,7 +615,10 @@ export default function AdminScreen() {
         <View style={styles.editModalContent}>
           <View style={styles.modalHeader}>
             <Text style={styles.modalTitle}>Bilgileri Güncelle</Text>
-            <TouchableOpacity onPress={() => setShowEditModal(false)}>
+            <TouchableOpacity onPress={() => {
+              setShowEditModal(false);
+              setTimeout(() => setShowUserModal(true), 300);
+            }}>
               <Ionicons name="close" size={24} color="#333" />
             </TouchableOpacity>
           </View>
