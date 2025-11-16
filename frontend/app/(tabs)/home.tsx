@@ -622,10 +622,30 @@ export default function HomeScreen() {
               </View>
             )}
 
+            {newPostLocation && (
+              <View style={styles.locationPreview}>
+                <Ionicons name="location" size={20} color="#007AFF" />
+                <Text style={styles.locationText}>
+                  📍 {newPostLocation.description || newPostLocation.location_type}
+                </Text>
+                <TouchableOpacity onPress={() => setNewPostLocation(null)}>
+                  <Ionicons name="close-circle" size={20} color="#999" />
+                </TouchableOpacity>
+              </View>
+            )}
+
             <View style={styles.actionButtons}>
               <TouchableOpacity style={styles.addImageButton} onPress={pickImage}>
                 <Ionicons name="image-outline" size={24} color="#007AFF" />
                 <Text style={styles.addImageText}>{t('addPhoto')}</Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity 
+                style={styles.addLocationButton} 
+                onPress={() => setShowLocationPicker(true)}
+              >
+                <Ionicons name="location-outline" size={24} color="#007AFF" />
+                <Text style={styles.addLocationText}>Location</Text>
               </TouchableOpacity>
 
               <TouchableOpacity 
