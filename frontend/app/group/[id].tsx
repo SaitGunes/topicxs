@@ -745,6 +745,26 @@ export default function GroupDetailScreen() {
                 </View>
               )}
 
+              {selectedLocation && (
+                <View style={styles.locationPreviewContainer}>
+                  <View style={styles.locationPreviewHeader}>
+                    <Ionicons name="location" size={20} color="#007AFF" />
+                    <Text style={styles.locationPreviewTitle}>Konum Paylaşılacak</Text>
+                    <TouchableOpacity onPress={() => setSelectedLocation(null)}>
+                      <Ionicons name="close-circle" size={20} color="#F44336" />
+                    </TouchableOpacity>
+                  </View>
+                  <View style={styles.locationPreviewInfo}>
+                    <Text style={styles.locationPreviewType}>
+                      {selectedLocation.description || selectedLocation.location_type}
+                    </Text>
+                    <Text style={styles.locationPreviewCoords}>
+                      📍 {selectedLocation.latitude.toFixed(6)}, {selectedLocation.longitude.toFixed(6)}
+                    </Text>
+                  </View>
+                </View>
+              )}
+
               {showEmojiPicker && (
                 <View style={styles.emojiPickerContainer}>
                   <EmojiSelector onEmojiSelected={handleEmojiSelect} columns={8} />
