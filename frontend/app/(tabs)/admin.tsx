@@ -133,12 +133,15 @@ export default function AdminScreen() {
 
   const loadUsers = async (t: string) => {
     try {
+      console.log('Loading users with token:', t ? 'exists' : 'missing');
+      console.log('API URL:', API_URL);
       const response = await axios.get(`${API_URL}/api/admin/users`, {
         headers: { Authorization: `Bearer ${t}` },
       });
+      console.log('Users loaded:', response.data.length);
       setUsers(response.data);
     } catch (error: any) {
-      console.error('Failed to load users:', error);
+      console.error('Failed to load users:', error.response?.status, error.response?.data);
     }
   };
 
