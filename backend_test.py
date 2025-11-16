@@ -10,7 +10,7 @@ import time
 from datetime import datetime
 
 # Configuration
-BASE_URL = "https://driversocial.preview.emergentagent.com/api"
+BASE_URL = "https://drivers-chat.preview.emergentagent.com/api"
 TEST_CREDENTIALS = {
     "username": "admin",
     "password": "admin123"
