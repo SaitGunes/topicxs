@@ -22,6 +22,11 @@ mongo_url = os.getenv('MONGO_URL', 'mongodb://localhost:27017')
 client = AsyncIOMotorClient(mongo_url)
 db = client.drivers_chat
 
+async def check_data():
+    mongo_url = os.getenv('MONGO_URL', 'mongodb://localhost:27017')
+    client = AsyncIOMotorClient(mongo_url)
+    db = client.drivers_chat
+
 # Current topics and trends (June 2025)
 TOPICS_EN = [
     "Just tested the new Tesla Model Y with full self-driving - incredible experience!",
