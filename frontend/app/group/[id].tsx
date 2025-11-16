@@ -27,6 +27,13 @@ interface Group {
   created_at: string;
 }
 
+interface LocationInfo {
+  latitude: number;
+  longitude: number;
+  location_type: string;
+  description?: string;
+}
+
 interface Post {
   id: string;
   user_id: string;
@@ -35,6 +42,7 @@ interface Post {
   user_profile_picture?: string;
   content: string;
   image?: string;
+  location?: LocationInfo;
   likes: string[];
   dislikes: string[];
   reactions: { [key: string]: string[] };
