@@ -60,31 +60,43 @@ export default function LocationDisplay({ location }: LocationDisplayProps) {
       </View>
 
       <View style={styles.mapContainer}>
-        <ExpoMap
-          style={styles.map}
-          initialCameraPosition={{
-            target: {
-              latitude: location.latitude,
-              longitude: location.longitude,
-            },
-            zoom: 16,
-          }}
-          scrollEnabled={false}
-          zoomEnabled={false}
-        >
-          <Marker
-            coordinate={{
-              latitude: location.latitude,
-              longitude: location.longitude,
-            }}
-            title={config.label}
-          />
-        </ExpoMap>
+        {Platform.OS !== 'web' && ExpoMap ? (
+          <>
+            <ExpoMap
+              style={styles.map}
+              initialCameraPosition={{
+                target: {
+                  latitude: location.latitude,
+                  longitude: location.longitude,
+                },
+                zoom: 16,
+              }}
+              scrollEnabled={false}
+              zoomEnabled={false}
+            >
+              <Marker
+                coordinate={{
+                  latitude: location.latitude,
+                  longitude: location.longitude,
+                }}
+                title={config.label}
+              />
+            </ExpoMap>
 
-        <TouchableOpacity style={styles.openMapButton} onPress={openInMaps}>
-          <Ionicons name="navigate" size={16} color="#fff" />
-          <Text style={styles.openMapText}>Haritada Aç</Text>
-        </TouchableOpacity>
+            <TouchableOpacity style={styles.openMapButton} onPress={openInMaps}>
+              <Ionicons name="navigate" size={16} color="#fff" />
+              <Text style={styles.openMapText}>Haritada Aç</Text>
+            </TouchableOpacity>
+          </>
+        ) : (
+          <View style={styles.webMapView}>
+            <Ionicons name="map-outline" size={48} color="#007AFF" />
+            <TouchableOpacity style={styles.openMapButton} onPress={openInMaps}>
+              <Ionicons name="navigate" size={16} color="#fff" />
+              <Text style={styles.openMapText}>Haritada Aç</Text>
+            </TouchableOpacity>
+          </View>
+        )}
       </View>
     </View>
   );
