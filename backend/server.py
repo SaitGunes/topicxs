@@ -2204,11 +2204,14 @@ async def get_user_details(user_id: str, admin: User = Depends(require_admin)):
         }
     }
 
+class UpdateCredentialsRequest(BaseModel):
+    email: Optional[str] = None
+    password: Optional[str] = None
+
 @api_router.put("/admin/users/{user_id}/update-credentials")
 async def update_user_credentials(
     user_id: str,
-    email: Optional[str] = None,
-    password: Optional[str] = None,
+    request: UpdateCredentialsRequest,
     admin: User = Depends(require_admin)
 ):
     """Admin can update user email and password"""
@@ -2218,16 +2221,16 @@ async def update_user_credentials(
     
     update_data = {}
     
-    if email:
+    if request.email:
         # Check if email is already taken by another user
-        existing_user = await db.users.find_one({"email": email, "id": {"$ne": user_id}})
+        existing_user = await db.users.find_one({"email": request.email, "id": {"$ne": user_id}})
         if existing_user:
             raise HTTPException(status_code=400, detail="Email already taken")
-        update_data["email"] = email
+        update_data["email"] = request.email
     
-    if password:
+    if request.password:
         # Hash the new password
-        update_data["password"] = pwd_context.hash(password)
+        update_data["password"] = pwd_context.hash(request.password)
     
     if update_data:
         await db.users.update_one({"id": user_id}, {"$set": update_data})
