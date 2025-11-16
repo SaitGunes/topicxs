@@ -351,22 +351,4 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: '600',
   },
-  webMapPlaceholder: {
-    height: height * 0.35,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F0F8FF',
-    gap: 16,
-    padding: 24,
-  },
-  webMapText: {
-    fontSize: 14,
-    color: '#666',
-    textAlign: 'center',
-  },
-  getLocationText: {
-    color: '#fff',
-    fontSize: 14,
-    fontWeight: '600',
-  },
 });
