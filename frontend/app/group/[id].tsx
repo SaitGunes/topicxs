@@ -195,6 +195,7 @@ export default function GroupDetailScreen() {
       setPostContent('');
       setPostImage(null);
       setSelectedLocation(null);
+      setShowLocationPicker(false);
       setCreatePostModal(false);
       Alert.alert(t('success'), 'Post shared to group');
       loadPosts();
