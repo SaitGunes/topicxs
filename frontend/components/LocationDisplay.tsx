@@ -1,16 +1,6 @@
 import React from 'react';
-import { View, Text, StyleSheet, Dimensions, Linking, TouchableOpacity, Platform } from 'react-native';
+import { View, Text, StyleSheet, Dimensions, Linking, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-
-// Conditionally import expo-maps only for native platforms
-let ExpoMap: any = null;
-let Marker: any = null;
-
-if (Platform.OS !== 'web') {
-  const maps = require('expo-maps');
-  ExpoMap = maps.ExpoMap;
-  Marker = maps.Marker;
-}
 
 interface LocationDisplayProps {
   location: {
@@ -59,44 +49,14 @@ export default function LocationDisplay({ location }: LocationDisplayProps) {
         </View>
       </View>
 
-      <View style={styles.mapContainer}>
-        {Platform.OS !== 'web' && ExpoMap ? (
-          <>
-            <ExpoMap
-              style={styles.map}
-              initialCameraPosition={{
-                target: {
-                  latitude: location.latitude,
-                  longitude: location.longitude,
-                },
-                zoom: 16,
-              }}
-              scrollEnabled={false}
-              zoomEnabled={false}
-            >
-              <Marker
-                coordinate={{
-                  latitude: location.latitude,
-                  longitude: location.longitude,
-                }}
-                title={config.label}
-              />
-            </ExpoMap>
-
-            <TouchableOpacity style={styles.openMapButton} onPress={openInMaps}>
-              <Ionicons name="navigate" size={16} color="#fff" />
-              <Text style={styles.openMapText}>Haritada Aç</Text>
-            </TouchableOpacity>
-          </>
-        ) : (
-          <View style={styles.webMapView}>
-            <Ionicons name="map-outline" size={48} color="#007AFF" />
-            <TouchableOpacity style={styles.openMapButton} onPress={openInMaps}>
-              <Ionicons name="navigate" size={16} color="#fff" />
-              <Text style={styles.openMapText}>Haritada Aç</Text>
-            </TouchableOpacity>
-          </View>
-        )}
+      <View style={styles.mapPlaceholder}>
+        <Ionicons name="map-outline" size={48} color="#007AFF" />
+        <Text style={styles.placeholderText}>Konum Paylaşıldı</Text>
+        
+        <TouchableOpacity style={styles.openMapButton} onPress={openInMaps}>
+          <Ionicons name="navigate" size={16} color="#fff" />
+          <Text style={styles.openMapText}>Haritada Aç</Text>
+        </TouchableOpacity>
       </View>
     </View>
   );
@@ -136,42 +96,29 @@ const styles = StyleSheet.create({
     fontSize: 11,
     color: '#666',
   },
-  mapContainer: {
-    height: 200,
-    position: 'relative',
+  mapPlaceholder: {
+    height: 180,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#F0F8FF',
+    gap: 12,
   },
-  map: {
-    width: '100%',
-    height: '100%',
+  placeholderText: {
+    fontSize: 14,
+    color: '#666',
   },
   openMapButton: {
-    position: 'absolute',
-    bottom: 12,
-    right: 12,
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: '#007AFF',
-    paddingHorizontal: 12,
-    paddingVertical: 8,
+    paddingHorizontal: 16,
+    paddingVertical: 10,
     borderRadius: 20,
     gap: 6,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
-    elevation: 5,
   },
   openMapText: {
     color: '#fff',
     fontSize: 12,
     fontWeight: '600',
-  },
-  webMapView: {
-    width: '100%',
-    height: '100%',
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F0F8FF',
-    gap: 16,
   },
 });
