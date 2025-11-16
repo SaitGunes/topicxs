@@ -385,6 +385,10 @@ export default function GroupDetailScreen() {
           </TouchableOpacity>
         )}
 
+        {post.location && (
+          <LocationDisplay location={post.location} />
+        )}
+
         {showAutoDeleteWarning && (
           <View style={styles.warningBanner}>
             <Ionicons name="warning" size={16} color="#FF9800" />
