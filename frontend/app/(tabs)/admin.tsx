@@ -147,12 +147,14 @@ export default function AdminScreen() {
 
   const loadPosts = async (t: string) => {
     try {
+      console.log('Loading posts...');
       const response = await axios.get(`${API_URL}/api/admin/posts`, {
         headers: { Authorization: `Bearer ${t}` },
       });
+      console.log('Posts loaded:', response.data.length);
       setPosts(response.data);
     } catch (error: any) {
-      console.error('Failed to load posts:', error);
+      console.error('Failed to load posts:', error.response?.status, error.response?.data);
     }
   };
 
