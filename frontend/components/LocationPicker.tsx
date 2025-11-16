@@ -102,57 +102,41 @@ export default function LocationPicker({ onLocationSelected, onCancel }: Locatio
           </View>
         ) : currentLocation ? (
           <>
-            {Platform.OS !== 'web' && ExpoMap ? (
-              <View style={styles.mapContainer}>
-                <ExpoMap
-                  style={styles.map}
-                  initialCameraPosition={{
-                    target: {
-                      latitude: currentLocation.latitude,
-                      longitude: currentLocation.longitude,
-                    },
-                    zoom: 15,
-                  }}
-                  onPress={handleMapPress}
-                  showsUserLocation
-                >
-                  <Marker
-                    coordinate={{
-                      latitude: currentLocation.latitude,
-                      longitude: currentLocation.longitude,
-                    }}
-                    title="Paylaşılacak Konum"
-                  />
-                </ExpoMap>
-                
-                <TouchableOpacity
-                  style={styles.refreshLocationButton}
-                  onPress={getCurrentLocation}
-                >
-                  <Ionicons name="locate" size={20} color="#007AFF" />
-                </TouchableOpacity>
+            <View style={styles.locationCard}>
+              <View style={styles.locationCardHeader}>
+                <Ionicons name="location" size={32} color="#007AFF" />
+                <Text style={styles.locationCardTitle}>Mevcut Konum</Text>
               </View>
-            ) : (
-              <View style={styles.webMapPlaceholder}>
-                <Ionicons name="map" size={64} color="#007AFF" />
-                <Text style={styles.webMapText}>
-                  Harita görünümü mobil cihazlarda aktiftir
-                </Text>
-                <TouchableOpacity
-                  style={styles.refreshLocationButton}
-                  onPress={getCurrentLocation}
-                >
-                  <Ionicons name="locate" size={20} color="#fff" />
-                  <Text style={styles.getLocationText}>Konumu Yenile</Text>
-                </TouchableOpacity>
+              
+              <View style={styles.coordinatesBox}>
+                <View style={styles.coordRow}>
+                  <Text style={styles.coordLabel}>Enlem:</Text>
+                  <Text style={styles.coordValue}>{currentLocation.latitude.toFixed(6)}</Text>
+                </View>
+                <View style={styles.coordRow}>
+                  <Text style={styles.coordLabel}>Boylam:</Text>
+                  <Text style={styles.coordValue}>{currentLocation.longitude.toFixed(6)}</Text>
+                </View>
               </View>
-            )}
 
-            <View style={styles.locationInfo}>
-              <Ionicons name="location" size={16} color="#007AFF" />
-              <Text style={styles.locationText}>
-                {currentLocation.latitude.toFixed(6)}, {currentLocation.longitude.toFixed(6)}
-              </Text>
+              <TouchableOpacity
+                style={styles.viewMapButton}
+                onPress={() => {
+                  const url = `https://www.google.com/maps/search/?api=1&query=${currentLocation.latitude},${currentLocation.longitude}`;
+                  Linking.openURL(url);
+                }}
+              >
+                <Ionicons name="map" size={20} color="#007AFF" />
+                <Text style={styles.viewMapText}>Haritada Görüntüle</Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                style={styles.refreshButton}
+                onPress={getCurrentLocation}
+              >
+                <Ionicons name="refresh" size={20} color="#fff" />
+                <Text style={styles.refreshButtonText}>Konumu Yenile</Text>
+              </TouchableOpacity>
             </View>
 
             <Text style={styles.sectionTitle}>Yol Durumunu Seçin:</Text>
