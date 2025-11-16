@@ -51,28 +51,26 @@ export default function LocationDisplay({ location }: LocationDisplayProps) {
       </View>
 
       <View style={styles.mapContainer}>
-        <MapView
+        <ExpoMap
           style={styles.map}
-          provider={PROVIDER_DEFAULT}
-          initialRegion={{
-            latitude: location.latitude,
-            longitude: location.longitude,
-            latitudeDelta: 0.005,
-            longitudeDelta: 0.005,
+          initialCameraPosition={{
+            target: {
+              latitude: location.latitude,
+              longitude: location.longitude,
+            },
+            zoom: 16,
           }}
           scrollEnabled={false}
           zoomEnabled={false}
-          pitchEnabled={false}
-          rotateEnabled={false}
         >
           <Marker
             coordinate={{
               latitude: location.latitude,
               longitude: location.longitude,
             }}
-            pinColor={config.color}
+            title={config.label}
           />
-        </MapView>
+        </ExpoMap>
 
         <TouchableOpacity style={styles.openMapButton} onPress={openInMaps}>
           <Ionicons name="navigate" size={16} color="#fff" />
