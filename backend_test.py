@@ -984,6 +984,182 @@ class DriversChatAPITester:
         
         return True
 
+    def test_group_location_sharing(self):
+        """Test group location sharing functionality"""
+        print("📍 Testing Group Location Sharing...")
+        
+        if not self.test_user_token:
+            self.log_test("Group Location Sharing", False, "No test user token available")
+            return False
+        
+        # Create a test group for location sharing
+        group_data = {
+            "name": "Location Sharing Test Group",
+            "description": "Test group for location sharing functionality",
+            "requires_approval": False
+        }
+        
+        response = self.make_request("POST", "/groups", data=group_data, token=self.test_user_token)
+        
+        if not (response and response.status_code == 200):
+            self.log_test("Location Group - Create", False, "Failed to create location test group")
+            return False
+        
+        group_id = response.json().get("id")
+        if not group_id:
+            self.log_test("Location Group - Create", False, "No group ID in response")
+            return False
+        
+        self.log_test("Location Group - Create", True, f"Created location test group: {group_id}")
+        
+        # Test different location types as requested
+        location_types = [
+            {
+                "type": "traffic",
+                "description": "Heavy Traffic on Highway",
+                "lat": 41.0082,
+                "lng": 28.9784
+            },
+            {
+                "type": "roadwork", 
+                "description": "Road Construction Ahead",
+                "lat": 41.0100,
+                "lng": 28.9800
+            },
+            {
+                "type": "accident",
+                "description": "Minor Accident - Lane Blocked",
+                "lat": 41.0120,
+                "lng": 28.9820
+            },
+            {
+                "type": "closed",
+                "description": "Road Closed Due to Event",
+                "lat": 41.0140,
+                "lng": 28.9840
+            },
+            {
+                "type": "police",
+                "description": "Police Checkpoint",
+                "lat": 41.0160,
+                "lng": 28.9860
+            }
+        ]
+        
+        created_posts = []
+        
+        # Test creating posts with location data
+        for i, loc_data in enumerate(location_types):
+            post_data = {
+                "content": f"Test location post #{i+1} - {loc_data['description']}",
+                "group_id": group_id,
+                "location": {
+                    "latitude": loc_data["lat"],
+                    "longitude": loc_data["lng"],
+                    "location_type": loc_data["type"],
+                    "description": loc_data["description"]
+                }
+            }
+            
+            response = self.make_request("POST", "/posts/enhanced", data=post_data, token=self.test_user_token)
+            
+            if response and response.status_code == 200:
+                data = response.json()
+                post_id = data.get("id")
+                created_posts.append(post_id)
+                
+                # Verify location data in response
+                location = data.get("location")
+                if location:
+                    if (location.get("latitude") == loc_data["lat"] and 
+                        location.get("longitude") == loc_data["lng"] and
+                        location.get("location_type") == loc_data["type"] and
+                        location.get("description") == loc_data["description"]):
+                        self.log_test(f"Location Post - {loc_data['type']}", True, 
+                                    f"Created post with {loc_data['type']} location - ID: {post_id}")
+                    else:
+                        self.log_test(f"Location Post - {loc_data['type']}", False, 
+                                    f"Location data mismatch for {loc_data['type']} post")
+                        return False
+                else:
+                    self.log_test(f"Location Post - {loc_data['type']}", False, 
+                                f"No location data in response for {loc_data['type']} post")
+                    return False
+            else:
+                error_msg = response.json().get("detail", "Unknown error") if response else "No response"
+                self.log_test(f"Location Post - {loc_data['type']}", False, 
+                            f"Failed to create post with {loc_data['type']} location: {error_msg}")
+                return False
+        
+        # Test retrieving group posts with location data
+        response = self.make_request("GET", f"/groups/{group_id}/posts", token=self.test_user_token)
+        
+        if response and response.status_code == 200:
+            posts = response.json() if isinstance(response.json(), list) else response.json().get("posts", [])
+            
+            location_posts_found = 0
+            for post in posts:
+                if post.get("location") and post.get("id") in created_posts:
+                    location_posts_found += 1
+                    location = post["location"]
+                    
+                    # Verify all required location fields are present
+                    required_fields = ["latitude", "longitude", "location_type", "description"]
+                    if all(field in location for field in required_fields):
+                        self.log_test("Location Retrieval - Field Check", True, 
+                                    f"All location fields present for post {post['id']}")
+                    else:
+                        missing_fields = [field for field in required_fields if field not in location]
+                        self.log_test("Location Retrieval - Field Check", False, 
+                                    f"Missing location fields for post {post['id']}: {missing_fields}")
+                        return False
+            
+            if location_posts_found >= len(location_types):
+                self.log_test("Location Retrieval - Group Posts", True, 
+                            f"Found {location_posts_found} posts with location data in group")
+            else:
+                self.log_test("Location Retrieval - Group Posts", False, 
+                            f"Expected {len(location_types)} location posts, found {location_posts_found}")
+                return False
+        else:
+            self.log_test("Location Retrieval - Group Posts", False, "Failed to retrieve group posts")
+            return False
+        
+        # Test enhanced posts endpoint for location data
+        response = self.make_request("GET", "/posts/enhanced", token=self.test_user_token)
+        
+        if response and response.status_code == 200:
+            posts = response.json() if isinstance(response.json(), list) else response.json().get("posts", [])
+            
+            our_location_posts = []
+            for post in posts:
+                if post.get("id") in created_posts and post.get("location"):
+                    our_location_posts.append(post)
+            
+            if our_location_posts:
+                self.log_test("Location Retrieval - Enhanced Posts", True, 
+                            f"Found {len(our_location_posts)} of our location posts in enhanced feed")
+                
+                # Verify location data structure in enhanced posts
+                for post in our_location_posts:
+                    location = post["location"]
+                    if all(key in location for key in ["latitude", "longitude", "location_type", "description"]):
+                        self.log_test("Location Structure - Enhanced", True, 
+                                    f"Location structure valid for post {post['id']}")
+                    else:
+                        self.log_test("Location Structure - Enhanced", False, 
+                                    f"Invalid location structure for post {post['id']}")
+                        return False
+            else:
+                self.log_test("Location Retrieval - Enhanced Posts", False, 
+                            "Our location posts not found in enhanced feed")
+                return False
+        else:
+            self.log_test("Location Retrieval - Enhanced Posts", False, "Failed to retrieve enhanced posts")
+            return False
+        
+        return True
+
     def run_comprehensive_test(self):
         """Run all tests in sequence"""
         print("🚀 Starting Comprehensive Drivers Chat Backend API Testing")
