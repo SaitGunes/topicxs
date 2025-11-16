@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Alert, ActivityIndicator, ScrollView } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, TouchableOpacity, StyleSheet, Alert, ActivityIndicator, ScrollView, Dimensions } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import * as Location from 'expo-location';
+import MapView, { Marker, PROVIDER_DEFAULT } from 'react-native-maps';
 
 export interface LocationData {
   latitude: number;
@@ -23,10 +24,16 @@ const LOCATION_TYPES = [
   { type: 'police', icon: 'shield-checkmark', label: 'Police', color: '#2196F3' },
 ];
 
+const { width, height } = Dimensions.get('window');
+
 export default function LocationPicker({ onLocationSelected, onCancel }: LocationPickerProps) {
   const [loading, setLoading] = useState(false);
   const [currentLocation, setCurrentLocation] = useState<{ latitude: number; longitude: number } | null>(null);
   const [selectedType, setSelectedType] = useState<string | null>(null);
+
+  useEffect(() => {
+    getCurrentLocation();
+  }, []);
 
   const getCurrentLocation = async () => {
     setLoading(true);
@@ -34,7 +41,7 @@ export default function LocationPicker({ onLocationSelected, onCancel }: Locatio
       const { status } = await Location.requestForegroundPermissionsAsync();
       
       if (status !== 'granted') {
-        Alert.alert('Permission Denied', 'Please allow location access to share your location.');
+        Alert.alert('İzin Reddedildi', 'Konum paylaşmak için lütfen konum erişimine izin verin.');
         setLoading(false);
         return;
       }
@@ -51,7 +58,7 @@ export default function LocationPicker({ onLocationSelected, onCancel }: Locatio
       console.log('Location obtained:', location.coords);
     } catch (error) {
       console.error('Error getting location:', error);
-      Alert.alert('Error', 'Failed to get current location');
+      Alert.alert('Hata', 'Konum alınamadı');
     } finally {
       setLoading(false);
     }
@@ -59,10 +66,11 @@ export default function LocationPicker({ onLocationSelected, onCancel }: Locatio
 
   const handleSelectType = (type: string) => {
     if (!currentLocation) {
-      Alert.alert('Get Location First', 'Please tap "Get Current Location" button first');
+      Alert.alert('Önce Konum Alın', 'Lütfen önce "Konumumu Al" butonuna basın');
       return;
     }
 
+    setSelectedType(type);
     const locationData: LocationData = {
       latitude: currentLocation.latitude,
       longitude: currentLocation.longitude,
@@ -73,65 +81,96 @@ export default function LocationPicker({ onLocationSelected, onCancel }: Locatio
     onLocationSelected(locationData);
   };
 
+  const handleMapPress = (event: any) => {
+    const { latitude, longitude } = event.nativeEvent.coordinate;
+    setCurrentLocation({ latitude, longitude });
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <Text style={styles.headerTitle}>Share Location & Road Status</Text>
+        <Text style={styles.headerTitle}>Konum & Yol Durumu Paylaş</Text>
         <TouchableOpacity onPress={onCancel}>
           <Ionicons name="close" size={24} color="#333" />
         </TouchableOpacity>
       </View>
 
       <View style={styles.content}>
-        <View style={styles.locationSection}>
-          <TouchableOpacity
-            style={styles.getLocationButton}
-            onPress={getCurrentLocation}
-            disabled={loading}
-          >
-            {loading ? (
-              <ActivityIndicator color="#fff" />
-            ) : (
-              <>
-                <Ionicons name="locate" size={20} color="#fff" />
-                <Text style={styles.getLocationText}>Get Current Location</Text>
-              </>
-            )}
-          </TouchableOpacity>
+        {loading ? (
+          <View style={styles.loadingContainer}>
+            <ActivityIndicator size="large" color="#007AFF" />
+            <Text style={styles.loadingText}>Konum alınıyor...</Text>
+          </View>
+        ) : currentLocation ? (
+          <>
+            <View style={styles.mapContainer}>
+              <MapView
+                style={styles.map}
+                provider={PROVIDER_DEFAULT}
+                initialRegion={{
+                  latitude: currentLocation.latitude,
+                  longitude: currentLocation.longitude,
+                  latitudeDelta: 0.01,
+                  longitudeDelta: 0.01,
+                }}
+                onPress={handleMapPress}
+                showsUserLocation
+                showsMyLocationButton
+              >
+                <Marker
+                  coordinate={currentLocation}
+                  pinColor="#007AFF"
+                  title="Paylaşılacak Konum"
+                />
+              </MapView>
+              
+              <TouchableOpacity
+                style={styles.refreshLocationButton}
+                onPress={getCurrentLocation}
+              >
+                <Ionicons name="locate" size={20} color="#007AFF" />
+              </TouchableOpacity>
+            </View>
 
-          {currentLocation && (
             <View style={styles.locationInfo}>
-              <Ionicons name="checkmark-circle" size={20} color="#4CAF50" />
+              <Ionicons name="location" size={16} color="#007AFF" />
               <Text style={styles.locationText}>
-                Location obtained: {currentLocation.latitude.toFixed(6)}, {currentLocation.longitude.toFixed(6)}
+                {currentLocation.latitude.toFixed(6)}, {currentLocation.longitude.toFixed(6)}
               </Text>
             </View>
-          )}
-        </View>
 
-        <Text style={styles.sectionTitle}>Select Road Status:</Text>
+            <Text style={styles.sectionTitle}>Yol Durumunu Seçin:</Text>
 
-        <ScrollView style={styles.typesContainer}>
-          {LOCATION_TYPES.map((item) => (
-            <TouchableOpacity
-              key={item.type}
-              style={[
-                styles.typeButton,
-                { borderColor: item.color },
-                selectedType === item.type && { backgroundColor: item.color + '20' }
-              ]}
-              onPress={() => handleSelectType(item.type)}
-              disabled={!currentLocation}
-            >
-              <Ionicons name={item.icon as any} size={32} color={item.color} />
-              <Text style={[styles.typeLabel, { color: item.color }]}>{item.label}</Text>
+            <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.typesContainer}>
+              {LOCATION_TYPES.map((item) => (
+                <TouchableOpacity
+                  key={item.type}
+                  style={[
+                    styles.typeButton,
+                    { borderColor: item.color },
+                    selectedType === item.type && { backgroundColor: item.color + '20' }
+                  ]}
+                  onPress={() => handleSelectType(item.type)}
+                >
+                  <Ionicons name={item.icon as any} size={28} color={item.color} />
+                  <Text style={[styles.typeLabel, { color: item.color }]}>{item.label}</Text>
+                </TouchableOpacity>
+              ))}
+            </ScrollView>
+
+            <Text style={styles.helpText}>
+              📍 Harita üzerinde farklı bir nokta seçmek için haritaya dokunun
+            </Text>
+          </>
+        ) : (
+          <View style={styles.errorContainer}>
+            <Ionicons name="location-outline" size={64} color="#ccc" />
+            <Text style={styles.errorText}>Konum alınamadı</Text>
+            <TouchableOpacity style={styles.retryButton} onPress={getCurrentLocation}>
+              <Text style={styles.retryText}>Tekrar Dene</Text>
             </TouchableOpacity>
-          ))}
-        </ScrollView>
-
-        <Text style={styles.helpText}>
-          📍 First, get your current location, then select the road status to share with others.
-        </Text>
+          </View>
+        )}
       </View>
     </View>
   );
