@@ -104,25 +104,26 @@ export default function LocationPicker({ onLocationSelected, onCancel }: Locatio
         ) : currentLocation ? (
           <>
             <View style={styles.mapContainer}>
-              <MapView
+              <ExpoMap
                 style={styles.map}
-                provider={PROVIDER_DEFAULT}
-                initialRegion={{
-                  latitude: currentLocation.latitude,
-                  longitude: currentLocation.longitude,
-                  latitudeDelta: 0.01,
-                  longitudeDelta: 0.01,
+                initialCameraPosition={{
+                  target: {
+                    latitude: currentLocation.latitude,
+                    longitude: currentLocation.longitude,
+                  },
+                  zoom: 15,
                 }}
                 onPress={handleMapPress}
                 showsUserLocation
-                showsMyLocationButton
               >
                 <Marker
-                  coordinate={currentLocation}
-                  pinColor="#007AFF"
+                  coordinate={{
+                    latitude: currentLocation.latitude,
+                    longitude: currentLocation.longitude,
+                  }}
                   title="Paylaşılacak Konum"
                 />
-              </MapView>
+              </ExpoMap>
               
               <TouchableOpacity
                 style={styles.refreshLocationButton}
