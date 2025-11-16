@@ -290,6 +290,7 @@ class PostEnhanced(BaseModel):
     user_profile_picture: Optional[str] = None
     content: str
     image: Optional[str] = None
+    location: Optional[LocationInfo] = None
     likes: List[str] = []
     dislikes: List[str] = []
     reactions: dict = {}  # {"😀": ["user1", "user2"], "❤️": ["user3"]}
