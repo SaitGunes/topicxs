@@ -112,35 +112,51 @@ export default function LocationPicker({ onLocationSelected, onCancel }: Locatio
           </View>
         ) : currentLocation ? (
           <>
-            <View style={styles.mapContainer}>
-              <ExpoMap
-                style={styles.map}
-                initialCameraPosition={{
-                  target: {
-                    latitude: currentLocation.latitude,
-                    longitude: currentLocation.longitude,
-                  },
-                  zoom: 15,
-                }}
-                onPress={handleMapPress}
-                showsUserLocation
-              >
-                <Marker
-                  coordinate={{
-                    latitude: currentLocation.latitude,
-                    longitude: currentLocation.longitude,
+            {Platform.OS !== 'web' && ExpoMap ? (
+              <View style={styles.mapContainer}>
+                <ExpoMap
+                  style={styles.map}
+                  initialCameraPosition={{
+                    target: {
+                      latitude: currentLocation.latitude,
+                      longitude: currentLocation.longitude,
+                    },
+                    zoom: 15,
                   }}
-                  title="Paylaşılacak Konum"
-                />
-              </ExpoMap>
-              
-              <TouchableOpacity
-                style={styles.refreshLocationButton}
-                onPress={getCurrentLocation}
-              >
-                <Ionicons name="locate" size={20} color="#007AFF" />
-              </TouchableOpacity>
-            </View>
+                  onPress={handleMapPress}
+                  showsUserLocation
+                >
+                  <Marker
+                    coordinate={{
+                      latitude: currentLocation.latitude,
+                      longitude: currentLocation.longitude,
+                    }}
+                    title="Paylaşılacak Konum"
+                  />
+                </ExpoMap>
+                
+                <TouchableOpacity
+                  style={styles.refreshLocationButton}
+                  onPress={getCurrentLocation}
+                >
+                  <Ionicons name="locate" size={20} color="#007AFF" />
+                </TouchableOpacity>
+              </View>
+            ) : (
+              <View style={styles.webMapPlaceholder}>
+                <Ionicons name="map" size={64} color="#007AFF" />
+                <Text style={styles.webMapText}>
+                  Harita görünümü mobil cihazlarda aktiftir
+                </Text>
+                <TouchableOpacity
+                  style={styles.refreshLocationButton}
+                  onPress={getCurrentLocation}
+                >
+                  <Ionicons name="locate" size={20} color="#fff" />
+                  <Text style={styles.getLocationText}>Konumu Yenile</Text>
+                </TouchableOpacity>
+              </View>
+            )}
 
             <View style={styles.locationInfo}>
               <Ionicons name="location" size={16} color="#007AFF" />
