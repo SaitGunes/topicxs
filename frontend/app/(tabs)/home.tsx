@@ -9,6 +9,7 @@ import { formatDistanceToNow } from 'date-fns';
 import { tr, es } from 'date-fns/locale';
 import { useRouter } from 'expo-router';
 import EmojiSelector from 'react-native-emoji-selector';
+import LocationPicker, { LocationData } from '../../components/LocationPicker';
 
 interface LocationInfo {
   latitude: number;
