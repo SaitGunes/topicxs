@@ -2073,7 +2073,7 @@ async def ban_user_admin(
 @api_router.get("/admin/posts")
 async def get_all_posts_admin(
     skip: int = 0,
-    limit: int = 100,
+    limit: int = 5000,
     admin: User = Depends(require_admin)
 ):
     # Use posts_enhanced collection
