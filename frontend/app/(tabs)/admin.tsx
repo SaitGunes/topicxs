@@ -756,6 +756,8 @@ const styles = StyleSheet.create({
   searchContainer: { flexDirection: 'row', alignItems: 'center', backgroundColor: '#fff', margin: 16, marginBottom: 8, padding: 12, borderRadius: 8, borderWidth: 1, borderColor: '#e0e0e0' },
   searchIcon: { marginRight: 8 },
   searchInput: { flex: 1, fontSize: 14, color: '#333' },
+  adminFilterButton: { width: 36, height: 36, borderRadius: 18, backgroundColor: '#f0f0f0', justifyContent: 'center', alignItems: 'center', marginLeft: 8 },
+  adminFilterButtonActive: { backgroundColor: '#4CAF50' },
   sortRow: { flexDirection: 'row', alignItems: 'center', paddingHorizontal: 16, marginBottom: 12 },
   sortLabel: { fontSize: 13, color: '#666', fontWeight: '500', marginRight: 8 },
   sortScrollContainer: { flex: 1 },
