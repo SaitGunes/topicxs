@@ -19,8 +19,9 @@ fake_es = Faker('es_ES')
 
 # MongoDB connection
 mongo_url = os.getenv('MONGO_URL', 'mongodb://localhost:27017')
+db_name = os.getenv('DB_NAME', 'social_app')
 client = AsyncIOMotorClient(mongo_url)
-db = client.drivers_chat
+db = client[db_name]
 
 async def check_data():
     mongo_url = os.getenv('MONGO_URL', 'mongodb://localhost:27017')
