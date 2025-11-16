@@ -641,14 +641,6 @@ export default function HomeScreen() {
               </TouchableOpacity>
 
               <TouchableOpacity 
-                style={styles.addLocationButton} 
-                onPress={() => setShowLocationPicker(true)}
-              >
-                <Ionicons name="location-outline" size={24} color="#007AFF" />
-                <Text style={styles.addLocationText}>Location</Text>
-              </TouchableOpacity>
-
-              <TouchableOpacity 
                 style={styles.emojiButton} 
                 onPress={() => setShowEmojiPicker(!showEmojiPicker)}
               >
