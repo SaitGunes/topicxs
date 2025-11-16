@@ -105,6 +105,18 @@
 user_problem_statement: "Group location sharing feature with map view - Users can share their location and road status (traffic, accident, roadwork, etc.) exclusively in group posts with interactive map display"
 
 backend:
+  - task: "Group Location Sharing - Post Creation with Location"
+    implemented: true
+    working: "NA"
+    file: "backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+        - working: "NA"
+          agent: "main"
+          comment: "Backend already supports location sharing in posts via LocationInfo model. POST /api/posts/enhanced accepts optional location field with latitude, longitude, location_type, and description. This works for both regular posts and group posts (when group_id is provided). Ready for testing."
+
   - task: "Admin Panel - Get Statistics"
     implemented: true
     working: true
