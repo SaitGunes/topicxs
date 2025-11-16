@@ -1033,6 +1033,16 @@ async def create_post(request: Request, post_data: PostCreate, current_user: Use
     
     post_id = str(datetime.utcnow().timestamp()).replace(".", "")
     
+    # Convert location to dict if provided
+    location_dict = None
+    if post_data.location:
+        location_dict = {
+            "latitude": post_data.location.latitude,
+            "longitude": post_data.location.longitude,
+            "location_type": post_data.location.location_type,
+            "description": post_data.location.description
+        }
+    
     post_dict = {
         "id": post_id,
         "user_id": current_user.id,
@@ -1040,6 +1050,7 @@ async def create_post(request: Request, post_data: PostCreate, current_user: Use
         "user_profile_picture": current_user.profile_picture,
         "content": content,
         "image": post_data.image,
+        "location": location_dict,
         "likes": [],
         "comments_count": 0,
         "created_at": datetime.utcnow()
