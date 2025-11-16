@@ -41,6 +41,12 @@
           "backgroundColor": "#000"
         }
       ],
+      [
+        "expo-location",
+        {
+          "locationAlwaysAndWhenInUsePermission": "Bu uygulama, grup gönderilerinde konumunuzu ve yol durumunu paylaşmanız için konum bilginize ihtiyaç duyar."
+        }
+      ],
       "expo-font",
       "expo-web-browser"
     ],
