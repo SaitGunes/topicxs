@@ -290,6 +290,10 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontWeight: '600',
   },
+  roadStatusSection: {
+    backgroundColor: '#fff',
+    paddingVertical: 16,
+  },
   sectionTitle: {
     fontSize: 16,
     fontWeight: '600',
@@ -298,21 +302,23 @@ const styles = StyleSheet.create({
     marginBottom: 12,
   },
   typesContainer: {
+    marginBottom: 12,
+  },
+  typesContentContainer: {
     paddingHorizontal: 16,
-    marginBottom: 16,
+    gap: 12,
   },
   typeButton: {
     alignItems: 'center',
     justifyContent: 'center',
-    padding: 12,
+    padding: 16,
     borderWidth: 2,
     borderRadius: 12,
-    marginRight: 12,
-    minWidth: 100,
+    minWidth: 110,
     gap: 8,
   },
   typeLabel: {
-    fontSize: 12,
+    fontSize: 13,
     fontWeight: '600',
     textAlign: 'center',
   },
