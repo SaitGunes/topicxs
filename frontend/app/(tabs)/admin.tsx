@@ -103,6 +103,11 @@ export default function AdminScreen() {
   useEffect(() => {
     let result = [...users];
     
+    // Apply admin filter
+    if (showOnlyAdmins) {
+      result = result.filter((u) => u.is_admin);
+    }
+    
     // Apply search filter
     if (userSearch.trim()) {
       result = result.filter(
@@ -134,7 +139,7 @@ export default function AdminScreen() {
     });
     
     setFilteredUsers(result);
-  }, [userSearch, users, sortBy]);
+  }, [userSearch, users, sortBy, showOnlyAdmins]);
 
   useEffect(() => {
     if (postSearch.trim()) {
