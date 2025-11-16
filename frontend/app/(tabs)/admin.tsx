@@ -367,6 +367,31 @@ export default function AdminPanel() {
           <Text style={styles.statNumber}>{stats.recent_posts_7d}</Text>
           <Text style={styles.statLabel}>{t('adminRecentPosts')}</Text>
         </View>
+
+        {/* DANGER ZONE - Reset Database */}
+        <View style={styles.dangerZone}>
+          <View style={styles.dangerHeader}>
+            <Ionicons name="warning" size={24} color="#F44336" />
+            <Text style={styles.dangerTitle}>⚠️ DANGER ZONE</Text>
+          </View>
+          <Text style={styles.dangerDescription}>
+            Reset entire database. This will delete all users (except admins), posts, comments, groups, and messages. This action cannot be undone!
+          </Text>
+          <TouchableOpacity
+            style={[styles.resetButton, resetting && styles.resetButtonDisabled]}
+            onPress={handleResetDatabase}
+            disabled={resetting}
+          >
+            {resetting ? (
+              <ActivityIndicator color="#fff" />
+            ) : (
+              <>
+                <Ionicons name="trash" size={20} color="#fff" />
+                <Text style={styles.resetButtonText}>RESET DATABASE</Text>
+              </>
+            )}
+          </TouchableOpacity>
+        </View>
       </View>
     );
   };
