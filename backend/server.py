@@ -2022,7 +2022,7 @@ async def resolve_report_admin(
 @api_router.get("/admin/users", response_model=List[User])
 async def get_all_users_admin(
     skip: int = 0,
-    limit: int = 100,
+    limit: int = 5000,
     admin: User = Depends(require_admin)
 ):
     users = await db.users.find().skip(skip).limit(limit).sort("created_at", -1).to_list(length=limit)
