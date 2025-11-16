@@ -565,7 +565,8 @@ export default function AdminScreen() {
                   onPress={() => {
                     setEditEmail(selectedUser.user.email);
                     setEditPassword('');
-                    setShowEditModal(true);
+                    setShowUserModal(false);
+                    setTimeout(() => setShowEditModal(true), 300);
                   }}
                 >
                   <Ionicons name="create" size={20} color="#2196F3" />
