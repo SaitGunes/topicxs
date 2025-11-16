@@ -859,6 +859,22 @@ export default function HomeScreen() {
           />
         </KeyboardAvoidingView>
       </Modal>
+
+      {/* Location Picker Modal */}
+      <Modal
+        visible={showLocationPicker}
+        animationType="slide"
+        onRequestClose={() => setShowLocationPicker(false)}
+      >
+        <LocationPicker
+          onLocationSelected={(location) => {
+            setNewPostLocation(location);
+            setShowLocationPicker(false);
+            Alert.alert('Location Added', `${location.description} has been added to your post`);
+          }}
+          onCancel={() => setShowLocationPicker(false)}
+        />
+      </Modal>
     </View>
   );
 }
