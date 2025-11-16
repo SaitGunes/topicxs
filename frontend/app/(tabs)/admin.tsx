@@ -142,6 +142,9 @@ export default function AdminScreen() {
       setUsers(response.data);
     } catch (error: any) {
       console.error('Failed to load users:', error.response?.status, error.response?.data);
+      if (error.response?.status === 403) {
+        Alert.alert('Yetki Hatası', 'Admin paneline erişim yetkiniz yok. Lütfen admin hesabıyla giriş yapın.');
+      }
     }
   };
 
