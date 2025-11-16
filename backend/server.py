@@ -279,6 +279,7 @@ class PostPrivacy(BaseModel):
 class PostCreateEnhanced(BaseModel):
     content: str
     image: Optional[str] = None
+    location: Optional[LocationInfo] = None
     privacy: PostPrivacy = PostPrivacy(level="friends", specific_user_ids=[])
     group_id: Optional[str] = None  # If post is shared to a group
 
