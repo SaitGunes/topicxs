@@ -1,7 +1,16 @@
 import React from 'react';
-import { View, Text, StyleSheet, Dimensions, Linking, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, Dimensions, Linking, TouchableOpacity, Platform } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { ExpoMap, Marker } from 'expo-maps';
+
+// Conditionally import expo-maps only for native platforms
+let ExpoMap: any = null;
+let Marker: any = null;
+
+if (Platform.OS !== 'web') {
+  const maps = require('expo-maps');
+  ExpoMap = maps.ExpoMap;
+  Marker = maps.Marker;
+}
 
 interface LocationDisplayProps {
   location: {
