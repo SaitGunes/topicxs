@@ -1479,13 +1479,23 @@ async def get_enhanced_posts(skip: int = 0, limit: int = 20, current_user: User 
     user_data = await db.users.find_one({"id": current_user.id})
     friend_ids = user_data.get("friend_ids", [])
     
-    # Build query based on privacy settings
+    # Build query based on privacy settings - EXCLUDE group posts
     query = {
-        "$or": [
-            {"privacy.level": "public"},
-            {"user_id": current_user.id},
-            {"privacy.level": "friends", "user_id": {"$in": friend_ids}},
-            {"privacy.level": "specific", "privacy.specific_user_ids": current_user.id}
+        "$and": [
+            {
+                "$or": [
+                    {"privacy.level": "public"},
+                    {"user_id": current_user.id},
+                    {"privacy.level": "friends", "user_id": {"$in": friend_ids}},
+                    {"privacy.level": "specific", "privacy.specific_user_ids": current_user.id}
+                ]
+            },
+            {
+                "$or": [
+                    {"group_id": {"$exists": False}},
+                    {"group_id": None}
+                ]
+            }
         ]
     }
     
