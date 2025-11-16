@@ -186,12 +186,14 @@ export default function GroupDetailScreen() {
           image: postImage,
           privacy: { level: 'public', specific_user_ids: [] },
           group_id: id,
+          location: selectedLocation,
         },
         { headers: { Authorization: `Bearer ${token}` } }
       );
       
       setPostContent('');
       setPostImage(null);
+      setSelectedLocation(null);
       setCreatePostModal(false);
       Alert.alert(t('success'), 'Post shared to group');
       loadPosts();
@@ -200,6 +202,11 @@ export default function GroupDetailScreen() {
     } finally {
       setPosting(false);
     }
+  };
+
+  const handleLocationSelected = (location: LocationData) => {
+    setSelectedLocation(location);
+    setShowLocationPicker(false);
   };
 
   const handleVote = async (postId: string, voteType: 'like' | 'dislike' | 'remove') => {
