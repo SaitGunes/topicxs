@@ -139,28 +139,35 @@ export default function LocationPicker({ onLocationSelected, onCancel }: Locatio
               </TouchableOpacity>
             </View>
 
-            <Text style={styles.sectionTitle}>Yol Durumunu Seçin:</Text>
+            <View style={styles.roadStatusSection}>
+              <Text style={styles.sectionTitle}>Yol Durumunu Seçin:</Text>
 
-            <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.typesContainer}>
-              {LOCATION_TYPES.map((item) => (
-                <TouchableOpacity
-                  key={item.type}
-                  style={[
-                    styles.typeButton,
-                    { borderColor: item.color },
-                    selectedType === item.type && { backgroundColor: item.color + '20' }
-                  ]}
-                  onPress={() => handleSelectType(item.type)}
-                >
-                  <Ionicons name={item.icon as any} size={28} color={item.color} />
-                  <Text style={[styles.typeLabel, { color: item.color }]}>{item.label}</Text>
-                </TouchableOpacity>
-              ))}
-            </ScrollView>
+              <ScrollView 
+                horizontal 
+                showsHorizontalScrollIndicator={false} 
+                style={styles.typesContainer}
+                contentContainerStyle={styles.typesContentContainer}
+              >
+                {LOCATION_TYPES.map((item) => (
+                  <TouchableOpacity
+                    key={item.type}
+                    style={[
+                      styles.typeButton,
+                      { borderColor: item.color },
+                      selectedType === item.type && { backgroundColor: item.color + '20' }
+                    ]}
+                    onPress={() => handleSelectType(item.type)}
+                  >
+                    <Ionicons name={item.icon as any} size={28} color={item.color} />
+                    <Text style={[styles.typeLabel, { color: item.color }]}>{item.label}</Text>
+                  </TouchableOpacity>
+                ))}
+              </ScrollView>
 
-            <Text style={styles.helpText}>
-              📍 Harita üzerinde farklı bir nokta seçmek için haritaya dokunun
-            </Text>
+              <Text style={styles.helpText}>
+                👆 Yol durumunu seçmek için yukarıdaki butonlara dokunun
+              </Text>
+            </View>
           </>
         ) : (
           <View style={styles.errorContainer}>
