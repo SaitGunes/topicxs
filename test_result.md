@@ -658,7 +658,6 @@ metadata:
 
 test_plan:
   current_focus:
-    - "Group Location Sharing - Post Creation with Location"
     - "Group Location Sharing - LocationPicker Component with Map"
     - "Group Location Sharing - Location Display Component"
     - "Group Location Sharing - Integration in Group Posts"
