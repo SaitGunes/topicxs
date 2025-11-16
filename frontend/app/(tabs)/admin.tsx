@@ -821,6 +821,50 @@ const styles = StyleSheet.create({
     marginTop: 4,
     textAlign: 'center',
   },
+  // Danger Zone
+  dangerZone: {
+    backgroundColor: '#FFEBEE',
+    borderWidth: 2,
+    borderColor: '#F44336',
+    borderRadius: 12,
+    padding: 20,
+    marginTop: 24,
+  },
+  dangerHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 12,
+    gap: 8,
+  },
+  dangerTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#F44336',
+  },
+  dangerDescription: {
+    fontSize: 14,
+    color: '#666',
+    marginBottom: 16,
+    lineHeight: 20,
+  },
+  resetButton: {
+    flexDirection: 'row',
+    backgroundColor: '#F44336',
+    paddingVertical: 14,
+    paddingHorizontal: 20,
+    borderRadius: 8,
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 8,
+  },
+  resetButtonDisabled: {
+    opacity: 0.5,
+  },
+  resetButtonText: {
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
   // Lists
   listContainer: {
     padding: 16,
