@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
+import { clearAllCache } from '../utils/clearCache';
 
 const API_URL = process.env.EXPO_PUBLIC_BACKEND_URL;
 
