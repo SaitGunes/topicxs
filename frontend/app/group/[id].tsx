@@ -14,6 +14,7 @@ import FullScreenImage from '../../components/FullScreenImage';
 import EditPostModal from '../../components/EditPostModal';
 import GroupChat from '../../components/GroupChat';
 import LocationPicker, { LocationData } from '../../components/LocationPicker';
+import LocationDisplay from '../../components/LocationDisplay';
 
 const API_URL = process.env.EXPO_PUBLIC_BACKEND_URL;
 
