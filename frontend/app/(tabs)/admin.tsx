@@ -248,6 +248,49 @@ export default function AdminPanel() {
     ]);
   };
 
+  const handleResetDatabase = async () => {
+    Alert.alert(
+      '⚠️ DANGER: Reset Database',
+      'This will DELETE ALL users (except admins), posts, comments, groups, and messages. This action CANNOT be undone!\n\nAre you absolutely sure?',
+      [
+        { text: 'Cancel', style: 'cancel' },
+        {
+          text: 'YES, RESET EVERYTHING',
+          style: 'destructive',
+          onPress: async () => {
+            setResetting(true);
+            try {
+              const response = await axios.post(
+                `${API_URL}/api/admin/reset-database`,
+                {},
+                { headers: { Authorization: `Bearer ${token}` } }
+              );
+              
+              Alert.alert(
+                '✅ Database Reset Complete',
+                `Deleted ${response.data.details.users_deleted} users\nRemaining: ${response.data.details.remaining_users} admin(s)\n\nAll data has been cleared!`,
+                [
+                  {
+                    text: 'OK',
+                    onPress: () => {
+                      loadStats();
+                      loadUsers(1);
+                      loadPosts(1);
+                    }
+                  }
+                ]
+              );
+            } catch (error: any) {
+              Alert.alert('Error', error.response?.data?.detail || 'Failed to reset database');
+            } finally {
+              setResetting(false);
+            }
+          },
+        },
+      ]
+    );
+  };
+
   const getReasonLabel = (reason: string) => {
     const reasonMap: { [key: string]: string } = {
       spam: t('adminSpam'),
