@@ -24,8 +24,9 @@ db = client.drivers_chat
 
 async def check_data():
     mongo_url = os.getenv('MONGO_URL', 'mongodb://localhost:27017')
+    db_name = os.getenv('DB_NAME', 'social_app')
     client = AsyncIOMotorClient(mongo_url)
-    db = client.drivers_chat
+    db = client[db_name]
 
 # Current topics and trends (June 2025)
 TOPICS_EN = [
