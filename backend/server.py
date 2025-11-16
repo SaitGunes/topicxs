@@ -2355,6 +2355,42 @@ async def delete_group_message(
     
     return {"message": "Message deleted"}
 
+@api_router.post("/admin/reset-database")
+@limiter.limit("5/hour")  # Max 5 resets per hour
+async def reset_database(request: Request, admin: User = Depends(require_admin)):
+    """DANGER: Reset entire database except admin users"""
+    try:
+        # Delete all non-admin users
+        result = await db.users.delete_many({"is_admin": {"$ne": True}})
+        users_deleted = result.deleted_count
+        
+        # Clear all collections
+        await db.posts.delete_many({})
+        await db.posts_enhanced.delete_many({})
+        await db.comments.delete_many({})
+        await db.groups.delete_many({})
+        await db.group_messages.delete_many({})
+        await db.chatroom_messages.delete_many({})
+        await db.friend_requests.delete_many({})
+        await db.chats.delete_many({})
+        await db.chat_messages.delete_many({})
+        await db.reports.delete_many({})
+        
+        # Count remaining users (admins only)
+        remaining_users = await db.users.count_documents({})
+        
+        return {
+            "success": True,
+            "message": "Database reset successfully",
+            "details": {
+                "users_deleted": users_deleted,
+                "remaining_users": remaining_users,
+                "admin_preserved": True
+            }
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Reset failed: {str(e)}")
+
 # ==================== CHATROOM ====================
 
 @api_router.delete("/chatroom/messages/{message_id}")
