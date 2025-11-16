@@ -2127,6 +2127,84 @@ async def get_admin_stats(admin: User = Depends(require_admin)):
         "recent_posts_7d": recent_posts
     }
 
+@api_router.get("/admin/users/{user_id}/details")
+async def get_user_details(user_id: str, admin: User = Depends(require_admin)):
+    """Get detailed user statistics for admin panel"""
+    user = await db.users.find_one({"id": user_id})
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+    
+    # Count posts
+    posts_count = await db.posts_enhanced.count_documents({"user_id": user_id})
+    
+    # Count comments
+    comments_count = await db.comments.count_documents({"user_id": user_id})
+    
+    # Count friends
+    friends_count = len(user.get("friend_ids", []))
+    
+    # Count groups created by user
+    groups_count = await db.groups.count_documents({"creator_id": user_id})
+    
+    # Count referrals (users who have this user as referrer)
+    referrals_count = await db.users.count_documents({"referred_by": user_id})
+    
+    # Get follower/following counts
+    followers_count = len(user.get("followers_ids", []))
+    following_count = len(user.get("following_ids", []))
+    
+    return {
+        "user": {
+            "id": user["id"],
+            "username": user["username"],
+            "full_name": user.get("full_name", ""),
+            "email": user["email"],
+            "is_admin": user.get("is_admin", False),
+            "is_banned": user.get("is_banned", False),
+            "created_at": user["created_at"].isoformat() if isinstance(user.get("created_at"), datetime) else user.get("created_at"),
+            "profile_picture": user.get("profile_picture"),
+        },
+        "statistics": {
+            "posts_count": posts_count,
+            "comments_count": comments_count,
+            "friends_count": friends_count,
+            "groups_created": groups_count,
+            "referrals_count": referrals_count,
+            "followers_count": followers_count,
+            "following_count": following_count,
+        }
+    }
+
+@api_router.put("/admin/users/{user_id}/update-credentials")
+async def update_user_credentials(
+    user_id: str,
+    email: Optional[str] = None,
+    password: Optional[str] = None,
+    admin: User = Depends(require_admin)
+):
+    """Admin can update user email and password"""
+    user = await db.users.find_one({"id": user_id})
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+    
+    update_data = {}
+    
+    if email:
+        # Check if email is already taken by another user
+        existing_user = await db.users.find_one({"email": email, "id": {"$ne": user_id}})
+        if existing_user:
+            raise HTTPException(status_code=400, detail="Email already taken")
+        update_data["email"] = email
+    
+    if password:
+        # Hash the new password
+        update_data["password"] = pwd_context.hash(password)
+    
+    if update_data:
+        await db.users.update_one({"id": user_id}, {"$set": update_data})
+    
+    return {"message": "User credentials updated successfully"}
+
 # ==================== PUBLIC CHAT ROOM ====================
 
 @api_router.get("/chatroom/messages")
