@@ -10,6 +10,13 @@ import { tr, es } from 'date-fns/locale';
 import { useRouter } from 'expo-router';
 import EmojiSelector from 'react-native-emoji-selector';
 
+interface LocationInfo {
+  latitude: number;
+  longitude: number;
+  location_type: string;
+  description?: string;
+}
+
 interface Post {
   id: string;
   user_id: string;
@@ -18,6 +25,7 @@ interface Post {
   user_profile_picture: string | null;
   content: string;
   image: string | null;
+  location?: LocationInfo;
   likes: string[];
   dislikes: string[];
   comments_count: number;
