@@ -359,6 +359,58 @@ export default function AdminScreen() {
         )}
       </View>
 
+      <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.sortContainer}>
+        <TouchableOpacity
+          style={[styles.sortButton, sortBy === 'recent' && styles.sortButtonActive]}
+          onPress={() => setSortBy('recent')}
+        >
+          <Ionicons name="time" size={16} color={sortBy === 'recent' ? '#fff' : '#666'} />
+          <Text style={[styles.sortButtonText, sortBy === 'recent' && styles.sortButtonTextActive]}>
+            En Yeni
+          </Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          style={[styles.sortButton, sortBy === 'followers' && styles.sortButtonActive]}
+          onPress={() => setSortBy('followers')}
+        >
+          <Ionicons name="heart" size={16} color={sortBy === 'followers' ? '#fff' : '#666'} />
+          <Text style={[styles.sortButtonText, sortBy === 'followers' && styles.sortButtonTextActive]}>
+            En Çok Takipçi
+          </Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          style={[styles.sortButton, sortBy === 'referrals' && styles.sortButtonActive]}
+          onPress={() => setSortBy('referrals')}
+        >
+          <Ionicons name="person-add" size={16} color={sortBy === 'referrals' ? '#fff' : '#666'} />
+          <Text style={[styles.sortButtonText, sortBy === 'referrals' && styles.sortButtonTextActive]}>
+            En Çok Referans
+          </Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          style={[styles.sortButton, sortBy === 'posts' && styles.sortButtonActive]}
+          onPress={() => setSortBy('posts')}
+        >
+          <Ionicons name="document-text" size={16} color={sortBy === 'posts' ? '#fff' : '#666'} />
+          <Text style={[styles.sortButtonText, sortBy === 'posts' && styles.sortButtonTextActive]}>
+            En Çok Paylaşım
+          </Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          style={[styles.sortButton, sortBy === 'friends' && styles.sortButtonActive]}
+          onPress={() => setSortBy('friends')}
+        >
+          <Ionicons name="people" size={16} color={sortBy === 'friends' ? '#fff' : '#666'} />
+          <Text style={[styles.sortButtonText, sortBy === 'friends' && styles.sortButtonTextActive]}>
+            En Çok Arkadaş
+          </Text>
+        </TouchableOpacity>
+      </ScrollView>
+
       <ScrollView
         style={styles.listContainer}
         refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
