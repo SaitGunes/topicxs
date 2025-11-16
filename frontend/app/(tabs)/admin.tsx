@@ -320,6 +320,8 @@ export default function AdminScreen() {
           placeholder="Kullanıcı ara (isim, email, kullanıcı adı)"
           value={userSearch}
           onChangeText={setUserSearch}
+          returnKeyType="done"
+          onSubmitEditing={() => {}}
         />
         {userSearch.length > 0 && (
           <TouchableOpacity onPress={() => setUserSearch('')}>
