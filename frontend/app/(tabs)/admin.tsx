@@ -38,6 +38,12 @@ interface User {
   is_banned: boolean;
   created_at: string;
   profile_picture?: string;
+  stats?: {
+    posts_count: number;
+    friends_count: number;
+    followers_count: number;
+    referrals_count: number;
+  };
 }
 
 interface UserDetails {
