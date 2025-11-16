@@ -71,6 +71,7 @@ export default function AdminPanel() {
   const [activeTab, setActiveTab] = useState<TabType>('statistics');
   const [loading, setLoading] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
+  const [resetting, setResetting] = useState(false);
 
   // Data states
   const [stats, setStats] = useState<Stats | null>(null);
