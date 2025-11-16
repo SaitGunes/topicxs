@@ -234,7 +234,8 @@ export default function AdminScreen() {
       setEditEmail('');
       setEditPassword('');
       loadUsers(token);
-      loadUserDetails(selectedUser.user.id);
+      await loadUserDetails(selectedUser.user.id);
+      setTimeout(() => setShowUserModal(true), 300);
     } catch (error: any) {
       Alert.alert('Hata', error.response?.data?.detail || 'Güncelleme başarısız');
     } finally {
