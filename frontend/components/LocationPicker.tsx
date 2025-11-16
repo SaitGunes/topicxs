@@ -1,17 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Alert, ActivityIndicator, ScrollView, Dimensions, Platform } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, Alert, ActivityIndicator, ScrollView, Dimensions, Linking } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import * as Location from 'expo-location';
-
-// Conditionally import expo-maps only for native platforms
-let ExpoMap: any = null;
-let Marker: any = null;
-
-if (Platform.OS !== 'web') {
-  const maps = require('expo-maps');
-  ExpoMap = maps.ExpoMap;
-  Marker = maps.Marker;
-}
 
 export interface LocationData {
   latitude: number;
