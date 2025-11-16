@@ -102,7 +102,7 @@
 # Testing Data - Main Agent and testing sub agent both should log testing data below this section
 #====================================================================================================
 
-user_problem_statement: "Backend API testing for Driver Forum application - comprehensive testing of all authentication, posts, comments, users, chat, and admin endpoints"
+user_problem_statement: "Group location sharing feature with map view - Users can share their location and road status (traffic, accident, roadwork, etc.) exclusively in group posts with interactive map display"
 
 backend:
   - task: "Admin Panel - Get Statistics"
