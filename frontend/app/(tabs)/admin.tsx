@@ -100,18 +100,40 @@ export default function AdminScreen() {
   }, []);
 
   useEffect(() => {
+    let result = [...users];
+    
+    // Apply search filter
     if (userSearch.trim()) {
-      const filtered = users.filter(
+      result = result.filter(
         (u) =>
           u.username.toLowerCase().includes(userSearch.toLowerCase()) ||
           u.full_name.toLowerCase().includes(userSearch.toLowerCase()) ||
           u.email.toLowerCase().includes(userSearch.toLowerCase())
       );
-      setFilteredUsers(filtered);
-    } else {
-      setFilteredUsers(users);
     }
-  }, [userSearch, users]);
+    
+    // Apply sorting
+    result.sort((a, b) => {
+      const aStats = a.stats || { followers_count: 0, referrals_count: 0, posts_count: 0, friends_count: 0 };
+      const bStats = b.stats || { followers_count: 0, referrals_count: 0, posts_count: 0, friends_count: 0 };
+      
+      switch (sortBy) {
+        case 'followers':
+          return bStats.followers_count - aStats.followers_count;
+        case 'referrals':
+          return bStats.referrals_count - aStats.referrals_count;
+        case 'posts':
+          return bStats.posts_count - aStats.posts_count;
+        case 'friends':
+          return bStats.friends_count - aStats.friends_count;
+        case 'recent':
+        default:
+          return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
+      }
+    });
+    
+    setFilteredUsers(result);
+  }, [userSearch, users, sortBy]);
 
   useEffect(() => {
     if (postSearch.trim()) {
