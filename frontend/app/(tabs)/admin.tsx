@@ -380,6 +380,8 @@ export default function AdminScreen() {
           placeholder="Gönderi ara (içerik, kullanıcı)"
           value={postSearch}
           onChangeText={setPostSearch}
+          returnKeyType="done"
+          onSubmitEditing={() => {}}
         />
         {postSearch.length > 0 && (
           <TouchableOpacity onPress={() => setPostSearch('')}>
