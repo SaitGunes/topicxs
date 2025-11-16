@@ -113,15 +113,13 @@ export const useAuthStore = create<AuthState>((set) => ({
         console.error('Error removing push token:', error);
       }
       
-      // Clear AsyncStorage
-      await AsyncStorage.removeItem('token');
-      await AsyncStorage.removeItem('user');
-      await AsyncStorage.clear(); // Clear all storage
+      // Clear all cache including Expo cache
+      await clearAllCache();
       
       // Clear state
       set({ user: null, token: null, isLoading: false });
       
-      console.log('Logout successful');
+      console.log('Logout successful - all cache cleared');
     } catch (error) {
       console.error('Logout error:', error);
     }
