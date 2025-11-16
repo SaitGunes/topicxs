@@ -783,6 +783,17 @@ export default function GroupDetailScreen() {
               >
                 <Ionicons name="happy-outline" size={24} color="#007AFF" />
               </TouchableOpacity>
+
+              <TouchableOpacity
+                style={styles.iconButton}
+                onPress={() => setShowLocationPicker(true)}
+              >
+                <Ionicons 
+                  name={selectedLocation ? "location" : "location-outline"} 
+                  size={24} 
+                  color={selectedLocation ? "#4CAF50" : "#007AFF"} 
+                />
+              </TouchableOpacity>
               
               <TouchableOpacity
                 style={[styles.postButton, (!postContent.trim() || posting) && styles.postButtonDisabled]}
