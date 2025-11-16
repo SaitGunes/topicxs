@@ -2019,14 +2019,43 @@ async def resolve_report_admin(
     return {"message": f"Report status updated to {status}"}
 
 # Get all users (admin only)
-@api_router.get("/admin/users", response_model=List[User])
+@api_router.get("/admin/users")
 async def get_all_users_admin(
     skip: int = 0,
     limit: int = 5000,
     admin: User = Depends(require_admin)
 ):
-    users = await db.users.find().skip(skip).limit(limit).sort("created_at", -1).to_list(length=limit)
-    return [User(**{**user, "id": user["id"]}) for user in users]
+    users = await db.users.find().skip(skip).limit(limit).to_list(length=limit)
+    
+    # Add statistics for each user
+    users_with_stats = []
+    for user in users:
+        # Count posts
+        posts_count = await db.posts_enhanced.count_documents({"user_id": user["id"]})
+        
+        # Count friends, followers, referrals
+        friends_count = len(user.get("friend_ids", []))
+        followers_count = len(user.get("followers_ids", []))
+        referrals_count = await db.users.count_documents({"referred_by": user["id"]})
+        
+        users_with_stats.append({
+            "id": user["id"],
+            "username": user["username"],
+            "full_name": user.get("full_name", ""),
+            "email": user["email"],
+            "is_admin": user.get("is_admin", False),
+            "is_banned": user.get("is_banned", False),
+            "created_at": user["created_at"].isoformat() if isinstance(user.get("created_at"), datetime) else user.get("created_at"),
+            "profile_picture": user.get("profile_picture"),
+            "stats": {
+                "posts_count": posts_count,
+                "friends_count": friends_count,
+                "followers_count": followers_count,
+                "referrals_count": referrals_count,
+            }
+        })
+    
+    return users_with_stats
 
 # Toggle user admin status (admin only)
 @api_router.put("/admin/users/{user_id}/toggle-admin")
