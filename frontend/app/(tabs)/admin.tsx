@@ -368,6 +368,12 @@ export default function AdminScreen() {
             <Ionicons name="close-circle" size={20} color="#666" />
           </TouchableOpacity>
         )}
+        <TouchableOpacity
+          style={[styles.adminFilterButton, showOnlyAdmins && styles.adminFilterButtonActive]}
+          onPress={() => setShowOnlyAdmins(!showOnlyAdmins)}
+        >
+          <Ionicons name="shield-checkmark" size={18} color={showOnlyAdmins ? '#fff' : '#666'} />
+        </TouchableOpacity>
       </View>
 
       <View style={styles.sortRow}>
