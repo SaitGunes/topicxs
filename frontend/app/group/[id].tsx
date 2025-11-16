@@ -855,6 +855,13 @@ export default function GroupDetailScreen() {
           }}
         />
       )}
+
+      <Modal visible={showLocationPicker} animationType="slide">
+        <LocationPicker
+          onLocationSelected={handleLocationSelected}
+          onCancel={() => setShowLocationPicker(false)}
+        />
+      </Modal>
     </SafeAreaView>
   );
 }
