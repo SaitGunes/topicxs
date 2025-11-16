@@ -1154,6 +1154,35 @@ const styles = StyleSheet.create({
   actionButtons: {
     flexDirection: 'row',
     marginBottom: 16,
+    gap: 8,
+  },
+  addLocationButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: 12,
+    backgroundColor: '#f0f0f0',
+    borderRadius: 8,
+    flex: 1,
+  },
+  addLocationText: {
+    marginLeft: 8,
+    color: '#007AFF',
+    fontSize: 16,
+  },
+  locationPreview: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: 12,
+    backgroundColor: '#E3F2FD',
+    borderRadius: 8,
+    marginBottom: 12,
+    gap: 8,
+  },
+  locationText: {
+    flex: 1,
+    color: '#1976D2',
+    fontSize: 14,
+    fontWeight: '500',
   },
   emojiButton: {
     flexDirection: 'row',
