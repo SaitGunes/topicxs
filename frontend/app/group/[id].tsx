@@ -86,6 +86,8 @@ export default function GroupDetailScreen() {
   const [postImage, setPostImage] = useState<string | null>(null);
   const [posting, setPosting] = useState(false);
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
+  const [showLocationPicker, setShowLocationPicker] = useState(false);
+  const [selectedLocation, setSelectedLocation] = useState<LocationData | null>(null);
   
   const [fullScreenImage, setFullScreenImage] = useState<string | null>(null);
   const [editModalVisible, setEditModalVisible] = useState(false);
