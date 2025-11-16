@@ -1438,6 +1438,16 @@ async def create_enhanced_post(post_data: PostCreateEnhanced, current_user: User
         if current_user.id not in group["member_ids"]:
             raise HTTPException(status_code=403, detail="Not a member of this group")
     
+    # Convert location to dict if provided
+    location_dict = None
+    if post_data.location:
+        location_dict = {
+            "latitude": post_data.location.latitude,
+            "longitude": post_data.location.longitude,
+            "location_type": post_data.location.location_type,
+            "description": post_data.location.description
+        }
+    
     post_dict = {
         "id": post_id,
         "user_id": current_user.id,
@@ -1446,6 +1456,7 @@ async def create_enhanced_post(post_data: PostCreateEnhanced, current_user: User
         "user_profile_picture": current_user.profile_picture,
         "content": post_data.content,
         "image": post_data.image,
+        "location": location_dict,
         "likes": [],
         "dislikes": [],
         "reactions": {},
