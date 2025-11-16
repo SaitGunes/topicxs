@@ -48,6 +48,8 @@ export default function HomeScreen() {
   const [createModalVisible, setCreateModalVisible] = useState(false);
   const [newPostContent, setNewPostContent] = useState('');
   const [newPostImage, setNewPostImage] = useState<string | null>(null);
+  const [newPostLocation, setNewPostLocation] = useState<LocationData | null>(null);
+  const [showLocationPicker, setShowLocationPicker] = useState(false);
   const [posting, setPosting] = useState(false);
   const [privacyLevel, setPrivacyLevel] = useState<'public' | 'friends' | 'specific'>('friends');
   const [friends, setFriends] = useState<any[]>([]);
