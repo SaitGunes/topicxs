@@ -2204,10 +2204,6 @@ async def get_user_details(user_id: str, admin: User = Depends(require_admin)):
         }
     }
 
-class UpdateCredentialsRequest(BaseModel):
-    email: Optional[str] = None
-    password: Optional[str] = None
-
 @api_router.put("/admin/users/{user_id}/update-credentials")
 async def update_user_credentials(
     user_id: str,
