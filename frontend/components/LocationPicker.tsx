@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Alert, ActivityIndicator, ScrollView, Dimensions } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import * as Location from 'expo-location';
-import MapView, { Marker, PROVIDER_DEFAULT } from 'react-native-maps';
+import { ExpoMap, Marker } from 'expo-maps';
 
 export interface LocationData {
   latitude: number;
