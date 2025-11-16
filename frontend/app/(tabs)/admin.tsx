@@ -79,6 +79,7 @@ export default function AdminScreen() {
   const [userSearch, setUserSearch] = useState('');
   const [filteredUsers, setFilteredUsers] = useState<User[]>([]);
   const [sortBy, setSortBy] = useState<'followers' | 'referrals' | 'posts' | 'friends' | 'recent'>('recent');
+  const [showOnlyAdmins, setShowOnlyAdmins] = useState(false);
   const [selectedUser, setSelectedUser] = useState<UserDetails | null>(null);
   const [showUserModal, setShowUserModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
