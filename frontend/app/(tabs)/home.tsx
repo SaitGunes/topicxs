@@ -170,6 +170,7 @@ export default function HomeScreen() {
       const response = await api.post('/api/posts/enhanced', {
         content: newPostContent,
         image: newPostImage,
+        location: newPostLocation,
         privacy: {
           level: privacyLevel,
           specific_user_ids: privacyLevel === 'specific' ? selectedFriends : [],
@@ -179,6 +180,7 @@ export default function HomeScreen() {
       setPosts([response.data, ...posts]);
       setNewPostContent('');
       setNewPostImage(null);
+      setNewPostLocation(null);
       setPrivacyLevel('friends');
       setSelectedFriends([]);
       setCreateModalVisible(false);
