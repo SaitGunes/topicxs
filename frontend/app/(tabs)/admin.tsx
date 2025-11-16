@@ -216,7 +216,10 @@ export default function AdminScreen() {
 
     setLoading(true);
     try {
-      await axios.put(
+      console.log('Updating credentials for:', selectedUser.user.id);
+      console.log('Email:', editEmail, 'Password:', editPassword ? '***' : 'empty');
+      
+      const response = await axios.put(
         `${API_URL}/api/admin/users/${selectedUser.user.id}/update-credentials`,
         {
           email: editEmail || undefined,
@@ -225,6 +228,7 @@ export default function AdminScreen() {
         { headers: { Authorization: `Bearer ${token}` } }
       );
       
+      console.log('Update response:', response.data);
       Alert.alert('Başarılı', 'Kullanıcı bilgileri güncellendi');
       setShowEditModal(false);
       setEditEmail('');
