@@ -139,7 +139,7 @@ GROUP_NAMES = [
 
 async def clear_database_keep_admin():
     """Clear all collections except admin user"""
-    print("🗑️  Clearing database (keeping admin)...")
+    print(f"🗑️  Clearing database: {db.name} (keeping admin)...")
     
     # Get admin user
     admin = await db.users.find_one({"username": "admin"})
