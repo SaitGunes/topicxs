@@ -716,6 +716,7 @@ export default function GroupDetailScreen() {
                 setCreatePostModal(false);
                 setPostContent('');
                 setPostImage(null);
+                setSelectedLocation(null);
                 setShowEmojiPicker(false);
               }}>
                 <Ionicons name="close" size={24} color="#666" />
