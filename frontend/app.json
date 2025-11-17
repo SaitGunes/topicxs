@@ -5,13 +5,26 @@
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
-    "scheme": "frontend",
+    "scheme": "driversChat",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
+    "splash": {
+      "image": "./assets/images/splash-icon.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#000000"
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "supportsTablet": true,
+      "bundleIdentifier": "com.drvchat.app",
+      "buildNumber": "1",
       "infoPlist": {
-        "NSLocationWhenInUseUsageDescription": "Bu uygulama, grup gönderilerinde konumunuzu ve yol durumunu paylaşmanız için konum bilginize ihtiyaç duyar."
+        "NSLocationWhenInUseUsageDescription": "Bu uygulama, grup gönderilerinde konumunuzu ve yol durumunu paylaşmanız için konum bilginize ihtiyaç duyar.",
+        "NSMicrophoneUsageDescription": "Bu uygulama, sohbetlerde ses mesajları göndermek için mikrofon erişimine ihtiyaç duyar.",
+        "NSCameraUsageDescription": "Bu uygulama, profil fotoğrafı ve gönderi resimleri için kamera erişimine ihtiyaç duyar.",
+        "NSPhotoLibraryUsageDescription": "Bu uygulama, profil fotoğrafı ve gönderi resimleri için fotoğraf galerisine erişime ihtiyaç duyar."
       }
     },
     "android": {
