@@ -682,7 +682,7 @@ export const translations = {
     helpQuestion6: 'Profil resmimi nasıl değiştirebilirim?',
     helpAnswer6: 'Profil sekmesine gidin ve yeni bir fotoğraf yüklemek için profil resminize dokunun.',
     helpQuestion7: 'Desteğe nasıl ulaşabilirim?',
-    helpAnswer7: 'Destek için bize support@drvchat.com adresinden e-posta gönderin',
+    helpAnswer7: 'Destek için bize isyerimiz@gmail.com adresinden e-posta gönderin',
     helpHowCanWeHelp: 'Nasıl yardımcı olabiliriz?',
     helpFindAnswers: 'Drivers Chat hakkında sık sorulan sorulara cevaplar bulun',
     helpStillNeed: 'Hala yardıma mı ihtiyacınız var?',
