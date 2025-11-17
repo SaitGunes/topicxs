@@ -1190,7 +1190,7 @@ export const translations = {
     helpQuestion6: '¿Cómo cambio mi foto de perfil?',
     helpAnswer6: 'Ve a la pestaña Perfil y toca tu foto de perfil para subir una nueva foto.',
     helpQuestion7: '¿Cómo contacto con soporte?',
-    helpAnswer7: 'Para soporte, envíanos un correo a support@drvchat.com',
+    helpAnswer7: 'Para soporte, envíanos un correo a isyerimiz@gmail.com',
     helpHowCanWeHelp: '¿Cómo podemos ayudarte?',
     helpFindAnswers: 'Encuentra respuestas a preguntas comunes sobre Drivers Chat',
     helpStillNeed: '¿Aún necesitas ayuda?',
