@@ -268,10 +268,24 @@ export default function TermsModal({ visible, onAccept }: TermsModalProps) {
                 <Text style={styles.text}>
                   • Driving tips and experiences{'\n'}
                   • Safety advice and road conditions{'\n'}
+                  • Real-time traffic updates and road hazards{'\n'}
+                  • Location-based road status alerts (in groups){'\n'}
+                  • Voice messages for quick communication{'\n'}
                   • Questions about transportation platforms{'\n'}
                   • Friendly conversations and support{'\n'}
                   • Memes and humor (appropriate only){'\n'}
                   • Personal stories (within guidelines)
+                </Text>
+              </View>
+
+              <View style={styles.section}>
+                <Text style={styles.subtitle}>🎤 Voice Messages & Location Guidelines</Text>
+                <Text style={styles.text}>
+                  • <Text style={styles.bold}>Voice Messages:</Text> Keep them brief and respectful{'\n'}
+                  • <Text style={styles.bold}>Location Sharing:</Text> Only share in relevant group contexts{'\n'}
+                  • <Text style={styles.bold}>Road Alerts:</Text> Provide accurate, helpful information{'\n'}
+                  • <Text style={styles.bold}>Privacy:</Text> Don't share others' personal locations without consent{'\n'}
+                  • <Text style={styles.bold}>Safety First:</Text> Never record or share while actively driving
                 </Text>
               </View>
 
