@@ -174,7 +174,7 @@ export const translations = {
     helpQuestion6: 'How do I change my profile picture?',
     helpAnswer6: 'Go to Profile tab and tap on your profile picture to upload a new photo.',
     helpQuestion7: 'How do I contact support?',
-    helpAnswer7: 'For support, email us at support@drvchat.com',
+    helpAnswer7: 'For support, email us at isyerimiz@gmail.com',
     helpHowCanWeHelp: 'How can we help you?',
     helpFindAnswers: 'Find answers to common questions about Drivers Chat',
     helpStillNeed: 'Still need help?',
