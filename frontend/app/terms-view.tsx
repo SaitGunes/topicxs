@@ -129,7 +129,7 @@ export default function TermsViewScreen() {
               <Text style={styles.subtitle}>8. Contact</Text>
               <Text style={styles.text}>
                 For questions or concerns, contact us at:{'\n'}
-                support@drvchat.com
+                isyerimiz@gmail.com
               </Text>
             </View>
           </View>
