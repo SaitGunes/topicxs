@@ -98,6 +98,27 @@ export default function TermsModal({ visible, onAccept }: TermsModalProps) {
                 </Text>
               </View>
 
+              <View style={styles.section}>
+                <Text style={styles.subtitle}>4.1 Location Data</Text>
+                <Text style={styles.text}>
+                  • You can optionally share your location in group posts{'\n'}
+                  • Location sharing is VOLUNTARY and requires your permission{'\n'}
+                  • Shared locations are visible to all group members{'\n'}
+                  • You can choose road status alerts (traffic, accidents, etc.){'\n'}
+                  • We do NOT track your location without your explicit consent
+                </Text>
+              </View>
+
+              <View style={styles.section}>
+                <Text style={styles.subtitle}>4.2 Voice Messages</Text>
+                <Text style={styles.text}>
+                  • You can send voice messages in chats and groups{'\n'}
+                  • Voice messages are stored securely on our servers{'\n'}
+                  • Recipients can listen to and download voice messages{'\n'}
+                  • Voice messages may be subject to moderation for safety
+                </Text>
+              </View>
+
               <View style={[styles.section, styles.highlightedSection]}>
                 <Text style={styles.subtitle}>⚠️ 5. Age Requirement (18+)</Text>
                 <Text style={[styles.text, styles.importantText]}>
