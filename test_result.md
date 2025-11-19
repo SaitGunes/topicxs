@@ -397,13 +397,13 @@ backend:
           agent: "testing"
           comment: "✅ User search endpoint working correctly. Performs case-insensitive search on username and full_name fields. Returns up to 50 matching users."
 
-  - task: "Chat - Create Chat"
+  - task: "Chat - Create Chat with Sector"
     implemented: true
-    working: true
+    working: "NA"
     file: "backend/server.py"
     stuck_count: 0
     priority: "high"
-    needs_retesting: false
+    needs_retesting: true
     status_history:
         - working: true
           agent: "testing"
@@ -411,6 +411,9 @@ backend:
         - working: true
           agent: "testing"
           comment: "✅ COMPREHENSIVE MESSAGING SYSTEM TEST COMPLETE - POST /api/chats endpoint fully tested. Successfully creates chats between users with proper member management. Verified chat structure includes all required fields (id, name, is_group, members, created_at). Both users automatically added to members list. Test passed with 100% success rate."
+        - working: "NA"
+          agent: "main"
+          comment: "Updated POST /api/chats to accept and save sector field. Frontend updated to pass currentSector when creating chats from friends.tsx and profile/[id].tsx. Ready for testing to verify chats are created with correct sector field."
 
   - task: "Chat - Get User Chats"
     implemented: true
