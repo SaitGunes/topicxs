@@ -225,19 +225,21 @@ export default function TermsViewScreen() {
             <View style={styles.subsection}>
               <Text style={styles.subtitle}>✅ What You CAN Share</Text>
               <Text style={styles.text}>
-                • Driving tips and experiences{'\n'}
-                • Safety advice and road conditions{'\n'}
-                • Questions about transportation platforms{'\n'}
-                • Friendly conversations and support{'\n'}
+                • Professional tips and experiences in your sector{'\n'}
+                • Industry news and insights{'\n'}
+                • Sector-specific advice and best practices{'\n'}
+                • Questions about your profession or sector{'\n'}
+                • Friendly conversations and networking{'\n'}
                 • Memes and humor (appropriate only){'\n'}
-                • Personal stories (within guidelines)
+                • Personal stories (within guidelines){'\n'}
+                • Cross-sector collaboration opportunities
               </Text>
             </View>
 
             <View style={styles.subsection}>
               <Text style={styles.subtitle}>📢 Report Violations</Text>
               <Text style={styles.text}>
-                If you see content that violates these guidelines, please report it immediately. Help us keep Drivers Chat safe for everyone.
+                If you see content that violates these guidelines, please report it immediately. Help us keep Topicx safe and professional for everyone across all sectors.
               </Text>
             </View>
           </View>
