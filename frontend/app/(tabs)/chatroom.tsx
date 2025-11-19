@@ -216,7 +216,8 @@ export default function ChatRoomScreen() {
         {
           audio: `data:audio/m4a;base64,${base64Audio}`,
           duration: duration,
-          message_type: 'audio'
+          message_type: 'audio',
+          sector: currentSector
         },
         {
           headers: { Authorization: `Bearer ${token}` },
