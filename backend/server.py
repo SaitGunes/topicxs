@@ -1231,6 +1231,7 @@ async def create_chat(
             "name": other_user["full_name"],
             "is_group": False,
             "members": [current_user.id, user_id],
+            "sector": chat_request.sector,
             "created_at": datetime.utcnow(),
             "last_message": None,
             "last_message_time": None
@@ -1245,6 +1246,7 @@ async def create_chat(
             "name": name or "Group Chat",
             "is_group": is_group,
             "members": all_members,
+            "sector": chat_request.sector,
             "created_at": datetime.utcnow(),
             "last_message": None,
             "last_message_time": None
