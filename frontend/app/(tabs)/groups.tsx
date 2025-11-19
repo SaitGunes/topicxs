@@ -44,8 +44,10 @@ export default function GroupsScreen() {
   const [activeTab, setActiveTab] = useState<'myGroups' | 'discover'>('myGroups');
   const [myGroups, setMyGroups] = useState<Group[]>([]);
   const [discoverGroups, setDiscoverGroups] = useState<Group[]>([]);
+  const [filteredDiscoverGroups, setFilteredDiscoverGroups] = useState<Group[]>([]);
   const [loading, setLoading] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
   
   const [createModalVisible, setCreateModalVisible] = useState(false);
   const [groupName, setGroupName] = useState('');
