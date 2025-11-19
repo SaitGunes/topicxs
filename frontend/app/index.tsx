@@ -15,13 +15,10 @@ export default function Index() {
   const [showTerms, setShowTerms] = useState(false);
   const [termsChecked, setTermsChecked] = useState(false);
   const [sectorChecked, setSectorChecked] = useState(false);
-  const [languageChecked, setLanguageChecked] = useState(false);
-  const [languageSelected, setLanguageSelected] = useState(false);
 
   useEffect(() => {
     loadLanguage(); // Load saved language
     loadCurrentSector(); // Load saved sector
-    checkLanguageSelection();
     checkTermsAcceptance();
   }, []);
 
@@ -29,17 +26,6 @@ export default function Index() {
     // Set sectorChecked to true after currentSector is loaded
     setSectorChecked(true);
   }, [currentSector]);
-
-  const checkLanguageSelection = async () => {
-    try {
-      const selected = await AsyncStorage.getItem('languageSelected');
-      setLanguageSelected(selected === 'true');
-      setLanguageChecked(true);
-    } catch (error) {
-      console.error('Error checking language:', error);
-      setLanguageChecked(true);
-    }
-  };
 
   const checkTermsAcceptance = async () => {
     try {
