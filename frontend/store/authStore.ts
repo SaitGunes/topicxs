@@ -62,11 +62,12 @@ export const useAuthStore = create<AuthState>((set) => ({
     }
   },
 
-  login: async (username: string, password: string) => {
+  login: async (username: string, password: string, current_sector: string = 'drivers') => {
     try {
       const response = await axios.post(`${API_URL}/api/auth/login`, {
         username,
         password,
+        current_sector,
       });
 
       const { access_token, user } = response.data;
