@@ -1,8 +1,8 @@
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, KeyboardAvoidingView, Platform, ScrollView, Alert, Modal } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, KeyboardAvoidingView, Platform, ScrollView, Alert } from 'react-native';
 import { useState } from 'react';
 import { useRouter } from 'expo-router';
 import { useAuthStore } from '../../store/authStore';
-import { useTranslation, useLanguageStore } from '../../store/languageStore';
+import { useTranslation } from '../../store/languageStore';
 import { useSectorStore } from '../../store/sectorStore';
 import { Ionicons } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -12,26 +12,16 @@ export default function LoginScreen() {
   const router = useRouter();
   const login = useAuthStore((state) => state.login);
   const { clearSector } = useSectorStore();
-  const { t, language } = useTranslation();
-  const { setLanguage } = useLanguageStore();
+  const { t } = useTranslation();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [showTerms, setShowTerms] = useState(false);
-  const [showLanguageModal, setShowLanguageModal] = useState(false);
 
   const handleBackToSectors = async () => {
     await clearSector();
     router.replace('/sector-selection');
   };
-
-  const languages = [
-    { code: 'en', name: 'English', flag: '🇬🇧' },
-    { code: 'tr', name: 'Türkçe', flag: '🇹🇷' },
-    { code: 'es', name: 'Español', flag: '🇪🇸' },
-  ];
-
-  const currentLanguage = languages.find(l => l.code === language) || languages[0];
 
   const handleLogin = async () => {
     if (!username || !password) {
