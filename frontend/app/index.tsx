@@ -15,10 +15,13 @@ export default function Index() {
   const [showTerms, setShowTerms] = useState(false);
   const [termsChecked, setTermsChecked] = useState(false);
   const [sectorChecked, setSectorChecked] = useState(false);
+  const [languageChecked, setLanguageChecked] = useState(false);
+  const [languageSelected, setLanguageSelected] = useState(false);
 
   useEffect(() => {
     loadLanguage(); // Load saved language
     loadCurrentSector(); // Load saved sector
+    checkLanguageSelection();
     checkTermsAcceptance();
   }, []);
 
@@ -26,6 +29,17 @@ export default function Index() {
     // Set sectorChecked to true after currentSector is loaded
     setSectorChecked(true);
   }, [currentSector]);
+
+  const checkLanguageSelection = async () => {
+    try {
+      const selected = await AsyncStorage.getItem('languageSelected');
+      setLanguageSelected(selected === 'true');
+      setLanguageChecked(true);
+    } catch (error) {
+      console.error('Error checking language:', error);
+      setLanguageChecked(true);
+    }
+  };
 
   const checkTermsAcceptance = async () => {
     try {
@@ -54,9 +68,12 @@ export default function Index() {
   };
 
   useEffect(() => {
-    if (!isLoading && termsChecked && sectorChecked) {
-      // Check if sector is selected
-      if (!currentSector) {
+    if (!isLoading && termsChecked && sectorChecked && languageChecked) {
+      // Check if language is selected
+      if (!languageSelected) {
+        // No language selected - show language selection
+        router.replace('/language-selection');
+      } else if (!currentSector) {
         // No sector selected - show sector selection
         router.replace('/sector-selection');
       } else if (user) {
@@ -67,7 +84,7 @@ export default function Index() {
         router.replace('/(auth)/login');
       }
     }
-  }, [user, isLoading, termsChecked, sectorChecked, currentSector]);
+  }, [user, isLoading, termsChecked, sectorChecked, currentSector, languageChecked, languageSelected]);
 
   return (
     <>
