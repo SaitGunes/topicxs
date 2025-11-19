@@ -147,7 +147,10 @@ export default function FriendsScreen() {
   const handleMessage = async (friendId: string) => {
     try {
       // Get or create chat
-      const response = await api.post('/api/chats', { user_id: friendId });
+      const response = await api.post('/api/chats', { 
+        user_id: friendId,
+        sector: currentSector 
+      });
       router.push(`/chat/${response.data.id}`);
     } catch (error: any) {
       Alert.alert(t('error'), error.response?.data?.detail || 'Failed to start chat');
