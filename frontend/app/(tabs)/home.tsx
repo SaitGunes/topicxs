@@ -42,6 +42,21 @@ export default function HomeScreen() {
   const user = useAuthStore((state) => state.user);
   const { t, language } = useTranslation();
   const { currentSector } = require('../../store/sectorStore').useSectorStore();
+  
+  // Get current sector name
+  const sectorInfo = {
+    drivers: t('sectorDrivers'),
+    sports: t('sectorSports'),
+    science: t('sectorScience'),
+    construction: t('sectorConstruction'),
+    finance: t('sectorFinance'),
+    tourism: t('sectorTourism'),
+    food: t('sectorFood'),
+    health: t('sectorHealth'),
+    music: t('sectorMusic'),
+    gaming: t('sectorGaming'),
+  };
+  const sectorName = sectorInfo[currentSector as keyof typeof sectorInfo] || 'Drivers';
   const [posts, setPosts] = useState<Post[]>([]);
   const [activeTab, setActiveTab] = useState<'forYou' | 'following'>('forYou');
   const [refreshing, setRefreshing] = useState(false);
