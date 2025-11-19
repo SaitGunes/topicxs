@@ -390,4 +390,20 @@ const styles = StyleSheet.create({
     marginLeft: 12,
     lineHeight: 20,
   },
+  workplaceContainer: {
+    marginTop: -8,
+    marginBottom: 12,
+    marginLeft: 16,
+    marginRight: 16,
+  },
+  workplaceInput: {
+    backgroundColor: '#F5F5F5',
+    borderRadius: 8,
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+    fontSize: 15,
+    color: '#333',
+    borderWidth: 1,
+    borderColor: '#E0E0E0',
+  },
 });
