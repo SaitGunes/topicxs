@@ -267,15 +267,16 @@ export default function TermsModal({ visible, onAccept }: TermsModalProps) {
               <View style={styles.section}>
                 <Text style={styles.subtitle}>✅ What You CAN Share</Text>
                 <Text style={styles.text}>
-                  • Driving tips and experiences{'\n'}
-                  • Safety advice and road conditions{'\n'}
-                  • Real-time traffic updates and road hazards{'\n'}
-                  • Location-based road status alerts (in groups){'\n'}
+                  • Professional tips and experiences in your sector{'\n'}
+                  • Industry news and insights{'\n'}
+                  • Sector-specific advice and best practices{'\n'}
+                  • Location-based updates (in groups){'\n'}
                   • Voice messages for quick communication{'\n'}
-                  • Questions about transportation platforms{'\n'}
-                  • Friendly conversations and support{'\n'}
+                  • Questions about your profession or sector{'\n'}
+                  • Friendly conversations and networking{'\n'}
                   • Memes and humor (appropriate only){'\n'}
-                  • Personal stories (within guidelines)
+                  • Personal stories (within guidelines){'\n'}
+                  • Cross-sector collaboration opportunities
                 </Text>
               </View>
 
