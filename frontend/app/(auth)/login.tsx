@@ -73,6 +73,15 @@ export default function LoginScreen() {
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
     >
       <ScrollView contentContainerStyle={styles.scrollContent}>
+        {/* Back to Sectors Button */}
+        <TouchableOpacity 
+          style={styles.backButton}
+          onPress={handleBackToSectors}
+        >
+          <Ionicons name="arrow-back" size={20} color="#007AFF" />
+          <Text style={styles.backButtonText}>{t('changeSector')}</Text>
+        </TouchableOpacity>
+
         <TouchableOpacity 
           style={styles.languageButton}
           onPress={() => setShowLanguageModal(true)}
