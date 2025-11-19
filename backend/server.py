@@ -143,10 +143,12 @@ class UserRegister(BaseModel):
     referral_code: Optional[str] = None
     user_type: str = "driver"  # "professional_driver", "driver", "non_driver"
     phone_number: Optional[str] = None
+    current_sector: str = "drivers"  # Which sector they're registering from
 
 class UserLogin(BaseModel):
     username: str
     password: str
+    current_sector: str = "drivers"  # Which sector they're logging in from
 
 class User(BaseModel):
     id: str
