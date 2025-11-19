@@ -10,7 +10,7 @@ import api from '../utils/api';
 const DRIVER_USER_TYPES = [
   { id: 'professional_driver', label: 'Professional Driver', icon: 'briefcase' },
   { id: 'taxi_driver', label: 'Taxi Driver', icon: 'car' },
-  { id: 'rideshare_driver', label: 'Uber/Bolt Driver', icon: 'phone-portrait' },
+  { id: 'rideshare_driver', label: 'Uber/Lyft Driver', icon: 'phone-portrait' },
   { id: 'truck_driver', label: 'Truck Driver', icon: 'bus' },
   { id: 'bus_driver', label: 'Bus Driver', icon: 'bus' },
   { id: 'private_chauffeur', label: 'Private Chauffeur', icon: 'car-sport' },
@@ -23,6 +23,7 @@ const DRIVER_USER_TYPES = [
   { id: 'auto_dealer', label: 'Auto Dealer/Salesperson', icon: 'pricetag' },
   { id: 'transportation_coordinator', label: 'Transportation Coordinator', icon: 'map' },
   { id: 'regular_driver', label: 'Regular Driver (Hobby)', icon: 'car' },
+  { id: 'none_listed', label: 'None listed here', icon: 'add-circle-outline' },
 ];
 
 export default function EditProfileScreen() {
