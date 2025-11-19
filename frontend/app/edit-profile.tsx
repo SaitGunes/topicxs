@@ -42,14 +42,27 @@ export default function EditProfileScreen() {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    if (user?.sector_info?.[currentSector]?.user_types) {
-      setSelectedUserTypes(user.sector_info[currentSector].user_types);
+    // Load existing data
+    const sectorData = user?.sector_info?.[currentSector];
+    
+    if (sectorData?.user_types) {
+      // Ensure it's array of objects with type and workplace
+      const loadedTypes = Array.isArray(sectorData.user_types) 
+        ? sectorData.user_types.map((item: any) => 
+            typeof item === 'string' 
+              ? { type: item, workplace: '' }
+              : { type: item.type, workplace: item.workplace || '' }
+          )
+        : [];
+      setSelectedUserTypes(loadedTypes);
     }
-    if (user?.sector_info?.[currentSector]?.custom_type) {
-      setCustomType(user.sector_info[currentSector].custom_type);
+    
+    if (sectorData?.custom_type) {
+      setCustomType(sectorData.custom_type);
     }
-    if (user?.sector_info?.[currentSector]?.phone_number) {
-      setPhoneNumber(user.sector_info[currentSector].phone_number);
+    
+    if (sectorData?.phone_number) {
+      setPhoneNumber(sectorData.phone_number);
     }
   }, [user, currentSector]);
 
