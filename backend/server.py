@@ -1256,8 +1256,8 @@ async def create_chat(
     return Chat(**chat_dict)
 
 @api_router.get("/chats", response_model=List[Chat])
-async def get_chats(current_user: User = Depends(get_current_user)):
-    chats = await db.chats.find({"members": current_user.id}).sort("last_message_time", -1).to_list(100)
+async def get_chats(sector: str = "drivers", current_user: User = Depends(get_current_user)):
+    chats = await db.chats.find({"members": current_user.id, "sector": sector}).sort("last_message_time", -1).to_list(100)
     return [Chat(**chat) for chat in chats]
 
 @api_router.get("/chats/{chat_id}/messages", response_model=List[Message])
