@@ -12,7 +12,7 @@ interface Sector {
 
 export const sectors: Sector[] = [
   { id: 'drivers', icon: '🚗', nameKey: 'sectorDrivers', isActive: true },
-  { id: 'sports', icon: '⚽', nameKey: 'sectorSports', isActive: false },
+  { id: 'sports', icon: '⚽', nameKey: 'sectorSports', isActive: true },
   { id: 'science', icon: '🔬', nameKey: 'sectorScience', isActive: false },
   { id: 'construction', icon: '🏗️', nameKey: 'sectorConstruction', isActive: false },
   { id: 'finance', icon: '💰', nameKey: 'sectorFinance', isActive: false },
