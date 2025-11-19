@@ -539,7 +539,7 @@ export default function HomeScreen() {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <Text style={styles.headerTitle}>{t('home')}</Text>
+        <Text style={styles.headerTitle}>🏢 Topicx {sectorName}</Text>
         <View style={styles.headerButtons}>
           <TouchableOpacity 
             style={styles.searchButton}
