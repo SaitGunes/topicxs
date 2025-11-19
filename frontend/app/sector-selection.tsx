@@ -35,7 +35,6 @@ export default function SectorSelection() {
 
   const handleLanguageChange = async (languageCode: Language) => {
     await setLanguage(languageCode);
-    setShowLanguageModal(false);
   };
 
   const handleSectorPress = async (sectorId: SectorId, isActive: boolean, nameKey: string, icon: string) => {
