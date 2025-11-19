@@ -184,8 +184,8 @@ export default function ProfileScreen() {
           style={styles.menuItem}
           onPress={() => router.push('/edit-profile')}
         >
-          <Ionicons name="create-outline" size={24} color="#007AFF" />
-          <Text style={styles.menuText}>Edit Profile Info</Text>
+          <Ionicons name="briefcase-outline" size={24} color="#007AFF" />
+          <Text style={styles.menuText}>Mesleklerim & Çalıştığım Yer</Text>
           <Ionicons name="chevron-forward" size={24} color="#ccc" />
         </TouchableOpacity>
 
