@@ -3,6 +3,7 @@ import { View, ActivityIndicator, StyleSheet } from 'react-native';
 import { useRouter } from 'expo-router';
 import { useAuthStore } from '../store/authStore';
 import { useLanguageStore } from '../store/languageStore';
+import { useSectorStore } from '../store/sectorStore';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import TermsModal from '../components/TermsModal';
 
@@ -10,13 +11,21 @@ export default function Index() {
   const router = useRouter();
   const { user, isLoading } = useAuthStore();
   const { loadLanguage } = useLanguageStore();
+  const { currentSector, loadCurrentSector } = useSectorStore();
   const [showTerms, setShowTerms] = useState(false);
   const [termsChecked, setTermsChecked] = useState(false);
+  const [sectorChecked, setSectorChecked] = useState(false);
 
   useEffect(() => {
     loadLanguage(); // Load saved language
+    loadCurrentSector(); // Load saved sector
     checkTermsAcceptance();
   }, []);
+
+  useEffect(() => {
+    // Set sectorChecked to true after currentSector is loaded
+    setSectorChecked(true);
+  }, [currentSector]);
 
   const checkTermsAcceptance = async () => {
     try {
@@ -45,14 +54,20 @@ export default function Index() {
   };
 
   useEffect(() => {
-    if (!isLoading && termsChecked) {
-      if (user) {
+    if (!isLoading && termsChecked && sectorChecked) {
+      // Check if sector is selected
+      if (!currentSector) {
+        // No sector selected - show sector selection
+        router.replace('/sector-selection');
+      } else if (user) {
+        // Sector selected and user logged in - go to home
         router.replace('/(tabs)/home');
       } else {
+        // Sector selected but not logged in - go to login
         router.replace('/(auth)/login');
       }
     }
-  }, [user, isLoading, termsChecked]);
+  }, [user, isLoading, termsChecked, sectorChecked, currentSector]);
 
   return (
     <>
