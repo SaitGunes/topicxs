@@ -5,8 +5,6 @@ import { useAuthStore } from '../../store/authStore';
 import { useTranslation } from '../../store/languageStore';
 import { useSectorStore } from '../../store/sectorStore';
 import { Ionicons } from '@expo/vector-icons';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import TermsModal from '../../components/TermsModal';
 
 export default function LoginScreen() {
   const router = useRouter();
@@ -16,7 +14,6 @@ export default function LoginScreen() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
-  const [showTerms, setShowTerms] = useState(false);
 
   const handleBackToSectors = async () => {
     await clearSector();
