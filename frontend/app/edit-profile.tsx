@@ -217,7 +217,7 @@ export default function EditProfileScreen() {
             {selectedUserTypes.length}/5 selected
           </Text>
 
-          {DRIVER_USER_TYPES.map((type) => {
+          {userTypesList.map((type) => {
             const isSelected = isTypeSelected(type.id);
             return (
               <View key={type.id}>
