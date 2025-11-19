@@ -141,11 +141,11 @@ export default function TermsViewScreen() {
               <Ionicons name="people" size={48} color="#007AFF" />
             </View>
 
-            <Text style={styles.sectionTitle}>Community Guidelines</Text>
-            <Text style={styles.effectiveDate}>Keep Drivers Chat Safe & Respectful</Text>
+            <Text style={styles.sectionTitle}>Topicx Community Guidelines</Text>
+            <Text style={styles.effectiveDate}>Keep Topicx Safe, Respectful & Professional</Text>
 
             <Text style={styles.intro}>
-              These guidelines ensure a positive experience for all members. Violations will result in account suspension or permanent ban.
+              These guidelines ensure a positive experience for all members across all sectors. Violations will result in account suspension or permanent ban.
             </Text>
 
             <View style={styles.subsection}>
