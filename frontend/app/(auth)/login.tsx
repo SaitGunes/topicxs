@@ -47,7 +47,7 @@ export default function LoginScreen() {
 
     setLoading(true);
     try {
-      await login(username, password);
+      await login(username, password, currentSector || 'drivers');
       
       // Check if terms accepted
       const termsAccepted = await AsyncStorage.getItem('termsAccepted');
