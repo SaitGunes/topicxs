@@ -415,13 +415,13 @@ backend:
           agent: "main"
           comment: "Updated POST /api/chats to accept and save sector field. Frontend updated to pass currentSector when creating chats from friends.tsx and profile/[id].tsx. Ready for testing to verify chats are created with correct sector field."
 
-  - task: "Chat - Get User Chats"
+  - task: "Chat - Get User Chats by Sector"
     implemented: true
-    working: true
+    working: "NA"
     file: "backend/server.py"
     stuck_count: 0
     priority: "high"
-    needs_retesting: false
+    needs_retesting: true
     status_history:
         - working: true
           agent: "testing"
@@ -429,6 +429,9 @@ backend:
         - working: true
           agent: "testing"
           comment: "✅ COMPREHENSIVE MESSAGING SYSTEM TEST COMPLETE - GET /api/chats endpoint fully tested. Successfully returns user's chat list for both test users. Verified chat appears in both users' chat lists. Chat updates properly with last_message and last_message_time fields. Test passed with 100% success rate."
+        - working: "NA"
+          agent: "main"
+          comment: "Updated GET /api/chats to filter by sector query parameter (defaults to 'drivers'). Frontend updated in chat/[id].tsx to pass sector parameter when loading chats. Ready for testing to verify chats are filtered by sector correctly."
 
   - task: "Chat - Send Message"
     implemented: true
