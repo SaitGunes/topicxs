@@ -82,8 +82,14 @@ export default function EditProfileScreen() {
   };
 
   const handleSave = async () => {
-    if (selectedUserTypes.length === 0) {
-      Alert.alert('Error', 'Please select at least one user type');
+    if (selectedUserTypes.length === 0 && !customType.trim()) {
+      Alert.alert('Error', 'Please select at least one user type or enter a custom one');
+      return;
+    }
+
+    // Validation for "none_listed" - custom type is required
+    if (isTypeSelected('none_listed') && !customType.trim()) {
+      Alert.alert('Error', 'Please specify your profession in the custom field');
       return;
     }
 
@@ -94,6 +100,7 @@ export default function EditProfileScreen() {
           ...user?.sector_info,
           [currentSector]: {
             user_types: selectedUserTypes,
+            custom_type: customType.trim() || undefined,
             phone_number: phoneNumber.trim() || undefined,
           }
         }
