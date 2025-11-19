@@ -65,11 +65,8 @@ export default function RegisterScreen() {
         undefined // phoneNumber will be added in profile page
       );
       await AsyncStorage.setItem('termsAccepted', 'true');
-      Alert.alert(
-        t('success'),
-        t('accountCreatedVerifyEmail'),
-        [{ text: t('ok'), onPress: () => router.replace('/(tabs)/home') }]
-      );
+      // Direkt home'a yönlendir
+      router.replace('/(tabs)/home');
     } catch (error: any) {
       Alert.alert(t('error'), error.message);
     } finally {
