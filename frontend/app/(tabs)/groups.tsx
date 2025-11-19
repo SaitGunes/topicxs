@@ -96,6 +96,7 @@ export default function GroupsScreen() {
           name: groupName,
           description: groupDescription || undefined,
           requires_approval: requiresApproval,
+          sector: currentSector || 'drivers',
         },
         { headers: { Authorization: `Bearer ${token}` } }
       );
