@@ -6,6 +6,7 @@ import axios from 'axios';
 import * as FileSystem from 'expo-file-system';
 import { io, Socket } from 'socket.io-client';
 import { useAuthStore } from '../../store/authStore';
+import { useSectorStore } from '../../store/sectorStore';
 import { useTranslation } from '../../store/languageStore';
 import VoiceRecorder from '../../components/VoiceRecorder';
 import AudioPlayer from '../../components/AudioPlayer';
