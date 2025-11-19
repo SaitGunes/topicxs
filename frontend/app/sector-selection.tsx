@@ -6,10 +6,8 @@ import {
   TouchableOpacity,
   ScrollView,
   Dimensions,
-  Modal,
 } from 'react-native';
 import { useRouter } from 'expo-router';
-import { Ionicons } from '@expo/vector-icons';
 import { useTranslation, useLanguageStore, Language } from '../store/languageStore';
 import { useSectorStore, sectors, SectorId } from '../store/sectorStore';
 import ComingSoonModal from '../components/ComingSoonModal';
