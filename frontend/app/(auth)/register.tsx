@@ -154,18 +154,6 @@ export default function RegisterScreen() {
             />
           </View>
 
-          <View style={styles.inputContainer}>
-            <Ionicons name="call-outline" size={20} color="#666" style={styles.inputIcon} />
-            <TextInput
-              style={styles.input}
-              placeholder={t('phoneNumberOptional')}
-              value={phoneNumber}
-              onChangeText={setPhoneNumber}
-              keyboardType="phone-pad"
-              placeholderTextColor="#999"
-            />
-          </View>
-
           <TouchableOpacity 
             style={styles.checkboxContainer}
             onPress={() => setConfirm18Plus(!confirm18Plus)}
