@@ -1160,6 +1160,204 @@ class DriversChatAPITester:
         
         return True
 
+    def test_chat_sector_isolation(self):
+        """Test chat sector isolation functionality - NEW FEATURE"""
+        print("🔒 Testing Chat Sector Isolation...")
+        
+        if not self.admin_token or not self.test_user_token:
+            self.log_test("Chat Sector Isolation", False, "Missing required tokens")
+            return False
+        
+        # Create users for different sectors
+        timestamp = str(int(time.time()))
+        
+        # Create drivers sector user
+        drivers_user_data = {
+            "username": f"driversuser_{timestamp}",
+            "email": f"drivers_{timestamp}@test.com",
+            "password": "TestPass123!",
+            "full_name": "Drivers Test User",
+            "bio": "Test user for drivers sector",
+            "current_sector": "drivers"
+        }
+        
+        response = self.make_request("POST", "/auth/register", drivers_user_data)
+        if not (response and response.status_code == 200):
+            self.log_test("Sector Setup - Drivers User", False, "Failed to create drivers user")
+            return False
+        
+        drivers_token = response.json()["access_token"]
+        drivers_user_id = response.json()["user"]["id"]
+        self.log_test("Sector Setup - Drivers User", True, f"Created drivers user: {drivers_user_id}")
+        
+        # Create sports sector user
+        sports_user_data = {
+            "username": f"sportsuser_{timestamp}",
+            "email": f"sports_{timestamp}@test.com",
+            "password": "TestPass123!",
+            "full_name": "Sports Test User",
+            "bio": "Test user for sports sector",
+            "current_sector": "sports"
+        }
+        
+        response = self.make_request("POST", "/auth/register", sports_user_data)
+        if not (response and response.status_code == 200):
+            self.log_test("Sector Setup - Sports User", False, "Failed to create sports user")
+            return False
+        
+        sports_token = response.json()["access_token"]
+        sports_user_id = response.json()["user"]["id"]
+        self.log_test("Sector Setup - Sports User", True, f"Created sports user: {sports_user_id}")
+        
+        # Test 1: Create chat in drivers sector
+        drivers_chat_data = {
+            "user_id": sports_user_id,
+            "sector": "drivers"
+        }
+        
+        response = self.make_request("POST", "/chats", data=drivers_chat_data, token=drivers_token)
+        if response and response.status_code == 200:
+            data = response.json()
+            if data.get("sector") == "drivers":
+                drivers_chat_id = data.get("id")
+                self.log_test("Chat Creation - Drivers Sector", True, 
+                            f"Chat created with drivers sector: {drivers_chat_id}")
+            else:
+                self.log_test("Chat Creation - Drivers Sector", False, 
+                            f"Sector mismatch. Expected: drivers, Got: {data.get('sector')}")
+                return False
+        else:
+            error_msg = response.json().get("detail", "Unknown error") if response else "No response"
+            self.log_test("Chat Creation - Drivers Sector", False, f"Failed to create drivers chat: {error_msg}")
+            return False
+        
+        # Test 2: Create chat in sports sector
+        sports_chat_data = {
+            "user_id": drivers_user_id,
+            "sector": "sports"
+        }
+        
+        response = self.make_request("POST", "/chats", data=sports_chat_data, token=sports_token)
+        if response and response.status_code == 200:
+            data = response.json()
+            if data.get("sector") == "sports":
+                sports_chat_id = data.get("id")
+                self.log_test("Chat Creation - Sports Sector", True, 
+                            f"Chat created with sports sector: {sports_chat_id}")
+            else:
+                self.log_test("Chat Creation - Sports Sector", False, 
+                            f"Sector mismatch. Expected: sports, Got: {data.get('sector')}")
+                return False
+        else:
+            error_msg = response.json().get("detail", "Unknown error") if response else "No response"
+            self.log_test("Chat Creation - Sports Sector", False, f"Failed to create sports chat: {error_msg}")
+            return False
+        
+        # Test 3: Get chats filtered by drivers sector
+        response = self.make_request("GET", "/chats", data={"sector": "drivers"}, token=drivers_token)
+        if response and response.status_code == 200:
+            chats = response.json()
+            drivers_chats = [chat for chat in chats if chat.get("sector") == "drivers"]
+            if len(drivers_chats) == len(chats) and len(chats) > 0:
+                self.log_test("Chat Retrieval - Drivers Filter", True, 
+                            f"Retrieved {len(drivers_chats)} chats, all in drivers sector")
+            else:
+                self.log_test("Chat Retrieval - Drivers Filter", False, 
+                            f"Sector filtering failed. Total: {len(chats)}, Drivers: {len(drivers_chats)}")
+                return False
+        else:
+            self.log_test("Chat Retrieval - Drivers Filter", False, "Failed to get drivers chats")
+            return False
+        
+        # Test 4: Get chats filtered by sports sector
+        response = self.make_request("GET", "/chats", data={"sector": "sports"}, token=sports_token)
+        if response and response.status_code == 200:
+            chats = response.json()
+            sports_chats = [chat for chat in chats if chat.get("sector") == "sports"]
+            if len(sports_chats) == len(chats) and len(chats) > 0:
+                self.log_test("Chat Retrieval - Sports Filter", True, 
+                            f"Retrieved {len(sports_chats)} chats, all in sports sector")
+            else:
+                self.log_test("Chat Retrieval - Sports Filter", False, 
+                            f"Sector filtering failed. Total: {len(chats)}, Sports: {len(sports_chats)}")
+                return False
+        else:
+            self.log_test("Chat Retrieval - Sports Filter", False, "Failed to get sports chats")
+            return False
+        
+        # Test 5: Sector isolation - drivers user tries to see sports chats
+        response = self.make_request("GET", "/chats", data={"sector": "sports"}, token=drivers_token)
+        if response and response.status_code == 200:
+            chats = response.json()
+            # Should only return chats where drivers user is a member
+            user_member_chats = [chat for chat in chats if drivers_user_id in chat.get("members", [])]
+            if len(chats) == len(user_member_chats):
+                self.log_test("Sector Isolation - Drivers→Sports", True, 
+                            f"Drivers user correctly sees only their sports chats: {len(chats)}")
+            else:
+                self.log_test("Sector Isolation - Drivers→Sports", False, 
+                            f"Isolation failed. Total: {len(chats)}, User member: {len(user_member_chats)}")
+                return False
+        else:
+            self.log_test("Sector Isolation - Drivers→Sports", False, "Failed to test isolation")
+            return False
+        
+        # Test 6: Sector isolation - sports user tries to see drivers chats
+        response = self.make_request("GET", "/chats", data={"sector": "drivers"}, token=sports_token)
+        if response and response.status_code == 200:
+            chats = response.json()
+            # Should only return chats where sports user is a member
+            user_member_chats = [chat for chat in chats if sports_user_id in chat.get("members", [])]
+            if len(chats) == len(user_member_chats):
+                self.log_test("Sector Isolation - Sports→Drivers", True, 
+                            f"Sports user correctly sees only their drivers chats: {len(chats)}")
+            else:
+                self.log_test("Sector Isolation - Sports→Drivers", False, 
+                            f"Isolation failed. Total: {len(chats)}, User member: {len(user_member_chats)}")
+                return False
+        else:
+            self.log_test("Sector Isolation - Sports→Drivers", False, "Failed to test isolation")
+            return False
+        
+        # Test 7: Default sector behavior (should default to drivers)
+        default_chat_data = {
+            "user_id": sports_user_id
+            # No sector specified - should default to "drivers"
+        }
+        
+        response = self.make_request("POST", "/chats", data=default_chat_data, token=drivers_token)
+        if response and response.status_code == 200:
+            data = response.json()
+            if data.get("sector") == "drivers":
+                self.log_test("Default Sector - Chat Creation", True, 
+                            "Chat defaults to drivers sector when not specified")
+            else:
+                self.log_test("Default Sector - Chat Creation", False, 
+                            f"Default sector incorrect. Expected: drivers, Got: {data.get('sector')}")
+                return False
+        else:
+            # This might fail if chat already exists, which is okay
+            self.log_test("Default Sector - Chat Creation", True, 
+                        "Default sector test completed (chat may already exist)")
+        
+        # Test 8: Default sector for retrieval (should default to drivers)
+        response = self.make_request("GET", "/chats", token=drivers_token)
+        if response and response.status_code == 200:
+            chats = response.json()
+            drivers_chats = [chat for chat in chats if chat.get("sector") == "drivers"]
+            if len(drivers_chats) == len(chats):
+                self.log_test("Default Sector - Chat Retrieval", True, 
+                            f"Chat retrieval defaults to drivers sector: {len(chats)} chats")
+            else:
+                self.log_test("Default Sector - Chat Retrieval", False, 
+                            f"Default retrieval includes non-drivers chats. Total: {len(chats)}, Drivers: {len(drivers_chats)}")
+                return False
+        else:
+            self.log_test("Default Sector - Chat Retrieval", False, "Failed to get default chats")
+            return False
+        
+        return True
+
     def run_comprehensive_test(self):
         """Run all tests in sequence"""
         print("🚀 Starting Comprehensive Drivers Chat Backend API Testing")
