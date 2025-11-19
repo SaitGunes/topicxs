@@ -176,6 +176,7 @@ class User(BaseModel):
     user_type: str = "driver"  # "professional_driver", "driver", "non_driver"
     email_verified: bool = False
     email_verification_code: Optional[str] = None
+    terms_accepted: bool = False  # New: tracks if user accepted terms during registration
     phone_number: Optional[str] = None
     created_at: datetime = Field(default_factory=datetime.utcnow)
 
