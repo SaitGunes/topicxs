@@ -1206,6 +1206,8 @@ export const translations = {
     
     // Profile
     viewMyProfile: 'Ver Mi Perfil',
+    myProfessionsWorkplace: 'Mis Profesiones y Lugar de Trabajo',
+    myProfessions: 'Mis Profesiones',
     yourReferralCode: 'Tu Código de Referencia',
     peopleJoined: 'personas se unieron con tu código',
     profilePictureUpdated: '¡Foto de perfil actualizada exitosamente!',
