@@ -180,6 +180,9 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     color: '#333',
   },
+  flagTextActive: {
+    color: '#fff',
+  },
   logo: {
     fontSize: 32,
     fontWeight: '700',
