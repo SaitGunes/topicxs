@@ -136,44 +136,6 @@ export default function LoginScreen() {
         </View>
       </ScrollView>
       
-      <Modal
-        visible={showLanguageModal}
-        transparent={true}
-        animationType="slide"
-        onRequestClose={() => setShowLanguageModal(false)}
-      >
-        <View style={styles.modalOverlay}>
-          <View style={styles.modalContent}>
-            <View style={styles.modalHeader}>
-              <Text style={styles.modalTitle}>{t('selectLanguage')}</Text>
-              <TouchableOpacity onPress={() => setShowLanguageModal(false)}>
-                <Ionicons name="close" size={24} color="#666" />
-              </TouchableOpacity>
-            </View>
-            
-            {languages.map((lang) => (
-              <TouchableOpacity
-                key={lang.code}
-                style={[
-                  styles.languageOption,
-                  language === lang.code && styles.selectedLanguage
-                ]}
-                onPress={() => {
-                  setLanguage(lang.code);
-                  setShowLanguageModal(false);
-                }}
-              >
-                <Text style={styles.languageFlag}>{lang.flag}</Text>
-                <Text style={styles.languageOptionText}>{lang.name}</Text>
-                {language === lang.code && (
-                  <Ionicons name="checkmark" size={20} color="#007AFF" />
-                )}
-              </TouchableOpacity>
-            ))}
-          </View>
-        </View>
-      </Modal>
-      
       <TermsModal visible={showTerms} onAccept={handleTermsAccept} />
     </KeyboardAvoidingView>
   );
