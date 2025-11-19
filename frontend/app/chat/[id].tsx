@@ -2,6 +2,7 @@ import { View, Text, StyleSheet, FlatList, TouchableOpacity, TextInput, Keyboard
 import { useState, useEffect } from 'react';
 import { Ionicons } from '@expo/vector-icons';
 import { useAuthStore } from '../../store/authStore';
+import { useSectorStore } from '../../store/sectorStore';
 import api from '../../utils/api';
 import { useRouter, useLocalSearchParams } from 'expo-router';
 import { formatDistanceToNow } from 'date-fns';
