@@ -43,10 +43,17 @@ export default function EditProfileScreen() {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
+    console.log('🔍 Loading profession data...');
+    console.log('Current sector:', currentSector);
+    console.log('User object:', user);
+    console.log('User sector_info:', user?.sector_info);
+    
     // Load existing data
     const sectorData = user?.sector_info?.[currentSector];
+    console.log('Sector data for', currentSector, ':', sectorData);
     
     if (sectorData?.user_types) {
+      console.log('Raw user_types:', sectorData.user_types);
       // Ensure it's array of objects with type and workplace
       const loadedTypes = Array.isArray(sectorData.user_types) 
         ? sectorData.user_types.map((item: any) => 
@@ -55,11 +62,18 @@ export default function EditProfileScreen() {
               : { type: item.type, workplace: item.workplace || '' }
           )
         : [];
+      console.log('Loaded types:', loadedTypes);
       setSelectedUserTypes(loadedTypes);
+    } else {
+      console.log('❌ No user_types found');
+      setSelectedUserTypes([]);
     }
     
     if (sectorData?.custom_type) {
+      console.log('Custom type:', sectorData.custom_type);
       setCustomType(sectorData.custom_type);
+    } else {
+      setCustomType('');
     }
   }, [user, currentSector]);
 
