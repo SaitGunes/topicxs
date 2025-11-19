@@ -208,6 +208,19 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     padding: 24,
   },
+  backButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: 12,
+    paddingHorizontal: 16,
+    marginBottom: 16,
+    gap: 8,
+  },
+  backButtonText: {
+    fontSize: 16,
+    color: '#007AFF',
+    fontWeight: '500',
+  },
   header: {
     alignItems: 'center',
     marginBottom: 48,
