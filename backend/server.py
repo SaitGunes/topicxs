@@ -240,6 +240,7 @@ class Chat(BaseModel):
     name: str
     is_group: bool
     members: List[str]
+    sector: str = "drivers"
     created_at: datetime = Field(default_factory=datetime.utcnow)
     last_message: Optional[str] = None
     last_message_time: Optional[datetime] = None
