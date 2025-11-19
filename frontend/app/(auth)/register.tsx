@@ -60,7 +60,7 @@ export default function RegisterScreen() {
         fullName, 
         referralCode.trim() || undefined,
         userType,
-        phoneNumber.trim() || undefined
+        undefined // phoneNumber will be added in profile page
       );
       await AsyncStorage.setItem('termsAccepted', 'true');
       Alert.alert(
