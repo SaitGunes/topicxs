@@ -172,6 +172,7 @@ export default function HomeScreen() {
         content: newPostContent,
         image: newPostImage,
         location: newPostLocation,
+        sector: currentSector || 'drivers',
         privacy: {
           level: privacyLevel,
           specific_user_ids: privacyLevel === 'specific' ? selectedFriends : [],
