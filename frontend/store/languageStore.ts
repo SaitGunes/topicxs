@@ -1099,6 +1099,30 @@ export const translations = {
     enableChat: 'Sohbeti Aç',
     chatDisabled: 'Sohbet kapalı',
     chatDisabledMessage: 'Sohbet odası admin tarafından kapatılmıştır',
+    
+    // Sector Selection
+    topicxPlatform: 'Topicx Platform',
+    chooseYourCommunity: 'Topluluğunuzu Seçin',
+    multiSectorPlatform: 'Çok Sektörlü Topluluk Platformu',
+    sectorDrivers: 'Sürücüler',
+    sectorSports: 'Spor & Fitness',
+    sectorScience: 'Bilim & Teknoloji',
+    sectorConstruction: 'İnşaat & Emlak',
+    sectorFinance: 'Finans, Borsa & Kripto',
+    sectorTourism: 'Turizm, Kültür & Sanat',
+    sectorFood: 'Yemek, İçecek & Yaşam',
+    sectorHealth: 'Sağlık & Kozmetik',
+    sectorMusic: 'Müzik, Eğlence & Etkinlikler',
+    sectorGaming: 'Oyun & Video',
+    activeNow: 'Aktif',
+    comingSoon: 'Yakında',
+    changeSector: 'Sektör Değiştir',
+    
+    // Coming Soon Modal
+    comingSoonTitle: 'Yakında Gelecek!',
+    comingSoonDescription: 'Bu sektör şu anda yapım aşamasında. Açıldığında bildirim almak ister misiniz?',
+    comingSoonNotify: 'Bildir Beni',
+    comingSoonMaybeLater: 'Belki Sonra',
   },
   es: {
     // Auth
