@@ -1497,14 +1497,15 @@ async def create_enhanced_post(post_data: PostCreateEnhanced, current_user: User
     return PostEnhanced(**post_dict)
 
 @api_router.get("/posts/enhanced", response_model=List[PostEnhanced])
-async def get_enhanced_posts(skip: int = 0, limit: int = 20, current_user: User = Depends(get_current_user)):
+async def get_enhanced_posts(skip: int = 0, limit: int = 20, sector: str = "drivers", current_user: User = Depends(get_current_user)):
     # Get user's friend list
     user_data = await db.users.find_one({"id": current_user.id})
     friend_ids = user_data.get("friend_ids", [])
     
-    # Build query based on privacy settings - EXCLUDE group posts
+    # Build query based on privacy settings - EXCLUDE group posts AND filter by sector
     query = {
         "$and": [
+            {"sector": sector},  # Filter by sector
             {
                 "$or": [
                     {"privacy.level": "public"},
