@@ -1380,7 +1380,8 @@ class DriversChatAPITester:
             ("Voice Messages Chatroom", self.test_voice_messages_chatroom),
             ("Voice Messages Groups", self.test_voice_messages_groups),
             ("Private Group Security", self.test_private_group_security),
-            ("Group Location Sharing", self.test_group_location_sharing)
+            ("Group Location Sharing", self.test_group_location_sharing),
+            ("Chat Sector Isolation", self.test_chat_sector_isolation)
         ]
         
         passed_tests = 0
