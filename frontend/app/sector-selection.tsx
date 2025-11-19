@@ -291,4 +291,53 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     color: '#FF9800',
   },
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 20,
+  },
+  languageModalContainer: {
+    backgroundColor: '#fff',
+    borderRadius: 16,
+    padding: 24,
+    width: '100%',
+    maxWidth: 320,
+  },
+  languageModalTitle: {
+    fontSize: 20,
+    fontWeight: '700',
+    color: '#333',
+    marginBottom: 20,
+    textAlign: 'center',
+  },
+  languageOption: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: 16,
+    paddingHorizontal: 16,
+    borderRadius: 12,
+    marginBottom: 8,
+    backgroundColor: '#F8F9FA',
+  },
+  languageOptionActive: {
+    backgroundColor: '#E7F3FF',
+    borderWidth: 2,
+    borderColor: '#007AFF',
+  },
+  languageOptionFlag: {
+    fontSize: 28,
+    marginRight: 12,
+  },
+  languageOptionText: {
+    flex: 1,
+    fontSize: 16,
+    fontWeight: '500',
+    color: '#333',
+  },
+  languageOptionTextActive: {
+    color: '#007AFF',
+    fontWeight: '600',
+  },
 });
