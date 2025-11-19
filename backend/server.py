@@ -2306,6 +2306,7 @@ class ChatMessageCreate(BaseModel):
     audio: Optional[str] = None  # base64 encoded audio
     duration: Optional[int] = None  # in seconds
     message_type: str = "text"  # "text" or "audio"
+    sector: str = "drivers"  # Which sector the message belongs to
 
 @api_router.post("/chatroom/messages")
 @limiter.limit("60/minute")  # Max 60 chat messages per minute (1 per second average)
@@ -2352,6 +2353,7 @@ async def send_chatroom_message(
         "audio": audio,
         "duration": message_data.duration,
         "message_type": message_data.message_type,
+        "sector": message_data.sector,
         "created_at": now
     }
     
