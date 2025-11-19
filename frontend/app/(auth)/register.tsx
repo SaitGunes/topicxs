@@ -167,38 +167,6 @@ export default function RegisterScreen() {
             />
           </View>
 
-          <Text style={styles.sectionLabel}>{t('selectUserType')}</Text>
-          
-          <TouchableOpacity 
-            style={styles.radioContainer}
-            onPress={() => setUserType('professional_driver')}
-          >
-            <View style={[styles.radio, userType === 'professional_driver' && styles.radioSelected]}>
-              {userType === 'professional_driver' && <View style={styles.radioDot} />}
-            </View>
-            <Text style={styles.radioLabel}>{t('professionalDriver')}</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity 
-            style={styles.radioContainer}
-            onPress={() => setUserType('driver')}
-          >
-            <View style={[styles.radio, userType === 'driver' && styles.radioSelected]}>
-              {userType === 'driver' && <View style={styles.radioDot} />}
-            </View>
-            <Text style={styles.radioLabel}>{t('regularDriver')}</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity 
-            style={styles.radioContainer}
-            onPress={() => setUserType('non_driver')}
-          >
-            <View style={[styles.radio, userType === 'non_driver' && styles.radioSelected]}>
-              {userType === 'non_driver' && <View style={styles.radioDot} />}
-            </View>
-            <Text style={styles.radioLabel}>{t('nonDriver')}</Text>
-          </TouchableOpacity>
-
           <TouchableOpacity 
             style={styles.checkboxContainer}
             onPress={() => setConfirm18Plus(!confirm18Plus)}
