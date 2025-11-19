@@ -39,6 +39,7 @@ export default function GroupsScreen() {
   const router = useRouter();
   const token = useAuthStore((state) => state.token);
   const user = useAuthStore((state) => state.user);
+  const { currentSector } = require('../../store/sectorStore').useSectorStore();
   
   const [activeTab, setActiveTab] = useState<'myGroups' | 'discover'>('myGroups');
   const [myGroups, setMyGroups] = useState<Group[]>([]);
