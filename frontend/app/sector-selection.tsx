@@ -124,6 +124,45 @@ export default function SectorSelection() {
           }}
         />
       )}
+
+      {/* Language Modal */}
+      <Modal
+        visible={showLanguageModal}
+        transparent
+        animationType="fade"
+        onRequestClose={() => setShowLanguageModal(false)}
+      >
+        <TouchableOpacity 
+          style={styles.modalOverlay}
+          activeOpacity={1}
+          onPress={() => setShowLanguageModal(false)}
+        >
+          <View style={styles.languageModalContainer}>
+            <Text style={styles.languageModalTitle}>Select Language</Text>
+            {languages.map((lang) => (
+              <TouchableOpacity
+                key={lang.code}
+                style={[
+                  styles.languageOption,
+                  language === lang.code && styles.languageOptionActive
+                ]}
+                onPress={() => handleLanguageChange(lang.code)}
+              >
+                <Text style={styles.languageOptionFlag}>{lang.flag}</Text>
+                <Text style={[
+                  styles.languageOptionText,
+                  language === lang.code && styles.languageOptionTextActive
+                ]}>
+                  {lang.name}
+                </Text>
+                {language === lang.code && (
+                  <Ionicons name="checkmark-circle" size={24} color="#007AFF" />
+                )}
+              </TouchableOpacity>
+            ))}
+          </View>
+        </TouchableOpacity>
+      </Modal>
     </View>
   );
 }
