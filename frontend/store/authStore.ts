@@ -34,7 +34,7 @@ interface AuthState {
   user: User | null;
   token: string | null;
   isLoading: boolean;
-  login: (username: string, password: string) => Promise<void>;
+  login: (username: string, password: string, current_sector?: string) => Promise<void>;
   register: (username: string, email: string, password: string, full_name: string, referral_code?: string) => Promise<void>;
   logout: () => Promise<void>;
   loadToken: () => Promise<void>;
