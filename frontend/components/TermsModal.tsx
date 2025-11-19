@@ -6,9 +6,10 @@ import { useTranslation } from '../store/languageStore';
 interface TermsModalProps {
   visible: boolean;
   onAccept: () => void;
+  onDecline?: () => void;
 }
 
-export default function TermsModal({ visible, onAccept }: TermsModalProps) {
+export default function TermsModal({ visible, onAccept, onDecline }: TermsModalProps) {
   const { t } = useTranslation();
   const [termsAccepted, setTermsAccepted] = useState(false);
   const [guidelinesAccepted, setGuidelinesAccepted] = useState(false);
@@ -19,6 +20,16 @@ export default function TermsModal({ visible, onAccept }: TermsModalProps) {
       setCurrentStep(2);
     } else if (currentStep === 2 && guidelinesAccepted) {
       onAccept();
+    }
+  };
+
+  const handleDecline = () => {
+    // Reset state
+    setTermsAccepted(false);
+    setGuidelinesAccepted(false);
+    setCurrentStep(1);
+    if (onDecline) {
+      onDecline();
     }
   };
 
