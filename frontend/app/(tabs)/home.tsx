@@ -892,8 +892,8 @@ const styles = StyleSheet.create({
     paddingTop: 48,
   },
   headerTitle: {
-    fontSize: 24,
-    fontWeight: 'bold',
+    fontSize: 18,
+    fontWeight: '700',
     color: '#000',
   },
   headerButtons: {
