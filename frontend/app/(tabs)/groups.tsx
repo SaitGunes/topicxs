@@ -71,12 +71,29 @@ export default function GroupsScreen() {
           headers: { Authorization: `Bearer ${token}` },
         });
         setDiscoverGroups(response.data);
+        setFilteredDiscoverGroups(response.data);
       }
     } catch (error: any) {
       Alert.alert(t('error'), error.response?.data?.detail || error.message);
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleSearch = (query: string) => {
+    setSearchQuery(query);
+    if (!query.trim()) {
+      setFilteredDiscoverGroups(discoverGroups);
+      return;
+    }
+
+    const lowercaseQuery = query.toLowerCase();
+    const filtered = discoverGroups.filter(
+      (group) =>
+        group.name.toLowerCase().includes(lowercaseQuery) ||
+        (group.description && group.description.toLowerCase().includes(lowercaseQuery))
+    );
+    setFilteredDiscoverGroups(filtered);
   };
 
   const onRefresh = async () => {
