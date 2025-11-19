@@ -664,9 +664,8 @@ metadata:
 
 test_plan:
   current_focus:
-    - "Group Location Sharing - LocationPicker Component with Map"
-    - "Group Location Sharing - Location Display Component"
-    - "Group Location Sharing - Integration in Group Posts"
+    - "Chat - Create Chat with Sector"
+    - "Chat - Get User Chats by Sector"
   stuck_tasks: []
   test_all: false
   test_priority: "high_first"
