@@ -67,7 +67,7 @@ export default function SectorSelection() {
               onPress={() => handleLanguageChange(lang.code)}
               activeOpacity={0.7}
             >
-              <Text style={styles.flagEmoji}>{lang.flag}</Text>
+              <Text style={styles.flagText}>{lang.flag}</Text>
             </TouchableOpacity>
           ))}
         </View>
