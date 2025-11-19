@@ -281,20 +281,20 @@ export default function TermsModal({ visible, onAccept }: TermsModalProps) {
               </View>
 
               <View style={styles.section}>
-                <Text style={styles.subtitle}>🎤 Voice Messages & Location Guidelines</Text>
+                <Text style={styles.subtitle}>🎤 Communication Best Practices</Text>
                 <Text style={styles.text}>
-                  • <Text style={styles.bold}>Voice Messages:</Text> Keep them brief and respectful{'\n'}
+                  • <Text style={styles.bold}>Voice Messages:</Text> Keep them brief, clear, and professional{'\n'}
                   • <Text style={styles.bold}>Location Sharing:</Text> Only share in relevant group contexts{'\n'}
-                  • <Text style={styles.bold}>Road Alerts:</Text> Provide accurate, helpful information{'\n'}
-                  • <Text style={styles.bold}>Privacy:</Text> Don't share others' personal locations without consent{'\n'}
-                  • <Text style={styles.bold}>Safety First:</Text> Never record or share while actively driving
+                  • <Text style={styles.bold}>Updates:</Text> Provide accurate and helpful information{'\n'}
+                  • <Text style={styles.bold}>Privacy:</Text> Don't share others' personal information without consent{'\n'}
+                  • <Text style={styles.bold}>Professionalism:</Text> Maintain respect and courtesy in all interactions
                 </Text>
               </View>
 
               <View style={styles.section}>
                 <Text style={styles.subtitle}>📢 Report Violations</Text>
                 <Text style={styles.text}>
-                  If you see content that violates these guidelines, please report it immediately. Help us keep Drivers Chat safe for everyone.
+                  If you see content that violates these guidelines, please report it immediately. Help us keep Topicx safe and professional for everyone across all sectors.
                 </Text>
               </View>
             </View>
