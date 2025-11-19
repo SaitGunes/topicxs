@@ -60,12 +60,12 @@ export default function GroupsScreen() {
     setLoading(true);
     try {
       if (activeTab === 'myGroups') {
-        const response = await axios.get(`${API_URL}/api/groups`, {
+        const response = await axios.get(`${API_URL}/api/groups?sector=${currentSector || 'drivers'}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         setMyGroups(response.data);
       } else {
-        const response = await axios.get(`${API_URL}/api/groups/discover`, {
+        const response = await axios.get(`${API_URL}/api/groups/discover?sector=${currentSector || 'drivers'}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         setDiscoverGroups(response.data);
