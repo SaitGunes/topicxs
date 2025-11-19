@@ -282,7 +282,7 @@ export default function GroupsScreen() {
             </Text>
           </View>
         )}
-        {activeTab === 'discover' && discoverGroups.map((group) => renderGroupCard(group, false))}
+        {activeTab === 'discover' && filteredDiscoverGroups.map((group) => renderGroupCard(group, false))}
       </ScrollView>
 
       <Modal visible={createModalVisible} transparent animationType="slide">
