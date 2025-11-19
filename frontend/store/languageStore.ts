@@ -138,6 +138,8 @@ export const translations = {
     
     // Profile
     viewMyProfile: 'View My Profile',
+    myProfessionsWorkplace: 'My Professions & Workplace',
+    myProfessions: 'My Professions',
     yourReferralCode: 'Your Referral Code',
     peopleJoined: 'people joined with your code',
     profilePictureUpdated: 'Profile picture updated successfully!',
