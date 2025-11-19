@@ -172,7 +172,8 @@ export default function ChatRoomScreen() {
         `${API_URL}/api/chatroom/messages`,
         {
           content: messageContent,
-          message_type: 'text'
+          message_type: 'text',
+          sector: currentSector
         },
         {
           headers: { Authorization: `Bearer ${token}` },
