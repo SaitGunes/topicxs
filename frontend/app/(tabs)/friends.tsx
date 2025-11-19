@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { Ionicons } from '@expo/vector-icons';
 import { useAuthStore } from '../../store/authStore';
 import { useNotificationStore } from '../../store/notificationStore';
+import { useSectorStore } from '../../store/sectorStore';
 import { useTranslation } from '../../store/languageStore';
 import api from '../../utils/api';
 import { useRouter } from 'expo-router';
