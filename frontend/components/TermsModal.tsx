@@ -44,10 +44,17 @@ export default function TermsModal({ visible, onAccept, onDecline }: TermsModalP
       <View style={styles.container}>
         {/* Header */}
         <View style={styles.header}>
-          <Text style={styles.headerTitle}>
-            {currentStep === 1 ? t('termsOfService') : t('communityGuidelines')}
-          </Text>
-          <Text style={styles.stepIndicator}>{t('termsStep')} {currentStep} {t('termsOf')} 2</Text>
+          <View style={styles.headerLeft}>
+            <Text style={styles.headerTitle}>
+              {currentStep === 1 ? t('termsOfService') : t('communityGuidelines')}
+            </Text>
+            <Text style={styles.stepIndicator}>{t('termsStep')} {currentStep} {t('termsOf')} 2</Text>
+          </View>
+          {onDecline && (
+            <TouchableOpacity onPress={handleDecline} style={styles.closeButton}>
+              <Ionicons name="close" size={28} color="#666" />
+            </TouchableOpacity>
+          )}
         </View>
 
         {/* Content */}
