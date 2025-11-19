@@ -30,6 +30,7 @@ export default function ChatRoomScreen() {
   const { t } = useTranslation();
   const token = useAuthStore((state) => state.token);
   const user = useAuthStore((state) => state.user);
+  const { currentSector } = useSectorStore();
   
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [newMessage, setNewMessage] = useState('');
@@ -53,13 +54,14 @@ export default function ChatRoomScreen() {
         socketRef.current.disconnect();
       }
     };
-  }, []);
+  }, [currentSector]);
 
   const loadMessages = async (showLoading = true) => {
     if (showLoading) setLoading(true);
     try {
       const response = await axios.get(`${API_URL}/api/chatroom/messages`, {
         headers: { Authorization: `Bearer ${token}` },
+        params: { sector: currentSector },
       });
       setMessages(response.data);
       if (showLoading) setLoading(false);
