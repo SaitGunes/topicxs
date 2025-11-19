@@ -120,10 +120,11 @@ export default function EditProfileScreen() {
       });
       
       setUser(response.data);
-      Alert.alert('Success', 'Profile updated successfully!', [
-        { text: 'OK', onPress: () => router.back() }
-      ]);
+      
+      // Navigate back immediately without alert
+      router.back();
     } catch (error: any) {
+      console.error('Save error:', error);
       Alert.alert('Error', error.response?.data?.detail || 'Failed to update profile');
     } finally {
       setLoading(false);
