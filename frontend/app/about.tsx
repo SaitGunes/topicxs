@@ -244,6 +244,11 @@ const styles = StyleSheet.create({
     fontSize: 15,
     color: '#333',
     marginLeft: 12,
+    flex: 1,
+  },
+  sectorIcon: {
+    fontSize: 24,
+    marginRight: 4,
   },
   linkButton: {
     marginTop: 12,
