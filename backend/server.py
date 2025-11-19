@@ -632,6 +632,16 @@ async def login(request: Request, user_data: UserLogin):
     if not user or not verify_password(user_data.password, user["password"]):
         raise HTTPException(status_code=401, detail="Invalid credentials")
     
+    # Add current sector to user's sectors array if not already present
+    user_sectors = user.get("sectors", [])
+    if user_data.current_sector not in user_sectors:
+        await db.users.update_one(
+            {"id": user["id"]},
+            {"$addToSet": {"sectors": user_data.current_sector}}
+        )
+        user_sectors.append(user_data.current_sector)
+        user["sectors"] = user_sectors
+    
     access_token = create_access_token(data={"sub": user["id"]})
     
     user_response = User(**{k: v for k, v in user.items() if k != 'password'})
