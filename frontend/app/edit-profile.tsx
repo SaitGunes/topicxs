@@ -208,26 +208,6 @@ export default function EditProfileScreen() {
           })}
         </View>
 
-        {/* Phone Number Section */}
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Phone Number (Optional)</Text>
-          <Text style={styles.sectionSubtitle}>
-            Add your phone number for better communication
-          </Text>
-          
-          <View style={styles.inputContainer}>
-            <Ionicons name="call-outline" size={20} color="#666" style={styles.inputIcon} />
-            <TextInput
-              style={styles.input}
-              placeholder="+90 5XX XXX XX XX"
-              value={phoneNumber}
-              onChangeText={setPhoneNumber}
-              keyboardType="phone-pad"
-              placeholderTextColor="#999"
-            />
-          </View>
-        </View>
-
         {/* Save Button */}
         <TouchableOpacity
           style={[styles.saveButton, loading && styles.saveButtonDisabled]}
