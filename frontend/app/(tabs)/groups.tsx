@@ -274,10 +274,12 @@ export default function GroupsScreen() {
         )}
         
         {activeTab === 'myGroups' && myGroups.map((group) => renderGroupCard(group, true))}
-        {activeTab === 'discover' && discoverGroups.length === 0 && (
+        {activeTab === 'discover' && filteredDiscoverGroups.length === 0 && (
           <View style={styles.emptyContainer}>
             <Ionicons name="search-outline" size={64} color="#ccc" />
-            <Text style={styles.emptyText}>{t('noGroups')}</Text>
+            <Text style={styles.emptyText}>
+              {searchQuery ? t('noGroupsFound') || 'Grup bulunamadı' : t('noGroups')}
+            </Text>
           </View>
         )}
         {activeTab === 'discover' && discoverGroups.map((group) => renderGroupCard(group, false))}
