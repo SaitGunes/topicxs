@@ -85,6 +85,7 @@ export default function UserProfileScreen() {
         name: user.full_name,
         is_group: false,
         members: [user.id],
+        sector: currentSector,
       });
       router.push(`/chat/${response.data.id}`);
     } catch (error) {
