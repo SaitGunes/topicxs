@@ -130,7 +130,7 @@ export default function LoginScreen() {
             style={[styles.linkButton, { marginTop: 8 }]}
             onPress={() => router.push('/about')}
           >
-            <Text style={[styles.linkText, { color: '#666' }]}>{t('aboutApp')}</Text>
+            <Text style={[styles.linkText, { color: '#666' }]}>About Topicx Community Platform</Text>
           </TouchableOpacity>
         </View>
       </ScrollView>
