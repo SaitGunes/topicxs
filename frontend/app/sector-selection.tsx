@@ -156,24 +156,28 @@ const styles = StyleSheet.create({
     shadowRadius: 8,
     elevation: 4,
   },
-  languageButton: {
+  languageFlagsContainer: {
     flexDirection: 'row',
+    justifyContent: 'center',
     alignItems: 'center',
-    alignSelf: 'flex-end',
-    paddingVertical: 8,
-    paddingHorizontal: 12,
+    marginTop: 20,
+    gap: 12,
+  },
+  flagButton: {
+    width: 44,
+    height: 44,
+    borderRadius: 22,
+    justifyContent: 'center',
+    alignItems: 'center',
     backgroundColor: '#F5F5F5',
-    borderRadius: 20,
-    marginBottom: 16,
-    gap: 6,
   },
-  languageFlag: {
-    fontSize: 20,
+  flagButtonActive: {
+    backgroundColor: '#E7F3FF',
+    borderWidth: 2,
+    borderColor: '#007AFF',
   },
-  languageName: {
-    fontSize: 14,
-    fontWeight: '500',
-    color: '#333',
+  flagEmoji: {
+    fontSize: 24,
   },
   logo: {
     fontSize: 32,
