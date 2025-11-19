@@ -78,6 +78,14 @@ export default function RegisterScreen() {
   const handleTermsDecline = () => {
     setShowTerms(false);
     setPendingRegistration(false);
+    setLoading(false);
+    // Form alanlarını temizle
+    setUsername('');
+    setEmail('');
+    setFullName('');
+    setPassword('');
+    setReferralCode('');
+    setConfirm18Plus(false);
   };
 
   return (
