@@ -68,12 +68,9 @@ export default function Index() {
   };
 
   useEffect(() => {
-    if (!isLoading && termsChecked && sectorChecked && languageChecked) {
-      // Check if language is selected
-      if (!languageSelected) {
-        // No language selected - show language selection
-        router.replace('/language-selection');
-      } else if (!currentSector) {
+    if (!isLoading && termsChecked && sectorChecked) {
+      // Check if sector is selected
+      if (!currentSector) {
         // No sector selected - show sector selection
         router.replace('/sector-selection');
       } else if (user) {
@@ -84,7 +81,7 @@ export default function Index() {
         router.replace('/(auth)/login');
       }
     }
-  }, [user, isLoading, termsChecked, sectorChecked, currentSector, languageChecked, languageSelected]);
+  }, [user, isLoading, termsChecked, sectorChecked, currentSector]);
 
   return (
     <>
