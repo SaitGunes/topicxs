@@ -1813,6 +1813,7 @@ async def create_group(group_data: GroupCreate, current_user: User = Depends(get
         "moderator_ids": [],
         "member_ids": [current_user.id],
         "requires_approval": group_data.requires_approval,
+        "sector": group_data.sector,
         "created_at": datetime.utcnow()
     }
     
@@ -1820,13 +1821,13 @@ async def create_group(group_data: GroupCreate, current_user: User = Depends(get
     return Group(**group_dict)
 
 @api_router.get("/groups", response_model=List[Group])
-async def get_groups(current_user: User = Depends(get_current_user)):
-    groups = await db.groups.find({"member_ids": current_user.id}).sort("created_at", -1).to_list(100)
+async def get_groups(sector: str = "drivers", current_user: User = Depends(get_current_user)):
+    groups = await db.groups.find({"member_ids": current_user.id, "sector": sector}).sort("created_at", -1).to_list(100)
     return [Group(**group) for group in groups]
 
 @api_router.get("/groups/discover", response_model=List[Group])
-async def discover_groups(current_user: User = Depends(get_current_user)):
-    # Get all groups where user is not a member
+async def discover_groups(sector: str = "drivers", current_user: User = Depends(get_current_user)):
+    # Get all groups where user is not a member - filtered by sector
     groups = await db.groups.find({"member_ids": {"$ne": current_user.id}}).sort("created_at", -1).to_list(100)
     return [Group(**group) for group in groups]
 
