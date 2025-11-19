@@ -173,11 +173,12 @@ class User(BaseModel):
         "likes": True,
         "comments": True
     }
-    user_type: str = "driver"  # "professional_driver", "driver", "non_driver"
+    user_type: str = "driver"  # "professional_driver", "driver", "non_driver"  # DEPRECATED - use sector_info
     email_verified: bool = False
     email_verification_code: Optional[str] = None
     terms_accepted: bool = False  # New: tracks if user accepted terms during registration
-    phone_number: Optional[str] = None
+    phone_number: Optional[str] = None  # DEPRECATED - use sector_info
+    sector_info: dict = {}  # New: sector-specific info like {"drivers": {"user_types": ["taxi_driver"], "phone_number": "+90..."}}
     created_at: datetime = Field(default_factory=datetime.utcnow)
 
 class Token(BaseModel):
