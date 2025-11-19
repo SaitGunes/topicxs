@@ -36,6 +36,7 @@ export default function EditProfileScreen() {
   const router = useRouter();
   const { user, setUser } = useAuthStore();
   const { currentSector } = useSectorStore();
+  const { t } = useTranslation();
   
   const [selectedUserTypes, setSelectedUserTypes] = useState<UserTypeWithWorkplace[]>([]);
   const [customType, setCustomType] = useState('');
