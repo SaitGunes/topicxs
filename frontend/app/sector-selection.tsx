@@ -55,6 +55,16 @@ export default function SectorSelection() {
     <View style={styles.container}>
       {/* Header */}
       <View style={styles.header}>
+        {/* Language Button */}
+        <TouchableOpacity 
+          style={styles.languageButton}
+          onPress={() => setShowLanguageModal(true)}
+        >
+          <Text style={styles.languageFlag}>{currentLanguage.flag}</Text>
+          <Text style={styles.languageName}>{currentLanguage.name}</Text>
+          <Ionicons name="chevron-down" size={16} color="#666" />
+        </TouchableOpacity>
+
         <Text style={styles.logo}>🏢 Topicx</Text>
         <Text style={styles.title}>{t('chooseYourCommunity')}</Text>
         <Text style={styles.subtitle}>{t('multiSectorPlatform')}</Text>
