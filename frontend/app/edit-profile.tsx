@@ -148,27 +148,54 @@ export default function EditProfileScreen() {
           </Text>
 
           {DRIVER_USER_TYPES.map((type) => {
-            const isSelected = selectedUserTypes.includes(type.id);
+            const isSelected = isTypeSelected(type.id);
             return (
-              <TouchableOpacity
-                key={type.id}
-                style={[styles.userTypeItem, isSelected && styles.userTypeItemSelected]}
-                onPress={() => toggleUserType(type.id)}
-              >
-                <View style={styles.userTypeLeft}>
-                  <Ionicons 
-                    name={type.icon as any} 
-                    size={24} 
-                    color={isSelected ? '#007AFF' : '#666'} 
-                  />
-                  <Text style={[styles.userTypeLabel, isSelected && styles.userTypeLabelSelected]}>
-                    {type.label}
-                  </Text>
-                </View>
-                <View style={[styles.checkbox, isSelected && styles.checkboxSelected]}>
-                  {isSelected && <Ionicons name="checkmark" size={18} color="#fff" />}
-                </View>
-              </TouchableOpacity>
+              <View key={type.id}>
+                <TouchableOpacity
+                  style={[styles.userTypeItem, isSelected && styles.userTypeItemSelected]}
+                  onPress={() => toggleUserType(type.id)}
+                >
+                  <View style={styles.userTypeLeft}>
+                    <Ionicons 
+                      name={type.icon as any} 
+                      size={24} 
+                      color={isSelected ? '#007AFF' : '#666'} 
+                    />
+                    <Text style={[styles.userTypeLabel, isSelected && styles.userTypeLabelSelected]}>
+                      {type.label}
+                    </Text>
+                  </View>
+                  <View style={[styles.checkbox, isSelected && styles.checkboxSelected]}>
+                    {isSelected && <Ionicons name="checkmark" size={18} color="#fff" />}
+                  </View>
+                </TouchableOpacity>
+
+                {/* Workplace input for selected type */}
+                {isSelected && type.id !== 'none_listed' && (
+                  <View style={styles.workplaceContainer}>
+                    <TextInput
+                      style={styles.workplaceInput}
+                      placeholder="Where do you work? (Optional)"
+                      placeholderTextColor="#999"
+                      value={getWorkplace(type.id)}
+                      onChangeText={(text) => updateWorkplace(type.id, text)}
+                    />
+                  </View>
+                )}
+
+                {/* Custom type input for "None listed here" */}
+                {isSelected && type.id === 'none_listed' && (
+                  <View style={styles.workplaceContainer}>
+                    <TextInput
+                      style={styles.workplaceInput}
+                      placeholder="Please specify your profession *"
+                      placeholderTextColor="#FF3B30"
+                      value={customType}
+                      onChangeText={setCustomType}
+                    />
+                  </View>
+                )}
+              </View>
             );
           })}
         </View>
