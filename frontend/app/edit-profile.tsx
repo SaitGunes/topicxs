@@ -59,10 +59,6 @@ export default function EditProfileScreen() {
     if (sectorData?.custom_type) {
       setCustomType(sectorData.custom_type);
     }
-    
-    if (sectorData?.phone_number) {
-      setPhoneNumber(sectorData.phone_number);
-    }
   }, [user, currentSector]);
 
   const isTypeSelected = (typeId: string) => {
