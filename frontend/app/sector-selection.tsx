@@ -24,9 +24,9 @@ export default function SectorSelection() {
   } | null>(null);
 
   const languages = [
-    { code: 'en' as Language, name: 'English', flag: '🇬🇧' },
-    { code: 'tr' as Language, name: 'Türkçe', flag: '🇹🇷' },
-    { code: 'es' as Language, name: 'Español', flag: '🇪🇸' },
+    { code: 'en' as Language, name: 'English', flag: 'EN', emoji: '🇬🇧' },
+    { code: 'tr' as Language, name: 'Türkçe', flag: 'TR', emoji: '🇹🇷' },
+    { code: 'es' as Language, name: 'Español', flag: 'ES', emoji: '🇪🇸' },
   ];
 
   const currentLanguage = languages.find(l => l.code === language) || languages[0];
