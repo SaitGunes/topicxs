@@ -27,6 +27,27 @@ const DRIVER_USER_TYPES = [
   { id: 'none_listed', label: 'None listed here', icon: 'add-circle-outline' },
 ];
 
+// Sports sector için user type listesi
+const SPORTS_USER_TYPES = [
+  { id: 'professional_athlete', label: 'Professional Athlete', icon: 'trophy' },
+  { id: 'amateur_athlete', label: 'Amateur Athlete', icon: 'person' },
+  { id: 'coach', label: 'Coach/Trainer', icon: 'school' },
+  { id: 'sports_manager', label: 'Sports Manager', icon: 'briefcase' },
+  { id: 'fitness_instructor', label: 'Fitness Instructor', icon: 'fitness' },
+  { id: 'personal_trainer', label: 'Personal Trainer', icon: 'barbell' },
+  { id: 'sports_journalist', label: 'Sports Journalist', icon: 'newspaper' },
+  { id: 'sports_photographer', label: 'Sports Photographer', icon: 'camera' },
+  { id: 'referee', label: 'Referee/Umpire', icon: 'flag' },
+  { id: 'sports_medicine', label: 'Sports Medicine Professional', icon: 'medical' },
+  { id: 'nutritionist', label: 'Nutritionist/Dietitian', icon: 'restaurant' },
+  { id: 'physical_therapist', label: 'Physical Therapist', icon: 'bandage' },
+  { id: 'sports_psychologist', label: 'Sports Psychologist', icon: 'happy' },
+  { id: 'sports_equipment_dealer', label: 'Sports Equipment Dealer', icon: 'basket' },
+  { id: 'gym_owner', label: 'Gym/Facility Owner', icon: 'business' },
+  { id: 'fitness_enthusiast', label: 'Fitness Enthusiast (Hobby)', icon: 'heart' },
+  { id: 'none_listed', label: 'None listed here', icon: 'add-circle-outline' },
+];
+
 interface UserTypeWithWorkplace {
   type: string;
   workplace?: string;
