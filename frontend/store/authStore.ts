@@ -17,9 +17,16 @@ interface User {
   referral_count?: number;
   friend_ids?: string[];
   is_admin?: boolean;
-  user_type?: 'professional_driver' | 'driver' | 'non_driver';
+  user_type?: 'professional_driver' | 'driver' | 'non_driver'; // DEPRECATED - use sector_info
   email_verified?: boolean;
-  phone_number?: string | null;
+  phone_number?: string | null; // DEPRECATED - use sector_info
+  sector_info?: {
+    [sector: string]: {
+      user_types?: Array<{ type: string; workplace?: string }>;
+      custom_type?: string;
+      phone_number?: string;
+    };
+  };
   star_level?: {
     stars: number;
     level_name: string;
