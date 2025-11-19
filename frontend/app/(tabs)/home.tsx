@@ -41,6 +41,7 @@ export default function HomeScreen() {
   const router = useRouter();
   const user = useAuthStore((state) => state.user);
   const { t, language } = useTranslation();
+  const { currentSector } = require('../../store/sectorStore').useSectorStore();
   const [posts, setPosts] = useState<Post[]>([]);
   const [activeTab, setActiveTab] = useState<'forYou' | 'following'>('forYou');
   const [refreshing, setRefreshing] = useState(false);
