@@ -672,6 +672,8 @@ export const translations = {
     
     // Profile
     viewMyProfile: 'Profilimi Görüntüle',
+    myProfessionsWorkplace: 'Mesleklerim & Çalıştığım Yer',
+    myProfessions: 'Mesleklerim',
     yourReferralCode: 'Referans Kodunuz',
     peopleJoined: 'kişi kodunuzla katıldı',
     profilePictureUpdated: 'Profil resmi başarıyla güncellendi!',
