@@ -160,20 +160,20 @@ const styles = StyleSheet.create({
     gap: 12,
   },
   flagButton: {
-    width: 44,
+    width: 50,
     height: 44,
-    borderRadius: 22,
+    borderRadius: 12,
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#F5F5F5',
   },
   flagButtonActive: {
-    backgroundColor: '#E7F3FF',
-    borderWidth: 2,
-    borderColor: '#007AFF',
+    backgroundColor: '#007AFF',
   },
-  flagEmoji: {
-    fontSize: 24,
+  flagText: {
+    fontSize: 14,
+    fontWeight: '700',
+    color: '#333',
   },
   logo: {
     fontSize: 32,
