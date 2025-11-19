@@ -29,6 +29,7 @@ interface FriendRequest {
 export default function FriendsScreen() {
   const router = useRouter();
   const user = useAuthStore((state) => state.user);
+  const { currentSector } = useSectorStore();
   const loadFriendRequestCount = useNotificationStore((state) => state.loadFriendRequestCount);
   const { t } = useTranslation();
   const [searchQuery, setSearchQuery] = useState('');
