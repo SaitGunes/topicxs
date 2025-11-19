@@ -1781,8 +1781,8 @@ async def search_posts(q: str, skip: int = 0, limit: int = 20, current_user: Use
     return [PostEnhanced(**post) for post in posts]
 
 @api_router.get("/posts/following", response_model=List[PostEnhanced])
-async def get_following_posts(skip: int = 0, limit: int = 20, current_user: User = Depends(get_current_user)):
-    """Get posts only from users you follow"""
+async def get_following_posts(skip: int = 0, limit: int = 20, sector: str = "drivers", current_user: User = Depends(get_current_user)):
+    """Get posts only from users you follow - filtered by sector"""
     # Get current user's following list
     user = await db.users.find_one({"id": current_user.id})
     following_ids = user.get("following_ids", [])
@@ -1791,9 +1791,9 @@ async def get_following_posts(skip: int = 0, limit: int = 20, current_user: User
     if not following_ids:
         return []
     
-    # Get posts from followed users only
+    # Get posts from followed users only - filtered by sector
     posts = await db.posts_enhanced.find(
-        {"user_id": {"$in": following_ids}}
+        {"user_id": {"$in": following_ids}, "sector": sector}
     ).sort("created_at", -1).skip(skip).limit(limit).to_list(limit)
     
     return [PostEnhanced(**post) for post in posts]
