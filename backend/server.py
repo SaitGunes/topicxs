@@ -161,6 +161,7 @@ class User(BaseModel):
     invited_by: Optional[str] = None
     referral_count: int = 0
     friend_ids: List[str] = []
+    sectors: List[str] = ["drivers"]  # New: which sectors user has joined
     following_ids: List[str] = []  # Users this user follows
     followers_ids: List[str] = []  # Users following this user
     blocked_user_ids: List[str] = []
