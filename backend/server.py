@@ -1489,6 +1489,7 @@ async def create_enhanced_post(post_data: PostCreateEnhanced, current_user: User
         "content_hash": content_hash,
         "share_count": 0,
         "shared_from_id": None,
+        "sector": post_data.sector,
         "created_at": datetime.utcnow()
     }
     
