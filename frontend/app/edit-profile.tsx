@@ -26,18 +26,27 @@ const DRIVER_USER_TYPES = [
   { id: 'none_listed', label: 'None listed here', icon: 'add-circle-outline' },
 ];
 
+interface UserTypeWithWorkplace {
+  type: string;
+  workplace?: string;
+}
+
 export default function EditProfileScreen() {
   const router = useRouter();
   const { user, setUser } = useAuthStore();
   const { currentSector } = useSectorStore();
   
-  const [selectedUserTypes, setSelectedUserTypes] = useState<string[]>([]);
+  const [selectedUserTypes, setSelectedUserTypes] = useState<UserTypeWithWorkplace[]>([]);
+  const [customType, setCustomType] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (user?.sector_info?.[currentSector]?.user_types) {
       setSelectedUserTypes(user.sector_info[currentSector].user_types);
+    }
+    if (user?.sector_info?.[currentSector]?.custom_type) {
+      setCustomType(user.sector_info[currentSector].custom_type);
     }
     if (user?.sector_info?.[currentSector]?.phone_number) {
       setPhoneNumber(user.sector_info[currentSector].phone_number);
