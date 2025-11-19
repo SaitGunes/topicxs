@@ -1828,7 +1828,7 @@ async def get_groups(sector: str = "drivers", current_user: User = Depends(get_c
 @api_router.get("/groups/discover", response_model=List[Group])
 async def discover_groups(sector: str = "drivers", current_user: User = Depends(get_current_user)):
     # Get all groups where user is not a member - filtered by sector
-    groups = await db.groups.find({"member_ids": {"$ne": current_user.id}}).sort("created_at", -1).to_list(100)
+    groups = await db.groups.find({"member_ids": {"$ne": current_user.id}, "sector": sector}).sort("created_at", -1).to_list(100)
     return [Group(**group) for group in groups]
 
 @api_router.get("/groups/{group_id}")
