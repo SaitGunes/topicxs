@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import { useRouter, useLocalSearchParams } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import { useAuthStore } from '../../store/authStore';
+import { useSectorStore } from '../../store/sectorStore';
 import { useTranslation } from '../../store/languageStore';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import TermsModal from '../../components/TermsModal';
@@ -11,6 +12,7 @@ export default function RegisterScreen() {
   const router = useRouter();
   const params = useLocalSearchParams();
   const { register } = useAuthStore();
+  const { currentSector } = useSectorStore();
   const { t } = useTranslation();
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
