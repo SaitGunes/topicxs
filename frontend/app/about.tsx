@@ -20,59 +20,83 @@ export default function AboutScreen() {
       <ScrollView style={styles.content}>
         <View style={styles.logoSection}>
           <View style={styles.logoCircle}>
-            <Ionicons name="car" size={48} color="#007AFF" />
+            <Ionicons name="business" size={48} color="#007AFF" />
           </View>
-          <Text style={styles.appName}>Drivers Chat</Text>
-          <Text style={styles.version}>Version 1.0.0</Text>
-          <Text style={styles.tagline}>{t('aboutWherDriversConnect')}</Text>
+          <Text style={styles.appName}>Topicx</Text>
+          <Text style={styles.version}>Version 2.0.0</Text>
+          <Text style={styles.tagline}>Multi-Sector Community Platform</Text>
         </View>
 
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>{t('aboutTheApp')}</Text>
+          <Text style={styles.sectionTitle}>About Topicx</Text>
           <Text style={styles.text}>
-            {t('aboutAppDescription')}
+            Topicx is a revolutionary multi-sector community platform that brings together professionals and enthusiasts from various industries. Connect, share knowledge, and grow your network across Drivers, Sports, Science, Finance, and many more sectors - all in one place.
           </Text>
         </View>
 
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>{t('aboutOurMission')}</Text>
+          <Text style={styles.sectionTitle}>Our Mission</Text>
           <Text style={styles.text}>
-            {t('aboutMissionDescription')}
+            To create a unified platform where professionals from all sectors can connect, collaborate, and share their expertise. We believe in breaking down barriers between industries and fostering cross-sector communication and learning.
           </Text>
         </View>
 
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>{t('aboutKeyFeatures')}</Text>
+          <Text style={styles.sectionTitle}>Available Sectors</Text>
+          <View style={styles.featureItem}>
+            <Text style={styles.sectorIcon}>🚗</Text>
+            <Text style={styles.featureText}>Drivers - Professional & Regular Drivers</Text>
+          </View>
+          <View style={styles.featureItem}>
+            <Text style={styles.sectorIcon}>⚽</Text>
+            <Text style={styles.featureText}>Sports & Fitness Community</Text>
+          </View>
+          <View style={styles.featureItem}>
+            <Text style={styles.sectorIcon}>🔬</Text>
+            <Text style={styles.featureText}>Science & Research (Coming Soon)</Text>
+          </View>
+          <View style={styles.featureItem}>
+            <Text style={styles.sectorIcon}>🏗️</Text>
+            <Text style={styles.featureText}>Construction & Engineering (Coming Soon)</Text>
+          </View>
+          <View style={styles.featureItem}>
+            <Text style={styles.sectorIcon}>💰</Text>
+            <Text style={styles.featureText}>Finance & Investment (Coming Soon)</Text>
+          </View>
+          <View style={styles.featureItem}>
+            <Text style={styles.sectorIcon}>🎭</Text>
+            <Text style={styles.featureText}>Tourism & Hospitality (Coming Soon)</Text>
+          </View>
+        </View>
+
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>Key Features</Text>
           <View style={styles.featureItem}>
             <Ionicons name="people" size={20} color="#007AFF" />
-            <Text style={styles.featureText}>{t('aboutFeature1')}</Text>
+            <Text style={styles.featureText}>Multi-sector communities in one app</Text>
           </View>
           <View style={styles.featureItem}>
             <Ionicons name="chatbubbles" size={20} color="#007AFF" />
-            <Text style={styles.featureText}>{t('aboutFeature2')}</Text>
+            <Text style={styles.featureText}>Sector-specific chat rooms and groups</Text>
           </View>
           <View style={styles.featureItem}>
             <Ionicons name="newspaper" size={20} color="#007AFF" />
-            <Text style={styles.featureText}>{t('aboutFeature3')}</Text>
+            <Text style={styles.featureText}>Share posts and updates</Text>
           </View>
           <View style={styles.featureItem}>
-            <Ionicons name="heart" size={20} color="#007AFF" />
-            <Text style={styles.featureText}>{t('aboutFeature4')}</Text>
-          </View>
-          <View style={styles.featureItem}>
-            <Ionicons name="gift" size={20} color="#007AFF" />
-            <Text style={styles.featureText}>{t('aboutFeature5')}</Text>
+            <Ionicons name="globe" size={20} color="#007AFF" />
+            <Text style={styles.featureText}>Cross-sector networking</Text>
           </View>
           <View style={styles.featureItem}>
             <Ionicons name="shield-checkmark" size={20} color="#007AFF" />
-            <Text style={styles.featureText}>{t('aboutFeature6')}</Text>
+            <Text style={styles.featureText}>Safe and moderated communities</Text>
           </View>
         </View>
 
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>{t('aboutFree')}</Text>
+          <Text style={styles.sectionTitle}>100% Free Platform</Text>
           <Text style={styles.text}>
-            {t('aboutFreeDescription')}
+            Topicx is completely FREE with no hidden costs, premium features, or subscriptions. We believe in providing equal access to all community members regardless of their financial situation.
           </Text>
         </View>
 
