@@ -2267,14 +2267,18 @@ async def update_user_credentials(
 
 @api_router.get("/chatroom/messages")
 async def get_chatroom_messages(
+    sector: str = "drivers",
     current_user: User = Depends(get_current_user)
 ):
-    """Get latest public chat messages - max 200 OR last 24 hours"""
+    """Get latest public chat messages - max 200 OR last 24 hours, filtered by sector"""
     twenty_four_hours_ago = datetime.utcnow() - timedelta(hours=24)
     
-    # Get messages from last 24 hours OR max 200 messages
+    # Get messages from last 24 hours OR max 200 messages, filtered by sector
     messages = await db.chatroom_messages.find(
-        {"created_at": {"$gte": twenty_four_hours_ago}},
+        {
+            "created_at": {"$gte": twenty_four_hours_ago},
+            "sector": sector
+        },
         {"_id": 0}
     ).sort("created_at", -1).limit(200).to_list(200)
     
