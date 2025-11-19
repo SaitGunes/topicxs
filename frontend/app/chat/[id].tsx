@@ -28,6 +28,7 @@ export default function ChatScreen() {
   const router = useRouter();
   const { id } = useLocalSearchParams<{ id: string }>();
   const user = useAuthStore((state) => state.user);
+  const { currentSector } = useSectorStore();
   const [chat, setChat] = useState<Chat | null>(null);
   const [messages, setMessages] = useState<Message[]>([]);
   const [newMessage, setNewMessage] = useState('');
@@ -40,7 +41,9 @@ export default function ChatScreen() {
 
   const loadChat = async () => {
     try {
-      const response = await api.get('/api/chats');
+      const response = await api.get('/api/chats', {
+        params: { sector: currentSector }
+      });
       const foundChat = response.data.find((c: Chat) => c.id === id);
       setChat(foundChat);
     } catch (error) {
