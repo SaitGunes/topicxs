@@ -285,6 +285,7 @@ class PostCreateEnhanced(BaseModel):
     location: Optional[LocationInfo] = None
     privacy: PostPrivacy = PostPrivacy(level="friends", specific_user_ids=[])
     group_id: Optional[str] = None  # If post is shared to a group
+    sector: str = "drivers"  # Which sector this post belongs to
 
 class PostEnhanced(BaseModel):
     id: str
