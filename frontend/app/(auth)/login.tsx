@@ -187,11 +187,38 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 48,
   },
+  platformLogo: {
+    fontSize: 28,
+    fontWeight: '700',
+    textAlign: 'center',
+    marginBottom: 16,
+    color: '#333',
+  },
+  sectorBadge: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#F5F5F5',
+    paddingVertical: 12,
+    paddingHorizontal: 20,
+    borderRadius: 12,
+    marginBottom: 16,
+  },
+  sectorIcon: {
+    fontSize: 24,
+    marginRight: 8,
+  },
+  sectorName: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: '#007AFF',
+  },
   title: {
     fontSize: 32,
     fontWeight: 'bold',
     color: '#000',
     marginTop: 16,
+    marginBottom: 8,
   },
   subtitle: {
     fontSize: 16,
