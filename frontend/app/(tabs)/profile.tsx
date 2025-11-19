@@ -180,6 +180,15 @@ export default function ProfileScreen() {
           <Ionicons name="chevron-forward" size={24} color="#ccc" />
         </TouchableOpacity>
 
+        <TouchableOpacity 
+          style={styles.menuItem}
+          onPress={() => router.push('/edit-profile')}
+        >
+          <Ionicons name="create-outline" size={24} color="#007AFF" />
+          <Text style={styles.menuText}>Edit Profile Info</Text>
+          <Ionicons name="chevron-forward" size={24} color="#ccc" />
+        </TouchableOpacity>
+
         {user.is_admin && (
           <TouchableOpacity 
             style={styles.menuItem}
