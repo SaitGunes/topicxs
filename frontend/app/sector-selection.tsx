@@ -188,6 +188,25 @@ const styles = StyleSheet.create({
     shadowRadius: 8,
     elevation: 4,
   },
+  languageButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    alignSelf: 'flex-end',
+    paddingVertical: 8,
+    paddingHorizontal: 12,
+    backgroundColor: '#F5F5F5',
+    borderRadius: 20,
+    marginBottom: 16,
+    gap: 6,
+  },
+  languageFlag: {
+    fontSize: 20,
+  },
+  languageName: {
+    fontSize: 14,
+    fontWeight: '500',
+    color: '#333',
+  },
   logo: {
     fontSize: 32,
     fontWeight: '700',
