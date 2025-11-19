@@ -1197,6 +1197,7 @@ class ChatCreateSimple(BaseModel):
     name: Optional[str] = None
     is_group: bool = False
     members: List[str] = []
+    sector: str = "drivers"
 
 @api_router.post("/chats", response_model=Chat)
 async def create_chat(
