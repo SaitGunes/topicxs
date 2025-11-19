@@ -1211,10 +1211,11 @@ async def create_chat(
     # Support both simple user_id (for 1-1 chat) and full ChatCreate (for groups)
     if user_id:
         # Simple 1-1 chat
-        # Check if chat already exists
+        # Check if chat already exists in the same sector
         existing_chat = await db.chats.find_one({
             "is_group": False,
-            "members": {"$all": [current_user.id, user_id]}
+            "members": {"$all": [current_user.id, user_id]},
+            "sector": chat_request.sector
         })
         
         if existing_chat:
