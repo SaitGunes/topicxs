@@ -47,17 +47,18 @@ export default function TermsViewScreen() {
               <Ionicons name="document-text" size={48} color="#007AFF" />
             </View>
 
-            <Text style={styles.sectionTitle}>Drivers Chat Terms of Service</Text>
-            <Text style={styles.effectiveDate}>Effective Date: January 2025</Text>
+            <Text style={styles.sectionTitle}>Topicx Community Platform Terms of Service</Text>
+            <Text style={styles.effectiveDate}>Effective Date: November 2025</Text>
 
             <Text style={styles.intro}>
-              Welcome to Drivers Chat! Please read these terms carefully.
+              Welcome to Topicx - Your Multi-Sector Community Platform! Please read these terms carefully.
             </Text>
 
             <View style={styles.subsection}>
-              <Text style={styles.subtitle}>1. Non-Commercial Application</Text>
+              <Text style={styles.subtitle}>1. About Topicx Platform</Text>
               <Text style={styles.text}>
-                • Drivers Chat is a FREE community platform{'\n'}
+                • Topicx is a FREE multi-sector community platform{'\n'}
+                • Connect with professionals across Drivers, Sports, Science, Finance, and more{'\n'}
                 • There are NO paid memberships or premium features{'\n'}
                 • This application is operated on a non-commercial basis{'\n'}
                 • We do not sell any products or services
