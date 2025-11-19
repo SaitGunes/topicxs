@@ -362,11 +362,17 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
   },
   header: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'flex-start',
     padding: 20,
     paddingTop: 60,
     backgroundColor: '#f8f8f8',
     borderBottomWidth: 1,
     borderBottomColor: '#e0e0e0',
+  },
+  headerLeft: {
+    flex: 1,
   },
   headerTitle: {
     fontSize: 24,
@@ -377,6 +383,10 @@ const styles = StyleSheet.create({
   stepIndicator: {
     fontSize: 14,
     color: '#666',
+  },
+  closeButton: {
+    padding: 4,
+    marginLeft: 12,
   },
   content: {
     flex: 1,
