@@ -53,18 +53,32 @@ export default function EditProfileScreen() {
     }
   }, [user, currentSector]);
 
+  const isTypeSelected = (typeId: string) => {
+    return selectedUserTypes.some(item => item.type === typeId);
+  };
+
   const toggleUserType = (typeId: string) => {
-    if (selectedUserTypes.includes(typeId)) {
+    if (isTypeSelected(typeId)) {
       // Remove
-      setSelectedUserTypes(selectedUserTypes.filter(id => id !== typeId));
+      setSelectedUserTypes(selectedUserTypes.filter(item => item.type !== typeId));
     } else {
       // Add (max 5)
       if (selectedUserTypes.length >= 5) {
         Alert.alert('Limit Reached', 'You can select maximum 5 user types');
         return;
       }
-      setSelectedUserTypes([...selectedUserTypes, typeId]);
+      setSelectedUserTypes([...selectedUserTypes, { type: typeId }]);
     }
+  };
+
+  const updateWorkplace = (typeId: string, workplace: string) => {
+    setSelectedUserTypes(selectedUserTypes.map(item => 
+      item.type === typeId ? { ...item, workplace } : item
+    ));
+  };
+
+  const getWorkplace = (typeId: string) => {
+    return selectedUserTypes.find(item => item.type === typeId)?.workplace || '';
   };
 
   const handleSave = async () => {
