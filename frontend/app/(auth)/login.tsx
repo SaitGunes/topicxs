@@ -48,28 +48,11 @@ export default function LoginScreen() {
     setLoading(true);
     try {
       await login(username, password, currentSector || 'drivers');
-      
-      // Check if terms accepted
-      const termsAccepted = await AsyncStorage.getItem('termsAccepted');
-      if (termsAccepted !== 'true') {
-        setShowTerms(true);
-      } else {
-        router.replace('/(tabs)/home');
-      }
+      router.replace('/(tabs)/home');
     } catch (error: any) {
       Alert.alert(t('error'), error.message);
     } finally {
       setLoading(false);
-    }
-  };
-
-  const handleTermsAccept = async () => {
-    try {
-      await AsyncStorage.setItem('termsAccepted', 'true');
-      setShowTerms(false);
-      router.replace('/(tabs)/home');
-    } catch (error) {
-      console.error('Error saving terms acceptance:', error);
     }
   };
 
