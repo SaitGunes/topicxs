@@ -567,6 +567,30 @@ export const translations = {
     enableChat: 'Enable Chat',
     chatDisabled: 'Chat is disabled',
     chatDisabledMessage: 'The chat room has been disabled by admin',
+    
+    // Sector Selection
+    topicxPlatform: 'Topicx Platform',
+    chooseYourCommunity: 'Choose Your Community',
+    multiSectorPlatform: 'Multi-Sector Community Platform',
+    sectorDrivers: 'Drivers',
+    sectorSports: 'Sports & Fitness',
+    sectorScience: 'Science & Technology',
+    sectorConstruction: 'Construction & Real Estate',
+    sectorFinance: 'Finance, Stocks & Crypto',
+    sectorTourism: 'Tourism, Culture & Arts',
+    sectorFood: 'Food, Drinks & Lifestyle',
+    sectorHealth: 'Health & Cosmetics',
+    sectorMusic: 'Music, Entertainment & Events',
+    sectorGaming: 'Gaming & Video',
+    activeNow: 'Active',
+    comingSoon: 'Coming Soon',
+    changeSector: 'Change Sector',
+    
+    // Coming Soon Modal
+    comingSoonTitle: 'Coming Soon!',
+    comingSoonDescription: 'This sector is under construction. Want to be notified when it launches?',
+    comingSoonNotify: 'Notify Me',
+    comingSoonMaybeLater: 'Maybe Later',
   },
   tr: {
     // Auth
