@@ -601,6 +601,7 @@ async def register(request: Request, user_data: UserRegister):
         "phone_number": user_data.phone_number,
         "email_verified": False,
         "email_verification_code": verification_code,
+        "terms_accepted": True,  # User accepts terms during registration
         "sectors": [user_data.current_sector],  # Initialize with current sector
         "created_at": datetime.utcnow()
     }
