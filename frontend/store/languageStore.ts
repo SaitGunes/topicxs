@@ -1631,6 +1631,30 @@ export const translations = {
     enableChat: 'Activar Chat',
     chatDisabled: 'Chat desactivado',
     chatDisabledMessage: 'La sala de chat ha sido desactivada por el administrador',
+    
+    // Sector Selection
+    topicxPlatform: 'Plataforma Topicx',
+    chooseYourCommunity: 'Elige Tu Comunidad',
+    multiSectorPlatform: 'Plataforma Comunitaria Multisectorial',
+    sectorDrivers: 'Conductores',
+    sectorSports: 'Deportes & Fitness',
+    sectorScience: 'Ciencia & Tecnología',
+    sectorConstruction: 'Construcción & Bienes Raíces',
+    sectorFinance: 'Finanzas, Bolsa & Cripto',
+    sectorTourism: 'Turismo, Cultura & Artes',
+    sectorFood: 'Comida, Bebidas & Estilo de Vida',
+    sectorHealth: 'Salud & Cosméticos',
+    sectorMusic: 'Música, Entretenimiento & Eventos',
+    sectorGaming: 'Juegos & Video',
+    activeNow: 'Activo',
+    comingSoon: 'Próximamente',
+    changeSector: 'Cambiar Sector',
+    
+    // Coming Soon Modal
+    comingSoonTitle: '¡Próximamente!',
+    comingSoonDescription: 'Este sector está en construcción. ¿Quieres ser notificado cuando se lance?',
+    comingSoonNotify: 'Notificarme',
+    comingSoonMaybeLater: 'Quizás Más Tarde',
   },
 };
 
