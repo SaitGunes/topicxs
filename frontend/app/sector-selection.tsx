@@ -6,21 +6,38 @@ import {
   TouchableOpacity,
   ScrollView,
   Dimensions,
+  Modal,
 } from 'react-native';
 import { useRouter } from 'expo-router';
-import { useTranslation } from '../store/languageStore';
+import { Ionicons } from '@expo/vector-icons';
+import { useTranslation, useLanguageStore, Language } from '../store/languageStore';
 import { useSectorStore, sectors, SectorId } from '../store/sectorStore';
 import ComingSoonModal from '../components/ComingSoonModal';
 
 export default function SectorSelection() {
   const router = useRouter();
-  const { t } = useTranslation();
+  const { t, language } = useTranslation();
+  const { setLanguage } = useLanguageStore();
   const { setCurrentSector } = useSectorStore();
   const [showComingSoon, setShowComingSoon] = useState(false);
+  const [showLanguageModal, setShowLanguageModal] = useState(false);
   const [selectedInactiveSector, setSelectedInactiveSector] = useState<{
     name: string;
     icon: string;
   } | null>(null);
+
+  const languages = [
+    { code: 'en' as Language, name: 'English', flag: '🇬🇧' },
+    { code: 'tr' as Language, name: 'Türkçe', flag: '🇹🇷' },
+    { code: 'es' as Language, name: 'Español', flag: '🇪🇸' },
+  ];
+
+  const currentLanguage = languages.find(l => l.code === language) || languages[0];
+
+  const handleLanguageChange = async (languageCode: Language) => {
+    await setLanguage(languageCode);
+    setShowLanguageModal(false);
+  };
 
   const handleSectorPress = async (sectorId: SectorId, isActive: boolean, nameKey: string, icon: string) => {
     if (isActive) {
