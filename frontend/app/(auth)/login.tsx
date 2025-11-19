@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { useRouter } from 'expo-router';
 import { useAuthStore } from '../../store/authStore';
 import { useTranslation, useLanguageStore } from '../../store/languageStore';
+import { useSectorStore } from '../../store/sectorStore';
 import { Ionicons } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import TermsModal from '../../components/TermsModal';
@@ -10,6 +11,7 @@ import TermsModal from '../../components/TermsModal';
 export default function LoginScreen() {
   const router = useRouter();
   const login = useAuthStore((state) => state.login);
+  const { clearSector } = useSectorStore();
   const { t, language } = useTranslation();
   const { setLanguage } = useLanguageStore();
   const [username, setUsername] = useState('');
@@ -17,6 +19,11 @@ export default function LoginScreen() {
   const [loading, setLoading] = useState(false);
   const [showTerms, setShowTerms] = useState(false);
   const [showLanguageModal, setShowLanguageModal] = useState(false);
+
+  const handleBackToSectors = async () => {
+    await clearSector();
+    router.replace('/sector-selection');
+  };
 
   const languages = [
     { code: 'en', name: 'English', flag: '🇬🇧' },
