@@ -134,8 +134,6 @@ export default function LoginScreen() {
           </TouchableOpacity>
         </View>
       </ScrollView>
-      
-      <TermsModal visible={showTerms} onAccept={handleTermsAccept} />
     </KeyboardAvoidingView>
   );
 }
