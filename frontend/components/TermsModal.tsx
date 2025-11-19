@@ -197,7 +197,7 @@ export default function TermsModal({ visible, onAccept }: TermsModalProps) {
                   <Text style={styles.text}>
                     • No political campaigns or propaganda{'\n'}
                     • No partisan political debates{'\n'}
-                    • Keep discussions driving-related
+                    • Keep discussions professional and sector-focused
                   </Text>
                 </View>
               </View>
