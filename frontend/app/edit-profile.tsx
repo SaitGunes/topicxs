@@ -109,7 +109,6 @@ export default function EditProfileScreen() {
           [currentSector]: {
             user_types: selectedUserTypes,
             custom_type: customType.trim() || undefined,
-            phone_number: phoneNumber.trim() || undefined,
           }
         }
       });
