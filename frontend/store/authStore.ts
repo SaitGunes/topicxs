@@ -113,6 +113,14 @@ export const useAuthStore = create<AuthState>((set) => ({
         console.error('Error removing push token:', error);
       }
       
+      // Clear sector selection
+      try {
+        const { useSectorStore } = await import('./sectorStore');
+        await useSectorStore.getState().clearSector();
+      } catch (error) {
+        console.error('Error clearing sector:', error);
+      }
+      
       // Clear all cache including Expo cache
       await clearAllCache();
       
