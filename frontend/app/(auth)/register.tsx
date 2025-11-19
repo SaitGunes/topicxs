@@ -92,8 +92,19 @@ export default function RegisterScreen() {
       </View>
 
       <View style={styles.content}>
-        <Text style={styles.title}>{t('createAccount')}</Text>
-        <Text style={styles.subtitle}>{t('joinCommunity')}</Text>
+        <Text style={styles.title}>Create New Account</Text>
+        <Text style={styles.subtitle}>
+          Join Topicx {currentSector === 'drivers' ? 'Drivers' : 
+                       currentSector === 'sports' ? 'Sports' : 
+                       currentSector === 'science' ? 'Science' :
+                       currentSector === 'construction' ? 'Construction' :
+                       currentSector === 'finance' ? 'Finance' :
+                       currentSector === 'tourism' ? 'Tourism' :
+                       currentSector === 'food' ? 'Food' :
+                       currentSector === 'health' ? 'Health' :
+                       currentSector === 'music' ? 'Music' :
+                       currentSector === 'gaming' ? 'Gaming' : 'Drivers'} Community
+        </Text>
 
         <View style={styles.form}>
           <View style={styles.inputContainer}>
