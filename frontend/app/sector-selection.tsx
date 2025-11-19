@@ -20,7 +20,6 @@ export default function SectorSelection() {
   const { setLanguage } = useLanguageStore();
   const { setCurrentSector } = useSectorStore();
   const [showComingSoon, setShowComingSoon] = useState(false);
-  const [showLanguageModal, setShowLanguageModal] = useState(false);
   const [selectedInactiveSector, setSelectedInactiveSector] = useState<{
     name: string;
     icon: string;
