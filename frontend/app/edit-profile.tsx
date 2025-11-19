@@ -119,7 +119,11 @@ export default function EditProfileScreen() {
 
     setLoading(true);
     try {
-      const response = await api.put('/api/auth/me', {
+      console.log('💾 Saving professions...');
+      console.log('Selected types:', selectedUserTypes);
+      console.log('Custom type:', customType);
+      
+      const payload = {
         sector_info: {
           ...user?.sector_info,
           [currentSector]: {
@@ -127,14 +131,22 @@ export default function EditProfileScreen() {
             custom_type: customType.trim() || undefined,
           }
         }
-      });
+      };
+      console.log('Payload:', JSON.stringify(payload, null, 2));
+      
+      const response = await api.put('/api/auth/me', payload);
+      
+      console.log('✅ Save successful!');
+      console.log('Response data:', response.data);
+      console.log('Response sector_info:', response.data.sector_info);
       
       setUser(response.data);
+      console.log('✅ User updated in store');
       
       // Navigate back immediately without alert
       router.back();
     } catch (error: any) {
-      console.error('Save error:', error);
+      console.error('❌ Save error:', error);
       Alert.alert('Error', error.response?.data?.detail || 'Failed to update profile');
     } finally {
       setLoading(false);
