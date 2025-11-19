@@ -38,7 +38,6 @@ export default function EditProfileScreen() {
   
   const [selectedUserTypes, setSelectedUserTypes] = useState<UserTypeWithWorkplace[]>([]);
   const [customType, setCustomType] = useState('');
-  const [phoneNumber, setPhoneNumber] = useState('');
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
