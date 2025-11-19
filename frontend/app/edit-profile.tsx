@@ -63,6 +63,19 @@ export default function EditProfileScreen() {
   const [customType, setCustomType] = useState('');
   const [loading, setLoading] = useState(false);
 
+  // Sektöre göre user type listesini al
+  const getUserTypesList = () => {
+    switch (currentSector) {
+      case 'sports':
+        return SPORTS_USER_TYPES;
+      case 'drivers':
+      default:
+        return DRIVER_USER_TYPES;
+    }
+  };
+
+  const userTypesList = getUserTypesList();
+
   useEffect(() => {
     console.log('🔍 Loading profession data...');
     console.log('Current sector:', currentSector);
