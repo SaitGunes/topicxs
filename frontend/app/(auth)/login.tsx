@@ -11,7 +11,7 @@ import TermsModal from '../../components/TermsModal';
 export default function LoginScreen() {
   const router = useRouter();
   const login = useAuthStore((state) => state.login);
-  const { clearSector } = useSectorStore();
+  const { clearSector, currentSector } = useSectorStore();
   const { t } = useTranslation();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -22,6 +22,22 @@ export default function LoginScreen() {
     await clearSector();
     router.replace('/sector-selection');
   };
+
+  // Get current sector info
+  const sectorInfo = {
+    drivers: { icon: '🚗', name: t('sectorDrivers') },
+    sports: { icon: '⚽', name: t('sectorSports') },
+    science: { icon: '🔬', name: t('sectorScience') },
+    construction: { icon: '🏗️', name: t('sectorConstruction') },
+    finance: { icon: '💰', name: t('sectorFinance') },
+    tourism: { icon: '🎭', name: t('sectorTourism') },
+    food: { icon: '🍔', name: t('sectorFood') },
+    health: { icon: '💊', name: t('sectorHealth') },
+    music: { icon: '🎵', name: t('sectorMusic') },
+    gaming: { icon: '🎮', name: t('sectorGaming') },
+  };
+
+  const currentSectorInfo = sectorInfo[currentSector || 'drivers'];
 
   const handleLogin = async () => {
     if (!username || !password) {
