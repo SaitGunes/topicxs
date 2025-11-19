@@ -356,12 +356,14 @@ class Group(BaseModel):
     moderator_ids: List[str] = []
     member_ids: List[str] = []
     requires_approval: bool = True
+    sector: str = "drivers"  # Which sector this group belongs to
     created_at: datetime = Field(default_factory=datetime.utcnow)
 
 class GroupCreate(BaseModel):
     name: str
     description: Optional[str] = None
     requires_approval: bool = True
+    sector: str = "drivers"  # Which sector this group belongs to
 
 class GroupJoinRequest(BaseModel):
     id: str
