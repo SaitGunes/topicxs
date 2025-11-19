@@ -101,63 +101,63 @@ export default function AboutScreen() {
         </View>
 
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>{t('aboutCommunityGuidelines')}</Text>
+          <Text style={styles.sectionTitle}>Community Guidelines</Text>
           <Text style={styles.text}>
-            {t('aboutGuidelinesDescription')}
+            All Topicx communities follow strict guidelines to ensure a safe, respectful, and professional environment. We maintain zero tolerance for harassment, spam, and inappropriate content.
           </Text>
           <TouchableOpacity 
             style={styles.linkButton}
             onPress={() => router.push('/terms-view')}
           >
-            <Text style={styles.linkText}>{t('aboutReadFullTerms')}</Text>
+            <Text style={styles.linkText}>Read Full Terms & Guidelines</Text>
           </TouchableOpacity>
         </View>
 
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>{t('aboutContactSupport')}</Text>
+          <Text style={styles.sectionTitle}>Contact & Support</Text>
           <Text style={styles.text}>
-            {t('aboutContactDescription')}{'\n'}
-            {t('aboutEmailUs')} {t('termsSupportEmail')}
+            Have questions or need help? We're here for you!{'\n\n'}
+            Email us at: isyerimiz@gmail.com
           </Text>
           <TouchableOpacity 
             style={styles.linkButton}
             onPress={() => router.push('/help')}
           >
-            <Text style={styles.linkText}>{t('aboutVisitHelp')}</Text>
+            <Text style={styles.linkText}>Visit Help Center</Text>
           </TouchableOpacity>
         </View>
 
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>{t('aboutLegal')}</Text>
+          <Text style={styles.sectionTitle}>Legal</Text>
           <TouchableOpacity 
             style={styles.legalItem}
             onPress={() => router.push('/terms-view')}
           >
-            <Text style={styles.legalText}>{t('aboutTermsService')}</Text>
+            <Text style={styles.legalText}>Terms of Service</Text>
             <Ionicons name="chevron-forward" size={20} color="#666" />
           </TouchableOpacity>
           <TouchableOpacity 
             style={styles.legalItem}
             onPress={() => router.push('/terms-view')}
           >
-            <Text style={styles.legalText}>{t('aboutCommunityGuidelines')}</Text>
+            <Text style={styles.legalText}>Community Guidelines</Text>
             <Ionicons name="chevron-forward" size={20} color="#666" />
           </TouchableOpacity>
           <TouchableOpacity 
             style={styles.legalItem}
             onPress={() => router.push('/terms-view')}
           >
-            <Text style={styles.legalText}>{t('aboutPrivacyPolicy')}</Text>
+            <Text style={styles.legalText}>Privacy Policy</Text>
             <Ionicons name="chevron-forward" size={20} color="#666" />
           </TouchableOpacity>
         </View>
 
         <View style={styles.footer}>
           <Text style={styles.footerText}>
-            {t('aboutMadeWith')}
+            Made with ❤️ for professionals worldwide
           </Text>
           <Text style={styles.footerText}>
-            {t('aboutCopyright')}
+            © 2025 Topicx Community Platform
           </Text>
         </View>
       </ScrollView>
