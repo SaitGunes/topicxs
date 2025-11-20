@@ -690,6 +690,9 @@ async def update_profile(user_update: UserUpdate, current_user: User = Depends(g
     if user_update.phone_number is not None:
         update_data["phone_number"] = user_update.phone_number if user_update.phone_number.strip() else None
     
+    if user_update.sector_info is not None:
+        update_data["sector_info"] = user_update.sector_info
+    
     if update_data:
         await db.users.update_one(
             {"id": current_user.id},
