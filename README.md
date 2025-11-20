@@ -63,6 +63,31 @@ Or set up GitHub Pages for a better viewing experience:
 
 For support or inquiries: isyerimiz@gmail.com
 
+## 📦 Installation & Build
+
+For detailed iOS deployment instructions, see [IOS_DEPLOYMENT_GUIDE.md](./IOS_DEPLOYMENT_GUIDE.md)
+
+### Quick Start (Development)
+```bash
+# Frontend
+cd frontend
+npm install
+expo start
+
+# Backend
+cd backend
+pip install -r requirements.txt
+python server.py
+```
+
+### iOS Build (Production)
+```bash
+cd frontend
+npm install -g eas-cli
+eas login
+eas build --platform ios
+```
+
 ## 📄 License
 
-© 2025 Drivers Chat. All rights reserved.
+© 2025 Topicx. All rights reserved.
