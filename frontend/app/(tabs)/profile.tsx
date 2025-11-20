@@ -199,8 +199,6 @@ export default function ProfileScreen() {
           </View>
         )}
         
-        {user.bio ? <Text style={styles.bio}>{user.bio}</Text> : null}
-        
         {/* Star Rating Badge */}
         {user.star_level && (
           <View style={styles.starBadge}>
