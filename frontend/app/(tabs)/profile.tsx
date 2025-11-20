@@ -184,6 +184,21 @@ export default function ProfileScreen() {
             </View>
           )}
         </View>
+        
+        {/* Professions Section */}
+        {professions.length > 0 && (
+          <View style={styles.professionsContainer}>
+            <View style={styles.professionsWrapper}>
+              {professions.map((profession, index) => (
+                <View key={index} style={styles.professionBadge}>
+                  <Ionicons name={profession.icon as any} size={16} color="#007AFF" />
+                  <Text style={styles.professionText}>{profession.label}</Text>
+                </View>
+              ))}
+            </View>
+          </View>
+        )}
+        
         {user.bio ? <Text style={styles.bio}>{user.bio}</Text> : null}
         
         {/* Star Rating Badge */}
