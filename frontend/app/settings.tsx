@@ -70,7 +70,6 @@ export default function SettingsScreen() {
     try {
       const response = await api.put('/api/auth/me', {
         full_name: fullName,
-        bio: bio,
         phone_number: phoneNumber.trim() || null,
       });
       
