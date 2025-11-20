@@ -18,7 +18,7 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.drvchat.app",
+      "bundleIdentifier": "com.topicx.app",
       "buildNumber": "1",
       "infoPlist": {
         "NSLocationWhenInUseUsageDescription": "Bu uygulama, grup gönderilerinde konumunuzu ve yol durumunu paylaşmanız için konum bilginize ihtiyaç duyar.",
