@@ -2,10 +2,52 @@ import { View, Text, StyleSheet, TouchableOpacity, Image, ScrollView, Alert, Act
 import { useState } from 'react';
 import { Ionicons } from '@expo/vector-icons';
 import { useAuthStore } from '../../store/authStore';
+import { useSectorStore } from '../../store/sectorStore';
 import { useTranslation } from '../../store/languageStore';
 import { useRouter } from 'expo-router';
 import * as ImagePicker from 'expo-image-picker';
 import api from '../../utils/api';
+
+// Drivers sector için user type listesi
+const DRIVER_USER_TYPES = [
+  { id: 'professional_driver', label: 'Professional Driver', icon: 'briefcase' },
+  { id: 'taxi_driver', label: 'Taxi Driver', icon: 'car' },
+  { id: 'rideshare_driver', label: 'Uber/Lyft Driver', icon: 'phone-portrait' },
+  { id: 'truck_driver', label: 'Truck Driver', icon: 'bus' },
+  { id: 'bus_driver', label: 'Bus Driver', icon: 'bus' },
+  { id: 'private_chauffeur', label: 'Private Chauffeur', icon: 'car-sport' },
+  { id: 'delivery_driver', label: 'Delivery/Courier Driver', icon: 'bicycle' },
+  { id: 'ambulance_driver', label: 'Ambulance Driver', icon: 'medkit' },
+  { id: 'construction_operator', label: 'Construction Vehicle Operator', icon: 'construct' },
+  { id: 'driving_instructor', label: 'Driving Instructor', icon: 'school' },
+  { id: 'fleet_manager', label: 'Fleet Manager', icon: 'people' },
+  { id: 'mechanic', label: 'Mechanic/Auto Technician', icon: 'build' },
+  { id: 'auto_dealer', label: 'Auto Dealer/Salesperson', icon: 'pricetag' },
+  { id: 'transportation_coordinator', label: 'Transportation Coordinator', icon: 'map' },
+  { id: 'regular_driver', label: 'Regular Driver (Hobby)', icon: 'car' },
+  { id: 'none_listed', label: 'None listed here', icon: 'add-circle-outline' },
+];
+
+// Sports sector için user type listesi
+const SPORTS_USER_TYPES = [
+  { id: 'professional_athlete', label: 'Professional Athlete', icon: 'trophy' },
+  { id: 'amateur_athlete', label: 'Amateur Athlete', icon: 'person' },
+  { id: 'coach', label: 'Coach/Trainer', icon: 'school' },
+  { id: 'sports_manager', label: 'Sports Manager', icon: 'briefcase' },
+  { id: 'fitness_instructor', label: 'Fitness Instructor', icon: 'fitness' },
+  { id: 'personal_trainer', label: 'Personal Trainer', icon: 'barbell' },
+  { id: 'sports_journalist', label: 'Sports Journalist', icon: 'newspaper' },
+  { id: 'sports_photographer', label: 'Sports Photographer', icon: 'camera' },
+  { id: 'referee', label: 'Referee/Umpire', icon: 'flag' },
+  { id: 'sports_medicine', label: 'Sports Medicine Professional', icon: 'medical' },
+  { id: 'nutritionist', label: 'Nutritionist/Dietitian', icon: 'restaurant' },
+  { id: 'physical_therapist', label: 'Physical Therapist', icon: 'bandage' },
+  { id: 'sports_psychologist', label: 'Sports Psychologist', icon: 'happy' },
+  { id: 'sports_equipment_dealer', label: 'Sports Equipment Dealer', icon: 'basket' },
+  { id: 'gym_owner', label: 'Gym/Facility Owner', icon: 'business' },
+  { id: 'fitness_enthusiast', label: 'Fitness Enthusiast (Hobby)', icon: 'heart' },
+  { id: 'none_listed', label: 'None listed here', icon: 'add-circle-outline' },
+];
 
 export default function ProfileScreen() {
   const router = useRouter();
