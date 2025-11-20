@@ -1667,6 +1667,9 @@ export const translations = {
     comingSoonDescription: 'Este sector está en construcción. ¿Quieres ser notificado cuando se lance?',
     comingSoonNotify: 'Notificarme',
     comingSoonMaybeLater: 'Quizás Más Tarde',
+    voiceMessageComingSoon: 'Mensaje de Voz',
+    voiceMessageComingSoonTitle: '¡Próximamente!',
+    voiceMessageComingSoonMessage: 'La función de mensajes de voz estará disponible pronto.',
   },
 };
 
