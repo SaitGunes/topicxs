@@ -202,7 +202,7 @@ export default function SettingsScreen() {
             <Ionicons name="person-outline" size={22} color="#007AFF" />
             <View style={styles.settingTextContainer}>
               <Text style={styles.settingText}>Edit Profile</Text>
-              <Text style={styles.settingSubtext}>Name, Bio</Text>
+              <Text style={styles.settingSubtext}>Name, Phone</Text>
             </View>
             <Ionicons name="chevron-forward" size={20} color="#ccc" />
           </TouchableOpacity>
