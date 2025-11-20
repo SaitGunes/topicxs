@@ -70,17 +70,29 @@ export default function VoiceRecorder({ onSend, onCancel, maxDuration = 60 }: Vo
     if (!recording) return;
 
     try {
+      console.log('Stopping and unloading recording...');
       await recording.stopAndUnloadAsync();
+      
+      console.log('Setting audio mode...');
       await Audio.setAudioModeAsync({
         allowsRecordingIOS: false,
       });
+      
       const uri = recording.getURI();
       console.log('Recording stopped and stored at', uri);
       
       if (uri) {
+        // Wait a bit for file to be fully written
+        console.log('Waiting for file to be written...');
+        await new Promise(resolve => setTimeout(resolve, 500));
+        
         setIsSending(true);
+        console.log('Calling onSend with uri:', uri);
         await onSend(uri, recordingDuration);
         setIsSending(false);
+      } else {
+        console.error('No URI returned from recording');
+        Alert.alert('Error', 'Failed to get recording URI');
       }
       
       setRecording(null);
@@ -88,6 +100,7 @@ export default function VoiceRecorder({ onSend, onCancel, maxDuration = 60 }: Vo
     } catch (err) {
       console.error('Failed to stop recording', err);
       Alert.alert('Error', 'Failed to stop recording');
+      setIsSending(false);
     }
   };
 
