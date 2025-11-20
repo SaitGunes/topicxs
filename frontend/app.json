@@ -37,7 +37,7 @@
       "androidStatusBar": {
         "backgroundColor": "#000000"
       },
-      "package": "com.topicx.app",
+      "package": "com.topicxs.app",
       "versionCode": 1,
       "edgeToEdgeEnabled": true,
       "permissions": [
