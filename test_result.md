@@ -682,8 +682,7 @@ metadata:
 
 test_plan:
   current_focus:
-    - "Chat - Create Chat with Sector"
-    - "Chat - Get User Chats by Sector"
+    - "Edit Profile - sector_info Update Endpoint"
   stuck_tasks: []
   test_all: false
   test_priority: "high_first"
