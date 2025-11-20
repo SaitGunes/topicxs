@@ -353,17 +353,10 @@ export default function GroupChat({ groupId }: GroupChatProps) {
           }
         />
 
-        {showVoiceRecorder ? (
-          <VoiceRecorder
-            onSend={handleSendVoiceMessage}
-            onCancel={() => setShowVoiceRecorder(false)}
-            maxDuration={60}
-          />
-        ) : (
-          <View style={styles.inputContainer}>
+        <View style={styles.inputContainer}>
             <TouchableOpacity
               style={styles.voiceButton}
-              onPress={() => setShowVoiceRecorder(true)}
+              onPress={() => Alert.alert(t('voiceMessageComingSoonTitle'), t('voiceMessageComingSoonMessage'))}
               disabled={!chatEnabled}
             >
               <Ionicons name="mic" size={24} color={chatEnabled ? '#007AFF' : '#ccc'} />
