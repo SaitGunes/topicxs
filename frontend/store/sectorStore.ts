@@ -13,14 +13,14 @@ interface Sector {
 export const sectors: Sector[] = [
   { id: 'drivers', icon: '🚗', nameKey: 'sectorDrivers', isActive: true },
   { id: 'sports', icon: '⚽', nameKey: 'sectorSports', isActive: true },
-  { id: 'science', icon: '🔬', nameKey: 'sectorScience', isActive: false },
-  { id: 'construction', icon: '🏗️', nameKey: 'sectorConstruction', isActive: false },
-  { id: 'finance', icon: '💰', nameKey: 'sectorFinance', isActive: false },
-  { id: 'tourism', icon: '🎭', nameKey: 'sectorTourism', isActive: false },
-  { id: 'food', icon: '🍔', nameKey: 'sectorFood', isActive: false },
-  { id: 'health', icon: '💊', nameKey: 'sectorHealth', isActive: false },
-  { id: 'music', icon: '🎵', nameKey: 'sectorMusic', isActive: false },
-  { id: 'gaming', icon: '🎮', nameKey: 'sectorGaming', isActive: false },
+  { id: 'science', icon: '🔬', nameKey: 'sectorScience', isActive: true },
+  { id: 'construction', icon: '🏗️', nameKey: 'sectorConstruction', isActive: true },
+  { id: 'finance', icon: '💰', nameKey: 'sectorFinance', isActive: true },
+  { id: 'tourism', icon: '🎭', nameKey: 'sectorTourism', isActive: true },
+  { id: 'food', icon: '🍔', nameKey: 'sectorFood', isActive: true },
+  { id: 'health', icon: '💊', nameKey: 'sectorHealth', isActive: true },
+  { id: 'music', icon: '🎵', nameKey: 'sectorMusic', isActive: true },
+  { id: 'gaming', icon: '🎮', nameKey: 'sectorGaming', isActive: true },
 ];
 
 interface SectorState {
