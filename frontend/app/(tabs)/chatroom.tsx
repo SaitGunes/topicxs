@@ -428,14 +428,7 @@ export default function ChatRoomScreen() {
           }
         />
 
-        {showVoiceRecorder ? (
-          <VoiceRecorder
-            onSend={handleSendVoiceMessage}
-            onCancel={() => setShowVoiceRecorder(false)}
-            maxDuration={60}
-          />
-        ) : (
-          <View style={styles.inputContainer}>
+        <View style={styles.inputContainer}>
             <TouchableOpacity
               style={styles.voiceButton}
               onPress={() => Alert.alert(t('voiceMessageComingSoonTitle'), t('voiceMessageComingSoonMessage'))}
