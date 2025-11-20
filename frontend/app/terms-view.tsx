@@ -26,7 +26,15 @@ export default function TermsViewScreen() {
           onPress={() => setActiveTab('terms')}
         >
           <Text style={[styles.tabText, activeTab === 'terms' && styles.activeTabText]}>
-            {t('termsOfService')}
+            Terms
+          </Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={[styles.tab, activeTab === 'privacy' && styles.activeTab]}
+          onPress={() => setActiveTab('privacy')}
+        >
+          <Text style={[styles.tabText, activeTab === 'privacy' && styles.activeTabText]}>
+            Privacy
           </Text>
         </TouchableOpacity>
         <TouchableOpacity
@@ -34,7 +42,7 @@ export default function TermsViewScreen() {
           onPress={() => setActiveTab('guidelines')}
         >
           <Text style={[styles.tabText, activeTab === 'guidelines' && styles.activeTabText]}>
-            {t('communityGuidelines')}
+            Guidelines
           </Text>
         </TouchableOpacity>
       </View>
