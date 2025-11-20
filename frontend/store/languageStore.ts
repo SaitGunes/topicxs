@@ -593,6 +593,9 @@ export const translations = {
     comingSoonDescription: 'This sector is under construction. Want to be notified when it launches?',
     comingSoonNotify: 'Notify Me',
     comingSoonMaybeLater: 'Maybe Later',
+    voiceMessageComingSoon: 'Voice Message',
+    voiceMessageComingSoonTitle: 'Coming Soon!',
+    voiceMessageComingSoonMessage: 'Voice messaging feature will be available soon.',
   },
   tr: {
     // Auth
