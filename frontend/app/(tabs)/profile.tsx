@@ -393,6 +393,33 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginTop: 8,
   },
+  professionsContainer: {
+    marginTop: 16,
+    width: '100%',
+    paddingHorizontal: 16,
+  },
+  professionsWrapper: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'center',
+    gap: 8,
+  },
+  professionBadge: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#E3F2FD',
+    paddingHorizontal: 12,
+    paddingVertical: 8,
+    borderRadius: 20,
+    gap: 6,
+    borderWidth: 1,
+    borderColor: '#BBDEFB',
+  },
+  professionText: {
+    fontSize: 13,
+    color: '#007AFF',
+    fontWeight: '600',
+  },
   userTypeBadge: {
     flexDirection: 'row',
     alignItems: 'center',
