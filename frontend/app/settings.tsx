@@ -397,17 +397,6 @@ export default function SettingsScreen() {
               placeholderTextColor="#999"
             />
 
-            <Text style={styles.label}>Bio</Text>
-            <TextInput
-              style={[styles.input, styles.textArea]}
-              value={bio}
-              onChangeText={setBio}
-              placeholder="Tell us about yourself"
-              placeholderTextColor="#999"
-              multiline
-              numberOfLines={4}
-            />
-
             <Text style={styles.label}>Email (Read-only)</Text>
             <TextInput
               style={[styles.input, styles.disabledInput]}
