@@ -380,7 +380,6 @@ export default function GroupChat({ groupId }: GroupChatProps) {
               {sending ? <ActivityIndicator size="small" color="#fff" /> : <Ionicons name="send" size={20} color="#fff" />}
             </TouchableOpacity>
           </View>
-        )}
       </KeyboardAvoidingView>
     </SafeAreaView>
   );
