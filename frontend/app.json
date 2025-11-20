@@ -10,6 +10,8 @@
     "newArchEnabled": true,
     "description": "Topicx - Multi-sector community platform connecting professionals, enthusiasts, and communities across different industries.",
     "primaryColor": "#007AFF",
+    "privacy": "public",
+    "privacyPolicyUrl": "https://raw.githubusercontent.com/SaitGunes/Policy/main/README.md",
     "splash": {
       "image": "./assets/images/splash-image.png",
       "resizeMode": "contain",
