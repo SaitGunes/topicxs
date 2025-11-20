@@ -8,6 +8,8 @@
     "scheme": "topicx",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
+    "description": "Topicx - Multi-sector community platform connecting professionals, enthusiasts, and communities across different industries.",
+    "primaryColor": "#007AFF",
     "splash": {
       "image": "./assets/images/splash-image.png",
       "resizeMode": "contain",
