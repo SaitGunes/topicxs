@@ -105,6 +105,18 @@
 user_problem_statement: "Group location sharing feature with map view - Users can share their location and road status (traffic, accident, roadwork, etc.) exclusively in group posts with interactive map display"
 
 backend:
+  - task: "Edit Profile - sector_info Update Endpoint"
+    implemented: true
+    working: "NA"
+    file: "backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+        - working: "NA"
+          agent: "main"
+          comment: "Fixed backend to accept and save sector_info data. Updated UserUpdate model to include sector_info field (Optional[dict]). Updated update_profile endpoint (PUT /api/auth/me) to handle sector_info in update operations. This should fix the bug where user profession/workplace data was not persisting across sessions."
+
   - task: "Group Location Sharing - Post Creation with Location"
     implemented: true
     working: true
