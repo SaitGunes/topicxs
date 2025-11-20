@@ -206,11 +206,26 @@ export default function ChatRoomScreen() {
   const handleSendVoiceMessage = async (audioUri: string, duration: number) => {
     try {
       console.log('Reading audio file:', audioUri);
+      
+      // Check if file exists first
+      const fileInfo = await FileSystem.getInfoAsync(audioUri);
+      if (!fileInfo.exists) {
+        throw new Error('Audio file does not exist');
+      }
+      
+      console.log('File info:', fileInfo);
+      
       const base64Audio = await FileSystem.readAsStringAsync(audioUri, {
         encoding: FileSystem.EncodingType.Base64,
       });
       
+      if (!base64Audio || base64Audio.length === 0) {
+        throw new Error('Failed to read audio file as base64');
+      }
+      
+      console.log('Base64 audio length:', base64Audio.length);
       console.log('Sending voice message...');
+      
       const response = await axios.post(
         `${API_URL}/api/chatroom/messages`,
         {
@@ -239,7 +254,10 @@ export default function ChatRoomScreen() {
       setShowVoiceRecorder(false);
     } catch (error: any) {
       console.error('Send voice message error:', error);
-      Alert.alert(t('error'), error.response?.data?.detail || error.message);
+      console.error('Error details:', JSON.stringify(error, null, 2));
+      const errorMessage = error.response?.data?.detail || error.message || 'Failed to send voice message';
+      Alert.alert(t('error'), errorMessage);
+      setShowVoiceRecorder(false);
     }
   };
 
