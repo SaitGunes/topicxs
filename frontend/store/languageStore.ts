@@ -1130,6 +1130,9 @@ export const translations = {
     comingSoonDescription: 'Bu sektör şu anda yapım aşamasında. Açıldığında bildirim almak ister misiniz?',
     comingSoonNotify: 'Bildir Beni',
     comingSoonMaybeLater: 'Belki Sonra',
+    voiceMessageComingSoon: 'Sesli Mesaj',
+    voiceMessageComingSoonTitle: 'Yakında Gelecek!',
+    voiceMessageComingSoonMessage: 'Sesli mesajlaşma özelliği yakında kullanılabilir olacak.',
   },
   es: {
     // Auth
