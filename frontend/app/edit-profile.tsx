@@ -98,8 +98,10 @@ export default function EditProfileScreen() {
       case 'sports':
         return SPORTS_USER_TYPES;
       case 'drivers':
-      default:
         return DRIVER_USER_TYPES;
+      default:
+        // Tüm diğer sektörler için genel liste kullan
+        return GENERAL_USER_TYPES;
     }
   };
 
