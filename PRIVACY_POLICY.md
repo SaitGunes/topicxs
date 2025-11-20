@@ -1,4 +1,4 @@
-# Privacy Policy for Drivers Chat
+# Privacy Policy for Topicx
 
 **Last Updated:** November 17, 2025
 
@@ -8,14 +8,14 @@
 
 ## 1. Introduction
 
-Welcome to Drivers Chat ("we," "our," or "the App"). This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you use our mobile application. Please read this privacy policy carefully.
+Welcome to Topicx ("we," "our," or "the App"). This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you use our mobile application. Please read this privacy policy carefully.
 
 ---
 
 ## 2. Information We Collect
 
 ### 2.1 Personal Information
-When you register and use Drivers Chat, we collect:
+When you register and use Topicx, we collect:
 - **Account Information:** Username, full name, email address, password (encrypted)
 - **Profile Information:** Profile picture (optional), bio
 - **Contact Information:** Email for account recovery and notifications
@@ -153,7 +153,7 @@ However, no method of transmission over the internet is 100% secure.
 
 ## 8. Children's Privacy
 
-Drivers Chat is NOT intended for users under 13 years old. We do not knowingly collect information from children. If we discover that a child under 13 has provided personal information, we will delete it immediately.
+Topicx is NOT intended for users under 13 years old. We do not knowingly collect information from children. If we discover that a child under 13 has provided personal information, we will delete it immediately.
 
 ---
 
@@ -206,6 +206,6 @@ If you have questions or concerns about this Privacy Policy, please contact us:
 
 ---
 
-**By using Drivers Chat, you agree to this Privacy Policy.**
+**By using Topicx, you agree to this Privacy Policy.**
 
 Thank you for trusting us with your information. We are committed to protecting your privacy.
