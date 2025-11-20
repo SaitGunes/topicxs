@@ -113,26 +113,6 @@ export default function ProfileScreen() {
         </View>
         {user.bio ? <Text style={styles.bio}>{user.bio}</Text> : null}
         
-        {/* User Type Badge */}
-        {user.user_type && (
-          <View style={styles.userTypeBadge}>
-            <Ionicons 
-              name={
-                user.user_type === 'professional_driver' ? 'briefcase' : 
-                user.user_type === 'driver' ? 'car' : 
-                'person'
-              } 
-              size={14} 
-              color="#007AFF" 
-            />
-            <Text style={styles.userTypeText}>
-              {user.user_type === 'professional_driver' ? t('professionalDriver') :
-               user.user_type === 'driver' ? t('regularDriver') :
-               t('nonDriver')}
-            </Text>
-          </View>
-        )}
-        
         {/* Star Rating Badge */}
         {user.star_level && (
           <View style={styles.starBadge}>
