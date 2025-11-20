@@ -34,8 +34,15 @@ export default function AudioPlayer({ audioUri, duration = 0, isOwnMessage = fal
         await sound.playAsync();
         setIsPlaying(true);
       } else {
+        // Set audio mode for playback
+        await Audio.setAudioModeAsync({
+          allowsRecordingIOS: false,
+          playsInSilentModeIOS: true,
+          staysActiveInBackground: false,
+        });
+        
         // Load and play
-        console.log('Loading Sound');
+        console.log('Loading Sound from:', audioUri);
         const { sound: newSound } = await Audio.Sound.createAsync(
           { uri: audioUri },
           { shouldPlay: true },
@@ -43,11 +50,13 @@ export default function AudioPlayer({ audioUri, duration = 0, isOwnMessage = fal
         );
         setSound(newSound);
         setIsPlaying(true);
+        console.log('Sound loaded and playing');
       }
       
       setIsLoading(false);
     } catch (error) {
       console.error('Error playing sound:', error);
+      console.error('Audio URI was:', audioUri);
       setIsLoading(false);
     }
   };
