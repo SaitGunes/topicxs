@@ -52,8 +52,39 @@ const SPORTS_USER_TYPES = [
 export default function ProfileScreen() {
   const router = useRouter();
   const { user, logout, setUser } = useAuthStore();
+  const { currentSector } = useSectorStore();
   const { t } = useTranslation();
   const [uploading, setUploading] = useState(false);
+
+  // Sektöre göre user type listesini al
+  const getUserTypesList = () => {
+    switch (currentSector) {
+      case 'sports':
+        return SPORTS_USER_TYPES;
+      case 'drivers':
+      default:
+        return DRIVER_USER_TYPES;
+    }
+  };
+
+  // Kullanıcının seçtiği meslekleri al
+  const getUserProfessions = () => {
+    if (!user?.sector_info?.[currentSector]?.user_types) return [];
+    
+    const userTypesList = getUserTypesList();
+    const userTypes = user.sector_info[currentSector].user_types;
+    
+    return userTypes.map((ut: any) => {
+      const typeInfo = userTypesList.find(t => t.id === ut.type);
+      return {
+        ...ut,
+        label: typeInfo?.label || ut.type,
+        icon: typeInfo?.icon || 'briefcase'
+      };
+    });
+  };
+
+  const professions = getUserProfessions();
 
   const handleLogout = async () => {
     try {
