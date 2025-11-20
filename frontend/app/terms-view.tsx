@@ -7,7 +7,7 @@ import { useTranslation } from '../store/languageStore';
 export default function TermsViewScreen() {
   const router = useRouter();
   const { t } = useTranslation();
-  const [activeTab, setActiveTab] = useState<'terms' | 'guidelines'>('terms');
+  const [activeTab, setActiveTab] = useState<'terms' | 'guidelines' | 'privacy'>('terms');
 
   return (
     <View style={styles.container}>
