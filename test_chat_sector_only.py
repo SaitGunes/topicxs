@@ -9,7 +9,7 @@ import time
 from datetime import datetime
 
 # API Configuration
-BASE_URL = "https://topicx-app.preview.emergentagent.com/api"
+BASE_URL = "https://topicx-revamp.preview.emergentagent.com/api"
 
 def make_request(method, endpoint, data=None, headers=None, token=None):
     """Make HTTP request with proper error handling"""
