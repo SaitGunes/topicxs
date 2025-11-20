@@ -48,6 +48,35 @@ const SPORTS_USER_TYPES = [
   { id: 'none_listed', label: 'None listed here', icon: 'add-circle-outline' },
 ];
 
+// Genel meslek listesi (tüm diğer sektörler için)
+const GENERAL_USER_TYPES = [
+  { id: 'professional', label: 'Professional', icon: 'briefcase' },
+  { id: 'manager', label: 'Manager', icon: 'people' },
+  { id: 'specialist', label: 'Specialist', icon: 'star' },
+  { id: 'technician', label: 'Technician', icon: 'construct' },
+  { id: 'consultant', label: 'Consultant', icon: 'chatbubbles' },
+  { id: 'entrepreneur', label: 'Entrepreneur', icon: 'rocket' },
+  { id: 'freelancer', label: 'Freelancer', icon: 'laptop' },
+  { id: 'student', label: 'Student', icon: 'school' },
+  { id: 'teacher', label: 'Teacher/Instructor', icon: 'book' },
+  { id: 'researcher', label: 'Researcher', icon: 'flask' },
+  { id: 'analyst', label: 'Analyst', icon: 'analytics' },
+  { id: 'developer', label: 'Developer', icon: 'code' },
+  { id: 'designer', label: 'Designer', icon: 'color-palette' },
+  { id: 'artist', label: 'Artist', icon: 'brush' },
+  { id: 'writer', label: 'Writer', icon: 'create' },
+  { id: 'photographer', label: 'Photographer', icon: 'camera' },
+  { id: 'salesperson', label: 'Salesperson', icon: 'pricetag' },
+  { id: 'customer_service', label: 'Customer Service', icon: 'headset' },
+  { id: 'administrator', label: 'Administrator', icon: 'clipboard' },
+  { id: 'coordinator', label: 'Coordinator', icon: 'shuffle' },
+  { id: 'supervisor', label: 'Supervisor', icon: 'eye' },
+  { id: 'assistant', label: 'Assistant', icon: 'help-circle' },
+  { id: 'volunteer', label: 'Volunteer', icon: 'heart' },
+  { id: 'enthusiast', label: 'Enthusiast (Hobby)', icon: 'happy' },
+  { id: 'none_listed', label: 'None listed here', icon: 'add-circle-outline' },
+];
+
 interface UserTypeWithWorkplace {
   type: string;
   workplace?: string;
