@@ -34,6 +34,9 @@
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#000"
       },
+      "androidStatusBar": {
+        "backgroundColor": "#000000"
+      },
       "package": "com.topicx.app",
       "versionCode": 1,
       "edgeToEdgeEnabled": true,
