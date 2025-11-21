@@ -71,8 +71,7 @@
           "locationAlwaysAndWhenInUsePermission": "Bu uygulama, grup gönderilerinde konumunuzu ve yol durumunu paylaşmanız için konum bilginize ihtiyaç duyar."
         }
       ],
-      "expo-font",
-      "expo-web-browser"
+      "expo-font"
     ],
     "experiments": {
       "typedRoutes": true
