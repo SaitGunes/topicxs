@@ -23,10 +23,9 @@
       "bundleIdentifier": "com.topicxs.app",
       "buildNumber": "1",
       "infoPlist": {
-        "NSLocationWhenInUseUsageDescription": "Bu uygulama, grup gönderilerinde konumunuzu ve yol durumunu paylaşmanız için konum bilginize ihtiyaç duyar.",
-        "NSMicrophoneUsageDescription": "Bu uygulama, sohbetlerde ses mesajları göndermek için mikrofon erişimine ihtiyaç duyar.",
-        "NSCameraUsageDescription": "Bu uygulama, profil fotoğrafı ve gönderi resimleri için kamera erişimine ihtiyaç duyar.",
-        "NSPhotoLibraryUsageDescription": "Bu uygulama, profil fotoğrafı ve gönderi resimleri için fotoğraf galerisine erişime ihtiyaç duyar."
+        "NSLocationWhenInUseUsageDescription": "This app needs your location to share road conditions and status in group posts.",
+        "NSCameraUsageDescription": "This app needs camera access for profile photos and post images.",
+        "NSPhotoLibraryUsageDescription": "This app needs photo library access for profile photos and post images."
       }
     },
     "android": {
