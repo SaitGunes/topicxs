@@ -2,7 +2,7 @@
 import requests
 import json
 
-BASE_URL = "https://topicx-revamp.preview.emergentagent.com/api"
+BASE_URL = "https://community-sectors.preview.emergentagent.com/api"
 
 def test_simple_registration():
     print("Testing simple registration...")

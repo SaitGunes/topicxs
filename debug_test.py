@@ -6,7 +6,7 @@ Debug specific failing tests
 import requests
 import json
 
-BASE_URL = "https://topicx-revamp.preview.emergentagent.com/api"
+BASE_URL = "https://community-sectors.preview.emergentagent.com/api"
 HEADERS = {"Content-Type": "application/json"}
 
 def debug_duplicate_registration():
