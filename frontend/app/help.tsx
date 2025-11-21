@@ -145,7 +145,7 @@ export default function HelpScreen() {
           <Text style={styles.footerText}>
             {t('helpContactUs')} {t('termsSupportEmail')}
           </Text>
-          <Text style={styles.versionText}>Drivers Chat v1.0</Text>
+          <Text style={styles.versionText}>Topicx v1.0</Text>
         </View>
       </ScrollView>
     </View>
