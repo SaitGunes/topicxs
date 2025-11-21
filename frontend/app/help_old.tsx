@@ -168,7 +168,7 @@ export default function HelpScreen() {
           <Ionicons name="help-circle" size={64} color="#007AFF" />
           <Text style={styles.introTitle}>How can we help you?</Text>
           <Text style={styles.introText}>
-            Find answers to common questions about Drivers Chat
+            Find answers to common questions about Topicx
           </Text>
         </View>
 
@@ -225,7 +225,7 @@ export default function HelpScreen() {
           <Text style={styles.footerText}>
             Contact us at isyerimiz@gmail.com
           </Text>
-          <Text style={styles.versionText}>Drivers Chat v1.0</Text>
+          <Text style={styles.versionText}>Topicx v1.0</Text>
         </View>
       </ScrollView>
     </View>

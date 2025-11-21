@@ -163,12 +163,12 @@ export default function ProfileScreen() {
     if (!user?.referral_code) return;
     
     const referralLink = `driverschat://register?ref=${user.referral_code}`;
-    const message = `Join me on Drivers Chat! Use my referral code: ${user.referral_code}\n\nSign up here: ${referralLink}`;
+    const message = `Join me on Topicx! Use my referral code: ${user.referral_code}\n\nSign up here: ${referralLink}`;
     
     try {
       await Share.share({
         message: message,
-        title: 'Join Drivers Chat',
+        title: 'Join Topicx',
       });
     } catch (error) {
       console.error('Share error:', error);
