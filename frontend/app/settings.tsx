@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity, TextInput, Alert, Modal, Switch, ActivityIndicator } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, TextInput, Alert, Modal, Switch, ActivityIndicator, Linking } from 'react-native';
 import { useState, useEffect } from 'react';
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
@@ -8,6 +8,7 @@ import { useNotificationStore } from '../store/notificationStore';
 import { useTranslation } from '../store/languageStore';
 import api from '../utils/api';
 import { updateNotificationPreferences } from '../utils/notifications';
+import Constants from 'expo-constants';
 
 export default function SettingsScreen() {
   const router = useRouter();
