@@ -332,6 +332,25 @@ export default function SettingsScreen() {
             <Ionicons name="chevron-forward" size={20} color="#ccc" />
           </TouchableOpacity>
 
+          <TouchableOpacity 
+            style={styles.settingItem}
+            onPress={() => {
+              const backendUrl = Constants.expoConfig?.extra?.EXPO_PUBLIC_BACKEND_URL || process.env.EXPO_PUBLIC_BACKEND_URL;
+              const privacyUrl = `${backendUrl}/api/privacy-policy`;
+              Linking.openURL(privacyUrl).catch(err => {
+                console.error('Failed to open privacy policy:', err);
+                Alert.alert('Error', 'Could not open privacy policy');
+              });
+            }}
+          >
+            <Ionicons name="shield-checkmark-outline" size={22} color="#007AFF" />
+            <View style={styles.settingTextContainer}>
+              <Text style={styles.settingText}>Privacy Policy</Text>
+              <Text style={styles.settingSubtext}>View our privacy policy</Text>
+            </View>
+            <Ionicons name="chevron-forward" size={20} color="#ccc" />
+          </TouchableOpacity>
+
           <View style={styles.settingItem}>
             <Ionicons name="moon-outline" size={22} color="#999" />
             <View style={styles.settingTextContainer}>
