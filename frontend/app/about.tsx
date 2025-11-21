@@ -23,7 +23,7 @@ export default function AboutScreen() {
             <Ionicons name="business" size={48} color="#007AFF" />
           </View>
           <Text style={styles.appName}>Topicx</Text>
-          <Text style={styles.version}>Version 2.0.0</Text>
+          <Text style={styles.version}>Version 1.0.0</Text>
           <Text style={styles.tagline}>Multi-Sector Community Platform</Text>
         </View>
 
