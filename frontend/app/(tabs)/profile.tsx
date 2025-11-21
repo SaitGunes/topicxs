@@ -162,7 +162,7 @@ export default function ProfileScreen() {
   const handleShareReferral = async () => {
     if (!user?.referral_code) return;
     
-    const referralLink = `driverschat://register?ref=${user.referral_code}`;
+    const referralLink = `topicx://register?ref=${user.referral_code}`;
     const message = `Join me on Topicx! Use my referral code: ${user.referral_code}\n\nSign up here: ${referralLink}`;
     
     try {
