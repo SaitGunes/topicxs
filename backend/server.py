@@ -2762,6 +2762,20 @@ async def leave_chat(sid, data):
 # Include the router in the main app
 app.include_router(api_router)
 
+# Privacy Policy HTML endpoint
+@app.get("/api/privacy-policy", response_class=HTMLResponse)
+async def get_privacy_policy():
+    """Serve the privacy policy HTML page"""
+    privacy_policy_path = ROOT_DIR / "static" / "privacy-policy.html"
+    
+    try:
+        with open(privacy_policy_path, "r", encoding="utf-8") as f:
+            html_content = f.read()
+        return HTMLResponse(content=html_content, status_code=200)
+    except FileNotFoundError:
+        raise HTTPException(status_code=404, detail="Privacy policy not found")
+
+
 # Mount Socket.IO
 socket_app = socketio.ASGIApp(sio, other_asgi_app=app)
 
