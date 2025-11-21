@@ -88,6 +88,61 @@ eas login
 eas build --platform ios
 ```
 
+## 📱 App Store Description
+
+### Short Description (Subtitle)
+Multi-industry community platform
+
+### Full Description
+
+**TopicX** is a multi-industry community platform designed to bring professionals, workers, creators, and enthusiasts together in organized sector-based spaces. Instead of scrolling through irrelevant content, TopicX helps you focus on the industries you care about — Drivers, Sports, Technology, Construction, Finance, Food, Health, Arts, Gaming, and more.
+
+Join the community of your profession, share your experiences, connect with others, and access valuable information that makes your work easier and your network stronger.
+
+#### Key Features
+
+🔹 **Sector-Based Communities**
+Choose your industry and instantly access a feed that contains only relevant content. Every sector includes its own posts, discussions, resources, and real-time chat rooms.
+
+🔹 **Share Your Knowledge**
+Post text, photos, questions, experiences, and tips. Help others in your field and gain visibility as your contributions get likes and engagement.
+
+🔹 **Real-Time Chat**
+Connect instantly with people working in the same industry. Discuss work situations, ask questions, share updates, and collaborate in live chat rooms.
+
+🔹 **Connect With the Right People**
+Every user belongs to one or more sectors. Find people with the same profession, similar challenges, and shared goals.
+
+🔹 **Industry Resources**
+Each industry page includes a list of typical suppliers, tools, and businesses used by that profession — helping you find what you need faster.
+
+#### Industries on TopicX
+- 🚗 Drivers
+- ⚽ Sports & Fitness
+- 🔬 Science & Technology
+- 🏗️ Construction & Real Estate
+- 💰 Finance, Stocks & Crypto
+- 🎭 Tourism, Culture & Arts
+- 🍔 Food, Drinks & Lifestyle
+- 💊 Health & Cosmetics
+- 🎵 Music, Entertainment & Events
+- 🎮 Gaming & Video
+
+More sectors will be added continuously.
+
+#### Why TopicX?
+- ✅ Saves time by removing irrelevant content
+- ✅ Connects you directly with your industry
+- ✅ Helps you learn, improve, and grow
+- ✅ Gives every user a voice in their community
+- ✅ 100% free to join and use
+
+**Your Industry. Your People. Your Community.**
+
+TopicX helps you focus on what really matters — your profession, your skills, your network.
+
+---
+
 ## 📄 License
 
 © 2025 Topicx. All rights reserved.
